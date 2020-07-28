@@ -1,0 +1,11 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+# this gets created as part of running home manager, not sure why
+result
+
+# this should  be a symbolic link to a file in the same directory which is the refernece for
+# "this" machine. When provisioning a new computer, make a new file for this.
+this-machine.nix
