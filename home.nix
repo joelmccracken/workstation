@@ -1,6 +1,8 @@
 ctx@{ config, pkgs, ... }:
 let
   this-machine = (import ./this-machine.nix) ctx;
+  workstation-dir = "${this-machine.homeDirectory}/workstation";
+  dotfiles = (import ./dotfiles.nix) ctx;
 in
 {
   # Let Home Manager install and manage itself.
@@ -20,11 +22,7 @@ in
     ];
   };
 
-  # home.file = {
-  #   "scootin".text = ''
-  #     ${pkgs.ripgrep}/bin/rg
-  #   '';
-  # };
+  home.file = dotfiles;
 
   home.packages = [
     pkgs.cmake
