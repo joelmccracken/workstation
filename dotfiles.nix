@@ -11,13 +11,23 @@ let
 in
 {
   ".zshrc".text = ''
-    export NIX_PATH=$HOME/.nix-defexpr/channels\$\{NIX_PATH:+:}$NIX_PATH
+    export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
 
     ${paths}
 
     if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
       . $HOME/.nix-profile/etc/profile.d/nix.sh;
     fi # added by Nix installer
+  '';
+
+  ".ghci".text = ''
+    :set -XOverloadedStrings
+
+    -- Read GHCI commands from the file whose name is
+    -- in the GHCIRC environment variable
+    -- :def _load const(System.Environment.getEnvironment >>= maybe (return "") readFile . lookup "GHCIRC")
+    -- :_load
+    -- :undef _load
   '';
 
   ".bash_profile".text = ''
@@ -56,5 +66,9 @@ in
     if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
       . $HOME/.nix-profile/etc/profile.d/nix.sh;
     fi # added by Nix installer
+  '';
+
+  ".bashrc".text = ''
+    source ~/.bash_profile
   '';
 }

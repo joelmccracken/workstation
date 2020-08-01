@@ -2,14 +2,8 @@
 
 Having recently taken the time to learn nix, I have decided it is time to revisit my workstation.
 
-There were several issues I wanted to address.
-(what are they?)
-weirdness with
-* TODO
-- port the run test script
-- (should I have a "real" dotfiles project that only has e.g. .bashrc, separate from this project?)
 * Instructions
-1. clone this repo into ~~/workstation~ (does it have to be that location?)
-2. cd ~~/workstation~ and run the link script
+1. clone this repo into ~/workstation (does it have to be that location?)
+2. cd ~/workstation and run the link script
 3. run the ~set-machine.sh~ with the name of this machine (which links this machine settings).
 3. run ~bootstrap-nix.sh~
