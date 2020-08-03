@@ -13,11 +13,8 @@ setupHomeManager () {
   nix-channel --update
   cat /Users/runner/.bashrc
   cat /Users/runner/.bash_profile
-  nix-shell '<home-manager>' -A install -- -b old
-
-
-
-  # home-manager switch -b old
+  nix-shell '<home-manager>' -A install || { echo "first home manager install failed, but that is expected." }
+  home-manager switch -b old
 }
 
 setupNix
