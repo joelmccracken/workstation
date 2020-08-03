@@ -13,5 +13,6 @@ else
       else
         echo "machine name unrecognized!"
         exit 1
+      fi
     fi
 fi
