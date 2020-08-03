@@ -12,7 +12,12 @@ setupHomeManager () {
   nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
   nix-channel --update
   nix-shell '<home-manager>' -A install
-  home-manager switch
+
+
+  cat /Users/runner/.bashrc
+  cat /Users/runner/.bash_profile
+
+  home-manager switch -b old
 }
 
 setupNix
