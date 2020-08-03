@@ -17,4 +17,5 @@ setupHomeManager () {
 
 setupNix
 setupHomeManager
+env
 source ./setup-doom.sh
