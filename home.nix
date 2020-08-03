@@ -3,6 +3,7 @@ let
   this-machine = (import ./this-machine.nix) ctx;
   workstation-dir = "${this-machine.homeDirectory}/workstation";
   dotfiles = (import ./dotfiles.nix) ctx;
+  emacs = (import ./emacs.nix) ctx;
 in
 {
   # Let Home Manager install and manage itself.
@@ -15,14 +16,10 @@ in
 
   programs.emacs = {
     enable = true;
-    extraPackages = epkgs: [
-      epkgs.nix-mode
-      epkgs.magit
-      epkgs.vterm
-    ];
+    extraPackages = emacs.packages;
   };
 
-  home.file = dotfiles;
+  home.file = dotfiles // emacs.files;
 
   home.packages = [
     pkgs.cmake

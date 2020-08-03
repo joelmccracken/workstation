@@ -11,7 +11,7 @@ let
 in
 {
   ".zshrc".text = ''
-    export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
+    # export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
 
     ${paths}
 

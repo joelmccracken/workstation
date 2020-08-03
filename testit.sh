@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-uname -a
+bash install.sh
 
-source bootstrap-nix.sh
+bash test/test.sh
