@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
 
 setupNix () {
   # https://nixos.org/nix/manual/#sect-macos-installation
