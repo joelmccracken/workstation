@@ -25,6 +25,9 @@ checkEmacs () {
       else
           echo PROBLEM: emacs installed, but not installed by nix
       fi
+  else
+    echo EMACS NOT FOUND
+    exit 1
   fi
 }
 
