@@ -27,6 +27,7 @@ jobs:
       run: ./testit.sh
 
     - name: Setup tmate session
+      if: ${{ failure() }}
       uses: mxschmitt/action-tmate@v2
      
     # Runs a set of commands using the runners shell
