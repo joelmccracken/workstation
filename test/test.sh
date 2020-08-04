@@ -17,8 +17,7 @@ if which emacs; then
             echo emacs is correct version
 
             emacs --batch --eval '(princ "hi1")'
-            emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ "hi2") (message "h3"))'
-
+            emacs --batch -f toggle-debug-on-error -l ~/.emacs.d/init.el --eval '(progn (princ "hi2") (message "h3"))'
             # DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
             # if  [[ "$DOOM_VERSION" == "2.0.9" ]]; then
             #     echo doom is correct version
