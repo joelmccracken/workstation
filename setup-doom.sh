@@ -18,6 +18,7 @@ env
 
 ls ~/.nix-profile/bin
 
-DOOMDIR=$INSTALL_DIR/doom_d $BIN_DIR/doom -y install
+
+$BIN_DIR/doom -y install
 # always fails on package orgit, but just running command again fixes it
-DOOMDIR=$INSTALL_DIR/doom_d $BIN_DIR/doom -y install
+$BIN_DIR/doom -y install
