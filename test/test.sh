@@ -16,15 +16,16 @@ if which emacs; then
         if  [[ "$EMACS_VERSION" == "26.3" ]]; then
             echo emacs is correct version
 
-            emacs --batch --eval '(princ "hi")'
-            emacs --batch -l ~/.emacs.d/init.el --eval '(princ "hi")'
-            DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
-            if  [[ "$DOOM_VERSION" == "2.0.9" ]]; then
-                echo doom is correct version
-            else
-                echo doom is not reported to be correct version, found "$DOOM_VERSION"
-                exit 1
-            fi
+            emacs --batch --eval '(princ "hi1")'
+            emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ "hi2") (message "h3"))'
+
+            # DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
+            # if  [[ "$DOOM_VERSION" == "2.0.9" ]]; then
+            #     echo doom is correct version
+            # else
+            #     echo doom is not reported to be correct version, found "$DOOM_VERSION"
+            #     exit 1
+            # fi
         else
             echo emacs is not correct version, found $EMACS_VERSION
             exit 1
