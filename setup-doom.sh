@@ -8,7 +8,8 @@ BIN_DIR="${INSTALL_DIR}/bin"
 
 # rm -rf ~/.emacs.d
 # mkdir -p ~/.emacs.d
-#
+
+ls -lah ~/
 ls -lah ~/.emacs.d/
 
 git clone --depth 1 https://github.com/joelmccracken/doom-emacs.git $INSTALL_DIR

@@ -8,7 +8,7 @@
   ];
 
   files = {
-    ".emacs.d".text = ''
+    ".emacs.d/init.el".text = ''
     (load (load "~/.emacs.d/doom/init.el"))
     '';
   };
