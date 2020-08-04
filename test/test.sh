@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -euox pipefail
 
 # ensure all the references are set
 source $HOME/.nix-profile/etc/profile.d/nix.sh
@@ -16,7 +16,8 @@ if which emacs; then
         if  [[ "$EMACS_VERSION" == "26.3" ]]; then
             echo emacs is correct version
 
-            DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ "hi")')
+            emacs --batch --eval '(princ "hi")'
+            emacs --batch -l ~/.emacs.d/init.el --eval '(princ "hi")'
             DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
             if  [[ "$DOOM_VERSION" == "2.0.9" ]]; then
                 echo doom is correct version
