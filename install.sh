@@ -14,7 +14,9 @@ setupHomeManager () {
   cat /Users/runner/.bashrc
   cat /Users/runner/.bash_profile
   export HOME_MANAGER_BACKUP_EXT=old
-  nix-shell '<home-manager>' -A install || { echo "first home manager install failed, but that is expected."; }
+  nix-shell '<home-manager>' -A install || {
+    echo "first home manager install failed, but that is expected."
+  }
   home-manager switch -b old
 }
 
