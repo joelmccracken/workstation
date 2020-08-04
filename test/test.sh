@@ -16,6 +16,7 @@ if which emacs; then
         if  [[ "$EMACS_VERSION" == "26.3" ]]; then
             echo emacs is correct version
 
+            DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ "hi")')
             DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
             if  [[ "$DOOM_VERSION" == "2.0.9" ]]; then
                 echo doom is correct version
