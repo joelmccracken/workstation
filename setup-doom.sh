@@ -6,8 +6,10 @@ set -euo pipefail
 INSTALL_DIR=${DOOM_INSTALL_DIR:-~/.emacs.d/doom}
 BIN_DIR="${INSTALL_DIR}/bin"
 
-rm -rf ~/.emacs.d
-mkdir -p ~/.emacs.d
+# rm -rf ~/.emacs.d
+# mkdir -p ~/.emacs.d
+#
+ls -lah ~/.emacs.d/
 
 git clone --depth 1 https://github.com/joelmccracken/doom-emacs.git $INSTALL_DIR
 
