@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ensure all the references are set
+source $HOME/.nix-profile/etc/profile.d/nix.sh
+
 echo "RUNNING TESTS"
 
 # emacs
