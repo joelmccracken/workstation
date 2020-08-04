@@ -7,6 +7,6 @@ bash set-machine.sh gh-runner
 
 bash install.sh
 
-echo INSTALL PROCESS COMPLETE; TESTING:
+echo INSTALL PROCESS COMPLETE, TESTING
 
 bash test/test.sh
