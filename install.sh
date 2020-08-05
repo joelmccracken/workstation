@@ -11,8 +11,7 @@ setupHomeManager () {
   # add channels for home manager
   nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
   nix-channel --update
-  cat /Users/runner/.bashrc
-  cat /Users/runner/.bash_profile
+
   export HOME_MANAGER_BACKUP_EXT=old
   nix-shell '<home-manager>' -A install || {
     echo "first home manager install failed, but that is expected."
