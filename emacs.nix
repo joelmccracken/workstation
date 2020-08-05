@@ -9,7 +9,7 @@
 
   files = {
     ".emacs.d/init.el".text = ''
-    (load (load "~/.emacs.d/doom/init.el"))
+    (load "~/.emacs.d/doom/init.el")
     '';
   };
 }
