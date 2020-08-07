@@ -14,11 +14,6 @@ in
   home.username = this-machine.username;
   home.homeDirectory = this-machine.homeDirectory;
 
-  programs.emacs = {
-    enable = true;
-    extraPackages = emacs.packages;
-  };
-
   home.file = dotfiles // emacs.files;
 
   home.packages = [
@@ -31,6 +26,7 @@ in
     pkgs.ghcid
     pkgs.jq
     pkgs.jl
+    emacs.doom-emacs
   ];
 
   # This value determines the Home Manager release that your
