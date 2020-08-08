@@ -14,5 +14,10 @@ setupHomeManager () {
   home-manager switch
 }
 
+setupNiv () {
+  nix-env -iA nixpkgs.niv
+}
+
 setupNix
 setupHomeManager
+setupNiv
