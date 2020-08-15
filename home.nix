@@ -1,13 +1,13 @@
 ctx:
 let
+  # pkgs = import nixpkgs {};
+  nixpkgs = (import ./nix/sources.nix).nixpkgs;
   pkgs = import nixpkgs {};
   ctx2 = ctx // {pkgs = pkgs;};
   this-machine = import ./this-machine.nix;
   workstation-dir = "${this-machine.homeDirectory}/workstation";
   dotfiles = (import ./dotfiles.nix) ctx2;
   emacs = (import ./emacs.nix) ctx2;
-  sources = import ./nix/sources.nix;
-  nixpkgs = sources.nixpkgs;
 in
 {
   # Let Home Manager install and manage itself.
