@@ -24,7 +24,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Run a one-line script
-      run: ./testit.sh
+      run: ./test/ci.sh
 
     # - name: Setup tmate session
     #   if: ${{ failure() }}

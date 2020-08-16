@@ -1,3 +1,6 @@
+# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# TODO can we checksum these somehow and make a pre-commit hook to make sure we dont commit
+# manual edits?
 ctx:
 let
   # pkgs = import nixpkgs {};

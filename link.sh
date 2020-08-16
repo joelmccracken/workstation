@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
-# ln -h
+# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+set -xeuo pipefail
 
 # set up symlinks
 mkdir -p $HOME/.config/nixpkgs/

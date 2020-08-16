@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-set -xeuo pipefail
+# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
 
+set -xeuo pipefail
+# Set up nix
 # https://nixos.org/nix/manual/#sect-macos-installation
 sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
 source $HOME/.nix-profile/etc/profile.d/nix.sh
 
+# Set up home manager
 
 # add channels for home manager
 nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
@@ -16,3 +19,6 @@ nix-shell '<home-manager>' -A install || {
 }
 
 home-manager switch -b old
+
+# Set up Niv
+nix-env -iA nixpkgs.niv

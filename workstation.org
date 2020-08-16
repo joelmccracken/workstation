@@ -3,16 +3,25 @@
 #+begin_src md :tangle ./README.md  :noweb yes
 Having recently taken the time to learn nix, I have decided it is time to revisit my workstation.
 
+WARNING: this file is managed by tangling the file worksation.org. Do not edit directly!
+
 # Instructions
 
 1. clone this repo into ~/workstation (does it have to be that location?)
 2. cd ~/workstation and run the ~link.sh~ script
 3. run the ~set-machine.sh~ with the name of this machine (which links this machine settings).
-3. run ~bootstrap-nix.sh~
+3. run ~install.sh~
 #+end_src
+
 * Bootstrap process
+In order to bootstrap, a number of things need to happen.
+1. ~nix~ needs to be installed.
+2. ~home-manager~ needs to be installed.
+3. home-manager file ~home.nix~ needs to be linked to correct location.
+4. ~set-machine.sh~ must be run to set the symlink to the current machine
 ** Nix installation
-It appears that this line will set up nix on both os x and GH action runner just fine
+It appears that this line will set up nix on both on laptop and GH action runner just fine. Both are OS X, though I should probably add a non-mac system (TODO).
+
 #+NAME: setup-nix
 #+BEGIN_SRC sh
   # https://nixos.org/nix/manual/#sect-macos-installation
@@ -36,22 +45,37 @@ nix-shell '<home-manager>' -A install || {
 
 home-manager switch -b old
 #+end_src
+** NIV Installation
+does this *really* need to be run? seems unnecessary. TODO see if I can delete this.
+#+NAME: setup-niv
+#+BEGIN_SRC sh
+nix-env -iA nixpkgs.niv
+#+END_SRC
 ** install.sh
 Run both of the steps from above:
 #+BEGIN_SRC sh :tangle ./install.sh :shebang "#!/usr/bin/env bash" :noweb yes
-set -xeuo pipefail
 
+# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+
+set -xeuo pipefail
+# Set up nix
 <<setup-nix>>
 
+# Set up home manager
 <<setup-home-manager>>
+
+# Set up Niv
+<<setup-niv>>
+
 #+END_SRC
 ** link.sh
 Sets up symlinks. This should be done as part of the initial setup process.
 
-~home-manager~ expects the file ~home.nix~ to be in
+The program ~home-manager~ expects the file ~home.nix~ to be in
 ~$HOME/.config/nixpkgs/home.nix~. This script establishes the link there.
 
 #+BEGIN_SRC sh :tangle ./link.sh :shebang "#!/usr/bin/env bash" :noweb yes
+# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
 set -xeuo pipefail
 
 # set up symlinks
@@ -61,6 +85,9 @@ ln -s `pwd`/home.nix $HOME/.config/nixpkgs/home.nix
 * home.nix
 The "main" file for homemanager
 #+begin_src nix :tangle ./home.nix :noweb yes
+# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# TODO can we checksum these somehow and make a pre-commit hook to make sure we dont commit
+# manual edits?
 ctx:
 let
   # pkgs = import nixpkgs {};
@@ -109,3 +136,35 @@ in
   home.stateVersion = "20.09";
 }
 #+end_src
+
+* Github Actions CI
+To run CI, we have a script which, thankfully, basically mirrors the install instructions.
+
+#+begin_src sh :tangle ./test/ci.sh :shebang "#!/usr/bin/env bash" :noweb yes
+
+# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+
+set -xeuo pipefail
+
+bash link.sh
+
+bash set-machine.sh gh-runner
+
+bash install.sh
+
+echo INSTALL PROCESS COMPLETE, TESTING
+
+bash test/test.sh
+#+end_src
+* Future
+** Tasks
+*** STRT org babel tangleify everything
+*** TODO setup/test/evaluate bitwarden
+create account *just* for CI server, authenticate against that
+checkers/assertions about state of bitwarden
+*** TODO move over any additional dotfiles needed, and delete repo if no longer has anything worthwhile
+*** TODO set up rclone
+*** TODO backup everything from my personal macbook air and then rebuild machine
+*** DONE lock down versions with niv
+*** DONE figure out if any of the issues w/ CI are avoidable
+*** DONE try this instead https://github.com/vlaci/nix-doom-emacs
