@@ -1,0 +1,98 @@
+#+TITLE: Worksation
+* README
+#+begin_src md :tangle ./README.md  :noweb yes
+Having recently taken the time to learn nix, I have decided it is time to revisit my workstation.
+
+# Instructions
+
+1. clone this repo into ~/workstation (does it have to be that location?)
+2. cd ~/workstation and run the ~link.sh~ script
+3. run the ~set-machine.sh~ with the name of this machine (which links this machine settings).
+3. run ~bootstrap-nix.sh~
+#+end_src
+* Bootstrap process
+** Nix installation
+It appears that this line will set up nix on both os x and GH action runner just fine
+#+NAME: setup-nix
+#+BEGIN_SRC sh
+  # https://nixos.org/nix/manual/#sect-macos-installation
+  sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
+  source $HOME/.nix-profile/etc/profile.d/nix.sh
+#+END_SRC
+** Home Manager Installation
+Before we can run home manager via nix, we need to actually install it.
+
+#+NAME: setup-home-manager
+#+begin_src sh
+setupHomeManager () {
+  # add channels for home manager
+  nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
+  nix-channel --update
+
+  export HOME_MANAGER_BACKUP_EXT=old
+  nix-shell '<home-manager>' -A install || {
+    echo "first home manager install failed, but that is expected."
+  }
+  home-manager switch -b old
+}
+#+end_src
+** install.sh
+Run both of the steps from above:
+#+BEGIN_SRC sh :tangle ./install.sh :shebang "#!/usr/bin/env bash" :noweb yes
+set -xeuo pipefail
+
+<<setup-nix>>
+
+<<setup-home-manager>>
+#+END_SRC
+* home.nix
+This file is the "main" file for homemanager
+#+begin_src nix :tangle ./home.nix :noweb yes
+ctx:
+let
+  # pkgs = import nixpkgs {};
+  nixpkgs = (import ./nix/sources.nix).nixpkgs;
+  pkgs = import nixpkgs {};
+  ctx2 = ctx // {pkgs = pkgs;};
+  this-machine = import ./this-machine.nix;
+  workstation-dir = "${this-machine.homeDirectory}/workstation";
+  dotfiles = (import ./dotfiles.nix) ctx2;
+  emacs = (import ./emacs.nix) ctx2;
+in
+{
+ 
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
+  # Home Manager needs a bit of information about you and the
+  # paths it should manage.
+  home.username = this-machine.username;
+  home.homeDirectory = this-machine.homeDirectory;
+
+  home.file = dotfiles // emacs.files;
+
+  home.packages = [
+    pkgs.cmake
+    pkgs.libtool
+    pkgs.ripgrep
+    pkgs.fd
+    pkgs.fontconfig
+    pkgs.coreutils
+    pkgs.ghcid
+    pkgs.jq
+    pkgs.jl
+    emacs.doom-emacs
+    pkgs.bitwarden-cli
+  ];
+
+  # This value determines the Home Manager release that your
+  # configuration is compatible with. This helps avoid breakage
+  # when a new Home Manager release introduces backwards
+  # incompatible changes.
+  #
+  # You can update Home Manager without changing this value. See
+  # the Home Manager release notes for a list of state version
+  # changes in each release.
+  home.stateVersion = "20.09";
+}
+#+end_src

@@ -1,8 +1,7 @@
-#+TITLE: Joel's Workstation
-
 Having recently taken the time to learn nix, I have decided it is time to revisit my workstation.
 
-* Instructions
+# Instructions
+
 1. clone this repo into ~/workstation (does it have to be that location?)
 2. cd ~/workstation and run the ~link.sh~ script
 3. run the ~set-machine.sh~ with the name of this machine (which links this machine settings).

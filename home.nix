@@ -10,6 +10,7 @@ let
   emacs = (import ./emacs.nix) ctx2;
 in
 {
+ 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -31,6 +32,7 @@ in
     pkgs.jq
     pkgs.jl
     emacs.doom-emacs
+    pkgs.bitwarden-cli
   ];
 
   # This value determines the Home Manager release that your
