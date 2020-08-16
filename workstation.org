@@ -24,17 +24,17 @@ Before we can run home manager via nix, we need to actually install it.
 
 #+NAME: setup-home-manager
 #+begin_src sh
-setupHomeManager () {
-  # add channels for home manager
-  nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
-  nix-channel --update
 
-  export HOME_MANAGER_BACKUP_EXT=old
-  nix-shell '<home-manager>' -A install || {
-    echo "first home manager install failed, but that is expected."
-  }
-  home-manager switch -b old
+# add channels for home manager
+nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
+nix-channel --update
+
+export HOME_MANAGER_BACKUP_EXT=old
+nix-shell '<home-manager>' -A install || {
+  echo "first home manager install failed, but that is expected."
 }
+
+home-manager switch -b old
 #+end_src
 ** install.sh
 Run both of the steps from above:
