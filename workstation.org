@@ -45,8 +45,21 @@ set -xeuo pipefail
 
 <<setup-home-manager>>
 #+END_SRC
+** link.sh
+Sets up symlinks. This should be done as part of the initial setup process.
+
+~home-manager~ expects the file ~home.nix~ to be in
+~$HOME/.config/nixpkgs/home.nix~. This script establishes the link there.
+
+#+BEGIN_SRC sh :tangle ./link.sh :shebang "#!/usr/bin/env bash" :noweb yes
+set -xeuo pipefail
+
+# set up symlinks
+mkdir -p $HOME/.config/nixpkgs/
+ln -s `pwd`/home.nix $HOME/.config/nixpkgs/home.nix
+#+END_SRC
 * home.nix
-This file is the "main" file for homemanager
+The "main" file for homemanager
 #+begin_src nix :tangle ./home.nix :noweb yes
 ctx:
 let
