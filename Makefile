@@ -1,8 +1,10 @@
 tangle:
 	emacs -q -l lib/tangle-file.el --batch --tangle
 
-run:
-	echo foo
+build:
+	home-manager build
 
+switch:
+	home-manager build -b old
 
-.PHONY: run tangle
+.PHONY: tangle build switch
