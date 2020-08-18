@@ -1,5 +1,3 @@
-Having recently taken the time to learn nix, I have decided it is time to revisit my workstation.
-
 WARNING: this file is managed by tangling the file worksation.org. Do not edit directly!
 
 # Instructions
@@ -9,6 +7,6 @@ WARNING: this file is managed by tangling the file worksation.org. Do not edit d
 3. run the `set-machine.sh` with the name of this machine (which links this machine settings).
 3. run `install.sh`
 
-# More
+# More Information
 
-You should really read the <a href="workstation.org">workstation.org</a> file.
+For more information, you should really read the <a href="workstation.org">workstation.org</a> file.

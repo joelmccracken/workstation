@@ -1,14 +1,11 @@
 # WARNING: This file is managed by tangling worksation.org. Do not edit directly!
-# TODO can we checksum these somehow and make a pre-commit hook to make sure we dont commit
-# manual edits?
 ctx:
 let
-  # pkgs = import nixpkgs {};
+  # Load specific nixpkgs reference via niv
   nixpkgs = (import ./nix/sources.nix).nixpkgs;
   pkgs = import nixpkgs {};
   ctx2 = ctx // {pkgs = pkgs;};
   this-machine = import ./this-machine.nix;
-  workstation-dir = "${this-machine.homeDirectory}/workstation";
   dotfiles = (import ./dotfiles.nix) ctx2;
   emacs = (import ./emacs.nix) ctx2;
 in
