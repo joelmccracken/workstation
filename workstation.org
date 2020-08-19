@@ -1,10 +1,10 @@
-#+TITLE: Worksation
-* Background & Introdution
+#+TITLE: Workstation
+* Background & Introduction
 This is my workstation configuration. I have had a few different setups over the years, so this one is still a bit of a
 work in progress. Honestly, accomplishing this is a lot harder than I expected.
 
 This time around, I have decided to try [[https://nixos.org/][nix]]. Nix is a really interesting way to configure your machine. However, this is not a
-guide to nix itself, so I should link to a better one. Primariy, nix gives me faith that my setup will be rebuildable under
+guide to nix itself, so I should link to a better one. Primarily, nix gives me faith that my setup will be rebuildable under
 a new set of conditions, and can itself be a firm foundation upon which to build additional tooling for myself.
 
 I have no idea if anyone will ever read this, but from personal experience, these workstation projects are easy to put
@@ -17,11 +17,11 @@ to see how this works, you should view this file raw. When github renders org mo
 
 Anyway, if you have any questions, feel free to shoot me an email or open an issue.
 * README
-Every code project needs a readme. This really just contains super simple instructions along with a link to this file, which
-contains all the imporant information.
+Every code project needs a README. This really just contains super simple instructions along with a link to this file, which
+contains all the important information.
 
 #+begin_src md :tangle ./README.md  :noweb yes
-WARNING: this file is managed by tangling the file worksation.org. Do not edit directly!
+WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
 
 # Instructions
 
@@ -35,7 +35,7 @@ WARNING: this file is managed by tangling the file worksation.org. Do not edit d
 For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
 #+end_src
 * Bootstrap process
-Before I can start using nix, a number of things need to happen. This is called the boostrap process.
+Before I can start using nix, a number of things need to happen. This is called the bootstrap process.
 
 1. ~nix~ needs to be installed.
 2. ~home-manager~ needs to be installed.
@@ -54,7 +54,7 @@ I worry that it might not work correctly for linux systems though, so I have a T
   source $HOME/.nix-profile/etc/profile.d/nix.sh
 #+END_SRC
 
-This used to be problematic to set this up in catalina because of OS X readonly root directory nonsense.
+This used to be problematic to set this up in Catalina because of OS X read-only root directory nonsense.
 Nowadays the installer handles this though, but I have had it fail before, so be aware.
 (I *think* the cause of the failure was that I had old nix stuff still around from an earlier rebuild, and
 running the commands to delete the volumes, remove the mounts, etc, seemed to work)
@@ -91,7 +91,7 @@ This script runs all of the mentioned code, in order.
 
 #+BEGIN_SRC sh :tangle ./install.sh :shebang "#!/usr/bin/env bash" :noweb yes
 
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
 # Set up nix
@@ -111,21 +111,20 @@ The program ~home-manager~ expects the file ~home.nix~ to be in
 ~$HOME/.config/nixpkgs/home.nix~. This script establishes the file in that location.
 
 #+BEGIN_SRC sh :tangle ./link.sh :shebang "#!/usr/bin/env bash" :noweb yes
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -xeuo pipefail
 
 # set up symlinks
 mkdir -p $HOME/.config/nixpkgs/
 ln -s `pwd`/home.nix $HOME/.config/nixpkgs/home.nix
 #+END_SRC
-#!/usr/bin/env bash
 ** set-machine.sh
 This script links a specific machine configuration to the file ~this-machine.nix~ so that
-I can have per-machine-speciic settings, specifically usernames, home directory paths, etc.
+I can have per-machine-specific settings, specifically usernames, home directory paths, etc.
 
-This script is bad and I really should clean it up, but it works ok for now.
+This script is bad and I really should clean it up, but it works OK for now.
 #+BEGIN_SRC sh :tangle ./set-machine.sh :shebang "#!/usr/bin/env bash" :noweb yes
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euo pipefail
 
 if [[ "$@" == "" ]] ; then
@@ -145,7 +144,7 @@ else
 fi
 #+END_SRC
 * home.nix
-The "main" file for homemanager. At this point, nix, home manager, etc have all been
+The "main" file for home-manager. At this point, nix, home manager, etc have all been
 set up.
 
 ** Loading nixpkgs from Niv
@@ -164,10 +163,10 @@ references as at the time it was committed.
 The variable ~ctx2~ is "context", but with niv's pkgs instead. That way when I pass it to
 other nix files, they will use it, too. (perhaps they should load and use niv directly though?
 I need to think about that). The name "context" to me means
-"whatever gets passed to the funciton in home.nix". I really have no idea what to call it.
+"whatever gets passed to the function in home.nix". I really have no idea what to call it.
 ** The full home.nix file
 #+begin_src nix :tangle ./home.nix :noweb yes
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 ctx:
 let
   <<load-niv>>
@@ -176,7 +175,6 @@ let
   emacs = (import ./emacs.nix) ctx2;
 in
 {
- 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -188,12 +186,6 @@ in
   home.file = dotfiles // emacs.files;
 
   home.packages = [
-    pkgs.cmake
-    pkgs.libtool
-    pkgs.ripgrep
-    pkgs.fd
-    pkgs.fontconfig
-    pkgs.coreutils
     pkgs.ghcid
     pkgs.jq
     pkgs.jl
@@ -215,13 +207,13 @@ in
 * Testing
 ** test.sh
 At this point in time, this test actually checks very little, but what it DOES check
-is things that indicate that everying went right. Specifically, checking the doom version means
+is things that indicate that everything went right. Specifically, checking the doom version means
 emacs, doom, and the whole doom setup process worked out.
 
-I plan to move this to a haskell project at some point, probably do it with hspec instead.
+I plan to move this to a Haskell project at some point, probably do it with hspec instead.
 Or maybe that bats testing library. We'll see.
 #+begin_src sh :tangle ./test/test.sh :shebang "#!/usr/bin/env bash" :noweb yes
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 #!/usr/bin/env bash
 set -euox pipefail
 
@@ -261,10 +253,11 @@ else
 fi
 #+end_src
 ** Github Actions CI
-First, the CI config:
+First, the CI config. Importantly, github CI support macos environments. Otherwise I
+would be on GitLab instead.
 
 #+begin_src yaml :tangle ./.github/workflows/test.yml :noweb yes
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 name: CI
 
@@ -280,12 +273,14 @@ jobs:
     - name: Run a one-line script
       run: ./test/ci.sh
 #+end_src
-
+** The environment setup script
 To run CI, we have a script which, thankfully, basically mirrors the install instructions.
 
+Importantly, this does a LOT of things, such as install nix, home-manager, etc, and eventually runs
+the test script.
 #+begin_src sh :tangle ./test/ci.sh :shebang "#!/usr/bin/env bash" :noweb yes
 
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
 

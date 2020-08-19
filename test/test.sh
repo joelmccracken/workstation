@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 #!/usr/bin/env bash
 set -euox pipefail
 

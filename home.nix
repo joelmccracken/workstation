@@ -1,4 +1,4 @@
-# WARNING: This file is managed by tangling worksation.org. Do not edit directly!
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 ctx:
 let
   # Load specific nixpkgs reference via niv
@@ -10,7 +10,6 @@ let
   emacs = (import ./emacs.nix) ctx2;
 in
 {
- 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -22,12 +21,6 @@ in
   home.file = dotfiles // emacs.files;
 
   home.packages = [
-    pkgs.cmake
-    pkgs.libtool
-    pkgs.ripgrep
-    pkgs.fd
-    pkgs.fontconfig
-    pkgs.coreutils
     pkgs.ghcid
     pkgs.jq
     pkgs.jl

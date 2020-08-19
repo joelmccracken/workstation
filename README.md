@@ -1,4 +1,4 @@
-WARNING: this file is managed by tangling the file worksation.org. Do not edit directly!
+WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
 
 # Instructions
 
