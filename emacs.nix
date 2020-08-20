@@ -1,3 +1,4 @@
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 { config, lib, pkgs, ... }:
 
 {

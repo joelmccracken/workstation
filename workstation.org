@@ -34,6 +34,43 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 
 For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
 #+end_src
+* Makefile
+The first command is used to tangle ~workstation.org~.
+
+#+begin_src makefile :tangle ./Makefile  :noweb yes
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
+
+tangle:
+	emacs -q -l lib/tangle-file.el --batch --tangle
+
+build:
+	home-manager build
+
+switch:
+	home-manager build -b old
+
+.PHONY: tangle build switch
+#+end_src
+
+And a little emacs lisp that goes with the tangle process:
+
+#+begin_src emacs-lisp :tangle ./lib/tangle-file.el
+;;; tangle-file.el --- description -*- lexical-binding: t; -*-
+
+;; WARNING: This file is managed by tangling workstation.org. Do not edit directly!
+(add-to-list 'command-switch-alist '("--tangle" . do-tangle))
+
+(defun do-tangle (arg)
+  "Do the tangle. ARG is ignored."
+  (find-file "workstation.org")
+  (org-babel-tangle))
+
+(provide 'tangle-file)
+
+;;; tangle-file.el ends here
+#+end_src
+* literate programming with org mode
+
 * Bootstrap process
 Before I can start using nix, a number of things need to happen. This is called the bootstrap process.
 
@@ -164,6 +201,112 @@ The variable ~ctx2~ is "context", but with niv's pkgs instead. That way when I p
 other nix files, they will use it, too. (perhaps they should load and use niv directly though?
 I need to think about that). The name "context" to me means
 "whatever gets passed to the function in home.nix". I really have no idea what to call it.
+** emacs.nix
+I wrote this file so that I could keep things separated, and my emacs configuration is in a single spot.
+Since I neded up finding the nix-doom-emacs package, it seems like the need for this is gone. Maybe
+I will inline it into ~home.nix~, I dunno.
+#+begin_src nix :tangle ./emacs.nix :noweb yes
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
+{ config, lib, pkgs, ... }:
+
+{
+  doom-emacs = pkgs.callPackage (builtins.fetchTarball {
+    url = https://github.com/vlaci/nix-doom-emacs/archive/c440f4afe4ff2d38d2beb40d7e4bcfa2496f60c2.tar.gz; # version hash instead of master
+  }) {
+    doomPrivateDir = ./doom.d;  # Directory containing your config.el init.el
+                                # and packages.el files
+    extraPackages = epkgs: [
+      epkgs.nix-mode
+      epkgs.vterm
+    ];
+  };
+
+  files = {
+    ".emacs.d/init.el".text = ''
+    ;; loads doom from nix store
+    (load "default.el")
+    '';
+  };
+}
+#+end_src
+** dotfiles.nix
+Right now these are mostly all boring copies from my old setup.
+#+begin_src nix :tangle ./dotfiles.nix :noweb yes
+{ config, lib, pkgs, ... }:
+let
+  paths = ''
+    export PATH="$HOME/.cabal/bin:$PATH"
+    export PATH="$HOME/.cargo/bin:$PATH"
+    export PATH="$HOME/.emacs.d/bin:$PATH"
+    export PATH="$HOME/.local/bin:$PATH"
+    export PATH="$HOME/bin:$PATH"
+    export PATH="/usr/local/bin:$PATH"
+  '';
+in
+{
+  ".zshrc".text = ''
+    # export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
+
+    ${paths}
+
+    if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
+      . $HOME/.nix-profile/etc/profile.d/nix.sh;
+    fi # added by Nix installer
+  '';
+
+  ".ghci".text = ''
+    :set -XOverloadedStrings
+
+    -- Read GHCI commands from the file whose name is
+    -- in the GHCIRC environment variable
+    -- :def _load const(System.Environment.getEnvironment >>= maybe (return "") readFile . lookup "GHCIRC")
+    -- :_load
+    -- :undef _load
+  '';
+
+  ".bash_profile".text = ''
+    export EDITOR=emacsclient
+    export GIT_EDITOR=$EDITOR
+
+    alias lock=/System/Library/Frameworks/ScreenSaver.framework/Versions/Current/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine
+
+    ${paths}
+
+    export LANG=en_US.UTF-8
+
+    shopt -s extglob
+
+    export HISTCONTROL=erasedups
+    export HISTSIZE=10000
+    shopt -s histappend
+
+    do_command_done_alert() {
+        osascript -e 'display dialog "Command Done!"'
+    }
+
+    alert_when_done() {
+        if test -n "$1";
+        then
+            while kill -0 $1
+            do
+                sleep 1
+            done
+        fi
+        do_command_done_alert
+    }
+
+    export NIX_PATH=$HOME/.nix-defexpr/channels\$\{NIX_PATH:+:}$NIX_PATH
+
+    if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
+      . $HOME/.nix-profile/etc/profile.d/nix.sh;
+    fi # added by Nix installer
+  '';
+
+  ".bashrc".text = ''
+    source ~/.bash_profile
+  '';
+}
+#+end_src
 ** The full home.nix file
 #+begin_src nix :tangle ./home.nix :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
@@ -279,7 +422,6 @@ To run CI, we have a script which, thankfully, basically mirrors the install ins
 Importantly, this does a LOT of things, such as install nix, home-manager, etc, and eventually runs
 the test script.
 #+begin_src sh :tangle ./test/ci.sh :shebang "#!/usr/bin/env bash" :noweb yes
-
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
@@ -296,12 +438,6 @@ bash test/test.sh
 #+end_src
 * Future
 ** Tasks
-*** STRT org babel tangleify everything
-*** TODO add links for anyone interested
-**** nix
-**** home manager
-**** org mode
-**** literate org
 *** TODO add a non-mac system on github (using built matrix?) to test if it works
 *** TODO consider not installing master home-manager, instead installing specific revision
 *** TODO setup/test/evaluate bitwarden
@@ -312,6 +448,12 @@ checkers/assertions about state of bitwarden
 *** TODO backup everything from my personal macbook air and then rebuild machine
 *** TODO see if I can delete the Niv installation step
 *** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
+*** TODO add links for anyone interested/personal reference
+**** nix
+**** home manager
+**** org mode
+**** literate org
+*** DONE org babel tangleify everything important
 *** DONE lock down versions with niv
 *** DONE figure out if any of the issues w/ CI are avoidable
 *** DONE try this instead https://github.com/vlaci/nix-doom-emacs
