@@ -2,7 +2,8 @@
 ctx:
 let
   # Load specific nixpkgs reference via niv
-  nixpkgs = (import ./nix/sources.nix).nixpkgs;
+  sources = import ./nix/sources.nix;
+  nixpkgs = sources.nixpkgs;
   pkgs = import nixpkgs {};
   ctx2 = ctx // {pkgs = pkgs;};
   this-machine = import ./this-machine.nix;
@@ -26,6 +27,9 @@ in
     pkgs.jl
     emacs.doom-emacs
     pkgs.bitwarden-cli
+    # make this work; how??
+    # want to be able to access the niv binary
+    sources.niv
   ];
 
   # This value determines the Home Manager release that your

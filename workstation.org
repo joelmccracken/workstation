@@ -47,7 +47,7 @@ build:
 	home-manager build
 
 switch:
-	home-manager build -b old
+	home-manager switch -b old
 
 .PHONY: tangle build switch
 #+end_src
@@ -188,7 +188,8 @@ set up.
 #+NAME: load-niv
 #+BEGIN_SRC nix
   # Load specific nixpkgs reference via niv
-  nixpkgs = (import ./nix/sources.nix).nixpkgs;
+  sources = import ./nix/sources.nix;
+  nixpkgs = sources.nixpkgs;
   pkgs = import nixpkgs {};
   ctx2 = ctx // {pkgs = pkgs;};
 #+END_SRC
@@ -338,6 +339,9 @@ in
     pkgs.jl
     emacs.doom-emacs
     pkgs.bitwarden-cli
+    # make this work; how??
+    # want to be able to access the niv binary
+    sources.niv
   ];
 
   # This value determines the Home Manager release that your
@@ -444,9 +448,18 @@ bash test/test.sh
 ** Tasks
 *** TODO add a non-mac system on github (using built matrix?) to test if it works
 *** TODO consider not installing master home-manager, instead installing specific revision
-*** TODO setup/test/evaluate bitwarden
+*** STRT setup/test/evaluate bitwarden
 create account *just* for CI server, authenticate against that
 checkers/assertions about state of bitwarden
+
+already added that shell function to automate unlocking bitwarden, but need to
+consider additional steps
+
+document logging in/out/setup, usage
+
+could I write a little pbcopy/pbpaste routine that lets me quickly move the auth
+from one shell to another?
+
 *** TODO move over any additional dotfiles needed, and delete repo if no longer has anything worthwhile
 *** TODO set up rclone
 *** TODO backup everything from my personal macbook air and then rebuild machine

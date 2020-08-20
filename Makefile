@@ -7,6 +7,6 @@ build:
 	home-manager build
 
 switch:
-	home-manager build -b old
+	home-manager switch -b old
 
 .PHONY: tangle build switch
