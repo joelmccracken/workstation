@@ -232,6 +232,7 @@ I will inline it into ~home.nix~, I dunno.
 ** dotfiles.nix
 Right now these are mostly all boring copies from my old setup.
 #+begin_src nix :tangle ./dotfiles.nix :noweb yes
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 { config, lib, pkgs, ... }:
 let
   paths = ''
@@ -246,6 +247,9 @@ in
 {
   ".zshrc".text = ''
     # export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
+
+    # authtenticates bitwarden for this shell session only
+    bwAuth () { export BW_SESSION=`bw unlock --raw`; }
 
     ${paths}
 

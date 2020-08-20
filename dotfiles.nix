@@ -1,3 +1,4 @@
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 { config, lib, pkgs, ... }:
 let
   paths = ''
@@ -12,6 +13,9 @@ in
 {
   ".zshrc".text = ''
     # export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
+
+    # authtenticates bitwarden for this shell session only
+    bwAuth () { export BW_SESSION=`bw unlock --raw`; }
 
     ${paths}
 
