@@ -30,16 +30,13 @@ main = sh $ do
 
 addFileToBitwarden :: FilePath -> Shell ()
 addFileToBitwarden file = do
-  contents <- liftIO $ readTextFile file
   file' <- (liftIO $ makeAbsolute (encodeString file)) >>= (normalizeFileName . decodeString)
   dirId <- ensureBwwFilesDir
-  -- soi am having issues with quoting the contents of the file I am trying to add to the store.
-  -- i believe
-  -- TODO fix it, i dont know how, but fix it
-  -- use --arg etc, and just load value directly from the file into jq using like --arg text "$(cat #{absoluteFileName})"
   view $ shells [i|
-    echo '{"type":2,"name":"","notes":"","secureNote":{"type":0}}' | jq '.name="file:#{encodeString file'}" | .notes = "#{contents}" | .folderId = "#{dirId}"' | bw encode | bw create item
+    echo '{"type":2,"name":"","notes":"","secureNote":{"type":0}}' | jq --arg contents "$(cat #{encodeString file})" '.name="file:#{encodeString file'}" | .notes = $contents | .folderId = "#{dirId}"' | bw encode | bw create item
   |] mempty
+
+-- TODO enable warnings for this script
 
 ensureBwwFilesDir :: Shell Text
 ensureBwwFilesDir = do
