@@ -338,6 +338,7 @@ in
     pkgs.jq
     pkgs.jl
     emacs.doom-emacs
+    pkgs.stack
     pkgs.bitwarden-cli
     # make this work; how??
     # want to be able to access the niv binary
@@ -355,6 +356,30 @@ in
   home.stateVersion = "20.09";
 }
 #+end_src
+* WIP Bitwarden and personal secrets
+for now I am designing a script that will handle
+working with various "private" information.
+
+for various reasons I've decided to try bitwarden for this, but
+out of the box bitwarden doesn't really do what I need it to.
+
+the first thing I want to handle is restoring SSH keys to my local computer.
+these can't be in git, and really they are essential for any meaningfully complete setup
+For testing, i'd like to have a specific bitwarden acocunt with its own ssh key for gitlab
+(issue/question? -- will I be able to disambiguate the keys? need to track this down. already had an issue with this at job),
+a gitlab acct with a private repo just for this,
+and then finally the test will run this checkout and ensure I am able to check it out
+i would be able to store the bitwarden password in the test runner directly, at least as an env var. i am sure this must be a feature.
+
+ideally i would have something like "restore from folder", and secret note names are like "file:~/.ssh/id_rsa_something", which
+would then be "synced" to the local computer.
+
+want to have a handy way to "add" files, say "add this file to the store" and then in the future would be able to restore/sync files
+
+a "sync" command which will pull down those files, ideally telling me which ones will be updatied and giving an opp to confirm
+
+
+
 * Testing
 ** test.sh
 At this point in time, this test actually checks very little, but what it DOES check
@@ -446,8 +471,6 @@ bash test/test.sh
 #+end_src
 * Future
 ** Tasks
-*** TODO add a non-mac system on github (using built matrix?) to test if it works
-*** TODO consider not installing master home-manager, instead installing specific revision
 *** STRT setup/test/evaluate bitwarden
 create account *just* for CI server, authenticate against that
 checkers/assertions about state of bitwarden
@@ -460,6 +483,9 @@ document logging in/out/setup, usage
 could I write a little pbcopy/pbpaste routine that lets me quickly move the auth
 from one shell to another?
 
+*** TODO convert test script to haskell (try using a stack script)
+*** TODO add a non-mac system on github (using built matrix?) to test if it works
+*** TODO consider not installing master home-manager, instead installing specific revision
 *** TODO move over any additional dotfiles needed, and delete repo if no longer has anything worthwhile
 *** TODO set up rclone
 *** TODO backup everything from my personal macbook air and then rebuild machine

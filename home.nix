@@ -26,6 +26,7 @@ in
     pkgs.jq
     pkgs.jl
     emacs.doom-emacs
+    pkgs.stack
     pkgs.bitwarden-cli
     # make this work; how??
     # want to be able to access the niv binary
