@@ -30,7 +30,7 @@ in
     # make this work; how??
     # want to be able to access the niv binary
     sources.niv
-  ];
+  ] ++ emacs.packages;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

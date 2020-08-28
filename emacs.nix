@@ -13,6 +13,10 @@
     ];
   };
 
+  packages = [
+    pkgs.ripgrep # required SPC-* / +default/search-project-for-symbol-at-point
+  ];
+
   files = {
     ".emacs.d/init.el".text = ''
     ;; loads doom from nix store
