@@ -369,6 +369,37 @@ in
   home.stateVersion = "20.09";
 }
 #+end_src
+* Utiliities
+** Passwordless sudo
+Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
+to toggle passwordless sudo.
+
+#+begin_src sh :tangle ./bin/enable-passwordless-sudo.sh :shebang "#!/usr/bin/env bash"
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
+set -eo pipefail
+
+if [[ -z "$SUDO_USER" ]]; then
+    echo ERROR: run as sudo
+    exit 1
+fi
+
+TEMPFILE=$(mktemp)
+
+cat > $TEMPFILE <<EOF
+$SUDO_USER  ALL=(ALL) NOPASSWD: ALL
+EOF
+
+visudo -c $TEMPFILE
+
+mv $TEMPFILE /etc/sudoers.d/me-passwordless-sudo
+#+end_src
+
+#+begin_src sh :tangle ./bin/disable-passwordless-sudo.sh :shebang "#!/usr/bin/env bash"
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
+set -euo pipefail
+
+rm /etc/sudoers.d/me-passwordless-sudo
+#+end_src
 * WIP Bitwarden and personal secrets
 for now I am designing a script that will handle
 working with various "private" information.
@@ -391,8 +422,68 @@ want to have a handy way to "add" files, say "add this file to the store" and th
 
 a "sync" command which will pull down those files, ideally telling me which ones will be updatied and giving an opp to confirm
 
+* Nix darwin
+
+running
+darwin-rebuild switch -I darwin-config=$HOME/workstation/darwin-configuration.nix
+
+building
+nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+./result/bin/darwin-installer
+
+# TODO ensure this ends up getting all tested on CI
+
+#+begin_src sh :tangle ./darwin-configuration.nix :noweb yes
+# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
+ctx@{ config, pkgs, ... }:
+let
+  this-machine = import ./this-machine.nix;
+  hm = (import ./home.nix);
+in
+{
+  imports = [ <home-manager/nix-darwin> ];
+
+  # List packages installed in system profile. To search by name, run:
+  # $ nix-env -qaP | grep wget
+  environment.systemPackages =
+    [
+      pkgs.lorri
+    ];
+
+  environment.darwinConfig = "$HOME/workstation/darwin-configuration.nix";
+  # copied from: https://github.com/target/lorri/issues/96#issuecomment-579931485
+  # XXX: Copied verbatim from https://github.com/iknow/nix-channel/blob/7bf3584e0bef531836050b60a9bbd29024a1af81/darwin-modules/lorri.nix
+  launchd.user.agents = {
+    "lorri" = {
+      serviceConfig = {
+        WorkingDirectory = (builtins.getEnv "HOME");
+        EnvironmentVariables = { };
+        KeepAlive = true;
+        RunAtLoad = true;
+        StandardOutPath = "/var/tmp/lorri.log";
+        StandardErrorPath = "/var/tmp/lorri.log";
+      };
+      script = ''
+        source ${config.system.build.setEnvironment}
+        exec ${pkgs.lorri}/bin/lorri daemon
+      '';
+    };
+  };
 
 
+  # Auto upgrade nix package and the daemon service.
+  # services.nix-daemon.enable = true;
+  # nix.package = pkgs.nix;
+
+  # Create /etc/bashrc that loads the nix-darwin environment.
+  programs.zsh.enable = true;  # default shell on catalina
+  # programs.fish.enable = true;
+
+  # Used for backwards compatibility, please read the changelog before changing.
+  # $ darwin-rebuild changelog
+  system.stateVersion = 4;
+}
+#+end_src
 * Testing
 ** test.sh
 At this point in time, this test actually checks very little, but what it DOES check
