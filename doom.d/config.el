@@ -38,6 +38,9 @@
 (setq display-line-numbers-type t)
 
 
+(use-package direnv
+  :config (direnv-mode))
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

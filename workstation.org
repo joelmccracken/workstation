@@ -162,23 +162,30 @@ I can have per-machine-specific settings, specifically usernames, home directory
 This script is bad and I really should clean it up, but it works OK for now.
 #+BEGIN_SRC sh :tangle ./set-machine.sh :shebang "#!/usr/bin/env bash" :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-set -euo pipefail
 
 if [[ "$@" == "" ]] ; then
     echo "you must provide a machine name"
-else
-    if [[ "$1" == "glamdring" ]] ; then
-      ln -s glamdring.nix this-machine.nix
-    else
-
-      if [[ "$1" == "gh-runner" ]] ; then
-        ln -s gh-runner.nix this-machine.nix
-      else
-        echo "machine name unrecognized!"
-        exit 1
-      fi
-    fi
+    exit 1
 fi
+
+if [[ "$1" == "glamdring" ]] ; then
+  ln -s machines/glamdring.nix this-machine.nix
+  exit 0
+fi
+
+if [[ "$1" == "gh-runner" ]] ; then
+  ln -s machines/gh-runner.nix this-machine.nix
+  exit 0
+fi
+
+if [[ "$1" == "sesco" ]] ; then
+  ln -s machines/sesco.nix this-machine.nix
+  exit 0
+fi
+
+echo "machine name unrecognized!"
+exit 1
+
 #+END_SRC
 * home.nix
 The "main" file for home-manager. At this point, nix, home manager, etc have all been
@@ -221,6 +228,10 @@ I will inline it into ~home.nix~, I dunno.
       epkgs.vterm
     ];
   };
+
+  packages = [
+    pkgs.ripgrep # required SPC-* / +default/search-project-for-symbol-at-point
+  ];
 
   files = {
     ".emacs.d/init.el".text = ''
@@ -334,6 +345,7 @@ in
   home.file = dotfiles // emacs.files;
 
   home.packages = [
+    pkgs.awscli2 # aws/kubernetes cli access
     pkgs.ghcid
     pkgs.jq
     pkgs.jl
@@ -343,7 +355,7 @@ in
     # make this work; how??
     # want to be able to access the niv binary
     sources.niv
-  ];
+  ] ++ emacs.packages;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

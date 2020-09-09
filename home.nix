@@ -22,6 +22,7 @@ in
   home.file = dotfiles // emacs.files;
 
   home.packages = [
+    pkgs.awscli2 # aws/kubernetes cli access
     pkgs.ghcid
     pkgs.jq
     pkgs.jl
