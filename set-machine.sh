@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-set -euo pipefail
 
 if [[ "$@" == "" ]] ; then
     echo "you must provide a machine name"
@@ -20,7 +19,7 @@ fi
 if [[ "$1" == "sesco" ]] ; then
   ln -s machines/sesco.nix this-machine.nix
   exit 0
-fi 
+fi
 
 echo "machine name unrecognized!"
 exit 1

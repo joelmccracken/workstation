@@ -26,6 +26,7 @@ in
     pkgs.ghcid
     pkgs.jq
     pkgs.jl
+    pkgs.ispell
     emacs.doom-emacs
     pkgs.stack
     pkgs.bitwarden-cli
