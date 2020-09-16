@@ -160,6 +160,8 @@ This script links a specific machine configuration to the file ~this-machine.nix
 I can have per-machine-specific settings, specifically usernames, home directory paths, etc.
 
 This script is bad and I really should clean it up, but it works OK for now.
+FWIW, no src_bash[]{set -e} because IIRC some part of the script requires it (I think the $1 etc), and I dont want to figure out how to do it otherwise.
+Not super sure, need to investigate this more. Or not.
 #+BEGIN_SRC sh :tangle ./set-machine.sh :shebang "#!/usr/bin/env bash" :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
@@ -355,7 +357,7 @@ in
     pkgs.bitwarden-cli
     # make this work; how??
     # want to be able to access the niv binary
-    sources.niv
+    (import sources.niv {}).niv
   ] ++ emacs.packages;
 
   # This value determines the Home Manager release that your
