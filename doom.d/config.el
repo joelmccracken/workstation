@@ -37,6 +37,7 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+(setq global-flycheck-mode nil)
 
 (use-package direnv
   :config (direnv-mode))
