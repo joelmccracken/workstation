@@ -21,6 +21,3 @@ nix-shell '<home-manager>' -A install || {
 }
 
 home-manager switch -b old
-
-# Set up Niv
-nix-env -iA nixpkgs.niv
