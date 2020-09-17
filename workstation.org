@@ -117,12 +117,6 @@ home-manager switch -b old
 
 I think I may have resolved the reason this was "expectedly" failing, but anyway it shouldn't hurt anything to have the extra echo
 and switches in there.
-** NIV Installation
-Install Niv. I kinda think this is unnecessary, but I need to see research and see if this is so.
-#+NAME: setup-niv
-#+BEGIN_SRC sh
-nix-env -iA nixpkgs.niv
-#+END_SRC
 ** install.sh
 This script runs all of the mentioned code, in order.
 
@@ -136,9 +130,6 @@ set -xeuo pipefail
 
 # Set up home manager
 <<setup-home-manager>>
-
-# Set up Niv
-<<setup-niv>>
 
 #+END_SRC
 ** link.sh
