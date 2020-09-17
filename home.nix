@@ -30,6 +30,7 @@ in
     emacs.doom-emacs
     pkgs.stack
     pkgs.bitwarden-cli
+    pkgs.direnv
     # make this work; how??
     # want to be able to access the niv binary
     (import sources.niv {}).niv
