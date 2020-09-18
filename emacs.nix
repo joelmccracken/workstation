@@ -3,7 +3,7 @@
 
 {
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
-    url = https://github.com/vlaci/nix-doom-emacs/archive/9fe0402668dfb9d53352aeaec87d5e2a629260f5.tar.gz; # version hash instead of master
+    url = https://github.com/vlaci/nix-doom-emacs/archive/c440f4afe4ff2d38d2beb40d7e4bcfa2496f60c2.tar.gz; # version hash instead of master
   }) {
     doomPrivateDir = ./doom.d;  # Directory containing your config.el init.el
                                 # and packages.el files
