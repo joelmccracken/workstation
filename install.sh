@@ -13,9 +13,12 @@ source $HOME/.nix-profile/etc/profile.d/nix.sh
 nix-channel --add https://github.com/rycee/home-manager/archive/472ca211cac604efdf621337067a237be9df389e.tar.gz home-manager
 nix-channel --update
 
-# if any files that home manager replaces already exist, the install process will fail
-# using environment variable here will get install to behave just like the switch command flag -b
+# Install also runs an initial `switch`.
+# if any files that home manager replaces already exist, the install process will fail.
+# So, using this environment variable here will get install to behave just like the switch command flag -b
+# e.g. this: home-manager switch -b old
+# Figurd this out via
+# https://github.com/nix-community/home-manager/blob/7e5fee4268f53be8758598b7634dff8b3ad8a22b/home-manager/home-manager#L486
+
 export HOME_MANAGER_BACKUP_EXT=old
 nix-shell '<home-manager>' -A install
-
-# home-manager switch -b old
