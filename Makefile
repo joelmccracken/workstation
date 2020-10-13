@@ -1,4 +1,5 @@
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
+all: tangle switch
 
 tangle:
 	emacs -q -l lib/tangle-file.el --batch --tangle
@@ -9,4 +10,4 @@ build:
 switch:
 	home-manager switch -b old
 
-.PHONY: tangle build switch
+.PHONY: tangle build switch all

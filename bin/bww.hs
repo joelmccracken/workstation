@@ -13,6 +13,7 @@ import           Turtle
 data Mode
   = AddFile FilePath
   | ListFiles
+  | PullFiles
   deriving (Eq, Show)
 
 parser :: Parser Mode
@@ -20,6 +21,8 @@ parser =
   AddFile <$> subcommand "add" "add file to bitwarden" (argPath "thepath" "path to the file you want to add")
   <|>
   subcommand "list" "list files in bitwarden" (pure ()) *> (pure ListFiles)
+  <|>
+  subcommand "pull" "pull all files down to the local machine" (switch "force" 'f' "replace local file if it already exists and has different contents") *> pure PullFiles
 
 main :: IO ()
 main = sh $ do
@@ -27,6 +30,7 @@ main = sh $ do
   case mode of
     AddFile path -> addFileToBitwarden path
     ListFiles    -> listFiles
+    PullFiles    -> pullFiles
 
 addFileToBitwarden :: FilePath -> Shell ()
 addFileToBitwarden file = do
@@ -52,10 +56,13 @@ ensureBwwFilesDir = do
 
 listFiles :: Shell ()
 listFiles = do
+  file <- getFilesList
+  liftIO $ TIO.putStrLn file
+
+getFilesList :: Shell Text
+getFilesList = do
   folderId <- ensureBwwFilesDir
-  view $ shells [i|
-    bw list items --folderid #{folderId} | jq '.[].name'
-  |] mempty
+  lineToText <$> inshell [i| bw list items --folderid #{folderId} | jq '.[].name' | sed 's/^"//g' | sed 's/"$//g'  |] mempty
 
 normalizeFileName :: FilePath -> Shell FilePath
 normalizeFileName fileName = do
@@ -66,3 +73,6 @@ normalizeFileName fileName = do
   case matched of
     (x:_) -> pure $ fromText x
     _     -> pure fileName
+
+pullFiles :: Shell ()
+pullFiles = error "yea"

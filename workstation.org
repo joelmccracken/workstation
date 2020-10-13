@@ -1,19 +1,27 @@
 #+TITLE: Workstation
 * Background & Introduction
-This is my workstation configuration. I have had a few different setups over the years, so this one is still a bit of a
+This is my workstation configuration. I have had a few different setups over the
+years, so  this one is still a bit of a
 work in progress. Honestly, accomplishing this is a lot harder than I expected.
 
-This time around, I have decided to try [[https://nixos.org/][nix]]. Nix is a really interesting way to configure your machine. However, this is not a
-guide to nix itself, so I should link to a better one. Primarily, nix gives me faith that my setup will be rebuildable under
-a new set of conditions, and can itself be a firm foundation upon which to build additional tooling for myself.
+This time around, I have decided to try [[https://nixos.org/][nix]]. Nix is a really interesting way to
+configure your machine. However, this is not a
+guide to nix itself, so I should link to a better one. Primarily, nix gives me
+faith that my setup will be rebuildable under
+a new set of conditions, and can itself be a firm foundation upon which to build
+additional tooling for myself.
 
-I have no idea if anyone will ever read this, but from personal experience, these workstation projects are easy to put
-aside for a long time, and then you come back and can't remember how things were built.
+I have no idea if anyone will ever read this, but from personal experience,
+these workstation projects are easy to put aside for a long time, and then you
+come back and can't remember how things were built.
 
-That brings me to another point: this project is mostly written with literate org mode. This gives me an easy way to document
-my thoughts as I work, and also explore using org mode for this task. I did this same thing a long time ago with my old
-dotfiles setup, and I liked it, but everything else about it was a massive pain, so it was eventually abandoned. If you want
-to see how this works, you should view this file raw. When github renders org mode source blocks, it omits all the headers.
+That brings me to another point: this project is mostly written with literate
+org mode. This gives me an easy way to document my thoughts as I work, and also
+explore using ~org-mode~ for this task. I did this same thing a long time ago
+with my old dotfiles setup, and I liked it, but everything else about it was a
+massive pain, so it was eventually abandoned. If you want to see how this works,
+you should view this file raw. When github renders org mode source blocks, it
+omits all the headers.
 
 Anyway, if you have any questions, feel free to shoot me an email or open an issue.
 * README
@@ -35,10 +43,13 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
 #+end_src
 * Makefile
-The first command is used to tangle ~workstation.org~.
+The first command is used to tangle ~workstation.org~. Tangling refers to the
+process of  taking a literate program source and converting it to the target
+"source" file for execution
 
 #+begin_src makefile :tangle ./Makefile  :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
+all: tangle switch
 
 tangle:
 	emacs -q -l lib/tangle-file.el --batch --tangle
@@ -49,7 +60,7 @@ build:
 switch:
 	home-manager switch -b old
 
-.PHONY: tangle build switch
+.PHONY: tangle build switch all
 #+end_src
 
 And a little emacs lisp that goes with the tangle process:
@@ -70,51 +81,59 @@ And a little emacs lisp that goes with the tangle process:
 ;;; tangle-file.el ends here
 #+end_src
 * literate programming with org mode
-
 * Bootstrap process
-Before I can start using nix, a number of things need to happen. This is called the bootstrap process.
+Before I can start using nix, a number of things need to happen. This is called
+the bootstrap  process.
 
 1. ~nix~ needs to be installed.
 2. ~home-manager~ needs to be installed.
-3. ~home-manager~ file ~home.nix~ needs to be linked to correct location.
-4. ~set-machine.sh~ must be run to set the symlink to the current machine. This provides machine-specific
-   settings. I *might* be able to do this better somehow though.
-
+3. ~home-manager~ file ~home.nix~ needs to be linked to correct location where
+   ~home-manager~  expects it.
+4. ~set-machine.sh~ must be run to set the symlink to the current machine. This
+   provides machine-specific settings. I *might* be able to do this better
+   somehow though, TODO research this.
 ** Nix installation
 It appears that this line will set up nix on both on laptop and GH action runner just fine.
-I worry that it might not work correctly for linux systems though, so I have a TODO to revisit this.
+I worry that it might not work correctly for linux systems though, so TODO I have
+to revisit this.
 
-#+NAME: setup-nix
+Additionally, this does not set up a consistent version of nix. TODO decide if I
+want to lock this down to a specific version. Would that 
+
+#+NAME: install-nix
 #+BEGIN_SRC sh
   # https://nixos.org/nix/manual/#sect-macos-installation
   sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
   source $HOME/.nix-profile/etc/profile.d/nix.sh
 #+END_SRC
 
-This used to be problematic to set this up in Catalina because of OS X read-only root directory nonsense.
-Nowadays the installer handles this though, but I have had it fail before, so be aware.
-(I *think* the cause of the failure was that I had old nix stuff still around from an earlier rebuild, and
-running the commands to delete the volumes, remove the mounts, etc, seemed to work)
+_NB:_ This used to be problematic to set this up in Catalina because of OS X read-only
+root directory nonsense. Nowadays the installer handles this though, but I have
+had it fail before, so be aware. (I *think* the cause of the failure was that I
+had old nix stuff still around from an earlier rebuild, and manually running
+commands to delete the volumes, remove the mounts, etc, seemed to work).
 ** Home Manager Installation
-Before we can run home manager via nix, we need to actually install it.
+Home manager is installed by adding a separate channel, per the documentation
+here:
+https://github.com/nix-community/home-manager/blob/472ca211cac604efdf621337067a237be9df389e/README.md#installation
 
-#+NAME: setup-home-manager
+#+NAME: install-home-manager
 #+begin_src sh
 
 # add channels for home manager
 nix-channel --add https://github.com/rycee/home-manager/archive/472ca211cac604efdf621337067a237be9df389e.tar.gz home-manager
 nix-channel --update
 
-# if any files that home manager replaces already exist, the install process will fail
-# using environment variable here will get install to behave just like the switch command flag -b
+# Install also runs an initial `switch`.
+# if any files that home manager replaces already exist, the install process will fail.
+# So, using this environment variable here will get install to behave just like the switch command flag -b
+# e.g. this: home-manager switch -b old
+# Figurd this out via
+# https://github.com/nix-community/home-manager/blob/7e5fee4268f53be8758598b7634dff8b3ad8a22b/home-manager/home-manager#L486
+
 export HOME_MANAGER_BACKUP_EXT=old
 nix-shell '<home-manager>' -A install
-
-# home-manager switch -b old
 #+end_src
-
-I think I may have resolved the reason this was "expectedly" failing, but anyway it shouldn't hurt anything to have the extra echo
-and switches in there.
 ** install.sh
 This script runs all of the mentioned code, in order.
 
@@ -124,10 +143,10 @@ This script runs all of the mentioned code, in order.
 
 set -xeuo pipefail
 # Set up nix
-<<setup-nix>>
+<<install-nix>>
 
 # Set up home manager
-<<setup-home-manager>>
+<<install-home-manager>>
 
 #+END_SRC
 ** link.sh
@@ -248,6 +267,11 @@ let
   '';
 in
 {
+  # TODO see if I can track down the source of the ?/root/channels error thing i keep seeing
+  # and try to fix this nix path setting
+  # TODO figure out re: the nix-darwin /etc/zshrc file, see if I want to change it
+  # TODO generally see if theres is anyting else I'd liek to do with nix-darwin that can't be done with
+  # home manager
   ".zshrc".text = ''
     # export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
 
@@ -262,13 +286,7 @@ in
   '';
 
   ".ghci".text = ''
-    :set -XOverloadedStrings
-
-    -- Read GHCI commands from the file whose name is
-    -- in the GHCIRC environment variable
-    -- :def _load const(System.Environment.getEnvironment >>= maybe (return "") readFile . lookup "GHCIRC")
-    -- :_load
-    -- :undef _load
+<<ghci-file>>
   '';
 
   ".bash_profile".text = ''
@@ -312,6 +330,13 @@ in
   ".bashrc".text = ''
     source ~/.bash_profile
   '';
+
+  ".config/git/ignore".text = ''
+  # Globally ignore these, superannoying
+
+  .DS_Store
+  '';
+
 }
 #+end_src
 ** The full home.nix file
@@ -360,7 +385,7 @@ in
   home.stateVersion = "20.09";
 }
 #+end_src
-* Utiliities
+* Utilities
 ** Passwordless sudo
 Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
 to toggle passwordless sudo.
@@ -391,6 +416,36 @@ set -euo pipefail
 
 rm /etc/sudoers.d/me-passwordless-sudo
 #+end_src
+** turtle shell
+I have experimented with using ghci and the turtle library to start making an interacive
+shell for myself to use in day-to-day work. The advantage of such a thing
+is that I get to "dog-food" my own experiences with haskell and shell scripting.
+
+Actually making this work well is a bit of a hack though.
+GHCI doesn't really
+have a way to pass in a custom file of "commands" to initialize the shell
+(that is, beyond what the GHCI file would be), and IIRC I am unable to provide
+a GHCI file for a custom invocation (e.g. many tools have a standard loction where
+the configuration is located but ALSO provides a way to specify an alternate config file, but it appears that GHCI does not)
+
+I foudn this ghci snippet somewhere on the internet for it, which will look for an environment variable pointing to a new file and if present it will load it.
+
+*** The .ghci file
+#+NAME: ghci-file
+#+BEGIN_SRC haskell
+-- first off I always want overloaded strings on anyway so I can just
+-- have this run every time ghci starts
+:set -XOverloadedStrings
+
+-- Read GHCI commands from the file whose name is
+-- in the GHCIRC environment variable
+:def _load const(System.Environment.getEnvironment >>= maybe (return "") readFile . lookup "GHCIRC")
+:_load
+:undef _load
+#+END_SRC
+** I
+turtle-shell-rc.hs
+
 * WIP Bitwarden and personal secrets
 for now I am designing a script that will handle
 working with various "private" information.
@@ -564,6 +619,7 @@ echo INSTALL PROCESS COMPLETE, TESTING
 
 bash test/test.sh
 #+end_src
+
 * Future
 ** Tasks
 *** STRT setup/test/evaluate bitwarden
@@ -584,13 +640,82 @@ from one shell to another?
 *** TODO move over any additional dotfiles needed, and delete repo if no longer has anything worthwhile
 *** TODO set up rclone
 *** TODO backup everything from my personal macbook air and then rebuild machine
-*** TODO see if I can delete the Niv installation step
 *** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
 *** TODO add links for anyone interested/personal reference
 **** nix
 **** home manager
 **** org mode
 **** literate org
+*** TODO additional packages to install (output of ~brew leaves~ on glamdring)
+#+begin_src text
+joel@glamdring> brew leaves
+asciidoc
+automake
+bash
+bdw-gc
+homebrew/emacs/cargo-mode
+cask
+cloog
+cmake
+coreutils
+djview4
+djvu2pdf
+dos2unix
+etcd
+exa
+exercism
+freealut
+freeglut
+fswatch
+gdb
+git
+gnupg
+gtk+
+haskell-stack
+heroku/brew/heroku
+httpd
+hub
+imagemagick
+imagemagick@6
+ispell
+jq
+komposition
+lastpass-cli
+libcroco
+librsvg
+libvo-aacenc
+libvterm
+libxml2
+llvm
+lua
+lua@5.1
+memcached
+mpgtx
+nginx
+node
+pandoc
+rclone
+re2
+redis
+ripgrep
+rlwrap
+rsync
+ruby
+rust
+sbt
+shared-mime-info
+spark
+stripe/stripe-cli/stripe
+texinfo
+the_platinum_searcher
+the_silver_searcher
+tree
+typesafe-activator
+vault
+wget
+wxmac
+#+end_src
+*** DONE see if I can delete the Niv installation step
 *** DONE org babel tangleify everything important
 *** DONE lock down versions with niv
 *** DONE figure out if any of the issues w/ CI are avoidable
