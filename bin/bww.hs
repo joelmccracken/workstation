@@ -1,5 +1,7 @@
-#!/usr/bin/env stack
--- stack --resolver lts-16.10 script --package turtle --package text --package string-interpolate --package directory
+#! /usr/bin/env nix-shell
+#! nix-shell -p "haskellPackages.ghcWithPackages (p: [p.turtle p.text p.string-interpolate p.directory])"
+#! nix-shell -i "runhaskell --ghc-arg='-Wall'"
+
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes       #-}
 
@@ -44,15 +46,15 @@ addFileToBitwarden file = do
 
 ensureBwwFilesDir :: Shell Text
 ensureBwwFilesDir = do
-  id <- inshell [i|
+  id' <- inshell [i|
     bw list folders --search bww_files | jq '. | map(select(.name == "bww_files")) | first | .id | tostring' | sed 's/"//g'
   |] mempty <&> lineToText
-  if id == "null" then do
+  if id' == "null" then do
     inshell [i|
       jq '.name = "bww_files"' | bw encode | bw create folder | jq '.id' | sed 's/"//g'
     |] (pure "{}") <&> lineToText
   else
-    return id
+    return id'
 
 listFiles :: Shell ()
 listFiles = do
@@ -71,8 +73,8 @@ normalizeFileName fileName = do
 
   let matched = match pat (pack $ encodeString fileName)
   case matched of
-    (x:_) -> pure $ fromText x
-    _     -> pure fileName
+    (x':_) -> pure $ fromText x'
+    _      -> pure fileName
 
 pullFiles :: Shell ()
 pullFiles = error "yea"
