@@ -30,8 +30,8 @@ in
     emacs.doom-emacs
     pkgs.stack
     pkgs.bitwarden-cli
-    # make this work; how??
-    # want to be able to access the niv binary
+    pkgs.spago
+    pkgs.nodePackages.npm
     (import sources.niv {}).niv
   ] ++ emacs.packages;
 

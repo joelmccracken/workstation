@@ -286,7 +286,7 @@ in
   '';
 
   ".ghci".text = ''
-<<ghci-file>>
+    <<ghci-file>>
   '';
 
   ".bash_profile".text = ''
@@ -369,6 +369,8 @@ in
     emacs.doom-emacs
     pkgs.stack
     pkgs.bitwarden-cli
+    pkgs.spago
+    pkgs.nodePackages.npm
     # make this work; how??
     # want to be able to access the niv binary
     (import sources.niv {}).niv
@@ -433,15 +435,16 @@ I foudn this ghci snippet somewhere on the internet for it, which will look for 
 *** The .ghci file
 #+NAME: ghci-file
 #+BEGIN_SRC haskell
--- first off I always want overloaded strings on anyway so I can just
--- have this run every time ghci starts
-:set -XOverloadedStrings
+    -- GHCI config
+    -- first off I always want overloaded strings on anyway so I can just
+    -- have this run every time ghci starts
+    :set -XOverloadedStrings
 
--- Read GHCI commands from the file whose name is
--- in the GHCIRC environment variable
-:def _load const(System.Environment.getEnvironment >>= maybe (return "") readFile . lookup "GHCIRC")
-:_load
-:undef _load
+    -- Read GHCI commands from the file whose name is
+    -- in the GHCIRC environment variable
+    :def _load const(System.Environment.getEnvironment >>= maybe (return "") readFile . lookup "GHCIRC")
+    :_load
+    :undef _load
 #+END_SRC
 ** I
 turtle-shell-rc.hs
