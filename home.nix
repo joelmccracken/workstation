@@ -32,6 +32,10 @@ in
     pkgs.bitwarden-cli
     pkgs.spago
     pkgs.nodePackages.npm
+    pkgs.direnv
+    pkgs.graphviz
+    # make this work; how??
+    # want to be able to access the niv binary
     (import sources.niv {}).niv
   ] ++ emacs.packages;
 
