@@ -373,6 +373,7 @@ in
     pkgs.nodePackages.npm
     pkgs.direnv
     pkgs.graphviz
+    pkgs.browsh # this didn;t work; need to install another firefox
     # make this work; how??
     # want to be able to access the niv binary
     (import sources.niv {}).niv

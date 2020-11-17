@@ -34,6 +34,7 @@ in
     pkgs.nodePackages.npm
     pkgs.direnv
     pkgs.graphviz
+    pkgs.browsh
     # make this work; how??
     # want to be able to access the niv binary
     (import sources.niv {}).niv
