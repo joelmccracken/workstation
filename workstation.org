@@ -206,16 +206,15 @@ set up.
 #+BEGIN_SRC nix
   # Load specific nixpkgs reference via niv
   sources = import ./nix/sources.nix;
-  nixpkgs = sources.nixpkgs;
-  pkgs = import nixpkgs {};
-  ctx2 = ctx // {pkgs = pkgs;};
+  pkgs = import sources.nixpkgs {};
+  nivCtx = ctx // {pkgs = pkgs;};
 #+END_SRC
 
 If you are unfamiliar, niv gives you the ability to "lock" the set of packages that you
 install from. This way, the next time you check out the repository, it will have the same
 references as at the time it was committed.
 
-The variable ~ctx2~ is "context", but with niv's pkgs instead. That way when I pass it to
+The variable ~nivCtx~ is "context", but with niv's pkgs instead. That way when I pass it to
 other nix files, they will use it, too. (perhaps they should load and use niv directly though?
 I need to think about that). The name "context" to me means
 "whatever gets passed to the function in home.nix". I really have no idea what to call it.
@@ -346,8 +345,8 @@ ctx:
 let
   <<load-niv>>
   this-machine = import ./this-machine.nix;
-  dotfiles = (import ./dotfiles.nix) ctx2;
-  emacs = (import ./emacs.nix) ctx2;
+  dotfiles = (import ./dotfiles.nix) nivCtx;
+  emacs = (import ./emacs.nix) nivCtx;
 in
 {
   # Let Home Manager install and manage itself.
@@ -373,9 +372,8 @@ in
     pkgs.nodePackages.npm
     pkgs.direnv
     pkgs.graphviz
-    pkgs.browsh # this didn;t work; need to install another firefox
-    # make this work; how??
-    # want to be able to access the niv binary
+    pkgs.ansible
+    # install niv binary, for managing versions
     (import sources.niv {}).niv
   ] ++ emacs.packages;
 
@@ -629,6 +627,14 @@ bash test/test.sh
 
 * Future
 ** Tasks
+*** TODO maybe use this as inspiration for own nix-darwin
+https://gist.github.com/joelmccracken/baf9bc709b66bbe8f24fce0b9c558675
+*** TODO steal ideas from zzamboni, and specifically this for my zettle experimentation
+#+begin_quote
+@Leojmac I wrote a custom counsel-org-link-action function so that now
+counsel-org-link generates and uses  human-readable CUSTOM_IDs based on the
+heading's title. The code is here:  https://github.com/zzamboni/dot-doom/blob/master/doom.org#capturing-and-creating-internal-org-links
+#+end_quote
 *** STRT setup/test/evaluate bitwarden
 create account *just* for CI server, authenticate against that
 checkers/assertions about state of bitwarden

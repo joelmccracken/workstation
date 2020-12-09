@@ -3,12 +3,11 @@ ctx:
 let
   # Load specific nixpkgs reference via niv
   sources = import ./nix/sources.nix;
-  nixpkgs = sources.nixpkgs;
-  pkgs = import nixpkgs {};
-  ctx2 = ctx // {pkgs = pkgs;};
+  pkgs = import sources.nixpkgs {};
+  nivCtx = ctx // {pkgs = pkgs;};
   this-machine = import ./this-machine.nix;
-  dotfiles = (import ./dotfiles.nix) ctx2;
-  emacs = (import ./emacs.nix) ctx2;
+  dotfiles = (import ./dotfiles.nix) nivCtx;
+  emacs = (import ./emacs.nix) nivCtx;
 in
 {
   # Let Home Manager install and manage itself.
@@ -34,9 +33,8 @@ in
     pkgs.nodePackages.npm
     pkgs.direnv
     pkgs.graphviz
-    pkgs.browsh
-    # make this work; how??
-    # want to be able to access the niv binary
+    pkgs.ansible
+    # install niv binary, for managing versions
     (import sources.niv {}).niv
   ] ++ emacs.packages;
 
