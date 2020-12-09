@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-#!/usr/bin/env bash
 set -euox pipefail
 
 # ensure all the references are set
@@ -15,7 +14,7 @@ if which emacs; then
         echo emacs installed by nix
 
         EMACS_VERSION=$(emacs -Q --batch --eval '(princ emacs-version)')
-        if  [[ "$EMACS_VERSION" == "26.3" ]]; then
+        if  [[ "$EMACS_VERSION" == "27.1" ]]; then
             echo emacs is correct version
 
             DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')

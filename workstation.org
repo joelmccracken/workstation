@@ -546,7 +546,6 @@ I plan to move this to a Haskell project at some point, probably do it with hspe
 Or maybe that bats testing library. We'll see.
 #+begin_src sh :tangle ./test/test.sh :shebang "#!/usr/bin/env bash" :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-#!/usr/bin/env bash
 set -euox pipefail
 
 # ensure all the references are set
@@ -561,7 +560,7 @@ if which emacs; then
         echo emacs installed by nix
 
         EMACS_VERSION=$(emacs -Q --batch --eval '(princ emacs-version)')
-        if  [[ "$EMACS_VERSION" == "26.3" ]]; then
+        if  [[ "$EMACS_VERSION" == "27.1" ]]; then
             echo emacs is correct version
 
             DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
