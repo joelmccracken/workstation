@@ -31,6 +31,7 @@ in
     pkgs.bitwarden-cli
     pkgs.spago
     pkgs.nodePackages.npm
+    pkgs.nodejs
     pkgs.direnv
     pkgs.graphviz
     pkgs.ansible

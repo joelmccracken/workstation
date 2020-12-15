@@ -30,6 +30,7 @@ in
   '';
 
   ".ghci".text = ''
+    
     -- GHCI config
     -- first off I always want overloaded strings on anyway so I can just
     -- have this run every time ghci starts
@@ -74,7 +75,7 @@ in
         do_command_done_alert
     }
 
-    export NIX_PATH=$HOME/.nix-defexpr/channels\$\{NIX_PATH:+:}$NIX_PATH
+    # export NIX_PATH=$HOME/.nix-defexpr/channels\$\{NIX_PATH:+:}$NIX_PATH
 
     if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
       . $HOME/.nix-profile/etc/profile.d/nix.sh;
