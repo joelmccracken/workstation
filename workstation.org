@@ -375,6 +375,7 @@ in
     pkgs.direnv
     pkgs.graphviz
     pkgs.ansible
+    pkgs.rubber
     # install niv binary, for managing versions
     (import sources.niv {}).niv
   ] ++ emacs.packages;
