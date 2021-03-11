@@ -31,7 +31,30 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/EF/")
+
+(setq org-directory "~/Dropbox/EF/")
+(setq org-roam-directory "~/Dropbox/EF/")
+(setq org-roam-db-location "~/Dropbox/EF/org-roam.db")
+(setq org-roam-dailies-directory "daily/")
+
+(setq org-roam-dailies-capture-templates
+    '(("d" "default" entry
+       #'org-roam-capture--get-point
+       "* %?"
+       :file-name "daily/%<%Y-%m-%d>"
+       :head "#+title: %<%Y-%m-%d>\n\n")))
+
+(setq org-archive-location "~/Dropbox/EF/archive::* From %s")
+
+(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+(use-package! org
+  :config
+  (add-hook 'org-mode-hook 'auto-fill-mode)
+)
+
+
+(setq custom-file "~/workstation/custom.el")
+
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.

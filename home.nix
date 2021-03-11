@@ -35,7 +35,12 @@ in
     pkgs.direnv
     pkgs.graphviz
     pkgs.ansible
+    pkgs.sqlite
     pkgs.rubber
+    pkgs.tectonic
+    (pkgs.texlive.combine {
+      inherit (pkgs.texlive) scheme-small;
+    })
     # install niv binary, for managing versions
     (import sources.niv {}).niv
   ] ++ emacs.packages;
