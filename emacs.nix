@@ -1,6 +1,5 @@
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 { config, lib, pkgs, ... }:
-
 {
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
     url = https://github.com/vlaci/nix-doom-emacs/archive/4cd7e15082bad25ff6b097f9bb419e50d32f621b.tar.gz; # version hash instead of master
@@ -15,6 +14,8 @@
 
   packages = [
     pkgs.ripgrep # required SPC-* / +default/search-project-for-symbol-at-point
+    pkgs.dhall
+    pkgs.dhall-json
   ];
 
   files = {
