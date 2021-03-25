@@ -44,7 +44,7 @@
        :file-name "daily/%<%Y-%m-%d>"
        :head "#+title: %<%Y-%m-%d>\n\n")))
 
-(setq org-archive-location "~/Dropbox/EF/archive::* From %s")
+(setq org-archive-location "~/Dropbox/EF/archive/%s_archive::")
 
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 (use-package! org
