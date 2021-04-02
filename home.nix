@@ -35,8 +35,8 @@ in
     pkgs.direnv
     pkgs.graphviz
     pkgs.ansible
-    pkgs.sqlite
     pkgs.rubber
+    pkgs.sqlite
     pkgs.tectonic
     (pkgs.texlive.combine {
       inherit (pkgs.texlive) scheme-small;
