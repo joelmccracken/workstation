@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -p "haskellPackages.ghcWithPackages (p: [p.turtle p.text p.string-interpolate p.directory])"
+#! nix-shell -p "haskellPackages.ghcWithPackages (p: [p.turtle p.text p.string-interpolate p.directory p.bytestring])"
 #! nix-shell -i "runhaskell --ghc-arg='-Wall'"
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -15,8 +15,18 @@ import           Turtle
 data Mode
   = AddFile FilePath
   | ListFiles
-  | PullFiles
+  | SyncFiles
   deriving (Eq, Show)
+
+{-
+notes
+will need to use like e.g.
+BW_SESSION="THE KEY" bin/bww.hs force-sync
+get this key via `bw unlock`
+
+need to run `bw sync` to pick up on changes that have happend on the server.
+-}
+
 
 parser :: Parser Mode
 parser =
@@ -24,15 +34,15 @@ parser =
   <|>
   subcommand "list" "list files in bitwarden" (pure ()) *> (pure ListFiles)
   <|>
-  subcommand "pull" "pull all files down to the local machine" (switch "force" 'f' "replace local file if it already exists and has different contents") *> pure PullFiles
+  subcommand "force-sync" "download files, replacing any local files with the remote versions" (pure ()) *> (pure SyncFiles)
 
 main :: IO ()
 main = sh $ do
-  mode <- options "Greeting script" parser
+  mode <- options "Bitwarden wrapper" parser
   case mode of
     AddFile path -> addFileToBitwarden path
     ListFiles    -> listFiles
-    PullFiles    -> pullFiles
+    SyncFiles    -> syncFiles
 
 addFileToBitwarden :: FilePath -> Shell ()
 addFileToBitwarden file = do
@@ -41,8 +51,6 @@ addFileToBitwarden file = do
   view $ shells [i|
     echo '{"type":2,"name":"","notes":"","secureNote":{"type":0}}' | jq --arg contents "$(cat #{encodeString file})" '.name="file:#{encodeString file'}" | .notes = $contents | .folderId = "#{dirId}"' | bw encode | bw create item
   |] mempty
-
--- TODO enable warnings for this script
 
 ensureBwwFilesDir :: Shell Text
 ensureBwwFilesDir = do
@@ -76,5 +84,12 @@ normalizeFileName fileName = do
     (x':_) -> pure $ fromText x'
     _      -> pure fileName
 
-pullFiles :: Shell ()
-pullFiles = error "yea"
+syncFiles :: Shell ()
+syncFiles = do
+  folderId <- ensureBwwFilesDir
+  let cmd = [i| bw list items --folderid #{folderId} | jq -r '.[].name' |]
+  fileName <- lineToText <$> inshell cmd mempty
+  liftIO $ TIO.putStrLn fileName
+  let cmd2 = [i| bw get item '#{fileName}' | jq -r '.notes' |]
+  fileContent <- lineToText <$> inshell cmd2 mempty
+  liftIO $ TIO.putStrLn fileContent
