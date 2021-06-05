@@ -6,20 +6,5 @@ if [[ "$@" == "" ]] ; then
     exit 1
 fi
 
-if [[ "$1" == "glamdring" ]] ; then
-  ln -s machines/glamdring.nix this-machine.nix
-  exit 0
-fi
-
-if [[ "$1" == "gh-runner" ]] ; then
-  ln -s machines/gh-runner.nix this-machine.nix
-  exit 0
-fi
-
-if [[ "$1" == "sesco" ]] ; then
-  ln -s machines/sesco.nix this-machine.nix
-  exit 0
-fi
-
-echo "machine name unrecognized!"
-exit 1
+ln -s machines/$1.nix this-machine.nix
+ln -s machines/$1.el this-machine.el
