@@ -1,5 +1,5 @@
 {
   username = "runner";
   homeDirectory = "/Users/runner";
-  workstationType = "test"
+  workstationType = "test";
 }
