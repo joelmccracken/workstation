@@ -120,8 +120,10 @@ https://github.com/nix-community/home-manager/blob/472ca211cac604efdf621337067a2
 #+NAME: install-home-manager
 #+begin_src sh
 
+HOME_MANAGER_VERSION_SHA=a3d691c05308b43afe264a2165f60948cfd2963e
+
 # add channels for home manager
-nix-channel --add https://github.com/rycee/home-manager/archive/472ca211cac604efdf621337067a237be9df389e.tar.gz home-manager
+nix-channel --add https://github.com/rycee/home-manager/archive/$HOME_MANAGER_VERSION_SHA.tar.gz home-manager
 nix-channel --update
 
 # Install also runs an initial `switch`.
@@ -178,7 +180,10 @@ if [[ "$@" == "" ]] ; then
     exit 1
 fi
 
+rm this-machine.nix
 ln -s machines/$1.nix this-machine.nix
+
+rm this-machine.el
 ln -s machines/$1.el this-machine.el
 #+END_SRC
 * home.nix

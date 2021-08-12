@@ -9,8 +9,10 @@ source $HOME/.nix-profile/etc/profile.d/nix.sh
 
 # Set up home manager
 
+HOME_MANAGER_VERSION_SHA=a3d691c05308b43afe264a2165f60948cfd2963e
+
 # add channels for home manager
-nix-channel --add https://github.com/rycee/home-manager/archive/472ca211cac604efdf621337067a237be9df389e.tar.gz home-manager
+nix-channel --add https://github.com/rycee/home-manager/archive/$HOME_MANAGER_VERSION_SHA.tar.gz home-manager
 nix-channel --update
 
 # Install also runs an initial `switch`.
