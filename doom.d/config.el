@@ -47,11 +47,8 @@
 (setq org-archive-location "~/Dropbox/EF/archive/%s_archive::")
 
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-(use-package! org
-  :config
-  (add-hook 'org-mode-hook 'auto-fill-mode)
-)
-
+(after! org
+  (add-hook 'org-mode-hook 'auto-fill-mode))
 
 (setq custom-file "~/workstation/custom.el")
 
