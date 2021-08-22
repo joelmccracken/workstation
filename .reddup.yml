@@ -1,0 +1,40 @@
+locations:
+  - type: git
+    location: ~/EF
+  - type: git
+    location: ~/Projects/*
+  - type: inbox
+    location: ~/Desktop
+    ignored_files:
+      - .DS_Store
+  - type: inbox
+    location: ~/Inbox
+    ignored_files:
+      - .DS_Store
+handlers:
+  git:
+    commands:
+    - name: wip with da(t)e
+      cmd: bash -c 'git add .; git commit -m "wip $(date)"'
+      key: t
+  inbox:
+    commands:
+      - name: (o)pen
+        cmd: open "$FILE"
+        key: o
+      - name: open (e)nclosing dir
+        cmd: open .
+        key: e
+    refile_dests:
+      - name: (b)ooks
+        char: b
+        dir: ~/Nextcloud/books
+      - name: (p)apers
+        char: p
+        dir: ~/Nextcloud/papers
+      - name: p(r)ivate
+        char: r
+        dir: ~/Nextcloud/private
+      - name: (f)unny
+        char: f
+        dir: ~/Nextcloud/funny
