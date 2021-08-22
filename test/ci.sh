@@ -4,6 +4,5 @@
 set -xeuo pipefail
 
 bash new-setup.sh
-bash set-machine.sh gh-runner
 
 bash test/test.sh

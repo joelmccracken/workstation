@@ -2,9 +2,6 @@
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
 
-# ensure all the references are set
-source $HOME/.nix-profile/etc/profile.d/nix.sh
-
 echo "RUNNING TESTS"
 
 # emacs
