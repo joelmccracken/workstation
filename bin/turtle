@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# custom code exists in ~/.ghci which reads the ghcirc env var
+GHCIRC=~/apps/turtle-shell/turtle-shell-rc.hs stack ghci --package turtle --ghc-options -XOverloadedStrings

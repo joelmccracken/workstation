@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+DIR=$1
+REPO=$2
+
+cd $DIR
+git init
+git remote add origin $REPO
+git fetch
+git checkout -t origin/master
+git branch -d origin/master
+git reset --mixed origin/master
+git branch --set-upstream-to origin/master

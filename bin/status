@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+last_backup_filename_unexp = '~/.ex_supervisor/last-backup-date'
+last_backup_date_filename = File.expand_path last_backup_filename_unexp
+if File.exists?(last_backup_date_filename)
+  require 'date'
+  raw_string = File.read(last_backup_date_filename)
+  dt = DateTime.parse raw_string
+  formatted_nice = dt.to_time.getlocal.strftime("%I:%M %p %a %m-%d-%Y")
+  puts "last backup finished at: #{formatted_nice}"
+else
+  puts "Warning: No backup date recorded at #{last_backup_filename_unexp}"
+end
+puts File.read(File.expand_path '~/.redd-up/last-run')
+puts ""
+puts File.read(File.expand_path '~/.redd-up/cache')

@@ -1,0 +1,98 @@
+#!/usr/bin/env ruby
+
+def with_bundle
+  begin
+    require 'bundler/inline'
+  rescue LoadError => e
+    $stderr.puts "Error: cannot load bundler."
+    $stderr.puts e.inspect
+    $stderr.puts "it seems like you probably need to bootstrap. Try running `workstation bootstrap`"
+    exit 4
+  end
+
+  gemfile true do
+    source 'https://rubygems.org'
+    gem 'childprocess', '~>0.7'
+    gem 'colorize', '~>0.8'
+  end
+end
+
+def bootstrap
+  ruby_path = `which ruby`.strip
+  if $?.exitstatus == 0
+    puts "found ruby at #{ruby_path}, continuing"
+  else
+    $stderr.puts "Error: no ruby found. There should def be a ruby on your mac!"
+    exit 1
+  end
+
+  gem_path = `which gem`.strip
+  if $?.exitstatus == 0
+    puts "found gem at #{gem_path}, continuing"
+  else
+    $stderr.puts "Error: no ruby found. There should def be a ruby on your mac!"
+    exit 2
+  end
+
+  if `gem list -i bundler` == "true"
+    puts "bundler currently installed"
+  else
+    puts "installing bundler"
+    system "gem install bundler"
+    puts "installed bundler"
+  end
+end
+
+def install
+  with_bundle
+  install_dir = File.expand_path("~/install")
+  puts "Installing..."
+  Dir.chdir install_dir do
+    Dir["*"].each do |file|
+      puts "executing install file #{file}"
+      run_script(file)
+    end
+  end
+end
+
+
+
+def check
+  with_bundle
+  check_dir = File.expand_path("~/check")
+  puts "Checking..."
+  Dir.chdir check_dir do
+    Dir["*"].each do |file|
+      run_script(file)
+    end
+  end
+end
+
+def run_script(file)
+  puts "running #{file}"
+  if File.executable?(file)
+    process = ChildProcess.build("./#{file}")
+    process.io.inherit!
+
+    Bundler.with_clean_env do
+      process.start
+    end
+
+    process.wait
+    if process.exit_code != 0
+      puts "Warning: #{file} finished with exit code #{process.exit_code}".red
+    else
+      puts "#{file} OK"
+    end
+  else
+    puts "Warning: #{file} not executable".red
+  end
+end
+
+
+case ARGV.first
+when "bootstrap" then bootstrap
+when "install" then install
+when "check"   then check
+else puts "check usage"
+end

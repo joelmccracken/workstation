@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+
+def filename_to_commands(name)
+  bits = name.match(/(FARM-.*)-.*(\..*).pem/)
+  new_name = "#{bits[1]}#{bits[2]}.private.pem"
+  final_location = File.expand_path("~/.ssh/#{new_name}")
+  [
+    "cp #{name} #{final_location}",
+    "chmod 400 #{final_location}"
+  ]
+end
+
+key_locations="~/Downloads"
+
+glob = "#{File.expand_path key_locations}/FARM*.pem"
+files = Dir[glob]
+
+commands = files.flat_map { |file|
+  filename_to_commands(file)
+}
+
+puts "WILL RUN:"
+
+commands.each do |cmd|
+  puts cmd
+end
+
+print "continue? (y/n): "
+foo = gets.strip
+
+if foo == "y"
+  commands.each do |cmd|
+    system cmd
+  end
+else
+  puts "You said '#{foo}', stopping"
+end
