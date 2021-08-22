@@ -62,8 +62,8 @@
 
 (setq global-flycheck-mode nil)
 
-(use-package direnv
-  :config (direnv-mode))
+;; (use-package direnv
+;;   :config (direnv-mode))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

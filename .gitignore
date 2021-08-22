@@ -207,4 +207,5 @@ sesco/
 # to revision them
 .nix-profile
 
+# this contains the files for doom; should consider this an opaque blob
 .emacs.d

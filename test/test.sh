@@ -12,15 +12,8 @@ else
   exit 1
 fi
 
-if which emacs | grep nix > /dev/null; then
-    echo emacs installed by nix
-else
-    echo PROBLEM: emacs installed, but not installed by nix
-    exit 1
-fi
-
 EMACS_VERSION=$(emacs -Q --batch --eval '(princ emacs-version)')
-if  [[ "$EMACS_VERSION" == "27.1" ]]; then
+if  [[ "$EMACS_VERSION" == "27.2" ]]; then
     echo emacs is correct version
 else
     echo emacs is not correct version, found $EMACS_VERSION
@@ -28,7 +21,7 @@ else
 fi
 
 DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
-if  [[ "$DOOM_VERSION" == "2.0.9" ]]; then
+if  [[ "$DOOM_VERSION" == "3.0.0-alpha" ]]; then
     echo doom is correct version
 else
     echo doom is not reported to be correct version, found "$DOOM_VERSION"
