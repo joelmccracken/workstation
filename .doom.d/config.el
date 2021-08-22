@@ -51,7 +51,10 @@
   (add-hook 'org-mode-hook 'auto-fill-mode))
 
 (setq custom-file "~/.doom.d/custom.el")
-
+(let
+  ((this-machine (expand-file-name "~/var/this-machine.el")))
+    (when (file-exists-p this-machine)
+      (load this-machine)))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
