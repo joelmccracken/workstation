@@ -50,7 +50,7 @@
 (after! org
   (add-hook 'org-mode-hook 'auto-fill-mode))
 
-(setq custom-file "~/workstation/custom.el")
+(setq custom-file "~/.doom.d/custom.el")
 
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
