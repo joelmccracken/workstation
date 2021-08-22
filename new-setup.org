@@ -1,0 +1,13 @@
+#+TITLE: New Setup
+
+for now, keeping it separate from my old stuff. here is a p lace to keep notes
+
+clone repo
+link files in place
+
+build this whole thing without using own computer, just use github's CI?
+
+install stack
+install emacs version
+install doom
+link
