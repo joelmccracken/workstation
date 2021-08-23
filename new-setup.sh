@@ -11,3 +11,5 @@ git reset --mixed origin/master
 
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 yes | ~/.emacs.d/bin/doom install
+
+git status
