@@ -7,6 +7,7 @@ brew bundle
 cd ~
 git init
 git remote add origin https://github.com/joelmccracken/real-dotfiles.git
+git fetch
 git reset --mixed origin/master
 
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
