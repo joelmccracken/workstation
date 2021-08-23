@@ -10,6 +10,10 @@ git remote add origin https://github.com/joelmccracken/workstation.git
 git fetch
 git reset --soft origin/master
 
+cd apps/
+git checkout Unmount\ TimeMachine.app
+cd ..
+
 git checkout $(git status -s | grep -E ' D' | awk '{print $2}')
 
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
