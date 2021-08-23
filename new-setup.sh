@@ -15,4 +15,6 @@ git checkout $(git status -s | grep -E ' D' | awk '{print $2}')
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 yes | ~/.emacs.d/bin/doom install
 
+git remote set-url origin git@github.com:joelmccracken/workstation.git
+
 git status
