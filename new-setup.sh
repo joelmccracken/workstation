@@ -10,9 +10,7 @@ git remote add origin https://github.com/joelmccracken/workstation.git
 git fetch
 git reset --soft origin/master
 
-cd apps/
-git checkout Unmount\ TimeMachine.app
-cd ..
+git checkout apps
 
 git checkout $(git status -s | grep -E ' D' | awk '{print $2}')
 
