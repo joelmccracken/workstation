@@ -11,7 +11,12 @@ git fetch
 git reset --mixed origin/master
 git status -s | grep -E ' D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 
+echo FINISHED CHCKING OUT
+
 git remote set-url origin git@github.com:joelmccracken/workstation.git
+
+
+
 
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 yes | ~/.emacs.d/bin/doom install
