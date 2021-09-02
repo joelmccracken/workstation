@@ -9,7 +9,7 @@ git init
 git remote add origin https://github.com/joelmccracken/workstation.git
 git fetch
 git reset --mixed origin/master
-git status -s | grep -E ' D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
+git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 
 echo FINISHED CHCKING OUT
 
