@@ -6,7 +6,7 @@ set -xeuo pipefail
 brew bundle
 
 # restore dotfiles
-bash ~/bin/polite-git-checkout ~ https://github.com/joelmccracken/workstation.git
+bash ./bin/polite-git-checkout ~ https://github.com/joelmccracken/workstation.git
 echo FINISHED CHCKING OUT DOTFILES
 
 # update remote to one that can be pushed to
