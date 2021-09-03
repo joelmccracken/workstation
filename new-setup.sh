@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -xeuo pipefail
-cd ~
 
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -13,6 +12,7 @@ echo FINISHED CHCKING OUT DOTFILES
 # update remote to one that can be pushed to
 # (I first use the https version so that i can do the checkout even if ssh keys
 # are missing on this machine)
+cd ~
 git remote set-url origin git@github.com:joelmccracken/workstation.git
 
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
