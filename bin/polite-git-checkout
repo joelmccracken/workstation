@@ -1,15 +1,24 @@
 #!/usr/bin/env bash
-
+# this script is designed to "check out" a repository when the destination directory
+# is non-empty. It takes two arguments, the directory to do the checkout in, and the
+# repo to use. I developed this so that I could store my dotfiles in a git repo,
+# and actually have them under git revision. I prefer this to the alternatives
+# e.g. symlinking my dotfiles into place, as this style lets me do 'git status' etc
+# on my home directory and see if there are new files, etc. Of course, this does mean
+# that a lot of things go into my gitignore file which might annoy another
+# person, but I still prefer it.
 set -e
 
 DIR=$1
 REPO=$2
 
 cd $DIR
+
 git init
 git remote add origin $REPO
 git fetch
-git checkout -t origin/master
-git branch -d origin/master
+# mixed means that missing files will unstaged; otherwise, the checkout below
+# wont work (it will have already been deleted from the index)
 git reset --mixed origin/master
-git branch --set-upstream-to origin/master
+# This formulation of the checkout command seems to work most reliably
+git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
