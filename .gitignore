@@ -41,6 +41,7 @@ bin/elm-format
 .idris
 .lein
 .m2
+.rbenv
 #  -- another clojure thing ??
 .mix
 .node-gyp

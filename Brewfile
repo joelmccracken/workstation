@@ -15,8 +15,9 @@ brew "graphviz"
 brew "jq"
 brew "mr"
 brew "rbenv"
-
-cask "hammerspoon"
-
+brew "haskell-stack"
 # used to compile vterm-mode
 brew "cmake"
+
+# casks
+cask "hammerspoon"
