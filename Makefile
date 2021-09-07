@@ -2,7 +2,7 @@
 all: tangle switch
 
 tangle:
-	emacs -q -l lib/tangle-file.el --batch --tangle
+	emacs -q -l lib/emacs/tangle-file.el --batch --tangle
 
 bundle:
 	brew bundle

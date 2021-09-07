@@ -2,6 +2,8 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 
 # Instructions
 
+1. download the bootstrap shell script:
+-
 1. clone this repo into `~/workstation` (does it have to be that location?)
 2. cd `~/workstation` and run the `link.sh` script
 3. run the `set-machine.sh` with the name of this machine (which links this machine settings).

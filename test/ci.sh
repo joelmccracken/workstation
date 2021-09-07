@@ -3,6 +3,10 @@
 
 set -xeuo pipefail
 
-bash new-setup.sh
+echo BEGINNING INITIAL INSTALL
+
+bash bin/bootstrap-workstation.sh
+
+echo INSTALL PROCESS COMPLETE, TESTING
 
 bash test/test.sh

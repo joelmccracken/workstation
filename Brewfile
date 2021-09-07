@@ -14,6 +14,7 @@ brew "myrepos"
 brew "graphviz"
 brew "jq"
 brew "mr"
+brew "rbenv"
 
 cask "hammerspoon"
 
