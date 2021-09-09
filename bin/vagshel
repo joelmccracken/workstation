@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-vagrant ssh -c 'tail -n 60 -f /var/log/nginx/error.log'

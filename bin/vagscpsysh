@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-vagscrun 'psysh settings/ShowClix.class.php'

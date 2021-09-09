@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-set -x
-vagrant ssh -c "cd /showclix; vendor/bin/codecept run $@"
