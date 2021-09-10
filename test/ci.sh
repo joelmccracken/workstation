@@ -3,6 +3,8 @@
 
 set -xeuo pipefail
 
+env # are there environment variables where I can get the commit sha?
+
 cd ~
 
 curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bin/bootstrap-workstation.sh > bootstrap-workstation.sh
