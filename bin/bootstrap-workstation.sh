@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
-set -euo pipefail
+set -xeuo pipefail
 
 sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
@@ -16,7 +16,7 @@ polite-git-checkout () {
 
     cd $DIR
     git init
-    git remote add origin repo
+    git remote add origin $REPO
     git fetch
 
     # wont work (it will have already been deleted from the index)
