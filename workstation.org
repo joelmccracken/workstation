@@ -22,7 +22,7 @@ This same repo/setup *was* based upon ~nix~, but I had to abandon it. I still wa
 to go back to it, eventually. Most of the notes below which mention ~nix~ are
 wrong/out of date, and I need to get around to updating them.
 
-I kept that version around in a branch, for my own future reference:
+I kept that version with nix around in a branch, for my own future reference:
 https://github.com/joelmccracken/workstation/tree/upgrade-org-with-nix-doom-emacs
 
 I'd like to incorporate nix back into my workstation configuration, but I am not
@@ -39,8 +39,6 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 1. download the bootstrap shell script:
 -
 1. clone this repo into `~/workstation` (does it have to be that location?)
-2. cd `~/workstation` and run the `link.sh` script
-3. run the `set-machine.sh` with the name of this machine (which links this machine settings).
 3. run `install.sh`
 
 # More Information
@@ -87,14 +85,9 @@ And a little emacs lisp that goes with the tangle process:
 #+begin_src bash :shebang "#!/usr/bin/env bash" :tangle ./bin/bootstrap-workstation.sh :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
-set -euo pipefail
+set -xeuo pipefail
 
-install-xcode () {
-    xcodebuild -license accept
-    xcode-select --install
-}
-
-sudo install-xcode
+sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -107,7 +100,7 @@ polite-git-checkout () {
 
     cd $DIR
     git init
-    git remote add origin repo
+    git remote add origin $REPO
     git fetch
 
     # wont work (it will have already been deleted from the index)
@@ -120,7 +113,9 @@ polite-git-checkout ~ https://github.com/joelmccracken/workstation.git
 
 cd ~
 
-mv ~/.emacs.d ~/.emacs.d-$(date +"%s")
+if test -e ~/.emacs.d; then
+  mv ~/.emacs.d ~/.emacs.d-$(date +"%s")
+fi
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 # install doom; `yes | ` answers yes for all prompts, however when doing this it
 # does not reliably exit, it just blocks forever even after the install finishes
