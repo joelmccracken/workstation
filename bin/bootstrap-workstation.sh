@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-sudo bash -c 'xcodebuild -license accept; xcode-select --install'
+sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
