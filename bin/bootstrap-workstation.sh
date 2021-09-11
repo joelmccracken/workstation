@@ -49,6 +49,7 @@ git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 # I *believe* timeout is provided by homebrew coreutils
 # TODO perhaps I should look into handling situations where doom install
 # exits with an error?
-timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+# timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+~/.emacs.d/bin/doom -y install
 
 echo FINISHED INSTALLING DOOM
