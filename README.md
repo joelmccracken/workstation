@@ -3,9 +3,9 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 # Instructions
 
 1. download the bootstrap shell script:
--
-1. clone this repo into `~/workstation` (does it have to be that location?)
-3. run `install.sh`
+`curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bin/bootstrap-workstation.sh > bootstrap-workstation.sh`
+2. run `bash bootstrap-workstation.sh`
+3. Profit!
 
 # More Information
 

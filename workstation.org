@@ -37,9 +37,9 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 # Instructions
 
 1. download the bootstrap shell script:
--
-1. clone this repo into `~/workstation` (does it have to be that location?)
-3. run `install.sh`
+`curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bin/bootstrap-workstation.sh > bootstrap-workstation.sh`
+2. run `bash bootstrap-workstation.sh`
+3. Profit!
 
 # More Information
 
@@ -306,14 +306,6 @@ bash test/test.sh
 #+end_src
 * Future
 ** Tasks
-*** TODO maybe use this as inspiration for own nix-darwin
-https://gist.github.com/joelmccracken/baf9bc709b66bbe8f24fce0b9c558675
-*** TODO steal ideas from zzamboni, and specifically this for my zettle experimentation
-#+begin_quote
-@Leojmac I wrote a custom counsel-org-link-action function so that now
-counsel-org-link generates and uses  human-readable CUSTOM_IDs based on the
-heading's title. The code is here:  https://github.com/zzamboni/dot-doom/blob/master/doom.org#capturing-and-creating-internal-org-links
-#+end_quote
 *** STRT setup/test/evaluate bitwarden
 create account *just* for CI server, authenticate against that
 checkers/assertions about state of bitwarden
