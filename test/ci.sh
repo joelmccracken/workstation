@@ -3,7 +3,7 @@
 
 set -xeuo pipefail
 
-env # are there environment variables where I can get the commit sha?
+# env # are there environment variables where I can get the commit sha?
 
 cd ~
 
