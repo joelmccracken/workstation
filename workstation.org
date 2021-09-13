@@ -317,10 +317,8 @@ document logging in/out/setup, usage
 
 could I write a little pbcopy/pbpaste routine that lets me quickly move the auth
 from one shell to another?
-
 *** TODO convert test script to haskell (try using a stack script)
 *** TODO add a non-mac system on github (using built matrix?) to test if it works
-*** TODO consider not installing master home-manager, instead installing specific revision
 *** TODO move over any additional dotfiles needed, and delete repo if no longer has anything worthwhile
 *** TODO set up rclone
 *** TODO backup everything from my personal macbook air and then rebuild machine
