@@ -19,5 +19,7 @@ brew "haskell-stack"
 # used to compile vterm-mode
 brew "cmake"
 
+brew "bitwarden-cli"
+
 # casks
 cask "hammerspoon"
