@@ -39,12 +39,9 @@
 
 (setq org-roam-dailies-capture-templates
     '(("d" "default" entry
-       #'org-roam-capture--get-point
        "* %?"
-       :file-name "daily/%<%Y-%m-%d>"
-       :head "#+title: %<%Y-%m-%d>\n\n")))
-
-(setq org-archive-location "~/Dropbox/EF/archive/%s_archive::")
+       :if-new
+       (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("")))))
 
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 (after! org
