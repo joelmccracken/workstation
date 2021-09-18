@@ -164,3 +164,4 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/usr/local/opt/node@8/bin:$PATH"
 
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+if [ -e /Users/joel/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/joel/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

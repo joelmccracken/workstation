@@ -1,5 +1,7 @@
 # authtenticates bitwarden for this shell session only
-bwAuth () { export BW_SESSION=`bw unlock --raw`; }
+bwAuth () {
+    export BW_SESSION=`bw unlock --passwordfile ~/secrets/bw_pass --raw`;
+}
 
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -40,3 +42,4 @@ alert_when_done() {
     fi
     do_command_done_alert
 }
+if [ -e /Users/joel/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/joel/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

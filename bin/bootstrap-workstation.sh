@@ -48,3 +48,8 @@ git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 ~/.emacs.d/bin/doom -y install
 
 echo FINISHED INSTALLING DOOM
+
+echo installing nix
+
+sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
+source $HOME/.nix-profile/etc/profile.d/nix.sh
