@@ -26,7 +26,8 @@ I kept that version with nix around in a branch, for my own future reference:
 https://github.com/joelmccracken/workstation/tree/upgrade-org-with-nix-doom-emacs
 
 I'd like to incorporate nix back into my workstation configuration, but I am not
-ready for that yet.
+ready for that yet. I do install nix because I use it for scripting purposes,
+but its not used to set up the majority of this system.
 * README
 Every code project needs a README. This really just contains super simple instructions along with a link to this file, which
 contains all the important information.
@@ -134,6 +135,10 @@ echo FINISHED INSTALLING DOOM
 
 echo installing nix
 
+# Note: this will fail on my 2015 macbook air. It doesn't have the chip it needs
+# for a smooth install. have to set up the nix directory/volume manually
+# command something like:
+# sudo diskutil apfs addVolume disk1 APFS 'Nix Store' -mountpoint /nix
 sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
 source $HOME/.nix-profile/etc/profile.d/nix.sh
 #+end_src
