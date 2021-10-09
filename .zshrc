@@ -1,8 +1,3 @@
-# authtenticates bitwarden for this shell session only
-bwAuth () {
-    export BW_SESSION=`bw unlock --passwordfile ~/secrets/bw_pass --raw`;
-}
-
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
@@ -10,6 +5,22 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.rbenv/shims:$PATH"
+
+export PATH=$HOME/.local/bin:$PATH
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig:${PKG_CONFIG_PATH}"
+
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/libpq/lib"
+export CPPFLAGS="-I/usr/local/opt/libpq/include"
+export PKG_CONFIG_PATH="/usr/local/opt/libpq/lib/pkgconfig"
+
+export PG9DIR=$HOME/postgres9-everything-not-firehose/data
+export PG11DIR=$HOME/postgres9-firehose/data
+export PG11PORT=5433
+export PGUSER=postgres
+
 eval "$(rbenv init -)"
 
 export EDITOR=emacsclient
@@ -42,4 +53,16 @@ alert_when_done() {
     fi
     do_command_done_alert
 }
-if [ -e /Users/joel/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/joel/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+bwAuth () {
+    # authtenticates bitwarden for this shell session only
+    export BW_SESSION=`bw unlock --passwordfile ~/secrets/bw_pass --raw`;
+}
+
+if [ -f ~/secrets/tvision_keys ]; then
+    source ~/secrets/tvision_keys
+fi
+
+if [ -e /Users/joel/.nix-profile/etc/profile.d/nix.sh ]; then
+    . /Users/joel/.nix-profile/etc/profile.d/nix.sh;
+fi # added by Nix installer
