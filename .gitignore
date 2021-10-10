@@ -210,3 +210,6 @@ sesco/
 
 # this contains the files for doom; should consider this an opaque blob
 .emacs.d
+
+# home dir tmp
+/tmp
