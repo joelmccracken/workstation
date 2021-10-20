@@ -112,8 +112,8 @@ secrets
 .rnd
 .bash_sessions
 .dialyxir_core_*.plt
-.rncache
 # i think rncache is "react native" cache. seems to have tar.gz files of utils or somethin
+.rncache
 
 # os x stuff
 .CFUserTextEncoding
@@ -213,3 +213,15 @@ sesco/
 
 # home dir tmp
 /tmp
+
+# settings for an individual machine.
+# if there are some i'd like to have version controlled, can always change this.
+# (although I dont know why I wouldn't just use ~/.zshrc.${MACHINE_NAME}.sh for that)
+etc/machine-settings.sh
+
+# work stuff
+tvision
+pip install -r requirements.txt
+
+# local haskell language server, do not want to addd
+bin/haskell-language-server-macOS-8.8.4

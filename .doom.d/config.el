@@ -6,6 +6,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
+
 (setq user-full-name "Joel McCracken"
       user-mail-address "mccraken.joel@gmail.com")
 
@@ -32,26 +33,13 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 
-(setq org-directory "~/Dropbox/EF/")
-(setq org-roam-directory "~/Dropbox/EF/")
-(setq org-roam-db-location "~/Dropbox/EF/org-roam.db")
-(setq org-roam-dailies-directory "daily/")
+(setq workstation-name (getenv "WORKSTATION_NAME"))
 
-(setq org-roam-dailies-capture-templates
-    '(("d" "default" entry
-       "* %?"
-       :if-new
-       (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n\n" ("")))))
+(setq workstation-config-path
+      (concat "~/.doom.d/config." workstation-name ".el"))
 
-(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-(after! org
-  (add-hook 'org-mode-hook 'auto-fill-mode))
-
-(setq custom-file "~/.doom.d/custom.el")
-(let
-  ((this-machine (expand-file-name "~/var/this-machine.el")))
-    (when (file-exists-p this-machine)
-      (load this-machine)))
+(when (file-exists-p workstation-config-path)
+  (load workstation-config-path))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -60,9 +48,6 @@
 (setq global-flycheck-mode nil)
 
 (load-theme 'tsdh-light)
-
-;; (use-package direnv
-;;   :config (direnv-mode))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -80,3 +65,8 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+(setq safe-local-variable-values
+      '((lsp-haskell-server-path . "~/bin/haskell-language-server-macOS-8.8.4")
+        (lsp-haskell-formatting-provider . "stylish-haskell")
+        (lsp-enable-file-watchers . t)
+        (lsp-file-watch-threshold . 2000)))

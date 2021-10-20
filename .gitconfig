@@ -1,8 +1,8 @@
 # This is Git's per-user configuration file.
 [core]
-# Please adapt and uncomment the following lines:
 	user = Joel
 	email = mccracken.joel@gmail.com
+	editor = "emacsclient -c "
 [user]
 	name = Joel McCracken
 	email = mccracken.joel@gmail.com

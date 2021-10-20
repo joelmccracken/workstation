@@ -18,7 +18,7 @@ brew "rbenv"
 brew "haskell-stack"
 # used to compile vterm-mode
 brew "cmake"
-
+brew "pyenv"
 brew "bitwarden-cli"
 
 # casks

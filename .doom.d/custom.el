@@ -18,7 +18,9 @@
  '(rustic-ansi-faces
    ["#1e1e1e" "#D16969" "#579C4C" "#D7BA7D" "#339CDB" "#C586C0" "#85DDFF" "#d4d4d4"])
  '(safe-local-variable-values
-   '((jnm/in-ef-dir . t)
+   '((lsp-haskell-formatting-provider . "stylish-haskell")
+     (lsp-haskell-server-path . "~/bin/haskell-language-server-macOS-8.8.4")
+     (jnm/in-ef-dir . t)
      (haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4)
      (projectile-project-run-cmd . "mkdir -p build; cd build; cmake ..; make run")

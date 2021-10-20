@@ -42,10 +42,22 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 2. run `bash bootstrap-workstation.sh`
 3. Profit!
 
+# Other stuff to do manually currently
+- Firefox developer edition
+- Vimium-ff extension
+- lastpass
+- run the bww.hs force-sync script
+- (TODO add a "check" mode to the force-sync script which displays diff)
+- install haskell language server in ~/bin (or somwewhere else?) for hls
 # More Information
 
 For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
 #+end_src
+* slack settings
+- accessibility then at bottom changbe up arrow to move focus to last message
+- advanced
+  - when in ```  enter should do a newline
+  - format messages with markup
 * Makefile
 The first command is used to tangle ~workstation.org~. Tangling refers to the
 process of  taking a literate program source and converting it to the target
