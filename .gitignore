@@ -225,3 +225,10 @@ pip install -r requirements.txt
 
 # local haskell language server, do not want to addd
 bin/haskell-language-server-macOS-8.8.4
+
+
+# ignore these for now
+.aws/
+.config/nixpkgs/
+.pyenv/
+.zsh_sessions/
