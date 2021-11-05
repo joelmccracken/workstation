@@ -151,6 +151,8 @@ echo installing nix
 # for a smooth install. have to set up the nix directory/volume manually
 # command something like:
 # sudo diskutil apfs addVolume disk1 APFS 'Nix Store' -mountpoint /nix
+# sudo diskutil apfs enableFileVault /nix -user disk
+
 sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
 source $HOME/.nix-profile/etc/profile.d/nix.sh
 #+end_src

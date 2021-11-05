@@ -1,0 +1,5 @@
+
+install spotify
+install slack
+install firefox-developer-edition
+DROPBOX

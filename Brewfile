@@ -2,6 +2,7 @@
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/core"
+tap "homebrew/cask-versions"
 tap "railwaycat/emacsmacport"
 
 brew "railwaycat/emacsmacport/emacs-mac", args: ["with-modules"]
@@ -20,6 +21,11 @@ brew "haskell-stack"
 brew "cmake"
 brew "pyenv"
 brew "bitwarden-cli"
+brew "wget"
 
 # casks
 cask "hammerspoon"
+cask "firefox-developer-edition"
+cask "dropbox"
+cask "slack"
+cask "spotify"

@@ -68,3 +68,4 @@ sourceIfExists () {
 sourceIfExists ~/.nix-profile/etc/profile.d/nix.sh
 sourceIfExists ~/etc/machine-settings.sh
 sourceIfExists ~/.zshrc.${WORKSTATION_NAME}.sh
+if [ -e /Users/joel/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/joel/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

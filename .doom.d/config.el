@@ -38,6 +38,21 @@
 (setq workstation-config-path
       (concat "~/.doom.d/config." workstation-name ".el"))
 
+(after! org
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-directory "~/Dropbox/EF")
+
+  (setq org-roam-directory "~/Dropbox/EF")
+
+  (setq org-agenda-files '("~/Dropbox/EF"
+                         "reference/"
+                         "daily/"
+                         "projects/"))
+
+  (setq org-mobile-files (org-agenda-files))
+
+  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
+
 (when (file-exists-p workstation-config-path)
   (load workstation-config-path))
 

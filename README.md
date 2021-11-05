@@ -11,3 +11,6 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 
 For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
 
+
+TODO make note to set ~/secrets/bwauth_whatever file so I remember to do it
+also make note to run bww!
