@@ -45,13 +45,20 @@
   (setq org-roam-directory "~/Dropbox/EF")
 
   (setq org-agenda-files '("~/Dropbox/EF"
-                         "reference/"
-                         "daily/"
-                         "projects/"))
+                           "~/Dropbox/EF/reference"
+                           "~/Dropbox/EF/projects"
+                           ))
 
-  (setq org-mobile-files (org-agenda-files))
+  (setq org-agenda-custom-commands
+      '(("p" "Projects" tags "+CATEGORY=\"PROJ\"+LEVEL=1")
+        ("a" "Actions" tags "+TODO=\"TODO\"|+TODO=\"LOOP\"")
+        ))
 
-  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
+  (setq org-mobile-files (org-agenda-files) )
+
+  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org")
+
+  (add-hook 'org-mode-hook 'turn-on-auto-fill))
 
 (when (file-exists-p workstation-config-path)
   (load workstation-config-path))
