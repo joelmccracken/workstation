@@ -41,7 +41,7 @@
 (after! org
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-directory "~/Dropbox/EF")
-
+  (setq org-id-locations-file "~/Dropbox/EF/.orgids.el")
   (setq org-roam-directory "~/Dropbox/EF")
 
   (setq org-agenda-files '("~/Dropbox/EF"
