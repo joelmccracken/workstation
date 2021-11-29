@@ -49,14 +49,14 @@
                            "~/Dropbox/EF/projects"
                            ))
 
-  (setq org-default-notes-file (concat org-directory "/inbox.org"))
-
   (setq org-agenda-custom-commands
       '(("p" "Projects" tags "+CATEGORY=\"PROJ\"+LEVEL=1")
         ("a" "Actions" tags "+TODO=\"TODO\"|+TODO=\"LOOP\"")
         ))
 
-  (setq org-mobile-files (org-agenda-files) )
+  (setq +org-capture-notes-file "inbox.org")
+
+  (setq org-mobile-files (org-agenda-files))
 
   (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org")
 

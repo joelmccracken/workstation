@@ -4,9 +4,8 @@ This is my workstation configuration. I have had a few different setups over the
 years, so  this one is still a bit of a
 work in progress. Honestly, accomplishing this is a lot harder than I expected.
 
-I have no idea if anyone will ever read this, but from personal experience,
-these workstation projects are easy to put aside for a long time, and then you
-come back and can't remember how things were built.
+In my experience, these workstation projects are easy to put aside for a long
+time, and when you come back you can't remember how things were built.
 
 So, this project is mostly written with literate
 org mode. This gives me an easy way to document my thoughts as I work, and also
@@ -53,11 +52,22 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 
 For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
 #+end_src
+* manuall installation and setup
+install/sign in to
+- firefox-developer-edition
+- lastpass firefox extension
+- dropbox
+- icloud
+- slack
+- spotify
 * slack settings
 - accessibility then at bottom changbe up arrow to move focus to last message
 - advanced
   - when in ```  enter should do a newline
   - format messages with markup
+- mac settings
+  - enable screen sharing, _not_ remote management
+  - enable remote login
 * Makefile
 The first command is used to tangle ~workstation.org~. Tangling refers to the
 process of  taking a literate program source and converting it to the target
@@ -156,6 +166,7 @@ echo installing nix
 sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
 source $HOME/.nix-profile/etc/profile.d/nix.sh
 #+end_src
+
 * Utilities
 ** Passwordless sudo
 Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
@@ -330,6 +341,7 @@ bash test/test.sh
 #+end_src
 * Future
 ** Tasks
+*** TODO document bitwarden usage etc
 *** STRT setup/test/evaluate bitwarden
 create account *just* for CI server, authenticate against that
 checkers/assertions about state of bitwarden
@@ -346,3 +358,45 @@ from one shell to another?
 *** TODO set up rclone
 *** TODO backup everything from my personal macbook air and then rebuild machine
 *** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
+* open questions
+organization feels weird with current system.
+yes, storing a dotfiles in ~ feels good in some ways, but
+not in all
+example, i need to provisioning stuff for cloud workstation and
+bascially it feels really weird
+
+what if I had a ~/worksation directory that has the main "stuff" for this
+project, and had another "dotfiles" github repo with a README and
+points to this project.
+
+downsidees: I might forget to commit ~/workstation  stuff and commit
+stuff in the dotifles and then have issues (stuff getting out of sync)
+
+what this solution might look like
+
+- ~/ has all  of my dotfiles
+- workstation/ has
+  - provisioning scripts
+  - tests
+  - CI
+  - setup stuff (bootstrap script, etc)
+  - workstation.org file
+  - README file
+
+boostrap process:
+- curl script to computer
+- git clone of workstation repo to ~/workstation
+- git init/reset mixed etc dance for home dir dotfiles
+- instructions to set up the bitwarden sync thing
+- final bootstrapping - set up correct remote origin
+
+alternative:
+- keep single repo model
+- repo has /workstation directory in it, which
+  has all the "stuff" it shoudl
+- ~/workstatin/bin  gets added to the path
+- stuff in root is like CI and actual dotfiles
+  (having a ~/.github/workflows is kinda sad isn't it?)
+
+should probably start TDDing the workstation repo stuff so i actually have
+tests, huh.

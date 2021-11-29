@@ -1,0 +1,178 @@
+#+TITLE: Plan
+* background
+I am building upon the work I have done previously.
+
+Several things want to attempt:
+
+- mostly, I need to really *finish* the project. I still don't have a fully
+  functioning system after this runs, its only partially set up.
+
+- I need to complete the "authentication" process; that is, I need to set up the
+  bootstrap script to
+
+- need to support ubuntu! and hopefully nixos soon after!
+
+- having lived with the system a little bit, there are some changes i'd like to make
+* Future
+** Tasks
+*** TODO document bitwarden usage etc
+TODO
+*** STRT setup/test/evaluate bitwarden
+create account *just* for CI server, authenticate against that
+checkers/assertions about state of bitwarden
+
+already added that shell function to automate unlocking bitwarden, but need to
+consider additional steps
+
+document logging in/out/setup, usage
+
+could I write a little pbcopy/pbpaste routine that lets me quickly move the auth
+from one shell to another?
+*** TODO convert test script to haskell (try using a stack script)
+*** TODO add a non-mac system on github (using built matrix?) to test if it works
+*** TODO set up rclone
+*** TODO backup everything from my personal macbook air and then rebuild machine
+*** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
+* task planning
+
+** TODO fix CI so that it works again
+** make a new dotfiles repo for the actual dotfiles which must reside in ~
+** have this repository reside in ~/workstation. Change the bootstrap etc script to support that.
+** make a new ~/workstation/wshs/ directory (see detilas below for sketch)
+*** this should become the home for bww.hs
+** make a new ~/workstation/wssh/ directory (see detilas below for sketch)
+*** this should become home for... not sure what for now. Some of the stuff in ~/bin ?
+** make a ~/workstation/wssh/includes.d directory for including
+** add both of these to the relevant paths etc files
+** create a new bitwarden account which has access to limited number of
+** set up machine-specific settings profiles: ~/workstation/profiles
+*** glamdring/
+*** anduril/
+*** aeglos/
+*** ci/
+** bootstrap updates:
+*** installation
+**** curl/download the bootstrap script; either mac or linux
+**** pre-authentication
+***** mac
+****** setup/install/check xcode (needed for brew)
+****** install homebrew (needed for bundle/git (maybe?))
+****** brew install git
+****** git init.. clone... etc polite checkout
+****** brew bundle (needed for git (actually does xcode-select get this for me?))
+****** setup/install/check doom
+****** setup/install/check nix
+****** setup/install/check haskell stack
+***** ubuntu
+****** apt-get update/check
+****** apt-get install/check all the things
+***** common
+****** build bww however it needs to be built
+***** tell user to enter bitwarden password in ~/secrets/bitwarden_whatver
+**** post-authentication
+***** sync secrets from bitwarden
+***** update github origin on ~/workstation to use ssh
+** sync/update
+*** fetch ~/workstation; if can cleanly rebase, do so
+*** fetch ~ ; if can rebase, do
+** check
+*** run the checks established elsewhere, not sure what i want to check on. basically need to check that every property i set up is still valid
+* update planning
+setup phases - pre-auth  and post-auth
+can i reasonably have secrets via github actions but also have the workstaion
+project be open source?
+
+bootstrap
+download source code
+(org babel stitch bootstrap script together perhaps?)
+"do nothing" script to start off
+
+if mac: install homebrew
+setsup mac/sync mac
+setup linux/sync linux
+setup-all
+mac or linux setup
+
+does ansible have any spport for this kind of thing? would it make this easier?
+
+mac: install homebrew
+     assert homebrew state - exists, brew doctor, etc? run update?
+     install nix
+
+authprocess = tell user to enter password in secrets/bitwarden_pass
+
+TODO need to chmod secrets!
+
+installation process
+install pkg mgrs
+install nix
+install stack
+
+build personal scripts (bww.hs etc)
+run bww sync process
+
+maek alternative acocunts-
+  github, bitwarden, anything else?
+* choices
+** ansible?
+i dont like ansible because its docs are super hard to grok and generally
+i dont like the way it handles running playbooks; you have to have a "control
+node" etc. That doesn't work well for what I want to do w/ this project.
+** bash-centric?
+- neg: stuck with bad stuff about bash
+- pos: more opportunity to examine chesterton's fence
+- neg: worry about flakiness
+- neg worry about general unmaintainability
+- neg: things can get hard for very stypdid reasons, and i dont qutie have
+  enopugh knowlege to avoid this or predict (i.e. options parsing is horrible etc)
+** haskell-centric?
+- worry about getting stuck on stupid minor problems
+  - e.g. some thing that's easy with bash is hard in haskell
+    - why can't i just shell out in that case?
+- feel like its more hard to "get started"; need to set up stack, etc
+** hybrid/migration possibilities?
+what could the
+*** a bash wrapper for haskell
+- pro: can use wrapper without having to install stack
+- con: argument parsing is bad in bash
+*** a haskell wrapper for bash
+** scenario: if i started with bash-centric...
+- but it becomes a problem
+- create a haskell project
+- bash can execute haskell binaries
+- slowly migrate components from bash to haskell
+- ~/workstation/
+  - haskell/
+    - stack.yml
+      - wshs
+    - app/
+      - workstation.hs
+    - src/
+      - Workstation/
+        - Main.hs
+        - Assertions.hs
+        - Actions.hs
+        - Workflows.hs
+    - test/
+- shell/
+  - bin/
+    - wssh-bootstrap
+      do whatever initial setup stuff is necessary
+    - wssh-update
+      assuming a fully set up state, update anything that is out of date
+    - wssh-check
+      do checks to ensure state of system is good, no changes should be made,
+      only warnings if problems
+  - checks/
+  - test/
+    - test.sh
+* idea: establish a "foo.d" pattern for own dotfiles stuff
+the rationale for why to do this is because it gives me
+** ~/.shellrc/README
+** ~/.shellrc/paths.sh
+** ~/.shellrc/functions.sh
+** ~/.shellrc/index.sh
+*** source paths
+*** source functions
+*** source secrets, if present (or only do this sometimes?)
+** ~/.bashrc and ~/.zshrc can both source index.sh

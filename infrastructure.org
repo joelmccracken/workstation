@@ -1,0 +1,54 @@
+#+TITLE: Infrastructure
+
+macbook air is 192.168.1.5
+tvision pro is 192.168.1.10
+mini is        192.168.1.2
+
+important! mcccracken.club and mcccracken.xyz both have three c's in them! easy
+to get wrong!
+mcccracken.club registered at namecheap, is pointing to digital ocean's name servers
+
+#+begin_src text
+adduser joel
+usermod -aG sudo joel
+cp -r .ssh /home/joel
+cd /home/joel/
+ls -lah
+chown -R joel:joel .ssh
+
+installing emacs
+sudo apt-get update
+sudo snap install emacs --classic
+sudo apt-get install ripgrep fd-find
+
+cd ~
+git init
+git remote add origin https://github.com/joelmccracken/workstation.git
+git fetch
+ls
+git status
+cat .bashrc
+ls -lah
+ls -lah .emacs.d/
+if test -e ~/.emacs.d; then   mv ~/.emacs.d ~/.emacs.d-$(date +"%s"); fi
+git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+apt-get install ripgrep fd-find
+sudo apt-get install ripgrep fd-find
+~/.emacs.d/bin/doom -y install
+sudo apt install zsh
+
+disabled the RBENV part of zshrc
+
+did a reboot
+    1  ls -lah
+    2  ls
+    3  emacs .
+    4  apt search make
+    5  apt search cmake
+    6  sudo apt install cmake
+    7  emacs .
+    8  sudo apt install libtool
+    9  sudo apt install libvterm-dev
+   10  emacs .
+
+#+end_src
