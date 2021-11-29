@@ -51,7 +51,7 @@ echo FINISHED INSTALLING DOOM
 
 echo installing nix
 
-sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
+sh <(curl -L https://nixos.org/nix/install)
 
 cd $HOME
 git diff
