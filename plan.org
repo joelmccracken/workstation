@@ -15,7 +15,7 @@ Several things want to attempt:
 - having lived with the system a little bit, there are some changes i'd like to make
 * Future
 ** Tasks
-*** TODO document bitwarden usage etc
+
 *** STRT setup/test/evaluate bitwarden
 create account *just* for CI server, authenticate against that
 checkers/assertions about state of bitwarden
@@ -40,9 +40,9 @@ from one shell to another?
 ** TODO make a new dotfiles repo for the actual dotfiles which must reside in ~
 ** TODO have this repository reside in ~/workstation. Change the bootstrap etc script to support that.
 ** TODO make a new ~/workstation/wshs/ directory (see detilas below for sketch)
-*** this should become the home for bww.hs
+*** TODO move bww.hs to this directory
 ** TODO make a new ~/workstation/wssh/ directory (see detilas below for sketch)
-*** this should become home for... not sure what for now. Some of the stuff in ~/bin ?
+*** TODO move various ~/bin scripts to here
 ** TODO make a ~/workstation/wssh/includes.d directory for including
 ** TODO add both of these to the relevant paths etc files
 ** TODO create a new bitwarden account which has access to limited number of
@@ -73,11 +73,15 @@ from one shell to another?
 **** post-authentication
 ***** sync secrets from bitwarden
 ***** update github origin on ~/workstation to use ssh
-** sync/update
+** TODO build sync/update
 *** fetch ~/workstation; if can cleanly rebase, do so
 *** fetch ~ ; if can rebase, do
-** check
+** TODO build check scripts
 *** run the checks established elsewhere, not sure what i want to check on. basically need to check that every property i set up is still valid
+- nix works
+- various executables are installed
+- secrets are in place; can access resources? can fetch from github? etc
+** TODO document bitwarden usage etc
 * update planning
 setup phases - pre-auth  and post-auth
 can i reasonably have secrets via github actions but also have the workstaion
