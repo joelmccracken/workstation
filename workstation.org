@@ -339,25 +339,6 @@ echo INSTALL PROCESS COMPLETE, TESTING
 
 bash test/test.sh
 #+end_src
-* Future
-** Tasks
-*** TODO document bitwarden usage etc
-*** STRT setup/test/evaluate bitwarden
-create account *just* for CI server, authenticate against that
-checkers/assertions about state of bitwarden
-
-already added that shell function to automate unlocking bitwarden, but need to
-consider additional steps
-
-document logging in/out/setup, usage
-
-could I write a little pbcopy/pbpaste routine that lets me quickly move the auth
-from one shell to another?
-*** TODO convert test script to haskell (try using a stack script)
-*** TODO add a non-mac system on github (using built matrix?) to test if it works
-*** TODO set up rclone
-*** TODO backup everything from my personal macbook air and then rebuild machine
-*** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
 * open questions
 organization feels weird with current system.
 yes, storing a dotfiles in ~ feels good in some ways, but

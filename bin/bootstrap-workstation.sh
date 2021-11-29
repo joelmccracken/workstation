@@ -52,4 +52,8 @@ echo FINISHED INSTALLING DOOM
 echo installing nix
 
 sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
-source $HOME/.nix-profile/etc/profile.d/nix.sh
+
+NIX_PROFILE_FILE=$HOME/.nix-profile/etc/profile.d/nix.sh
+if [ -e "$NIX_PROFILE_FILE" ]; then
+   source "$NIX_PROFILE_FILE"
+fi

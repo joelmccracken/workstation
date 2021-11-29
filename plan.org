@@ -34,23 +34,22 @@ from one shell to another?
 *** TODO backup everything from my personal macbook air and then rebuild machine
 *** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
 * task planning
-
 ** TODO fix CI so that it works again
-** make a new dotfiles repo for the actual dotfiles which must reside in ~
-** have this repository reside in ~/workstation. Change the bootstrap etc script to support that.
-** make a new ~/workstation/wshs/ directory (see detilas below for sketch)
+** TODO make a new dotfiles repo for the actual dotfiles which must reside in ~
+** TODO have this repository reside in ~/workstation. Change the bootstrap etc script to support that.
+** TODO make a new ~/workstation/wshs/ directory (see detilas below for sketch)
 *** this should become the home for bww.hs
-** make a new ~/workstation/wssh/ directory (see detilas below for sketch)
+** TODO make a new ~/workstation/wssh/ directory (see detilas below for sketch)
 *** this should become home for... not sure what for now. Some of the stuff in ~/bin ?
-** make a ~/workstation/wssh/includes.d directory for including
-** add both of these to the relevant paths etc files
-** create a new bitwarden account which has access to limited number of
-** set up machine-specific settings profiles: ~/workstation/profiles
+** TODO make a ~/workstation/wssh/includes.d directory for including
+** TODO add both of these to the relevant paths etc files
+** TODO create a new bitwarden account which has access to limited number of
+** TODO set up machine-specific settings profiles: ~/workstation/profiles
 *** glamdring/
 *** anduril/
 *** aeglos/
 *** ci/
-** bootstrap updates:
+** TODO bootstrap updates:
 *** installation
 **** curl/download the bootstrap script; either mac or linux
 **** pre-authentication
