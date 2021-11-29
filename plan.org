@@ -16,7 +16,6 @@ Several things want to attempt:
 * Future
 ** Tasks
 *** TODO document bitwarden usage etc
-TODO
 *** STRT setup/test/evaluate bitwarden
 create account *just* for CI server, authenticate against that
 checkers/assertions about state of bitwarden
@@ -34,7 +33,10 @@ from one shell to another?
 *** TODO backup everything from my personal macbook air and then rebuild machine
 *** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
 * task planning
-** TODO fix CI so that it works again
+** STRT fix CI so that it works again
+** TODO split apart workstation.org into separate files
+*** need to have makefile build multiple files, is there a good way to do it?
+**** maybe this should become a shake thing?
 ** TODO make a new dotfiles repo for the actual dotfiles which must reside in ~
 ** TODO have this repository reside in ~/workstation. Change the bootstrap etc script to support that.
 ** TODO make a new ~/workstation/wshs/ directory (see detilas below for sketch)

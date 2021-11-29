@@ -53,6 +53,10 @@ echo installing nix
 
 sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
 
+cd $HOME
+git diff
+find $HOME/.nix-profile
+
 NIX_PROFILE_FILE=$HOME/.nix-profile/etc/profile.d/nix.sh
 if [ -e "$NIX_PROFILE_FILE" ]; then
    source "$NIX_PROFILE_FILE"
