@@ -20,10 +20,12 @@ else
     exit 1
 fi
 
-DOOM_EXPECTED="3.0.0-alpha"
+# TODO should i be checking out a specific doom sha?
+# DOOM_EXPECTED="3.0.0-alpha"
+DOOM_EXPECTED="21.12.0-alpha"
 DOOM_ACTUAL=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
 
-if  [[ "$DOOM_EXPECTED" ==  "$DOOM_ACTUAL" ]]; then
+if [[ "$DOOM_EXPECTED" == "$DOOM_ACTUAL" ]]; then
     echo doom is correct version
 else
     echo doom is not reported to be correct version, found "$DOOM_ACTUAL", expected "$DOOM_EXPECTED"
