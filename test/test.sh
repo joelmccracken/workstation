@@ -20,10 +20,12 @@ else
     exit 1
 fi
 
-DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
-if  [[ "$DOOM_VERSION" == "3.0.0-alpha" ]]; then
+DOOM_EXPECTED="3.0.0-alpha"
+DOOM_ACTUAL=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
+
+if  [[ "$DOOM_EXPECTED" ==  "$DOOM_ACTUAL" ]]; then
     echo doom is correct version
 else
-    echo doom is not reported to be correct version, found "$DOOM_VERSION"
+    echo doom is not reported to be correct version, found "$DOOM_ACTUAL", expected "$DOOM_EXPECTED"
     exit 1
 fi
