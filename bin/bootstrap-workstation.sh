@@ -61,9 +61,9 @@ sh <(curl -L https://nixos.org/nix/install)
 # if [ -e "$NIX_PROFILE_FILE" ]; then
 #    source "$NIX_PROFILE_FILE"
 # fi
-
+#
 cat /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+  (source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh') || exit 0
 fi
