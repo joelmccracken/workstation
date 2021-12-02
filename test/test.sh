@@ -27,12 +27,8 @@ else
   exit 1
 fi
 
-EMACS_VERSION=$(emacs -Q --batch --eval '(print emacs-version)')
-echo $EMACS_VERSION | assert_input "emacs version" '"27.2"'
+emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | assert_input "emacs version" '27.2'
+emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri))' | assert_input "doom-version" '21.12.0-alpha'
+emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-core-version) (terpri))' | assert_input "doom-core-version" '3.0.0-alpha'
 
-# TODO should i be checking out a specific doom sha so as to not have this problem so often?
-foo=$(emacs --batch -l ~/.emacs.d/init.el --eval '(print doom-version)')
-echo $foo |  assert_input "doom-version" '"21.12.0-alpha"'
-
-foo2=$(emacs --batch -l ~/.emacs.d/init.el --eval '(print doom-core-version)')
-echo $foo2 | assert_input "doom-core-version" '"3.0.0-alpha"'
+echo "TESTS COMPLETE"
