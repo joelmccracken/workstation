@@ -53,17 +53,8 @@ echo installing nix
 
 sh <(curl -L https://nixos.org/nix/install)
 
-# cd $HOME
-# git diff
-# find $HOME/.nix-profile
+NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 
-# NIX_PROFILE_FILE=$HOME/.nix-profile/etc/profile.d/nix.sh
-# if [ -e "$NIX_PROFILE_FILE" ]; then
-#    source "$NIX_PROFILE_FILE"
-# fi
-#
-cat /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  (source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh') || exit 0
+if [ -e "$NIX_DAEMON_PATH" ]; then
+  (source "$NIX_DAEMON_PATH") || exit 0
 fi
