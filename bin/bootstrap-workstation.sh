@@ -9,14 +9,15 @@ else
     WORKSTATION_BOOTSTRAP_COMMIT="$1"
 fi
 
+WS_DIR="$HOME/workstation"
+
 sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BOOTSTRAP_COMMIT/Brewfile > ~/Brewfile
 
-# bundle has to happen here because git is required for next step
-brew bundle
+# install git, necessary for next step
+brew install git
 
 polite-git-checkout () {
     DIR=$1
@@ -33,14 +34,25 @@ polite-git-checkout () {
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 }
 
-polite-git-checkout ~ https://github.com/joelmccracken/workstation.git
+polite-git-checkout ~ https://github.com/joelmccracken/dotfiles.git
+
+function mv_dir_dated_backup() {
+    local THEDIR="$1"
+    if test -e "$THEDIR"; then
+        mv "$THEDIR" "${THEDIR}-$(date +"%s")"
+    fi
+}
 
 cd ~
 
-if test -e ~/.emacs.d; then
-  mv ~/.emacs.d ~/.emacs.d-$(date +"%s")
-fi
+polite-git-checkout ~ https://github.com/joelmccracken/dotfiles.git
 
+brew bundle
+
+mv_dir_dated_backup ~/workstation
+git clone https://github.com/joelmccracken/workstation.git
+
+mv_dir_dated_backup ~/.emacs.d
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 
 # If I ever have issues w/ this, I can use this form:
