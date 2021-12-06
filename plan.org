@@ -15,6 +15,7 @@ Several things want to attempt:
 - having lived with the system a little bit, there are some changes i'd like to make
 * Future
 ** Tasks
+*** TODO add a "check" mode to the force-sync script which displays diff (so i don't lose stuff)
 *** TODO convert test script to haskell (try using a stack script)
 *** TODO add a non-mac system on github (using built matrix?) to test if it works
 *** TODO set up rclone

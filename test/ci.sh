@@ -18,7 +18,6 @@ curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BO
 echo BEGINNING INITIAL INSTALL
 
 bash bootstrap-workstation.sh $WORKSTATION_BOOTSTRAP_COMMIT
-# -bash bin/bootstrap-workstation.sh
 echo INSTALL PROCESS COMPLETE, TESTING
 
-bash test/test.sh
+bash ~/workstation/test/test.sh

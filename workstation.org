@@ -40,14 +40,7 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 `curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bin/bootstrap-workstation.sh > bootstrap-workstation.sh`
 2. run `bash bootstrap-workstation.sh`
 3. Profit!
-
-# Other stuff to do manually currently
-- Firefox developer edition
-- Vimium-ff extension
-- lastpass
-- run the bww.hs force-sync script
-- (TODO add a "check" mode to the force-sync script which displays diff)
-- install haskell language server in ~/bin (or somwewhere else?) for hls
+4. See workstation.org for manual setup documentation
 # More Information
 
 For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
@@ -56,10 +49,14 @@ For more information, you should really read the <a href="workstation.org">works
 install/sign in to
 - firefox-developer-edition
 - lastpass firefox extension
+- vimium-ff etension
+- set ~/secrets/bw_pass
+- bww force sync script
 - dropbox
 - icloud
 - slack
 - spotify
+- install haskell language server in ~/bin (or somwewhere else?) for hls
 * slack settings
 - accessibility then at bottom changbe up arrow to move focus to last message
 - advanced
@@ -115,14 +112,15 @@ else
     WORKSTATION_BOOTSTRAP_COMMIT="$1"
 fi
 
+WS_DIR="$HOME/workstation"
+
 sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BOOTSTRAP_COMMIT/Brewfile > ~/Brewfile
 
-# bundle has to happen here because git is required for next step
-brew bundle
+# install git, necessary for next step
+brew install git
 
 polite-git-checkout () {
     DIR=$1
@@ -139,14 +137,23 @@ polite-git-checkout () {
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 }
 
-polite-git-checkout ~ https://github.com/joelmccracken/workstation.git
+function mv_dir_dated_backup() {
+    local THEDIR="$1"
+    if test -e "$THEDIR"; then
+        mv "$THEDIR" "${THEDIR}-$(date +"%s")"
+    fi
+}
 
 cd ~
 
-if test -e ~/.emacs.d; then
-  mv ~/.emacs.d ~/.emacs.d-$(date +"%s")
-fi
+polite-git-checkout ~ https://github.com/joelmccracken/dotfiles.git
 
+brew bundle
+
+mv_dir_dated_backup ~/workstation
+git clone https://github.com/joelmccracken/workstation.git
+
+mv_dir_dated_backup ~/.emacs.d
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 
 # If I ever have issues w/ this, I can use this form:
@@ -157,14 +164,13 @@ echo FINISHED INSTALLING DOOM
 
 echo installing nix
 
-# Note: this will fail on my 2015 macbook air. It doesn't have the chip it needs
-# for a smooth install. have to set up the nix directory/volume manually
-# command something like:
-# sudo diskutil apfs addVolume disk1 APFS 'Nix Store' -mountpoint /nix
-# sudo diskutil apfs enableFileVault /nix -user disk
+sh <(curl -L https://nixos.org/nix/install)
 
-sh <(curl -L https://nixos.org/nix/install) --darwin-use-unencrypted-nix-store-volume
-source $HOME/.nix-profile/etc/profile.d/nix.sh
+NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+
+if [ -e "$NIX_DAEMON_PATH" ]; then
+  (source "$NIX_DAEMON_PATH") || exit 0
+fi
 #+end_src
 
 * Utilities
@@ -261,6 +267,20 @@ Or maybe that bats testing library. We'll see.
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
 
+function assert_input() {
+  local label=$1
+  local expected=$2
+  local actual
+  read actual
+
+  if [[ "$expected" == "$actual" ]]; then
+    echo "$label is correct"
+  else
+    echo "$label is not correct, found '$actual', expected '$expected'"
+    exit 1
+  fi
+}
+
 echo "RUNNING TESTS"
 
 # emacs
@@ -271,21 +291,11 @@ else
   exit 1
 fi
 
-EMACS_VERSION=$(emacs -Q --batch --eval '(princ emacs-version)')
-if  [[ "$EMACS_VERSION" == "27.2" ]]; then
-    echo emacs is correct version
-else
-    echo emacs is not correct version, found $EMACS_VERSION
-    exit 1
-fi
+emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | assert_input "emacs version" '27.2'
+emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri))' | assert_input "doom-version" '21.12.0-alpha'
+emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-core-version) (terpri))' | assert_input "doom-core-version" '3.0.0-alpha'
 
-DOOM_VERSION=$(emacs --batch -l ~/.emacs.d/init.el --eval '(princ doom-version)')
-if  [[ "$DOOM_VERSION" == "3.0.0-alpha" ]]; then
-    echo doom is correct version
-else
-    echo doom is not reported to be correct version, found "$DOOM_VERSION"
-    exit 1
-fi
+echo "TESTS COMPLETE"
 #+end_src
 ** Github Actions CI
 First, the CI config. Importantly, github CI support macos environments. Otherwise I
@@ -334,10 +344,9 @@ curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BO
 echo BEGINNING INITIAL INSTALL
 
 bash bootstrap-workstation.sh $WORKSTATION_BOOTSTRAP_COMMIT
-# -bash bin/bootstrap-workstation.sh
 echo INSTALL PROCESS COMPLETE, TESTING
 
-bash test/test.sh
+bash ~/workstation/test/test.sh
 #+end_src
 * open questions
 organization feels weird with current system.

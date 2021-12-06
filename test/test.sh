@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-# set -euox pipefail
 set -euox pipefail
 
 function assert_input() {
