@@ -34,8 +34,6 @@ polite-git-checkout () {
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 }
 
-polite-git-checkout ~ https://github.com/joelmccracken/dotfiles.git
-
 function mv_dir_dated_backup() {
     local THEDIR="$1"
     if test -e "$THEDIR"; then
