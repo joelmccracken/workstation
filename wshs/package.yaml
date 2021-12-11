@@ -21,18 +21,26 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- turtle
+- text
+- string-interpolate
+- directory
+- bytestring
+- aeson
+- shelly
 
 library:
   source-dirs: src
 
 executables:
-  wshs-exe:
-    main:                Main.hs
+  bww:
+    main:                Bww.hs
     source-dirs:         app
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -Wall
     dependencies:
     - wshs
 

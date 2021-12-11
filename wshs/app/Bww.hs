@@ -1,7 +1,3 @@
-#! /usr/bin/env nix-shell
-#! nix-shell -p "haskellPackages.ghcWithPackages (p: [p.turtle p.text p.string-interpolate p.directory p.bytestring p.aeson p.shelly])"
-#! nix-shell -i "runhaskell --ghc-arg='-Wall'"
-
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE QuasiQuotes         #-}
 {-# LANGUAGE RecordWildCards     #-}
@@ -35,8 +31,6 @@ get this key via `bw unlock`
 
 need to run `bw sync` to pick up on changes that have happend on the server.
 -}
-
-
 parser :: Parser Mode
 parser =
   AddFile <$> subcommand "add" "add file to bitwarden" (argPath "thepath" "path to the file you want to add")
