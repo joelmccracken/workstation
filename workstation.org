@@ -171,8 +171,9 @@ NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 if [ -e "$NIX_DAEMON_PATH" ]; then
   (source "$NIX_DAEMON_PATH") || exit 0
 fi
-#+end_src
 
+curl -sSL https://get.haskellstack.org/ | sh
+#+end_src
 * Utilities
 ** Passwordless sudo
 Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
