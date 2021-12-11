@@ -68,3 +68,5 @@ NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 if [ -e "$NIX_DAEMON_PATH" ]; then
   (source "$NIX_DAEMON_PATH") || exit 0
 fi
+
+curl -sSL https://get.haskellstack.org/ | sh

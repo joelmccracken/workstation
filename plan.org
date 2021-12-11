@@ -26,10 +26,10 @@ Several things want to attempt:
 ** TODO split apart workstation.org into separate files
 *** need to have makefile build multiple files, is there a good way to do it?
 **** maybe this should become a shake thing?
-** TODO make a new dotfiles repo for the actual dotfiles which must reside in ~
-** TODO have this repository reside in ~/workstation. Change the bootstrap etc script to support that.
-** TODO make a new ~/workstation/wshs/ directory (see detilas below for sketch)
-*** TODO move bww.hs to this directory
+** DONE make a new dotfiles repo for the actual dotfiles which must reside in ~
+** DONE have this repository reside in ~/workstation. Change the bootstrap etc script to support that.
+** DONE make a new ~/workstation/wshs/ directory (see detilas below for sketch)
+*** DONE move bww.hs to this directory
 ** TODO make a new ~/workstation/wssh/ directory (see detilas below for sketch)
 *** TODO move various ~/bin scripts to here
 ** TODO make a ~/workstation/wssh/includes.d directory for including
