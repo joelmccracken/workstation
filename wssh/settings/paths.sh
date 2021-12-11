@@ -1,9 +1,13 @@
-#!/usr/bin/env bash
+# TODO move this to an org mode file
 
-export LDFLAGS="-L/usr/local/opt/libpq/lib"
-export CPPFLAGS="-I/usr/local/opt/libpq/include"
-export PKG_CONFIG_PATH="/usr/local/opt/libpq/lib/pkgconfig"
-export PG9DIR=$HOME/postgres9-everything-not-firehose/data
-export PG11DIR=$HOME/postgres9-firehose/data
-export PG11PORT=5433
-export PGUSER=postgres
+export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="$HOME/.rbenv/shims:$PATH"
+export PATH=$HOME/.local/bin:$PATH
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/libpq/bin:$PATH"
