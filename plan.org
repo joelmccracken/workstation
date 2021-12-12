@@ -33,7 +33,7 @@ Several things want to attempt:
 ** TODO make a new ~/workstation/wssh/ directory (see detilas below for sketch)
 *** TODO move various ~/bin scripts to here
 *** DONE make a ~/workstation/wssh/includes.d directory for including
-** TODO add both of these to the relevant paths etc files
+*** DONE add both of these to the relevant paths etc files
 ** TODO create a new bitwarden account which has access to limited number of secrets
 ** TODO set up machine-specific settings profiles: ~/workstation/profiles
 *** glamdring/
