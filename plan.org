@@ -30,8 +30,8 @@ Several things want to attempt:
 ** DONE have this repository reside in ~/workstation. Change the bootstrap etc script to support that.
 ** DONE make a new ~/workstation/wshs/ directory (see detilas below for sketch)
 *** DONE move bww.hs to this directory
-** TODO make a new ~/workstation/wssh/ directory (see detilas below for sketch)
-*** TODO move various ~/bin scripts to here
+** DONE make a new ~/workstation/wssh/ directory (see detilas below for sketch)
+*** DONE move various ~/bin scripts to here
 *** DONE make a ~/workstation/wssh/includes.d directory for including
 *** DONE add both of these to the relevant paths etc files
 ** TODO create a new bitwarden account which has access to limited number of secrets
