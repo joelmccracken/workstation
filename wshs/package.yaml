@@ -44,6 +44,18 @@ executables:
     dependencies:
     - wshs
 
+executables:
+  ws:
+    main:                Ws.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -Wall
+    dependencies:
+    - wshs
+
 tests:
   wshs-test:
     main:                Spec.hs

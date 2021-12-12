@@ -44,6 +44,7 @@ library
 executable bww
   main-is: Bww.hs
   other-modules:
+      Ws
       Paths_wshs
   hs-source-dirs:
       app

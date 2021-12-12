@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-exec ~/apps/redd-up/bin/redd-up "$@"
