@@ -101,7 +101,7 @@ And a little emacs lisp that goes with the tangle process:
 ;;; tangle-file.el ends here
 #+end_src
 * Bootstrap process
-#+begin_src bash :shebang "#!/usr/bin/env bash" :tangle ./bin/bootstrap-workstation.sh :noweb yes
+#+begin_src bash :shebang "#!/usr/bin/env bash" :tangle ./bootstrap-workstation.sh :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
