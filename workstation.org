@@ -340,7 +340,7 @@ else
     WORKSTATION_BOOTSTRAP_COMMIT="$GITHUB_SHA"
 fi
 
-curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BOOTSTRAP_COMMIT/bin/bootstrap-workstation.sh > bootstrap-workstation.sh
+curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BOOTSTRAP_COMMIT/bootstrap-workstation.sh > bootstrap-workstation.sh
 
 echo BEGINNING INITIAL INSTALL
 
