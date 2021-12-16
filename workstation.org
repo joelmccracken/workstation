@@ -72,7 +72,7 @@ process of  taking a literate program source and converting it to the target
 
 #+begin_src makefile :tangle ./Makefile  :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-all: tangle switch
+all: tangle bundle
 
 tangle:
 	emacs -q -l lib/emacs/tangle-file.el --batch --tangle

@@ -1,5 +1,5 @@
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-all: tangle switch
+all: tangle bundle
 
 tangle:
 	emacs -q -l lib/emacs/tangle-file.el --batch --tangle
