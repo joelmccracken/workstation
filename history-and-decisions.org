@@ -1,1 +1,30 @@
 #+TITLE: History And Decisions
+* [2021-12-28 Tue]
+
+* [2021-12-24 Fri]
+how should I organize the org files?
+one org file per source file seems wrong. But it also doesn't seem like
+I can "include" references to other org files, so there isn't a great way to
+DRY-up a muti-file setup.
+
+Perhaps I am thinking about it incorrectly; there are other ways for thilngs
+to refer to each other, i.e. normal PL modules. The only time this really
+matters if if I can't do that. I can adopt the GHC note strategy to make
+references between sections.
+
+
+
+right now i think:
+- exposition.org
+- workstation.org
+- bootstrap.org
+
+thought: keep it simple. Use as few files as possible, but if it really makes
+sense to combine things, do it
+issue: there are very similar needs when bootstrapping and checking.
+example: should bootstrap check if these are installed before setting up?
+
+can i make bootstrap "safe"/idempotent to run over and over?
+* [2021-12-22 Wed]
+- decided to make a history and decisions log
+- making an exposition file, which may end up being a book/guide I guess?

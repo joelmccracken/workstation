@@ -1,22 +1,75 @@
 #+TITLE: Workstation
-* Background & Introduction
-This is my workstation configuration. I have had a few different setups over the
-years, so  this one is still a bit of a
-work in progress. Honestly, accomplishing this is a lot harder than I expected.
+* Introduction: A Repeatable Workstation Configuration
+This is my workstation configuration.
 
-In my experience, these workstation projects are easy to put aside for a long
-time, and when you come back you can't remember how things were built.
+By default, our workstations are a hodge-podge of tweaks that accumulate
+over the years. Quite often files etc are left over from old software we use.
+Worse, files will be left over from old *versions* of software that we still
+use. This makes it very confusing to tell what is essential and what is disjecta
+membra.
 
-So, this project is mostly written with literate
-org mode. This gives me an easy way to document my thoughts as I work, and also
-explore using ~org-mode~ for this task. I did this same thing a long time ago
-with my old dotfiles setup, and I liked it, but everything else about it was a
-massive pain, so it was eventually abandoned. If you want to see how this works,
-you should view this file raw. When github renders org mode source blocks, it
-omits all the headers.
+This is my attempt to fix all that for myself, and perhaps you, dear reader.
+If you have any questions, feel free to shoot me an email or open an issue.
 
-Anyway, if you have any questions, feel free to shoot me an email or open an issue.
+** Rationale: The Problem
+Have you ever had a tool or setup break and had a devil of a time trying to get
+it back to a working state? This has happenend to me frequently.
 
+Over the years, I've set up many new tools to help me with my work. But, time passes,
+and things break. Sometimes I don't even notice they've broken for a long time,
+so its even harder to fix. Something must have change must have changed: a
+dependency, perhaps? or filesystem contents?
+Or, even, perhaps I've forgotten how it is supposed to work.
+
+This has been tricky to resolve. Especially if the tool is a hack I put
+together.
+
+To reach higher levels of productivty, it is essential to research,
+develop, and use new tools for ourselves. Each of us has our own needs and
+constraints.
+
+So, I do not accept that this is just the way things have to be.
+
+One final point: I've noticed over the years that there is a subtle pressure to
+not install new things because I *know* it will cause a problem for me in the
+future. But I think this is an anti-pattern, and needs to be fought against!
+** Design choices
+*** Requirements
+*** invariants checking
+generally we want to check that the computer satisfies our requirements.
+This might mean anything from "user can successfully use sudo" to "I can compile
+haskell source files".
+
+this can also  be an early warning system, telling us that we need to do
+something before it becomes an emergency.
+
+Basically, this can take shape as a script I run regularly, but more ideally it
+would (also) be something that is automatically run and have information
+reported to me.
+*** early problem reporting
+we'd like to know about problems asap. If a new update comes out, and our whole
+setup proces is flawed somehow with this system.
+*** A note on Nix
+In my circle, Nix is commonly used. So one may ask "why not do all this with
+Nix"?
+
+Nix has a "my way or the highway" philosophy. In fact, as far as I can
+tell, it really doesn't provide any good way to:
+
+- set up non-nix software
+- provision ssh keys, secrets files, etc
+- download and set up file system shares
+
+Of course, I am still learning Nix, and I am sure this isn't totally 100% right,
+its just my impressions. But the point is that I need some kind of "extra" setup
+stuff anyway which needs to be independent of nix *anyway*.
+
+This may change, but for now I'm just using nix sparingly, where it
+makes sense, and doing everything else without it.
+* Background and History
+I have had a few different setups over the
+years. Accomplishing this is a lot harder than I expected.
+** Nix
 This same repo/setup *was* based upon ~nix~, but I had to abandon it. I still want
 to go back to it, eventually. Most of the notes below which mention ~nix~ are
 wrong/out of date, and I need to get around to updating them.
@@ -27,8 +80,20 @@ https://github.com/joelmccracken/workstation/tree/upgrade-org-with-nix-doom-emac
 I'd like to incorporate nix back into my workstation configuration, but I am not
 ready for that yet. I do install nix because I use it for scripting purposes,
 but its not used to set up the majority of this system.
+** Literate Programming
+In my experience, these workstation projects are easy to put aside for a long
+time, and when you come back you can't remember how things were built.
+
+So, this project is mostly written with literate
+org mode. This gives me an easy way to document my thoughts as I work, and also
+explore using ~org-mode~ for this task. I did this same thing a long time ago
+with my old dotfiles setup, and I liked it, but everything else about it was a
+massive pain, so it was eventually abandoned. If you want to see how this works,
+you should view this file raw. When github renders org mode source blocks, it
+omits all the headers.
 * README
-Every code project needs a README. This really just contains super simple instructions along with a link to this file, which
+Every project needs a README.
+This really just contains super simple instructions along with a link to this file, which
 contains all the important information.
 
 #+begin_src md :tangle ./README.md  :noweb yes
@@ -45,26 +110,28 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 
 For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
 #+end_src
-* manuall installation and setup
-install/sign in to
-- firefox-developer-edition
+* Manual installation and setup
+There are unfortunately a number of things I need to install and set up
+manually:
 - lastpass firefox extension
 - vimium-ff etension
-- set ~/secrets/bw_pass
-- bww force sync script
 - dropbox
 - icloud
 - slack
 - spotify
 - install haskell language server in ~/bin (or somwewhere else?) for hls
-* slack settings
+- set ~/secrets/bw_pass
+- bww force sync script
+
+These are the settings I use for slack:
 - accessibility then at bottom changbe up arrow to move focus to last message
 - advanced
   - when in ```  enter should do a newline
   - format messages with markup
-- mac settings
-  - enable screen sharing, _not_ remote management
-  - enable remote login
+
+mac settings
+- enable screen sharing, _not_ remote management
+- enable remote login
 * Makefile
 The first command is used to tangle ~workstation.org~. Tangling refers to the
 process of  taking a literate program source and converting it to the target
@@ -101,6 +168,47 @@ And a little emacs lisp that goes with the tangle process:
 ;;; tangle-file.el ends here
 #+end_src
 * Bootstrap process
+Bootstrapping is tricky. What do you actually start with? What can you assume?
+You want to keep the amount of manual steps which need to occur to a minimum.
+To my mind, this starts with a shell script.
+This script could either do the entire setup process, or
+theoretically it could also prepare the way for another process.
+
+For me, I currently basically have a single bash script. But what I want to do
+soon is change this so that its a bash script which invokes a haskell process asap.
+so the bash script would basically do the minimum amount required to set up
+everything for the haskell process.
+
+** Remaining Tasks
+*** TODO set up ubuntu version CI process
+*** TODO set up ubuntu version of bootstrap
+seprate script, or script that is smart enough run on mac and linux?
+mac
+- setup/install/check xcode (needed for brew)
+- install homebrew (needed for bundle/git (maybe?))
+- brew install git
+- git init.. clone... etc polite checkout
+- brew bundle (needed for git (actually does xcode-select get this for me?))
+- setup/install/check doom
+- setup/install/check nix
+- setup/install/check haskell stack
+ubuntu
+- apt-get update/check
+- apt-get install/check all the things
+common
+- build bww however it needs to be built
+*** TODO figure out how to get bww sync to happen automatically
+*** TODO fix origins for workstation repo and dotfiles
+*** TODO move most of the setup process to haskell
+shell script should just download workstation repo, install stack, build haskell
+code, then invoke built setup process
+*** TODO echo instructions on what to do once bootstraip is done
+need to enter ~/secrets/bw_pass file
+*** TODO establish/determine "phases" to setup
+initial bootstrap (checkout files, setup haskell, etc)
+pre-authentication (pre-bww sync)
+using haskell to do remaining setup
+** Code
 #+begin_src bash :shebang "#!/usr/bin/env bash" :tangle ./bootstrap-workstation.sh :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
@@ -174,6 +282,18 @@ fi
 
 curl -sSL https://get.haskellstack.org/ | sh
 #+end_src
+* Post-bootstrap setup
+* System update process
+- fetch ~/worksation and ~, if can clealy rebase, do so
+- run any other kind of "sync"
+* System "check"
+need to have a "check that system is OK"
+** TODO make check for updates on remote of ~ and ~workstation
+** TODO make check for nix (~nix store verify --all~ and ~nix-doctor~)
+** TODO make check for brew
+** TODO make check that no new secrets need to be synced
+** TODO make check that reddup is good
+** TODO make check for various execuables I care about
 * Utilities
 ** Passwordless sudo
 Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
@@ -235,28 +355,26 @@ import Prelude
 #+END_SRC
 ** I... hmmm... need to finish this
 turtle-shell-rc.hs
-* WIP Bitwarden and personal secrets
-for now I am designing a script that will handle
-working with various "private" information.
-
+* Bitwarden and personal secrets
+I have a script to set up and download various "private" information.
 for various reasons I've decided to try bitwarden for this, but
 out of the box bitwarden doesn't really do what I need it to.
 
-the first thing I want to handle is restoring SSH keys to my local computer.
-these can't be in git, and really they are essential for any meaningfully complete setup
-For testing, i'd like to have a specific bitwarden acocunt with its own ssh key for gitlab
-(issue/question? -- will I be able to disambiguate the keys? need to track this down. already had an issue with this at job),
-a gitlab acct with a private repo just for this,
-and then finally the test will run this checkout and ensure I am able to check it out
-i would be able to store the bitwarden password in the test runner directly, at least as an env var. i am sure this must be a feature.
-
-ideally i would have something like "restore from folder", and secret note names are like "file:~/.ssh/id_rsa_something", which
-would then be "synced" to the local computer.
-
-want to have a handy way to "add" files, say "add this file to the store" and then in the future would be able to restore/sync files
-
-a "sync" command which will pull down those files, ideally telling me which ones will be updatied and giving an opp to confirm
+This restores SSH keys to my local computer.
+These can't be in git, and really they are essential for any meaningfully
+complete workstation setup.
+** TODO move the bww stuff into this section of workstation
+** TODO set up a testing account on bitwarden for CI/testing
+** TODO set up a "check" command which shows what would change if a sync happened
+* Machine profiles
+** TODO set up machine-specific settings profiles
+E.g. ~/workstation/profiles
+*** glamdring/
+*** anduril/
+*** aeglos/
+*** ci/
 * Testing
+** TODO convert all this testing to haskell
 ** test.sh
 At this point in time, this test actually checks very little, but what it DOES check
 is things that indicate that everything went right. Specifically, checking the doom version means
@@ -349,45 +467,7 @@ echo INSTALL PROCESS COMPLETE, TESTING
 
 bash ~/workstation/test/test.sh
 #+end_src
-* open questions
-organization feels weird with current system.
-yes, storing a dotfiles in ~ feels good in some ways, but
-not in all
-example, i need to provisioning stuff for cloud workstation and
-bascially it feels really weird
-
-what if I had a ~/worksation directory that has the main "stuff" for this
-project, and had another "dotfiles" github repo with a README and
-points to this project.
-
-downsidees: I might forget to commit ~/workstation  stuff and commit
-stuff in the dotifles and then have issues (stuff getting out of sync)
-
-what this solution might look like
-
-- ~/ has all  of my dotfiles
-- workstation/ has
-  - provisioning scripts
-  - tests
-  - CI
-  - setup stuff (bootstrap script, etc)
-  - workstation.org file
-  - README file
-
-boostrap process:
-- curl script to computer
-- git clone of workstation repo to ~/workstation
-- git init/reset mixed etc dance for home dir dotfiles
-- instructions to set up the bitwarden sync thing
-- final bootstrapping - set up correct remote origin
-
-alternative:
-- keep single repo model
-- repo has /workstation directory in it, which
-  has all the "stuff" it shoudl
-- ~/workstatin/bin  gets added to the path
-- stuff in root is like CI and actual dotfiles
-  (having a ~/.github/workflows is kinda sad isn't it?)
-
-should probably start TDDing the workstation repo stuff so i actually have
-tests, huh.
+* Operational/maintenance
+** TODO rebuild my personal laptop once all of this is stable
+* Misc
+** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)

@@ -11,12 +11,16 @@ fi
 
 WS_DIR="$HOME/workstation"
 
+
+# should be naturally idempontent
 sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
+# should be good enough to see that if brew is installed,
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # install git, necessary for next step
+# this should be safe to run even if its been run before
 brew install git
 
 polite-git-checkout () {
@@ -43,10 +47,14 @@ function mv_dir_dated_backup() {
 
 cd ~
 
+# first check to see if origin is correct?
 polite-git-checkout ~ https://github.com/joelmccracken/dotfiles.git
 
+# should be idempotent
 brew bundle
 
+# check first to see if the desired contents have correct git
+# remote for origin etc. Can manually fix if this check is not right
 mv_dir_dated_backup ~/workstation
 git clone https://github.com/joelmccracken/workstation.git
 
@@ -55,18 +63,21 @@ git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 
 # If I ever have issues w/ this, I can use this form:
 # timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+# is there some way to see if doom is already installed??
 ~/.emacs.d/bin/doom -y install
 
 echo FINISHED INSTALLING DOOM
 
 echo installing nix
 
+# see if nix is already installed?
 sh <(curl -L https://nixos.org/nix/install)
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-
+# is there a reason we have to have nix soruced?
 if [ -e "$NIX_DAEMON_PATH" ]; then
   (source "$NIX_DAEMON_PATH") || exit 0
 fi
 
+# if stack is already installed, dont run this
 curl -sSL https://get.haskellstack.org/ | sh
