@@ -43,8 +43,6 @@ executables:
     - -Wall
     dependencies:
     - wshs
-
-executables:
   ws:
     main:                Ws.hs
     source-dirs:         app
