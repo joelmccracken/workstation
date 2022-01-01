@@ -9,10 +9,10 @@
       overlays = [ haskellNix.overlay
         (final: prev: {
           # This overlay adds our project to pkgs
-          helloProject =
+          wsProject =
             final.haskell-nix.project' {
               src = ./.;
-              compiler-nix-name = "ghc8104";
+              compiler-nix-name = "ghc8107";
               # This is used by `nix develop .` to open a shell for use with
               # `cabal`, `hlint` and `haskell-language-server`
               shell.tools = {
@@ -30,12 +30,12 @@
         })
       ];
       pkgs = import nixpkgs { inherit system overlays; inherit (haskellNix) config; };
-      flake = pkgs.helloProject.flake {
+      flake = pkgs.wsProject.flake {
         # This adds support for `nix build .#js-unknown-ghcjs-cabal:hello:exe:hello`
         crossPlatforms = p: [p.ghcjs];
       };
     in flake // {
       # Built by `nix build .`
-      defaultPackage = flake.packages."hello:exe:hello";
+      defaultPackage = flake.packages."wshs:exe:ws";
     });
 }
