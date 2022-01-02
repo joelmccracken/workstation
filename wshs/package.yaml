@@ -34,8 +34,8 @@ library:
 
 executables:
   bww:
-    main:                Bww.hs
-    source-dirs:         app
+    main:                app/Bww.hs
+    module:
     ghc-options:
     - -threaded
     - -rtsopts
@@ -44,8 +44,7 @@ executables:
     dependencies:
     - wshs
   ws:
-    main:                Ws.hs
-    source-dirs:         app
+    main:                app/Ws.hs
     ghc-options:
     - -threaded
     - -rtsopts
