@@ -222,12 +222,15 @@ fi
 
 WS_DIR="$HOME/workstation"
 
+# TODO should be naturally idempontent
 sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
+# TODO first check to see if brew is installed
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # install git, necessary for next step
+# TODO this should be safe to run even if its been run before
 brew install git
 
 polite-git-checkout () {
@@ -254,13 +257,17 @@ function mv_dir_dated_backup() {
 
 cd ~
 
+# TODO first check to see if origin etc is correct?
 polite-git-checkout ~ https://github.com/joelmccracken/dotfiles.git
 
 brew bundle
 
+# TODO check first to see if the desired contents have correct git
+#      remote for origin etc. Can manually fix if this check is not right
 mv_dir_dated_backup ~/workstation
 git clone https://github.com/joelmccracken/workstation.git
 
+# TODO is there some way to see if doom is already installed??
 mv_dir_dated_backup ~/.emacs.d
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 
@@ -272,6 +279,7 @@ echo FINISHED INSTALLING DOOM
 
 echo installing nix
 
+# TODO see if nix is already installed
 sh <(curl -L https://nixos.org/nix/install)
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -280,6 +288,7 @@ if [ -e "$NIX_DAEMON_PATH" ]; then
   (source "$NIX_DAEMON_PATH") || exit 0
 fi
 
+# TODO if stack is already installed, dont run this
 curl -sSL https://get.haskellstack.org/ | sh
 #+end_src
 * Post-bootstrap setup
@@ -340,7 +349,7 @@ the configuration is located but ALSO provides a way to specify an alternate con
 I foudn this ghci snippet somewhere on the internet for it, which will look for an environment variable pointing to a new file and if present it will load it.
 
 *** The .ghci file
-#+begin_src haskell :tangle ./.ghci :noweb yes
+#+begin_src haskell :tangle ~/.ghci :noweb yes
 -- GHCI config
 -- first off I always want overloaded strings on anyway so I can just
 -- have this run every time ghci starts
@@ -425,7 +434,10 @@ would be on GitLab instead.
 
 name: CI
 
-on: [push]
+on:
+  push:
+  schedule:
+  - cron: '0 0 * * *'  # every day at midnight
 
 jobs:
   build:
