@@ -63,7 +63,6 @@ function mv_dir_dated_backup() {
     [[ "$(git remote get-url origin)" == "git@github.com:joelmccracken/dotfiles.git" ]]
 } || polite-git-checkout ~ https://github.com/joelmccracken/dotfiles.git
 
-
 is_mac && brew bundle
 
 { cd ~/worksation
@@ -73,26 +72,26 @@ is_mac && brew bundle
     git clone https://github.com/joelmccracken/workstation.git
 }
 
-{ cd ~/.emacs.d
-     [[ "$(git remote get-url origin)" == "https://github.com/hlissner/doom-emacs" ]]
+{
+    cd ~/.emacs.d;
+    [[ "$(git remote get-url origin)" == "https://github.com/hlissner/doom-emacs" ]]
 } || {
-    mv_dir_dated_backup ~/.emacs.d
-    git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+    mv_dir_dated_backup ~/.emacs.d;
+    git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
     # If I ever have issues w/ this, I can use this form:
     # timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    ~/.emacs.d/bin/doom -y install
-    echo FINISHED INSTALLING DOOM
+    ~/.emacs.d/bin/doom -y install;
+    echo FINISHED INSTALLING DOOM;
 }
 
 echo installing nix
 
-{ which nix > /dev/null } || sh <(curl -L https://nixos.org/nix/install)
+{ which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install); }
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-if [ -e "$NIX_DAEMON_PATH" ]; then
-  (source "$NIX_DAEMON_PATH") || exit 0
+
+if [[ -e "$NIX_DAEMON_PATH" ]]; then
+  (source "$NIX_DAEMON_PATH") || exit 0;
 fi
 
-{ which stack > /dev/null } || {
-    curl -sSL https://get.haskellstack.org/ | sh
-}
+{ which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
