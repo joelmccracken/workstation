@@ -9,7 +9,10 @@ on:
 
 jobs:
   build:
-    runs-on: macos-10.15
+    runs-on:
+    - macos-10.15
+    - macos-latest
+    - ubuntu-latest
     timeout-minutes: 45
 
     steps:
