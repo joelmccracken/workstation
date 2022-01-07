@@ -3,7 +3,9 @@
 
 set -xeuo pipefail
 
-if [ "$1" == "" ]; then
+
+
+if [ -z "${1+x}" ]; then         
     WORKSTATION_BOOTSTRAP_COMMIT=master
 else
     WORKSTATION_BOOTSTRAP_COMMIT="$1"
@@ -12,11 +14,11 @@ fi
 WS_DIR="$HOME/workstation"
 
 function is_mac() {
-    [[ "$(uname)" == "Darwin" ]]
+    [[ "$(uname)" == 'Darwin' ]]
 }
 
 function is_linux() {
-    [[ "$(uname)" == "Linux" ]]
+    [[ "$(uname)" == 'Linux' ]]
 }
 
 is_mac && {
@@ -60,16 +62,16 @@ function mv_dir_dated_backup() {
 
 {
     cd ~;
-    [[ "$(git remote get-url origin)" == "git@github.com:joelmccracken/dotfiles.git" ]]
-} || polite-git-checkout ~ https://github.com/joelmccracken/dotfiles.git
+    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
+} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 
 is_mac && brew bundle
 
 { cd ~/worksation
-     [[ "$(git remote get-url origin)" == "git@github.com:joelmccracken/workstation.git" ]]
+     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
     mv_dir_dated_backup ~/workstation
-    git clone https://github.com/joelmccracken/workstation.git
+    git clone 'https://github.com/joelmccracken/workstation.git'
 }
 
 {
