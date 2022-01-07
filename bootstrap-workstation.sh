@@ -84,8 +84,9 @@ is_mac && brew bundle
     git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
     # If I ever have issues w/ this, I can use this form:
     # timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    ~/.emacs.d/bin/doom -y env;
-    ~/.emacs.d/bin/doom -y install;
+    # ~/.emacs.d/bin/doom -y env;
+    # ~/.emacs.d/bin/doom -y install;
+    timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
 
