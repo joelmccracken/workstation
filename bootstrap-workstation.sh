@@ -3,9 +3,7 @@
 
 set -xeuo pipefail
 
-
-
-if [ -z "${1+x}" ]; then         
+if [ -z "${1+x}" ]; then
     WORKSTATION_BOOTSTRAP_COMMIT=master
 else
     WORKSTATION_BOOTSTRAP_COMMIT="$1"
@@ -24,7 +22,7 @@ function is_linux() {
 is_mac && {
     sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
-    which brew > /dev/null  || {
+    which brew > /dev/null || {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # install git, necessary for next step
@@ -34,12 +32,9 @@ is_mac && {
 }
 
 is_linux && {
-    sudo apt-get update
-    sudo snap install emacs --classic
-    sudo apt-get install ripgrep fd-find
+    sudo bash -c 'apt-get update && apt-get git'
 }
 
-# install homebrew
 polite-git-checkout () {
     DIR=$1
     REPO=$2
@@ -67,13 +62,19 @@ function mv_dir_dated_backup() {
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
 } || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 
-is_mac && brew bundle
-
 { cd ~/worksation
      [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
     mv_dir_dated_backup ~/workstation
     git clone 'https://github.com/joelmccracken/workstation.git'
+}
+
+is_mac && brew bundle
+
+is_linux && {
+    sudo ~/workstation/bin/enable-passwordless-sudo.sh
+    apt-get update
+    snap install emacs --classic
 }
 
 {
