@@ -73,8 +73,9 @@ is_mac && brew bundle
 
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
-    apt-get update
-    snap install emacs --classic
+    sudo apt-get update
+    sudo snap install emacs --classic
+    sudo apt-get install ripgrep fd-find zshc make libtool libvterm-dev
 }
 
 {
