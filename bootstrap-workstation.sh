@@ -32,7 +32,7 @@ is_mac && {
 }
 
 is_linux && {
-    sudo bash -c 'apt-get update && apt-get git'
+    sudo bash -c 'apt-get update && apt-get install git'
 }
 
 polite-git-checkout () {
