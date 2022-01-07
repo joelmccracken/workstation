@@ -34,7 +34,9 @@ is_mac && {
 }
 
 is_linux && {
-    echo "TODO install git via apt"
+    sudo apt-get update
+    sudo snap install emacs --classic
+    sudo apt-get install ripgrep fd-find
 }
 
 # install homebrew
