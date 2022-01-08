@@ -80,7 +80,7 @@ is_linux && {
 
 {
     cd ~/.emacs.d;
-    [[ "$(git remote get-url origin)" == "https://github.com/hlissner/doom-emacs" ]]
+    [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
 } || {
     mv_dir_dated_backup ~/.emacs.d;
     git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
