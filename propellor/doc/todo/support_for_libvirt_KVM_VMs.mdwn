@@ -1,0 +1,27 @@
+I've been thinking about how to add support for libvirt VMs to
+propellor.  TTBOMK setting up the VMs is a matter of creating some
+files in /etc, so that part is straightforward; might not want very
+much abstraction in propellor at all.  The interesting part is
+creating the corresponding disk images.
+
+I first thought that I could just extend propellor's existing support
+for generating disk images by debootstrapping in a chroot and then
+generating an image based on that chroot.  It would just be a matter
+of using `.qcow2` images rather than `.img`.  But the problem with
+this is that once the VM is in use, propellor should not just be
+overwriting the `.qcow2` file.  So something different is needed.
+
+What I have in mind is a conditional property that works something
+like this:
+
+    ifM ( doesFileExist "/path/to/image.qcow2"
+        , debootstrapTheChrootAndPackIntoQcow2File theHost
+        , conducts [theHost] `requires` KVM.booted theHost
+        )
+
+where `theHost :: Host` and either the user's libvirt config or some
+property somewhere ensures it can be SSHed to from localhost.
+
+Does this seem like the right approach?
+
+--spwhitton

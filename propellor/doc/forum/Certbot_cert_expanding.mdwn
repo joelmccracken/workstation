@@ -1,0 +1,16 @@
+When adding a name to the list for a `letsEncrypt` property, certbot fails thusly:
+
+    Saving debug log to /var/log/letsencrypt/letsencrypt.log
+    Plugins selected: Authenticator webroot, Installer None
+    Missing command line flag or config entry for this setting:
+    You have an existing certificate that contains a portion of the domains you requested (ref: /etc/letsencrypt/renewal/…)
+
+    It contains these names: …
+
+    You requested these names for the new certificate: …
+
+    Do you want to expand and replace this existing certificate with the new certificate?
+
+    (You can set this with the --expand flag)
+
+I think maybe Propellor should always pass --expand? I haven't tested if that works correctly when not changing the names.

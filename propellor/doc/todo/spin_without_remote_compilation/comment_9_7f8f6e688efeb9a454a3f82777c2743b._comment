@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="jsza"
+ avatar="http://cdn.libravatar.org/avatar/72c6bc8c0cdfb0fff175e90c3b036415"
+ subject="comment 9"
+ date="2020-08-24T13:06:47Z"
+ content="""
+Hi, I'm trying to spin using the `Precompiled.precompiled` property from the `precompiled`, branch after having merged master. The first time trying to spin after adding the property, this error occurs:
+
+    > ./propellor --spin host_redacted
+    Build profile: -w ghc-8.8.4 -O1
+    In order, the following will be built (use -v for more details):
+     - propellor-5.11 (exe:propellor-config) (file executables/propellor-config.hs changed)
+    Preprocessing executable 'propellor-config' for propellor-5.11..
+    Building executable 'propellor-config' for propellor-5.11..
+    [1 of 1] Compiling Main             ( executables/propellor-config.hs, /home/jayess/propellor/dist-newstyle/build/x86_64-linux/ghc-8.8.4/propellor-5.11/x/propellor-config/build/propellor-config/propellor-config-
+    tmp/Main.o )
+    Linking /home/jayess/propellor/dist-newstyle/build/x86_64-linux/ghc-8.8.4/propellor-5.11/x/propellor-config/build/propellor-config/propellor-config ...
+    Propellor build ... done
+    <git push output snipped>
+    ldd: bin/propellor: No such file or directory
+    propellor: user error (ldd [\"bin/propellor\"] exited 1)
+
+
+Subsequent spin attempts produce this error:
+
+    > ./propellor --spin us4.tempus.xyz
+    Up to date
+    Propellor build ... done
+    <git push output snipped>
+    cp: cannot stat '/home/jayess/propellor/propellor (deleted)': No such file or directory
+    ** error: failed copying in propellor
+    propellor: Cannot continue!
+    CallStack (from HasCallStack):
+      error, called at src/Propellor/Message.hs:143:9 in propellor-5.11-inplace:Propellor.Message
+
+I think `Propellor.Spin.sendPrecompiled` might itself be broken, but I can't quite wrap my head around what's going on here. Any ideas? I'm using `cabal 3.0.0.0` in Debian Unstable.
+
+"""]]

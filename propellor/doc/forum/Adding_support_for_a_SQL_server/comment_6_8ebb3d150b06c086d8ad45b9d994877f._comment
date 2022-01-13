@@ -1,0 +1,41 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2018-09-17T17:21:52Z"
+ content="""
+Some review, sorry it took me so long to take a look at it..
+
+It's not clear to me how to construct a `Database`;
+what is the `String` inside it? The path? A database name?
+What makes for a legal or illegal database name?
+(May be more obvious to people who use mysql than to me.)
+
+Looks like `Show Privilege` is being used to generate configuration.
+I dislike using `Show` for that, because it precludes it being used with
+Read, and is generally unclear that the strings in show need to be
+formatted exactly as they are.
+
+You could simplify allPrivileges using `Enum`,
+with `[minBound..maxBound]`.
+
+Reverting `databaseExists` and also reverting `installed`
+leads to the package being installed and then removed repeatedly.
+Perhaps `databaseExists` could avoid doing anything when the
+server has already been removed.
+
+Some of the SQL construction doesn't seem entirely safe with quoting.
+While there's no security problem with it, it may have a correctness
+problem..
+
+... In `userGrantedOnDatabase` when it creates the privLevel
+it looks like it doesn't escape the dbname at all,
+and I guess this means it doesn't need to be escaped, or
+can't contain back quotes.
+
+... In `userGranted'` the quser is delimited by single quotes,
+but it's actually valid to have a `User` with a single quote in their name,
+and many of the Klingons out there probably depend on that.
+
+... In `hashPassword` it looks like the password is also assumed to not
+contain single quotes.
+"""]]

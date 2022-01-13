@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-08-23T15:41:55Z"
+ content="""
+I've added a typeable instance for Bootstrapper which should fix that.
+"""]]

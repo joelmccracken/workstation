@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-08-04T14:23:33Z"
+ content="""
+Thanks for submitting these patches!
+
+Looking at `containsConfPair`, it assumes an ini-style file,
+so is a little misplaced in Property.File. which is otherwise about generic
+text files.
+
+So, it would probably make sense to move it to a new Property.IniFile
+module.
+
+However, [[forum/parsing_a_config_file]] recently pointed out that
+the tor config file has a similar need. It's not ini format, but
+shares the same basic idea of a "section" line which is followed by 
+lines setting things specific to that section.
+
+So, it would be great if `containsConfPair` could be generalized to also
+cover that tor config file use case. I think this would be pretty easy;
+just make it take one string containing the whole section line (including
+square brackets for ini file, or whatever for tor config file), and a
+second string containing the whole setting line.
+"""]]

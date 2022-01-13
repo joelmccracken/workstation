@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="pelle"
+ subject="comment 1"
+ date="2015-10-09T11:49:06Z"
+ content="""
+I am bit confused. If tabs with 8 spaces are the default, why does the example `.dir-locals.el` set tab-width to 4?
+
+Also, the examples show tabs as four spaces when rendered by ikiwiki/Markdown.
+"""]]

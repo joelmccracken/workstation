@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-12-27T02:46:19Z"
+ content="""
+I don't like the use of tabs in that; it may be that with some terminal
+with an unusual tab stop, the things don't align.
+
+It would probably be simplest to put the description in the line under the
+option.
+
+BTW, the Makefile can build propellor.1 out of usage.mdwn
+"""]]

@@ -1,0 +1,43 @@
+Hello,
+
+I merged 5.2.0 into my .propellor, last merge was merging f6797bed.
+
+Since the merge, when I try to spin, I get:
+
+    riva4.ni.fr.eu.org has ipv4 91.121.114.4 ... ok
+    ** warning: Unknown host OS is not supported by this property.
+    CallStack (from HasCallStack):
+      error, called at src/Propellor/Property.hs:350:30 in main:Propellor.Property
+    riva4.ni.fr.eu.org container vz-web2 ... failed
+    riva4.ni.fr.eu.org overall ... failed
+
+I have in my config.hs:
+
+    riva4 :: Host   
+    riva4 = host "riva4.ni.fr.eu.org" $ props
+	    & ipv4 "91.121.114.4"
+	    & stdContainerSpawn "vz-web2" "2g" vzWeb2
+
+    stdContainerSpawn :: Systemd.MachineName
+		      -> String
+		      -> Systemd.Container
+		      -> Property (HasInfo + DebianLike)
+    stdContainerSpawn name size container =
+	    Lvm.lvFormatted Lvm.YesReallyFormatLogicalVolume
+		    (Lvm.LogicalVolume name (Lvm.VolumeGroup "vg0")) size
+		    Partition.EXT4
+		    `before` Fstab.mounted "auto" dev dir mempty
+		    `before` Systemd.nspawned container
+		    `describe` ("container " ++ name)
+      where 
+	    dev = "/dev/vg0" </> name
+	    dir = "/var/lib/container" </> name
+
+    vzWeb2 :: Systemd.Container
+    vzWeb2 = Systemd.debContainer "vz-web2" $ props
+	    & osDebian (Stable "stretch") X86_64
+	    & ipv4 "10.42.2.13"
+
+I reviewed all changes in propellor, but I cannot find what can cause this.
+
+How can I debug this?

@@ -1,0 +1,36 @@
+Hello, I just installed propellor 2.13.0 and  now I get this error message.
+
+It was sort of expected due to the chnages in the API.
+I would like your advice about this problem.
+Indeed I combine Property and RevertableProperty.
+
+so what should be the best way to fix this issue.
+
+    src/Propellor/Property/Sbuild.hs:57:51:
+    Couldn't match type ‘Property (CInfo HasInfo NoInfo)’
+                  with ‘RevertableProperty HasInfo’
+    Expected type: RevertableProperty HasInfo
+      Actual type: CombinedType
+                     (RevertableProperty HasInfo) (Property NoInfo)
+    In the expression: (setup <!> cleanup) `requires` installed
+    In an equation for ‘schroot’:
+        schroot sn chroot@(Chroot.Chroot chrootdir _ _)
+          = (setup <!> cleanup) `requires` installed
+          where
+              setup
+                = conf `requires` (provision `onChange` targz)
+                where
+                    provision
+                      = toProp (Chroot.provisioned chroot) `before` umount
+                      where
+                          ...
+                    targz = createTarball chrootdir tarball
+                    ....
+              cleanup
+                = File.notPresent (schrootChrootD </> sn)
+                  `requires` File.notPresent tarball
+                  `requires` toProp (revert (Chroot.provisioned chroot))
+              tarball = chrootdir <.> "tar.gz"
+
+
+thanks

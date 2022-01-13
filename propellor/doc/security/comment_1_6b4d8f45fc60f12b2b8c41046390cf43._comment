@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawmtnXa0F3OsNh8H7yf5EEbtuufPZG-3StI"
+ nickname="Arnaud"
+ subject="Is it ok to publish to a public repository?"
+ date="2014-08-29T21:13:19Z"
+ content="""
+It is not clear to me whether or not it is safe to publish my own propellor repository to a publicly hosted service. It seems to me that when I do ./propellor --add-key MYKEYID, the private key data is stored in the repository as a commit, so pushing it exposes this data to the public. Am I wrong? 
+
+Thanks
+"""]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="evan@0e4cded17eab71af967a38b123fbc211cf215421"
+ nickname="evan"
+ subject="In Fact Amazonka is Fairly Epic"
+ date="2016-03-11T14:14:51Z"
+ content="""
+I'm going to start working with it outside Propellor for a bit to configure our infrastructure, then I think we can really have a good sense of what we can do to start moving bits back into Propellor. To give an idea of just how much is going on, even just building amazonka-ec2 takes around 30 minutes on my laptop. A lot of it is (rightly-so) auto-generated from the AWS API descriptions, and it relies heavily on lenses. One of my goals with my current work is getting our AWS infrastructure built using Amazonka, and with a similar model as Propellor, and I think that'll ultimately be something we'll be able to merge (with a lot of merging effort of course).
+"""]]

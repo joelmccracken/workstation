@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-11-11T19:16:35Z"
+ content="""
+Combining a Property HasInfo with a RevertableProperty HasInfo should work
+fine, and I have not been able to reproduce this type error with some
+simple combinations of such properties.
+
+Can you share the code that produces the type error?
+"""]]

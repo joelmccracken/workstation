@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 2"
+ date="2016-04-06T12:17:09Z"
+ content="""
+I agreed with you joey, we need to be able to add mount point directly into the fstab file in order to let the world know about all the mount points.
+Maybe a way also to generate the mount point with the system d syntax.
+
+So maybe the best solution is to have a DSL (like you did in you dism system) and then generators for fstab, systemd, etc...
+This property should be revertable in order to add or remove lines (files).
+
+the fstab should also contain some invariant code (the lines generated during the system installation). I speak about Debian installation.
+
+Cheers
+
+Fred
+"""]]

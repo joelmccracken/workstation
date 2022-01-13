@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 8"""
+ date="2016-03-06T23:47:58Z"
+ content="""
+I modified spin', adding this before its final ssh:
+
+	async $ createProcessForeground $ proc "sleep" ["500"]
+
+This more or less replicates the problem reliably; the remote propellor
+runs but nothing gets displayed for 500 seconds until the sleep process
+is done. At which point the whole buffered output appears. Use cat instead
+and it'll hang forever.
+
+Of course, that means `ps fax` shows propellor with sleep and ssh as
+child processes. If only ssh shows as a child process and nothing else
+when the problem naturally occurs, then that's a different problem
+than what I was able to replicate.
+
+Anyway, this seems too fragile to leave like this even though
+nothing run on the way to a ssh should run for very long.
+So, I'm making the ssh be run forced to the foreground, which will
+certianly avoid all such problems.
+"""]]

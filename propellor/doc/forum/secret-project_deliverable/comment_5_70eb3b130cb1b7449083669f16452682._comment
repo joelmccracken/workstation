@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2017-12-31T00:46:49Z"
+ content="""
+I think this is more bad documentation on my part;
+probably running propellor like that does not fully work
+and only the propellor --spin method will really work currently.
+
+(Kind of a bug in propellor to; [[todo/chroot_localdir_issue]])
+"""]]

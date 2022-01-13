@@ -1,0 +1,5 @@
+Hi,
+
+I was wondering: Is it possible to use propellor to generate images only without actually managing any hosts per-se? I couldn't find any documentation on that.
+
+Ideally, I'd also be able to use it directly from a sandbox so that I wouldn't have to even "pollute" the GHC/Cabal "global" (user home dir) database on the development machine. I see that there's support for having the config.hs stored in a different directory than ~/.propellor, but I haven't managed to get it working when I use a sandbox in e.g. ~/foo with the config.hs stored in the same directory. Perhaps that's just a bug? If it's supposed to work I can provide detailed error messages, etc. **EDIT:** I'd also like to manage the git repository myself -- is that possible?

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-09-15T17:19:54Z"
+ content="""
+Well, I'd expect propellor would exit nonzero if it fails to connect to the
+host to spin it. Did this not happen?
+"""]]

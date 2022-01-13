@@ -1,0 +1,36 @@
+In Joey's master branch, `CHANGELOG` is a real file, whereas previously it was a symlink.  This breaks the `/usr/src/propellor` newer version check.
+
+Steps to reproduce:
+
+1. Install propellor 3.2.3 or older with apt on Debian or Ubuntu
+2. `propellor --init` and select option `A`
+3. Prepare a pseudorelease: merge Joey's master branch into [my Debian packaging branch](https://git.spwhitton.name/?p=propellor.git;a=shortlog;h=refs/heads/debian), `dch -v3.2.3+gitYYYYMMDD.fffffff`, `dpkg-buildpackage -uc -b`, `debi -u`
+4. `propellor --spin`
+
+I haven't yet tried reproducing this by building a `.deb` from Joey's master branch, rather than my packaging branch.  If the problem does not appear using a `.deb` from Joey's master branch, this is an internal Debian problem, rather than an upstream bug.  However, perhaps Joey can immediately see a solution.
+
+Sample output:
+
+    Auto-merging src/wrapper.hs
+    Auto-merging src/Utility/UserInfo.hs
+    Auto-merging src/Utility/SystemDirectory.hs
+    Auto-merging src/Utility/Misc.hs
+    Auto-merging src/Utility/FileSystemEncoding.hs
+    Auto-merging src/Utility/Exception.hs
+    Auto-merging src/Propellor/Types/CmdLine.hs
+    Auto-merging src/Propellor/Shim.hs
+    Auto-merging src/Propellor/Property/Gpg.hs
+    Auto-merging src/Propellor/Property/Debootstrap.hs
+    Auto-merging src/Propellor/Property.hs
+    Auto-merging src/Propellor/PrivData.hs
+    Auto-merging src/Propellor/Gpg.hs
+    Auto-merging src/Propellor/CmdLine.hs
+    Auto-merging debian/changelog
+    Auto-merging CHANGELOG
+    CONFLICT (add/add): Merge conflict in CHANGELOG
+    Automatic merge failed; fix conflicts and then commit the result.
+    propellor: Failed to run git ["merge","c590ddd8e2fa87baa409b6c29501d4473555ecfb","-s","recursive","-Xtheirs","--quiet","-m","merging upstream version","--allow-unrelated-histories"]
+    CallStack (from HasCallStack):
+      error, called at src/Propellor/DotDir.hs:425:17 in main:Propellor.DotDir
+
+--spwhitton

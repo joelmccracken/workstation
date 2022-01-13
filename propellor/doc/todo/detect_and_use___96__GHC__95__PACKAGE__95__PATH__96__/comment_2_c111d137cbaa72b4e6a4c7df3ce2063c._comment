@@ -1,0 +1,31 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="comment 2"
+ date="2016-03-07T20:11:28Z"
+ content="""
+I got Propellor to work with stack by applying this patch (to disable the auto-building):
+
+```
+diff --git a/src/Propellor/CmdLine.hs b/src/Propellor/CmdLine.hs
+index 5dbc583..b83bb91 100644
+--- a/src/Propellor/CmdLine.hs
++++ b/src/Propellor/CmdLine.hs
+@@ -119,7 +119,7 @@ defaultMain hostlist = withConcurrentOutput $ do
+                fetchFirst (onlyprocess (update Nothing))
+        go _ (Update (Just h)) = update (Just h)
+        go _ Merge = mergeSpin
+-       go cr cmdline@(Spin hs mrelay) = buildFirst cr cmdline $ do
++       go _ cmdline@(Spin hs mrelay) = buildFirst NoRebuild cmdline $ do
+                unless (isJust mrelay) commitSpin
+                forM_ hs $ \hn -> withhost hn $ spin mrelay hn
+        go cr (Run hn) = fetchFirst $
+```
+
+I then replaced the \"propellor\" binary/symlink with this little wrapper:
+
+```
+#!/bin/sh
+stack build && exec stack exec -- propellor-config \"$@\"
+```
+"""]]

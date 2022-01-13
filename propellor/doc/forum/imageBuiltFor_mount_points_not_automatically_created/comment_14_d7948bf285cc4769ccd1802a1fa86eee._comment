@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 14"
+ date="2017-12-22T12:44:18Z"
+ content="""
+Unfortunately it didn't... But I think it's probably a problem of choosing the right grub version. I did boot a grml64 sdcard, and I think they use hybrid bios/uefi boot. I have to investigate, let's see this in a few days :)
+
+Thanks a lot for your help!
+"""]]

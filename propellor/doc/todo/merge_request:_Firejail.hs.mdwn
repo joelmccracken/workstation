@@ -1,0 +1,16 @@
+Please consider merging branch `firejail` of repo `https://git.spwhitton.name/propellor`.
+
+Changes:
+
+- Add `applytoList` property combinator
+- Add `Propellor.Property.Firejail` module
+
+Comments:
+
+- I'm not sure whether Joey or I originally wrote `applyToList`; it's been in my config.hs for a while
+- `Firejail.jailed` accepts a list of executables (and `Firejail.jailed'` is not exported) because as with `Apt.installed`, I think most users will want to jail more than one program.  For example `Firejail.jailed ["firefox", "evince"]`.
+- I made the build clean on GHC 7.10 but there is a warning on 7.6 that `Prelude` does not export `Foldable`.  I don't know how to fix this while maintaining the 7.10 clean build, and it seems to me that having the 7.10 build be clean is more important than having the 7.6 build be clean.
+
+--spwhitton
+
+> [[done]], thanks! (I fixed the warning.) --[[Joey]]

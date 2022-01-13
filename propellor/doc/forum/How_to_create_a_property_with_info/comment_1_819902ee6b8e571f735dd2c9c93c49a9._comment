@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-08-25T23:07:12Z"
+ content="""
+It's not allowed for the content of Info to come from an IO action.
+Info has to be static. This allows one Host to introspect the Info of
+another Host. The Dns properties rely on that.
+
+So, the type checker is right in preventing this. It's also not allowed
+to use ensureProperty with a property that HasInfo, as the info would
+not propigate to the outer property. The type checker is also preventing
+you making that mistake.
+
+(You also forgot to pass the `w` parameter to `ensureProperty`, 
+which made the type checker unhappy as well and probably confused the error
+messages.)
+
+To accomplish your goal, you could use:
+
+	data DebOMaticHostMirror = DebOMaticHostMirror
+
+If a Host has this in its Info, you know that Host is the one with
+debomatic installed. You can then get its hostname using the `hostName`
+field accessor on the Host. 
+
+The property that does that will need to be passed a `[Host]` which will
+typically be the `hosts` list defined in config.hs.
+"""]]

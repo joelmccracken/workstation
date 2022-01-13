@@ -1,0 +1,21 @@
+sbuild 0.70.0-1 no longer installs gnupg into chroots on each build. That means that if you have an sbuild apt keypair generated, the build will fail unless you enter the source chroot and install gnupg.
+
+It turns out that the apt keypair is only needed if you're trying to build for squeeze or older.  Otherwise, you can just use sbuild without such a keypair.  So we have two options to fix Sbuild.hs:
+
+1. Install gnupg into chroots.
+
+    - This is easy for newly created chroots.
+
+    - The code to update existing chroots will be unpleasant, because we don't want to run propellor inside the sbuild chroot so that it remains standardised (that's why we create it with sbuild-createchroot).
+
+2. Drop support for building for squeeze and newer, replacing the `keypairGenerated` and `keypairInsecurelyGenerated` properties with a property that ensures that the keypair directory does not exist.
+
+    - Squeeze is very old.
+
+    - This will simplify and speed up chroot creation and builds.
+
+I'd like feedback on these two options before preparing a patch for one of them.
+
+--spwhitton
+
+> [[merged|done]] --[[Joey]]

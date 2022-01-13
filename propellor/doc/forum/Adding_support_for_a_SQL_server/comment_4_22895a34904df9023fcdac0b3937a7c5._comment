@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 4"
+ date="2018-08-30T21:14:32Z"
+ content="""
+Hello,
+
+I have made a first version to support MySQL databases and users for classic web applications.
+
+You can pull the mysql branch at http://git.ni.fr.eu.org/nicolas/propellor.git
+
+Can you have a look? I find userGrantedOnDatabase.setup' a little hard to read. Is it OK, or do you see a clearer way to write it?
+
+Thanks!
+"""]]

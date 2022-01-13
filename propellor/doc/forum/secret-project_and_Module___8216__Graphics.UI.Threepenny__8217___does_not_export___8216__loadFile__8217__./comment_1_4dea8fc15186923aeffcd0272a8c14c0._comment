@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="additional information"
+ date="2017-12-28T12:44:23Z"
+ content="""
+There was another error before the error reported above. It was
+
+	Error: While constructing the build plan, the following exceptions were encountered:
+	
+	In the dependencies for secret-project-0.0:
+	    threepenny-gui-0.7.0.1 from stack configuration does not match (==0.8.0.0) (latest matching version
+	                           is 0.8.0.0)
+	needed since secret-project is a build target.
+
+My workaround was
+
+	--- a/secret-project.cabal
+	+++ b/secret-project.cabal
+	@@ -21,7 +21,7 @@ Executable propellor-config
+	   Build-Depends:
+	       base (>= 4.9 && < 5.0)
+	     , propellor >= 4.7.6
+	-    , threepenny-gui (== 0.8.0.0)
+	+    , threepenny-gui (== 0.7.0.1)
+	     , random (>= 1.1)
+	     , random-shuffle (>= 0.0.4)
+	     , filepath (>= 1.4)
+
+That because `stack.yaml` has a package line
+
+	- http://github.com/joeyh/threepenny-gui/archive/59242cf93bdb8eaa805f5c2b0241e9a1cba9a70f.zip
+
+where I think/assume the 0.7.0.1 comes from.
+	
+
+"""]]

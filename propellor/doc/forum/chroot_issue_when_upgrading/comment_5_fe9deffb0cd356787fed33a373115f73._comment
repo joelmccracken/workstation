@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 5"
+ date="2016-03-29T21:41:50Z"
+ content="""
+Here the c++ code of apt
+
+    // See if we need to abort with a dirty journal
+    if (CheckUpdates() == true)
+    {
+       close(d->LockFD);
+       d->LockFD = -1;
+       const char *cmd;
+       if (getenv(\"SUDO_USER\") != NULL)
+          cmd = \"sudo dpkg --configure -a\";
+       else
+          cmd = \"dpkg --configure -a\";
+       // TRANSLATORS: the %s contains the recovery command, usually
+       //              dpkg --configure -a
+       return _error->Error(_(\"dpkg was interrupted, you must manually \"
+                              \"run '%s' to correct the problem. \"), cmd);
+    }
+
+so there is a dirty journal. (maybe due to a power off during the chroot update)
+
+"""]]

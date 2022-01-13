@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="grub failure"
+ date="2019-08-19T02:16:24Z"
+ content="""
+I narrowed it down to the call to Grub.mkConfig, which basically calls \"update-grub\". If I just copy the ConfFile.containsShellSetting from Grub.configured, then things work fine, presumably because of some later call to update-grub (when the image is finalized?).  I'm just guessing, but maybe something later sets up /boot so that update-grub can succeed. I noticed the the call to mkConfig in Grub.installed is guarded against being in a contained, so maybe Grub.configured needs something similar.
+"""]]

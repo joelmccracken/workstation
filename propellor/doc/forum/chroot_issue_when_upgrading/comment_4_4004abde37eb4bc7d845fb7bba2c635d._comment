@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 4"
+ date="2016-03-29T21:36:11Z"
+ content="""
+I found this in the apt code
+
+    #: apt-pkg/deb/debsystem.cc:82
+    msgid \"\"
+    \"dpkg was interrupted, you must manually run 'dpkg --configure -a' to correct \"
+    \"the problem. \"
+    msgstr \"\"
+
+"""]]

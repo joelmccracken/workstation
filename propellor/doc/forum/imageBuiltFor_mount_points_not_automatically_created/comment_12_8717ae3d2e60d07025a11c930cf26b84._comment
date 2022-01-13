@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 12"
+ date="2017-12-22T12:16:50Z"
+ content="""
+Or not? I found this one: you inverted EFI64 and EFI32 in Grub.targetParam :)
+"""]]

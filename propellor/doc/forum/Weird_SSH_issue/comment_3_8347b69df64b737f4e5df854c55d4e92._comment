@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2016-03-06T17:54:20Z"
+ content="""
+It also seemed to affect the first spin and not the second one when I was
+seeing it. But that was 1-2 weeks ago, and I am not currently reproducing
+the issue.
+
+If you can reproduce it consistently, it would be good to check if the
+concurrent output layer, which involves intercepting all command output and
+serializing it, might be involved. If you edit
+`src/Utility/Process/Shim.hs` and make it simply `import System.Process as X`
+and remove the other import, that will bypass the concurrent output layer.
+"""]]

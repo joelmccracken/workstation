@@ -1,0 +1,1 @@
+I just installed git-annex using Apt.backportInstalled on a server and was kindof of horrified by the dependendencies dragged in. I suspect much of this is probably just youtube-dl, which should be fixed soon, but anyway, shouldn't there be a way to install from backports without recommends?

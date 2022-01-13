@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 2"
+ date="2018-01-01T11:10:01Z"
+ content="""
+If you update by merging from Joey's repo but have the Debian propellor package installed you'll always get this because the bundle in `/usr/src/propellor` has a commit ID that is distinct from any of those in Joey's branch.
+
+I think it would be nice to have a git config option to disable the check for those of us in the situation I just described.
+"""]]

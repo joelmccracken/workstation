@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 2"
+ date="2017-08-26T06:29:44Z"
+ content="""
+I could have multiple host with debomatic install on it.
+I need to create a property which take a list of hosts (all with the Debomatic info) in order to generate the sources.list files.
+This way it is possible for me to select per host the sources of packages.
+
+what should be done in order to type check this ?
+I would like the compiler to says. Hey you ask for a source list from this host but it dos not contain a Debian mirror.
+
+Cheers
+"""]]

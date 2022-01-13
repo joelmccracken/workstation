@@ -1,0 +1,24 @@
+I have module that I'm trying to write, which is always failing to build when ever I add a second (or more) cmdProperty to it.
+
+I've tried a variety of ways to write the module but clearly my limited Haskell skills are causing me to reach the barrier of ignorance which I'm failing to penetrate.
+
+The module is Pebble.hs and can be found here:
+
+<https://git.mcwhirter.io/craige/propellor-mio/blob/master/src/Propellor/Property/SiteSpecific/Pebble.hs>
+
+I'm hoping to shape that up into an upstream contribution, at some point :-)
+
+I've tried quite a few variations of:
+
+    sdk :: Property UnixLike|DebianLike -- (with and without HasInfo)
+    sdk = propertyList|combineProperties ("Pebble SDK") $ props
+
+I've compared it over and over again to examples in JoeySites and my own working modules ie:
+
+<https://git.mcwhirter.io/craige/propellor-mio/blob/master/src/Propellor/Property/SiteSpecific/OwnCloud.hs>
+
+As I uncomment an additional cmdProperty, the build of Pebble.hs fails.
+
+At a loss, cluebat blows greatly appreciated.
+
+Most recent build output is here <https://git.mcwhirter.io/snippets/5> with [Line 95](https://git.mcwhirter.io/snippets/5#L95) being the point of interest, I think.

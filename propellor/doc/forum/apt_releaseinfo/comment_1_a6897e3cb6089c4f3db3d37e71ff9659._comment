@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 1"
+ date="2019-07-12T06:39:18Z"
+ content="""
+I think that the point of this was to prevent people with 'stable' in their sources.list from accidentally upgrading to a new stable release.  Similarly, to prevent users with 'testing' in their sources.list from upgrading to the new testing, when what they wanted to do was track stable+1.
+
+I think that when a user uses propellor's `Testing` and `Unstable` types they are explicitly requesting a rolling release, so it seems find to pass it for those suites.
+
+This is not based on reading any discussions about the new feature.  Just my own inference as to its purpose.
+"""]]

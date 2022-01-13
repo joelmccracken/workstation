@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2018-01-06T17:38:34Z"
+ content="""
+I avoid those warnings with properties that clone dotfiles repos containing
+.gitconfig for root and users who can sudo.
+
+It would be fine to have a property to configure them in
+/etckeeper/.git/config, if you wanted to write it.
+I think this would do it:
+
+	Git.repoConfigured "/etc/" ("user.name", "whatever")
+	Git.repoConfigured "/etc/" ("user.email", "whatever@whatever")
+
+Those would only be used when the user running etckeeper has not configured
+it in their own ~/.gitconfig
+"""]]

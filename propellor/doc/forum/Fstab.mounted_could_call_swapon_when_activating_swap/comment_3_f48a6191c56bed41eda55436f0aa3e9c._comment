@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-04-05T03:08:30Z"
+ content="""
+I like the idea of composing smaller properties to build the current
+property, and add flexability.
+
+Renaming the existing `fstabbed` would probably be too much bother.
+(Also, I think I picked that name because it kind of hints that the
+existing fstab does not come out alive.)
+
+(The swapspace package is great if you can eat the now tiny overhead of a
+swap file compared to a swap partition.)
+"""]]

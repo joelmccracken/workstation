@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="why make clean?"
+ date="2020-08-14T16:59:44Z"
+ content="""
+I _think_ the problem was the existing dangling \"propellor\" symlink. But I could well be confused.
+"""]]

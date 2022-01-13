@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 5"
+ date="2018-08-17T14:36:19Z"
+ content="""
+I worked around the problem in the following way:
+
+    module Propellor.Property.SiteSpecific.SPW.Hostname (sane) where
+
+    import Propellor.Base
+    import qualified Propellor.Property.Hostname as Hostname
+
+    sane :: Property UnixLike
+    sane = Hostname.sane' id
+
+> How about we add a separate mailname property and make Hostname.sane not touch the mailname. mailname could take a Maybe and guess based on the hostname when Nothing is specified.
+
+This seems reasonable.  `Hostname.sane` is often wanted but `Mailname.sane` will be wanted only occasionally, so it makes sense for them to be separate properties.
+
+> Or, the mailname property could only set Info, and Hostname.sane use that info when set and guess when not. But, I suspect that would not have avoided your email-losing misconfiguration from happening in the first place.
+
+This wouldn't be much different from my workaround, indeed.
+"""]]

@@ -1,0 +1,6 @@
+With recent snapshots of propellor (after at least March 11) I am seeing significant increases of memory consumed by ghc when compiling propellor. Previous versions would compile and run on e.g. a raspberry pi. With a recent snapshot, I am seeing ghc OOM with a 5GB ulimit on my desktop. Has anybody else seen this?
+
+This is with the same version of GHC.
+
+    % ghc --version
+    The Glorious Glasgow Haskell Compilation System, version 7.10.3

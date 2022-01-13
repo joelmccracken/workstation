@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 3"
+ date="2016-07-27T20:42:29Z"
+ content="""
+I just pushed a commit using `start-stop-daemon` to my `robust-rngd` branch.  I decided against factoring out as a property until another use case comes up.  Please consider merging my branch, and then this todo will really be done.
+
+Thanks for introducing me to a nice tool.
+"""]]

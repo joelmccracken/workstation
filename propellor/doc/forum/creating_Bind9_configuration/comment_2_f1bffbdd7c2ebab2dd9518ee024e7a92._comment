@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-08-23T16:00:12Z"
+ content="""
+At least on Debian, bind seems to come configured to listen on all
+interfaces by default, so I have not messed with listen-on settings at all.
+
+confLines seems to have been included in NamedConf to allow for specifying
+additional lines, but there does not seem to be an interface to set it.
+Versions of the 3 dns properties with an additional (NamedConf -> NamedConf)
+parameter woulld be one way; I'd take such a patch.
+
+As to a minimal config vs a full clone, it's up to you. With a full clone
+you can easily modify all of propellor's properties to quicklly deal with
+issues like this.. but then you might have to maintain your patches if you
+don't get them accepted into propellor.
+"""]]

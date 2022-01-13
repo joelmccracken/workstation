@@ -1,0 +1,34 @@
+Hello,
+
+Still working on the reprepro property :)
+
+Here A property that I am using to publish a repository via apache (this is a prototype)
+
+    website :: String -> Property
+    website hn = toProp $ Apache.siteEnabled hn apachecfg
+        where
+          apachecfg = [ "<VirtualHost *>"
+                      , "DocumentRoot " ++ basePath
+                      , "<Directory " ++ basePath ++ ">"
+                      , "  Options Indexes FollowSymLinks Multiviews"
+                      , "  Order allow,deny"
+                      , Apache.allowAll
+                      , "</Directory>"
+                      ] ++ concatMap deny ["db", "conf", "incoming"]
+                      ++ ["</VirtualHost>"]
+    
+          deny dir = [ "<Directory \"" ++ basePath ++ "apt/*/" ++ dir ++ "\">"
+                     , "  Order deny,allow"
+                     , "  Deny from all"
+                     , "</Directory>"
+                     ]
+
+during my test I am runing the config.hs with
+runhaskell config.hs (it work the first time, the apache config files are ok)
+
+but when I do a modification on the apachecfg and rerun the runhaskell,
+the config files are not updated. I need to remove them to have an updated version.
+
+cheers
+
+Fred

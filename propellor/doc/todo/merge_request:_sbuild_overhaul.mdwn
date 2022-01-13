@@ -1,0 +1,21 @@
+Please consider merging the `sbuild-overhaul` branch of repo `https://git.spwhitton.name/propellor`.
+
+    * File.isSymlinkedTo now revertable. (minor API change)
+    * Sbuild module changes:
+      - Type of Sbuild.built changed to accept additional properties to be ensured
+        inside schroots. (API change)
+        See the suggested usage in module's documentation for new syntax.
+      - Drop Sbuild.installed, Sbuild.builtFor, Sbuild.updated,
+        Sbuild.updatedFor. (API change)
+        Use Sbuild.built instead.  See suggested usage in module's documentation.
+      - Propellor no longer sets up apt proxies in chroots automatically.
+        Instead, pass the new Sbuild.useHostProxy to Sbuild.built to have Propellor
+        propagate the host's Apt proxy configuration into the chroot.  See suggested
+        usage in module's documentation.
+      - Internally, Propellor no longer invokes sbuild-createchroot(1) to build
+        schroots.
+      - Update documentation.
+
+--spwhitton
+
+> [[merged|done]] --[[Joey]]

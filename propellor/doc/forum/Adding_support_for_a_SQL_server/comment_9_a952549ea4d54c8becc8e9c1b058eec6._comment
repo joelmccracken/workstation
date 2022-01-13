@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 9"
+ date="2019-03-26T17:26:03Z"
+ content="""
+Hello,
+
+I have added a function to restore a database from a backup. It works like the Borg.restored property, it will restore only if the database is empty.
+
+Also included is a fix to wait that the server is available. This is needed when a container is just started for example.
+"""]]

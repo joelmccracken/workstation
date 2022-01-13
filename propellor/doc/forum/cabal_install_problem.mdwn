@@ -1,0 +1,5 @@
+I just did a cabal install of propellor
+
+The binaries it installs are called wrapper and config, although the makefile/documentation say that at least one of them should be called propellor.
+
+Is this correct?

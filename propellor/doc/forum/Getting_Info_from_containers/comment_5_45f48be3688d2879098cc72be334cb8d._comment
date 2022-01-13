@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2019-07-21T15:18:51Z"
+ content="""
+This seems like a reasonable change to make, although I am not sure I
+understand how you'd practially use it.
+
+But as far as how to implement it, you merely need to make an IsInfo
+instance for Host (or for [Host]) and then each of the container properties
+can add the Host of their container to the Info.
+
+Hmm, actually, this info is already provided in another way.
+In Propellor.Types.Chroot there is a ChrootInfo that builds up a map from
+chroot location to Host, and that gets added to the Info of the host where the
+chroot is used.
+
+As well as being used for regular chroots, the systemd containers are based
+on a chroot and so also use and provide it. Docker does not currently use
+it though. It has a separate DockerInfo that also happens to include the
+Host corresponding to the docker container.
+
+Anyway, I guess I'm a little bit unclear on what your original problem was,
+it might help if you could restate it in more detail to see if this would
+really help with it.
+"""]]

@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="mithrandi"
+ avatar="http://cdn.libravatar.org/avatar/869963bdf99b541c9f0bbfb04b0320f1"
+ subject="comment 3"
+ date="2018-08-15T19:15:21Z"
+ content="""
+I tried this patch:
+
+```
+--- a/src/Propellor/Spin.hs
++++ b/src/Propellor/Spin.hs
+@@ -181,6 +181,8 @@ getSshTarget target hst
+ -- running the updateServer
+ update :: Maybe HostName -> IO ()
+ update forhost = do
++       hPrint stderr =<< hGetEncoding stdin
++       hSetEncoding stdin utf8
+        whenM hasGitRepo $
+                req NeedRepoUrl repoUrlMarker setRepoUrl
+```
+
+I get `Just ANSI_X3.4-1968` from the remote side but unfortunately the corruption persists.
+"""]]

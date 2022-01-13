@@ -1,0 +1,27 @@
+I use a single propellor configuration repository shared across multiple hosts, but we don't have a central repository, e.g. we don't set origin on master branch so propellor do not push/pull from central repository when updating. That works fine as long as we do not merge branches. When we do we encounter the following error:
+
+    remote: Counting objects: 108, done.        
+    remote: Compressing objects: 100% (105/105), done.        
+    remote: Total 108 (delta 53), reused 0 (delta 0)        s   
+    Receiving objects: 100% (108/108), 41.16 KiB | 22.00 KiB/s, done.
+    Resolving deltas: 100% (53/53), completed with 19 local objects.
+    From .
+     * branch            HEAD       -> FETCH_HEAD
+    
+    *** Please tell me who you are.
+    
+    Run
+    
+      git config --global user.email "you@example.com"
+      git config --global user.name "Your Name"
+    
+    to set your account's default identity.
+    Omit --global to set the identity only in this repository.
+    
+    fatal: unable to auto-detect email address (got 'root@lending-test.(none)')
+    propellor: <stdout>: hIsTerminalDevice: illegal operation (handle is closed)
+
+I do not understand properly how propellor does propagate changes in this case so I am unable to fix this issue in a sane way. What we currently do is simply log in in the server and wipe out propellor repo there, which works but kind of defeat the whole purpose of automated configuration management.
+
+Could you please advise on how we can fix this issue? Simply having a central repository would do the trick I guess, but is there another solution? 
+

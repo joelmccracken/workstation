@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-03-08T07:28:59Z"
+ content="""
+How about this simple approch: If stack.yaml exists, have propellor use
+stack for rebuilding itself.
+
+This assimes propellor doesn't ship a stack.yaml, which I think is ok.
+The user can `stack init` to create one.
+"""]]

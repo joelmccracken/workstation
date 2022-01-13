@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="OIC"
+ date="2018-08-27T14:14:09Z"
+ content="""
+Oh, I see now we are doing essentially the same thing. For those of you following along at home, mine is using that cryptic path because for the key because I am using both gitolite's native key handling and propellor to install keys.
+"""]]

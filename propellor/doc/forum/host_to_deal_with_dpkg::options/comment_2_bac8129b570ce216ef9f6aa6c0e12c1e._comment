@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-07-28T15:45:43Z"
+ content="""
+I doubt that apt's option parser deals with quotes; those are normally
+handled by the shell. runApt does not pass the command through the shell,
+so probably simply removing the quotes from inside the parameter will work.
+"""]]

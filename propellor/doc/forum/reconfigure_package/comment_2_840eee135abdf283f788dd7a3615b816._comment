@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 2"
+ date="2015-09-13T17:36:47Z"
+ content="""
+you are right I did not test with an empty list...
+
+and for now I already extract the reconfigure part and created my one property.
+
+I do not know it is it better to put Nothing or [] to express an empty debconf selection.
+"""]]

@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-03-30T23:22:17Z"
+ content="""
+Pushing to origin is needed when using propellor in the central git
+repository deployment mode. So it makes sense for --spin to try to push.
+If that push fails for some reason, it's not a fatal error, since propellor
+--spin also does peer-to-peer pushes.
+
+I don't think I want to get into trying to determine if a particular origin
+repo url is read-only or read-write. It can be hard to tell with eg
+a https url.
+
+Why don't you just `git remote rename origin upstream`? If the remote
+is not called origin, propellor will ignore it.
+"""]]

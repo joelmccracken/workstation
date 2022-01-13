@@ -1,0 +1,9 @@
+Please consider merging branch `hothasktags` of my repo `https://git.spwhitton.name/propellor`
+
+Moves the `2>/dev/null` redirection in the Makefile rule for `tags` in order to silence xargs if hothasktags is not installed (avoids `xargs: hothasktags: No such file or directory`).
+
+I assume that your originally intention was not to cause an error if hothasktags is not installed, since you have `|| true` at the end of the line.  However, someone trying to build propellor's Debian package saw the error output from xargs and thought it meant hothasktags should be a build-dep.  This patch prevents someone thinking that.
+
+-- [[spwhitton|https://spwhitton.name]]
+
+> [[merged|done]] --[[Joey]]

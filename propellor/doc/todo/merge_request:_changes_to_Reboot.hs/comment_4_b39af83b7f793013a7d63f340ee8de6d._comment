@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-06-14T03:41:53Z"
+ content="""
+When `requires` is used as in your first example, Reboot.toKernelNewerThan
+does not need to throw an exception. It could just return FailedChange
+and then Sbuild.builtFor wouldn't get run.
+
+Your second example, as written is actually buggy. If Apt.upgraded
+fails for some reason, then Reboot.toKernelNewerThan never gets run,
+and then Sbuilt.builtFor can still run with the wrong kernel version.
+
+The second example could instead be written thus:
+
+	& osDebian Testing "i386"
+	& combineProperties "sbuild setup"
+		( props
+			& Apt.stdSourcesList `onChange` (Apt.upgraded `before` Apt.cacheCleaned `before` Reboot.toKernelNewerThan "4")
+			& Sbuilt.builtFor ...
+		)
+
+Then if any part of the upgrade fails the following properties don't run
+thanks to `combineProperties`. And here too Reboot.toKernelNewerThan does
+not need to thow an exception.
+
+So, I'm not seeing any good use cases for it throwing an exception in these
+examples.
+"""]]

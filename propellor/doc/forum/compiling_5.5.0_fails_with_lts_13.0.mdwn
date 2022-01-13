@@ -1,0 +1,74 @@
+Running `stack install propellor` today fails in two ways:
+
+First up:
+
+    In the dependencies for propellor-5.5.0:
+    IfElse needed, but the stack configuration has no specified version  (latest
+           matching version is 0.85) needed since propellor is a build target.
+
+    Some different approaches to resolving this:
+
+    * Consider trying 'stack solver', which uses the cabal-install solver to
+    attempt to find some working build configuration. This can be convenient
+    when dealing with many complicated constraint errors, but results may be
+    unpredictable.
+
+    * Recommended action: try adding the following to your extra-deps
+    in /Users/thom/.stack/global-project/stack.yaml:
+
+    IfElse-0.85@sha256:6939b94acc6a55f545f63a168a349dd2fbe4b9a7cca73bf60282db5cc6aa47d2
+
+
+Once that's added, propellor fails to compile with:
+
+
+    [ 39 of 174] Compiling Propellor.Types  ( src/Propellor/Types.hs, .stack-work/dist/x86_64-osx/Cabal-2.4.0.1/build/Propellor/Types.o )
+
+    /private/var/folders/0v/w1nt655j39q9954g7y_2_jlh0000gn/T/stack8634/propellor-5.5.0/src/Propellor/Types.hs:187:10: error:
+        • Illegal nested constraint ‘SingI (Combine x y)’
+          (Use UndecidableInstances to permit this)
+        • In the instance declaration for
+            ‘Combines (Property (MetaTypes x)) (Property (MetaTypes y))’
+        |
+    187 | instance (CheckCombinable x y ~ 'CanCombine, SingI (Combine x y)) => Combines (Property (MetaTypes x)) (Property (MetaTypes y)) where
+        |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    /private/var/folders/0v/w1nt655j39q9954g7y_2_jlh0000gn/T/stack8634/propellor-5.5.0/src/Propellor/Types.hs:190:10: error:
+        • Illegal nested constraint ‘SingI (Combine x y)’
+          (Use UndecidableInstances to permit this)
+        • In the instance declaration for
+            ‘Combines (RevertableProperty (MetaTypes x) (MetaTypes x')) (RevertableProperty (MetaTypes y) (MetaTypes y'))’
+        |
+    190 | instance (CheckCombinable x y ~ 'CanCombine, CheckCombinable x' y' ~ 'CanCombine, SingI (Combine x y), SingI (Combine x' y')) => Combines (RevertableProperty (MetaTypes x) (MetaTypes x')) (RevertableProperty (MetaTypes y) (MetaTypes y')) where
+        |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    /private/var/folders/0v/w1nt655j39q9954g7y_2_jlh0000gn/T/stack8634/propellor-5.5.0/src/Propellor/Types.hs:190:10: error:
+        • Illegal nested constraint ‘SingI (Combine x' y')’
+          (Use UndecidableInstances to permit this)
+        • In the instance declaration for
+            ‘Combines (RevertableProperty (MetaTypes x) (MetaTypes x')) (RevertableProperty (MetaTypes y) (MetaTypes y'))’
+        |
+    190 | instance (CheckCombinable x y ~ 'CanCombine, CheckCombinable x' y' ~ 'CanCombine, SingI (Combine x y), SingI (Combine x' y')) => Combines (RevertableProperty (MetaTypes x) (MetaTypes x')) (RevertableProperty (MetaTypes y) (MetaTypes y')) where
+        |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    /private/var/folders/0v/w1nt655j39q9954g7y_2_jlh0000gn/T/stack8634/propellor-5.5.0/src/Propellor/Types.hs:195:10: error:
+        • Illegal nested constraint ‘SingI (Combine x y)’
+          (Use UndecidableInstances to permit this)
+        • In the instance declaration for
+            ‘Combines (RevertableProperty (MetaTypes x) (MetaTypes x')) (Property (MetaTypes y))’
+        |
+    195 | instance (CheckCombinable x y ~ 'CanCombine, SingI (Combine x y)) => Combines (RevertableProperty (MetaTypes x) (MetaTypes x')) (Property (MetaTypes y)) where
+        |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    /private/var/folders/0v/w1nt655j39q9954g7y_2_jlh0000gn/T/stack8634/propellor-5.5.0/src/Propellor/Types.hs:197:10: error:
+        • Illegal nested constraint ‘SingI (Combine x y)’
+          (Use UndecidableInstances to permit this)
+        • In the instance declaration for
+            ‘Combines (Property (MetaTypes x)) (RevertableProperty (MetaTypes y) (MetaTypes y'))’
+        |
+    197 | instance (CheckCombinable x y ~ 'CanCombine, SingI (Combine x y)) => Combines (Property (MetaTypes x)) (RevertableProperty (MetaTypes y) (MetaTypes y')) where
+        |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+I can reproduce this by bumping the lts version to 13.0 in master's stack.yaml and uttering `stack build`.

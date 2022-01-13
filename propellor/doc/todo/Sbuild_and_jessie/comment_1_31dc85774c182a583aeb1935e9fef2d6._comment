@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="diagnosis"
+ date="2017-12-08T17:47:24Z"
+ content="""
+I think that the issue is that under jessie the binary is named `adt-run` not `autopkgtest`.  In which case, the problem is in `Sbuild.userConfig` which refers to `autopkgtest`.  Maybe `Sbuild.useConfig`'s haddock should say that it is for stretch and newer.
+
+`Sbuild.built` already installs `autopkgtest` (by means of `Sbuild.preReqsInstalled`).  So I don't see how installing that package could have fixed the problem.  Possibly you installed from jessie-backports, and maybe that version provides `/usr/bin/autopkgtest`?
+"""]]

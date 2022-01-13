@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="patch, sorry for the previous line wraps"
+ date="2017-12-27T23:14:22Z"
+ content="""
+	--- a/secret-project.cabal
+	+++ b/secret-project.cabal
+	@@ -21,7 +21,7 @@ Executable propellor-config
+	   Build-Depends:
+	       base (>= 4.9 && < 5.0)
+	     , propellor >= 4.7.6
+	-    , threepenny-gui (== 0.8.0.0)
+	+    , threepenny-gui (>= 0.8.0.0)
+	     , random (>= 1.1)
+	     , random-shuffle (>= 0.0.4)
+	     , filepath (>= 1.4)
+
+"""]]

@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 18"""
+ date="2018-01-06T17:51:05Z"
+ content="""
+I don't know much about GPT boot stuff. I found mention of a BIOS boot
+partition for GPT here:
+
+<https://help.ubuntu.com/community/DiskSpace>
+
+So, 1 mb partition with no filesystem and a "bios_grub" flag.
+
+Propellor's partitioning DSL will need to be extended in order to
+support that. Currently, `Partition` has a `Fs` that is one of the common
+filesystems or swap. Now we need no filesystem, so either add a NoFs to Fs,
+or change it to use `Maybe Fs`. I chose the latter, because with NoFs,
+Partition.formatted would be a no-op, which would be kinda surprising.
+
+I've made a commit adding all the stuff you should need, but I have not
+tested making a BIOS boot partition with it. Should look
+something like this:
+
+	& hasPartition (rawPartition (MegaBytes 1) `setFlag` BiosGrubFlag)
+
+If you get it working, it would be good to add an example to propellor's docs.
+"""]]

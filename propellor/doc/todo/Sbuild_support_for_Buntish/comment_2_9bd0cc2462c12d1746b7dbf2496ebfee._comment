@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 2"
+ date="2019-03-06T21:39:13Z"
+ content="""
+When implementing the Sbuild module we discussed the use of toChildProps and concluded that it was inevitable.
+
+However, if requiring the user to pass things around a bit more is the price for making the Sbuild module work for other OSs, we had better do it.
+"""]]

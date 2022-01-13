@@ -1,0 +1,12 @@
+## [[news]]
+
+[[!inline feeds=no template=bare pages=news]]
+
+## enjoy
+
+Hope you find Propellor fun and useful!
+
+Propellor is free software, licensed under the BSD license.
+
+You are encouraged to send patches and improve it.  
+See [[contributing]].

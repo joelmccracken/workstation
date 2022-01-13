@@ -1,0 +1,25 @@
+Hello, I am using the Sbuild property on a jessie computer.
+
+after installing this 
+
+    & (Sbuild.built Sbuild.UseCcache $ props
+        & osDebian (Stable "jessie") X86_64
+        & Sbuild.update `period` Weekly (Just 1)
+        & Sbuild.useHostProxy irdrx1)
+    & Sbuild.userConfig (User "picca")
+    & Sbuild.usableBy (User "picca")
+
+I get this error message
+
+picca@irdrx1:~/Debian/python-qtconsole/python-qtconsole$ sbuild
+Error reading configuration: AUTOPKGTEST binary 'autopkgtest' does not exist or is not executable at /usr/share/perl5/Sbuild/Conf.pm line 75.
+
+once `autopkgtest` installed it works great.
+
+So to my opinion the autopkgtest dependency is missing.
+
+Cheers and thanks for this new Sbuild which is really nice :))
+
+Frederic
+
+> [[done]] --spwhitton

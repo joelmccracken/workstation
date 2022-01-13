@@ -1,0 +1,1 @@
+I have one propellor managed system where the home directory is NFS mounted, with `root_squash` enabled. This  means that Ssh.authorizedKey fails with permission problems. On the other hand, root can su to the user in question.  It seems like it might be possible for propellor (maybe even desirable?) to write files as the owner, rather than using chown.

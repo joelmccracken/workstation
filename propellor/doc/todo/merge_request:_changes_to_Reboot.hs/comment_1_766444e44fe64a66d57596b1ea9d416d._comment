@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-06-13T22:59:56Z"
+ content="""
+While I've merged this, I am unsure if Reboot.toKernelNewerThan
+should stop propellor from ensuring any subsequent properties.
+
+That works if we have:
+
+	& toKernelNewerThan foo
+	& Sbuild.built
+
+But not if the two properties are flipped. So, doesn't it follow
+that Sbuild.built is a buggy property?
+
+If Sbuild.built needs a particular kernel version running,
+it could requires toKernelNewerThan. Then any use of Sbuild.built
+would make sure the right kernel is running, rebooting into it if
+necessary. 
+
+And, if toKernelNewerThan failed due to the right kernel version not being
+installed, Sbuild.built would be prevented from running. In which case, it
+would be fine for propellor to continue on with ensuring other unrelated
+properties.
+"""]]

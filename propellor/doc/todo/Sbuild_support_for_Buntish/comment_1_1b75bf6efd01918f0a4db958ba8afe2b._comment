@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-03-06T19:35:16Z"
+ content="""
+In a way the problem is that schrootProps uses toChildProperty,
+which bypasses Propellor's type-level OS system.
+
+I think it may be possible to move the use of Apt.stdSourcesList
+out of Sbuild.built', and have the user pass those properties into it,
+along with the OS property and their other desired properties, 
+and let propellor type check that the properties passed to it all work
+together.
+"""]]

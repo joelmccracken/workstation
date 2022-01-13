@@ -1,0 +1,27 @@
+Currently all the privdata is written into a single encrypted file.
+
+This makes it more likely that, if multiple people are co-administering
+with propellor, they will make conflicting changes to the privdata.
+And resulving such a conflict would be pretty tricky.
+
+This could be improved by splitting up the privdata file, so there's one
+encrypted file per item. Conflicting commits would then be less likely,
+and even if they happened, it would only be one item in conflict, so
+should be eaiser to resolve it.
+
+Are there privacy concerns with splitting privdata? It would let anyone who
+can access the repository but not decrypt it guess more about its
+properties. 
+
+They could look at the size of an item and make guesses about eg, the
+length of a password. This could be blocked by padding the privdata, but it
+would need to be padded before encryption with binary garbage.
+
+They could also enumerate the various privdata fields. However, this can already
+be done by looking at the propellor configuration, so I don't think it's a
+problem.
+
+Finally, an attacker could look at the history of what privdata changed
+when. Currently, all an attacker can see is that some change was made to
+the privdata file; splitting it up would let them see which fields were
+changed when.

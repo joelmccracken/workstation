@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawkgUir7k_amh9RFp4D3QutX1fGh_nd7ko4"
+ nickname="Philipp"
+ subject="Passwords in PrivData"
+ date="2014-12-13T18:25:23Z"
+ content="""
+I wonder if there could be a shortcut in PrivData handling that hashes the input with crypt() instead of passing it raw to a machine. For instance passwords are stored in plain on the target machines, while this is not required to set the password in shadow: the hash would suffice. I think this page should at least spell out that fact.
+"""]]

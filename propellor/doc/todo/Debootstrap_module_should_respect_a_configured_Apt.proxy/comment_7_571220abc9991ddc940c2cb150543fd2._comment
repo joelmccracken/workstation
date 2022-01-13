@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="Reassigning this bug to the Chroot and Debootstrap infrastructure"
+ date="2017-11-18T17:57:22Z"
+ content="""
+I'm almost done with my branch, and I now think that this bug applies to the `Chroot` and `Debootstrap` modules.  This is how the new sbuild module will work:
+
+    & Apt.useLocalCacher
+    & Sbuild.built Sbuild.UseCcache $ props
+    	& osDebian Unstable X86_32
+    	& Sbuild.update `period` Weekly 1
+    	& Sbuild.useHostProxy
+    & Sbuild.usableBy (User \"spwhitton\")
+    & Schroot.overlaysInTmpfs
+
+As you can see, the propagation of the host's Apt proxy into the chroot is controlled by a property of the chroot, for maximum flexibility.  For example, you could replace `Sbuild.useHostProxy` with a call to `Apt.proxy`.
+
+However, the properties of the sbuild chroot will not be applied until after the chroot is built.  So, in order to resolve Fred's issue, it is the invocation of debootstrap by the `Chroot`/`Debootstrap` modules that needs to be taught to use the host's Apt proxy, if one is set.
+
+(w.r.t. unpropelling: I'm not going to do any cleanup because /usr/local/propellor is not likely to interfere with the build.  What matters is installed build-deps, and we've established there won't be any.)
+"""]]

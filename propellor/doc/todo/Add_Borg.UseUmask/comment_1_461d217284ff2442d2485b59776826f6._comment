@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2020-08-20T16:58:14Z"
+ content="""
+I checked and there was no justification given for the use of date rather
+than {now} ... Perhaps it predated that?
+
+The only difference between the two is the use of date for some reason
+included nanaosecond precision. Otherwise the format is the same.
+
+I have no objection to making that change, but I think it needs to be done
+in a separate commit, rather than in passing.
+
+Also, I think `UseUmask Int` could be `UseUmask FileMode`. At least
+FileMode is used in some other parts of propellor that deal with umasks.
+"""]]

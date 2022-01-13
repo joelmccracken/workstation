@@ -1,0 +1,28 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-02-03T19:14:41Z"
+ content="""
+Wow, nice work!
+
+Seems that Propellor.Property.Partition.formatted' is still a DebianLike
+property really, since it only supports using apt to install the mkfs
+programs. It will fail at runtime on Arch. So, I think best to keep it
+DebianLike until that's dealt with -- and then the type will be 
+`DebianLike + ArchLinux` rather than `LinuxLike`
+
+Same for Propellor.Property.Partition.kpartx.
+
+Several properties that were changed from DebianLike to Linux really
+only support DebianLike and ArchLinux, not all linux distros, so their
+types ought to be `DebianLike + ArchLinux`. This includes Docker.installed,
+Parted.installed, Rsync.installed.
+
+A nicer way to inplement those multi-distro `installed` properties is like
+this:
+
+	installed :: Property (Debian + ArchLinux)
+	installed = Apt.installed ["foo"] `pickOS` Pacman.installed ["foo"]
+
+Make those changes and I will merge it.
+"""]]

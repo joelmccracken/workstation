@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-04-03T22:39:14Z"
+ content="""
+Mostly I point people at my [personal propellor config file](https://git.joeyh.name/index.cgi/propellor.git/tree/joeyconfig.hs)
+which is quite big, but demos a lot of propellor's features. And unlike
+an artificial example, it's always tested and working.
+"""]]

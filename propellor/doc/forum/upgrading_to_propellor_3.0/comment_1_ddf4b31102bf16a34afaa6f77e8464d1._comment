@@ -1,0 +1,135 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="How to migrate this property"
+ date="2016-04-13T08:52:10Z"
+ content="""
+Hello, I am trying to migrate this property
+
+    -- | Property used to setup a schroot used by sbuild
+    -- > schroot \"jessie-i386-sbuild\"
+    -- >    debootstrapped Debootstrap.BuildD \"/srv/chroot/ghc-dev\"
+    -- >	    & os (System (Debian (Stable \"jessie\")) \"i386\")
+    -- > 	    & Apt.installed [\"ghc\", \"haskell-platform\"]
+    -- > 	    & ...
+    schroot :: SchrootName -> Chroot -> RevertableProperty (HasInfo + DebianLike) DebianLike
+    schroot sn chroot@(Chroot.Chroot chrootdir _ _) = (setup `requires` installed) <!> cleanup
+        where
+          setup :: Property (HasInfo + DebianLike)
+          setup = conf `requires` (provision `onChange` targz)
+              where
+                provision :: Property (HasInfo + DebianLike)
+                provision = toChildProperty (Chroot.provisioned chroot) `before` umount
+                    where
+                      umount = property (\"umount \" ++ chrootdir) $ do
+                                 liftIO $ Mount.unmountBelow chrootdir
+                                 return NoChange
+                targz = createTarball chrootdir tarball
+                conf = chrootConf sn tarball
+          cleanup :: Property DebianLike
+          cleanup = File.notPresent (schrootChrootD </> sn)
+                    `requires` File.notPresent tarball
+                    `requires` toChildProperty (revert (Chroot.provisioned chroot))
+          tarball = chrootdir <.> \"tar.gz\"
+
+
+and when I compile it I get this error message
+
+    src/Propellor/Property/Sbuild.hs:79:25-83:
+
+    Couldn't match type ‘CombinedType
+                           ChildProperty (Property (MetaTypes metatypes1))’
+                   with ‘Property
+                           (MetaTypes
+                              '['WithInfo, 'Targeting 'OSDebian, 'Targeting 'OSBuntish])’
+    The type variable ‘metatypes1’ is ambiguous
+    Expected type: Property (HasInfo + DebianLike)
+      Actual type: CombinedType
+                     ChildProperty (Property (MetaTypes metatypes1))
+    Relevant bindings include
+      umount :: Property (MetaTypes metatypes1)
+        (bound at src/Propellor/Property/Sbuild.hs:81:19)
+    In the expression:
+      toChildProperty (Chroot.provisioned chroot) `before` umount
+    In an equation for ‘provision’:
+        provision
+          = toChildProperty (Chroot.provisioned chroot) `before` umount
+          where
+              umount
+                = property (\"umount \" ++ chrootdir)
+                  $ do { liftIO $ Mount.unmountBelow chrootdir;
+                         .... }
+    In an equation for ‘setup’:
+        setup
+          = conf `requires` (provision `onChange` targz)
+          where
+              provision :: Property (HasInfo + DebianLike)
+              provision
+                = toChildProperty (Chroot.provisioned chroot) `before` umount
+                where
+                    umount = property (\"umount \" ++ chrootdir) $ ...
+              targz = createTarball chrootdir tarball
+              conf = chrootConf sn tarball
+
+    src/Propellor/Property/Sbuild.hs:(87,17)-(89,79):
+
+    Couldn't match expected type ‘Property DebianLike’
+                with actual type ‘CombinedType
+                                    (Property
+                                       (MetaTypes
+                                          '['Targeting 'OSDebian, 'Targeting 'OSBuntish,
+                                            'Targeting 'OSFreeBSD]))
+                                    ChildProperty’
+    In the expression:
+      File.notPresent (schrootChrootD </> sn)
+      `requires` File.notPresent tarball
+      `requires` toChildProperty (revert (Chroot.provisioned chroot))
+    In an equation for ‘cleanup’:
+        cleanup
+          = File.notPresent (schrootChrootD </> sn)
+            `requires` File.notPresent tarball
+            `requires` toChildProperty (revert (Chroot.provisioned chroot))
+    In an equation for ‘schroot’:
+        schroot sn chroot@(Chroot.Chroot chrootdir _ _)
+          = (setup `requires` installed) <!> cleanup
+          where
+              setup :: Property (HasInfo + DebianLike)
+              setup
+                = conf `requires` (provision `onChange` targz)
+                where
+                    provision :: Property (HasInfo + DebianLike)
+                    provision
+                      = toChildProperty (Chroot.provisioned chroot) `before` umount
+                      where
+                          ...
+                    ....
+              cleanup :: Property DebianLike
+              cleanup
+                = File.notPresent (schrootChrootD </> sn)
+                  `requires` File.notPresent tarball
+                  `requires` toChildProperty (revert (Chroot.provisioned chroot))
+              ....
+
+    src/Propellor/Property/Sbuild.hs:98:18-42:
+
+    Couldn't match expected type ‘Property DebianLike’
+                with actual type ‘CombinedType
+                                    (Property (MetaTypes metatypes0)) (Property DebianLike)’
+    The type variable ‘metatypes0’ is ambiguous
+    Relevant bindings include
+      prop :: Property (MetaTypes metatypes0)
+        (bound at src/Propellor/Property/Sbuild.hs:100:5)
+    In the expression: prop `requires` installed
+    In an equation for ‘addUsers’:
+        addUsers users
+          = prop `requires` installed
+          where
+              prop
+                = property (\"sbuild add users \" ++ unwords names)
+                  $ liftIO
+                    $ toResult
+                      <$> boolSystem \"sbuild-adduser\" [Param user | user <- names]
+                where
+                    names = ...
+
+so my question is what is wrong with my code :))
+"""]]

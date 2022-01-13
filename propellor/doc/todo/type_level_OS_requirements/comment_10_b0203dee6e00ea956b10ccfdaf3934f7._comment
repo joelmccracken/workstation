@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 10"""
+ date="2016-03-20T17:29:48Z"
+ content="""
+The list of child properties is a problem, because it would need to be
+`[Property proptypes]` and the proptypes will vary, so heterogenious list.
+
+The proptypes of the child properties needs to influence the proptypes of
+the parent anyway. Take intersection of the parent's targets and its
+children's targets, plus both's non-target types.
+
+So, could calculate that proptypes, and use it as the type of both the
+parent property, and each child property in the list.
+"""]]

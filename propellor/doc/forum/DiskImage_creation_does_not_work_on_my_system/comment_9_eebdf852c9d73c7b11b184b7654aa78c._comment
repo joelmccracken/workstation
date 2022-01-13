@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 9"""
+ date="2017-08-24T14:39:05Z"
+ content="""
+The `DiskImage` data type could be expanded to support different output
+formats.
+
+Or, a type class could be used, so eg:
+
+	imageBuilt :: DiskImage d => d -> (FilePath -> Chroot) -> TableType -> [PartSpec ()] -> RevertableProperty (HasInfo + DebianLike) Linux
+
+The type class would just need a function to convert from the raw disk
+image to the desired file format. Then anyone could add whatever disk image
+formats they want (which can probably shade into containers in some cases).
+"""]]

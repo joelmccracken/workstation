@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-02-02T18:45:01Z"
+ content="""
+That example with reverting one property overriding another property
+is a general problem propellor has with conflicting properties. 
+Normally I don't much worry about it, but I agree an accidental mass
+upgrade is a good reason to avoid that problem here.
+
+Yes please add a new type alias for String (or an ADT) 
+if Package is not appropriate.
+
+I had misunderstood which function the TODO was for..
+
+Nice surprise that tightenTargets works on RevertableProperty at all.
+Since it does, you should be able to tighten one side, revert, tighten the
+other side, and re-revert. Or, deconstruct the RevertableProperty, 
+tighten both sides individually, and reconstruct it.
+
+I've added a Propellor.Property.File.configFileName that 
+should be suitable for your purposes, and others..
+"""]]

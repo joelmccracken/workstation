@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="db48x@80bd751a72d5a80737e2f875342cf845629c7202"
+ nickname="db48x"
+ avatar="http://cdn.libravatar.org/avatar/ad2688127feb555a92154b16d8eeb5d3"
+ subject="comment 2"
+ date="2017-04-05T02:48:08Z"
+ content="""
+Yes, perhaps if it took an Option FilePath (am I saying this correctly in Haskellese?) it would be nicer.
+
+I don't mind much how it's structured; this was just the smallest obvious change, since it was failing to mount it. Perhaps breaking it up into smaller, more primitive, pieces would help. Fstab.mounted could = Fstab.fstabbed `onChange` Fstab.mounted, for instance, and then I could write Fstab.fstabbed `onChange` Swap.swapEnabled (oh, but Fstab.fstabbed already exists; I'm not using it because it replaces the whole file, which seems like an odd thing to do. Maybe call it Fstab.listed instead?).
+
+Also, for maximum irony I was just perusing your most recent dozen commits or so, and saw you enable Apt.serviceInstalledRunning \"swapspace\" on one of your machines. That's amazing; I had no idea it existed! I am re-evaluating all of my life choices now.
+"""]]

@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-07-06T20:19:27Z"
+ content="""
+I was going to write something asserting that it's entirely data,
+and not code, though typed data expressed in a programming language.
+
+However, I think it's better to say that this code/data distinction is
+much less a useful distinction that commonly thought, one that things,
+especially in the configuration management space often chafe under (see
+all the turing complete ill-specified languages built on top of what
+started out as some pure data format that are in use by almost every other
+configuration management tool), and that Propellor is an attempt to
+move in a more useful and less ridigly defined direction.
+"""]]

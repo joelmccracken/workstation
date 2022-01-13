@@ -1,0 +1,38 @@
+I'm able to reproduce the following with a freshly cloned Propellor:
+
+    > stack build
+    propellor-5.3.5: build (lib + exe)
+    Preprocessing library propellor-5.3.5...
+    [ 43 of 171] Compiling Propellor.Types  ( src/Propellor/Types.hs, .stack-work/dist/x86_64-linux-nopie/Cabal-1.24.2.0/build/Propellor/Types.o )
+
+    /home/jayess/code/propellor/src/Propellor/Types.hs:251:37: error:
+        • Could not deduce (Monoid (Property setupmetatypes))
+            arising from a use of ‘<>’
+          from the context: (Sem.Semigroup (Property setupmetatypes),
+                             Sem.Semigroup (Property undometatypes))
+            bound by the instance declaration
+            at src/Propellor/Types.hs:(245,9)-(248,74)
+        • In the first argument of ‘RevertableProperty’, namely
+            ‘(s1 <> s2)’
+          In the expression: RevertableProperty (s1 <> s2) (u2 <> u1)
+          In an equation for ‘<>’:
+              (RevertableProperty s1 u1) <> (RevertableProperty s2 u2)
+                = RevertableProperty (s1 <> s2) (u2 <> u1)
+
+    /home/jayess/code/propellor/src/Propellor/Types.hs:251:48: error:
+        • Could not deduce (Monoid (Property undometatypes))
+            arising from a use of ‘<>’
+          from the context: (Sem.Semigroup (Property setupmetatypes),
+                             Sem.Semigroup (Property undometatypes))
+            bound by the instance declaration
+            at src/Propellor/Types.hs:(245,9)-(248,74)
+        • In the second argument of ‘RevertableProperty’, namely
+            ‘(u2 <> u1)’
+          In the expression: RevertableProperty (s1 <> s2) (u2 <> u1)
+          In an equation for ‘<>’:
+              (RevertableProperty s1 u1) <> (RevertableProperty s2 u2)
+                = RevertableProperty (s1 <> s2) (u2 <> u1)
+
+    --  While building package propellor-5.3.5 using:
+          /home/jayess/.stack/setup-exe-cache/x86_64-linux-nopie/Cabal-simple_mPHDZzAJ_1.24.2.0_ghc-8.0.2 --builddir=.stack-work/dist/x86_64-linux-nopie/Cabal-1.24.2.0 build lib:propellor exe:propellor exe:propellor-config --ghc-options " -ddump-hi -ddump-to-file"
+        Process exited with code: ExitFailure 1

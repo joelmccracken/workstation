@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2016-03-06T22:59:31Z"
+ content="""
+I don't see how that could be relevant, but if you want to, edit
+src/Propellor/Ssh.hs and make sshCachingParams return [] and
+see if that changes it.
+"""]]

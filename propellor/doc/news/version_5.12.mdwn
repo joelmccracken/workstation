@@ -1,0 +1,14 @@
+propellor 5.12 released with [[!toggle text="these changes"]]
+[[!toggleable text="""
+   * Worked around a situation where ghc uses insane amounts of memory
+     displaying an error message about a property of a host having the
+     wrong number of arguments.
+   * Added libghc-type-errors-dev to debian/control recommends, and
+     install it if available when bootstrapping propellor.
+   * Borg: add UseUmask to BorgRepoOpt.
+     Thanks, Nicolas Schodet
+   * Borg: use "{now}" instead of $(date ...)
+     Thanks, Nicolas Schodet
+   * Makefile: Deal with cabal change that made sdist
+     not output tarball to stdout.
+     Thanks, Sean Whitton"""]]

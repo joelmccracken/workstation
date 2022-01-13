@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="insufficient magic"
+ date="2018-10-14T11:12:36Z"
+ content="""
+right, changing the backing image would probably break everything.
+"""]]

@@ -1,0 +1,2 @@
+This might be wildly optimistic, but I registered the IRC channel #propellor on irc.oftc.net. I have no strong opinions on irc networks, but #git-annex is already there. Please join so you can answer my questions ;).
+

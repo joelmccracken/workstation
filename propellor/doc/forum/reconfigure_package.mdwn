@@ -1,0 +1,15 @@
+Hello,it would be nice to have the possibility to reconfigure a package without giving debconf selection
+
+this way it would be possible to just ask for a package reconfiguration.
+
+exemple the libdvd-pkg need to be reconfigure after installtion in order to install the dvdcss part.
+
+will it be possible for you to change the signature of reconfigure
+
+from
+
+reConfigure :: Package -> [(String, String, String)] -> Property NoInfo
+
+to
+
+reConfigure :: Package -> Maybe [(String, String, String)] -> Property NoInfo

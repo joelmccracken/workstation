@@ -1,0 +1,5 @@
+Propellor's source code and some example configs are in a git repository:
+
+`git clone git://propellor.branchable.com/propellor`
+
+See the [[README]] for details on installing and configuring propellor.

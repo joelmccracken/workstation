@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2017-09-05T20:23:44Z"
+ content="""
+Looks good to me, merged. Thanks for your contribution!
+
+(I did make a simplification to it
+in [[!commit 0a6ad2b17419fd877789053c87b95866cfc39c46]],
+which seems ok by inspection to me, but I've not tested. Please
+let me know if I somehow got that wrong.)
+"""]]

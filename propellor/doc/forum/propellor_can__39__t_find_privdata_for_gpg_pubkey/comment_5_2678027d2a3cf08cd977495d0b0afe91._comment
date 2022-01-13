@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="comment 5"
+ date="2020-08-22T20:13:07Z"
+ content="""
+In answer to my own question, it's not related to the content.
+Here we can see a PrivFile has content:
+[[!format text \"\"\"
+╭─ convex:~/.propellor 
+╰─ (git)-[master]-% propellor --dump 'PrivFile \"/root/foo\"' 'any'
+[2020-08-22 16:57:32 ADT] command line:  Dump (PrivFile \"/root/foo\") (Context \"any\")
+[2020-08-22 16:57:32 ADT] read: git [\"config\",\"gpg.program\"]
+[2020-08-22 16:57:32 ADT] process done ExitFailure 1
+[2020-08-22 16:57:32 ADT] chat: gpg [\"--decrypt\",\"privdata/privdata.gpg\"]
+gpg: encrypted with 4096-bit RSA key, ID 70E3C0DE87068451, created 2019-06-08
+      \"David Bremner <bremner@debian.org>\"
+[2020-08-22 16:57:33 ADT] process done ExitSuccess
+sekrit
+\"\"\"]]
+On the other hand, when running `propellor --spin convex.local` I get
+[[!format text \"\"\"
+** warning: Missing privdata PrivFile \"/root/foo\" (for any)
+Fix this by running:
+  propellor --set 'PrivFile \"/root/foo\"' 'any' \
+    < /root/foo
+\"\"\"]]
+
+I tried with a different workstation, spinning itself, and the same machine as above (\"convex\"), with the same results.
+"""]]

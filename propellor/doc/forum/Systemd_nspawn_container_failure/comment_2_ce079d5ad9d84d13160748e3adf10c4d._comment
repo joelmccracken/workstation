@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="comment 2"
+ date="2016-10-03T21:50:04Z"
+ content="""
+Indeed, your guess was correct: `Debootstrap.installed` prints `debootstrap installed ... ok` even on the first run, but in fact it is not installed. I believe this patch fixes the problem:
+
+```
+diff --git a/src/Propellor/Property/Debootstrap.hs b/src/Propellor/Property/Debootstrap.hs
+index 59850c4..f9737ca 100644
+--- a/src/Propellor/Property/Debootstrap.hs
++++ b/src/Propellor/Property/Debootstrap.hs
+@@ -100,7 +100,7 @@ extractSuite (System (FreeBSD _) _) = Nothing
+ installed :: RevertableProperty Linux Linux
+ installed = install <!> remove
+   where
+-       install = check (isJust <$> programPath) $
++       install = check (isNothing <$> programPath) $
+                (aptinstall `pickOS` sourceInstall)
+                        `describe` \"debootstrap installed\"
+```
+"""]]

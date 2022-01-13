@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-09-01T22:32:43Z"
+ content="""
+One way would be to use System.Process's `close_fds` when executing
+vgs/lvs. BTW, I've seen such complaints from lvm before, in some
+situations not involving propellor.
+
+I've made a commit that makes the propellor lock FD be close-on-exec,
+which is generally a good idea for lock FDs anyway. (To prevent some 
+long-running daemon process that does not close such FDs keeping the lock
+held.)
+
+My guess is that the other 4 FDs, which are apparently pairs of FDs
+at both sides of a pipe, come from
+System.Console.Concurrent.Internal.bgProcess, which sets up just such a
+pipe. Quite possibly when vgs/lvs are run, it's via that function.
+
+Generally leaking non-lock-related FDs to child processes is not a big
+problem, as long as the child process doesn't write to random FDs (which
+would be pretty bad, but what would ever do that?) ... So I don't know if I
+want to try to chase down every FD used all through propellor to set them
+close-on-exec.
+"""]]

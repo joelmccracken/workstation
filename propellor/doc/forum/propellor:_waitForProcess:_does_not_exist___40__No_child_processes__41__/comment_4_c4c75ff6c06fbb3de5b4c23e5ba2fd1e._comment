@@ -1,0 +1,42 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2020-08-14T17:06:46Z"
+ content="""
+So the relevant change in that commit, I think, is that
+waitForProcessConcurrent used to do its own locking,
+and would sometimes not even call waitForProcess, but instead
+waitAny. And now it just calls waitForProcess.
+
+That change comes from concurrent-output commit 
+1c330fa3814baadf23c1934a8014c91a3251234a
+Which removed a workaround for
+https://github.com/haskell/process/issues/46 and added
+a depend on `process (>= 1.6)` which fixed its bug.
+
+Propellor does not depend on any particular version of process,
+so it's exposed to the old bug.
+
+But, David, is your system really using an older version of process to
+build propellor?
+(Bearing in mind that the system might ship with a newer version but cabal
+may have chosen to use an older version for whatever reason.)
+Probably the easiest way to check is, edit propellor.cabal,
+make it depend on `process (>= 1.6)`, and rebuild and see if you still have
+the problem.
+
+Anyway, we can either revert 1c330fa3814baadf23c1934a8014c91a3251234a in
+propellor, or revert the whole 162e1d4e82e24f0fe3e2bd3114e4366ddb1062c0
+but I'd really rather not do that because it's been stuck on the old
+version of concurrent-output forever. 
+
+Or, it propellor could depend on the fixed process. process-1.6
+was bundled with ghc-8.2.2. That works back to debian stable, but not
+oldstable, which is still a supported target of propellor.
+
+I guess, if we can confirm the old version of process is really the issue,
+I'm leaning toward reverting 1c330fa3814baadf23c1934a8014c91a3251234a,
+until the far-future time when we emerge blinking from the oldstable stasis
+chamber and propellor can finally depend on concurrent-output rather than
+bundling it.
+"""]]

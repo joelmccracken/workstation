@@ -1,0 +1,49 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="New design: requesting feedback"
+ date="2018-11-04T17:39:51Z"
+ content="""
+Having slept on it, and also looked at some more of virt-install(1), I have a new design.  I'd be grateful for feedback on this, before implementation.
+
+We have two properties: `Libvirt.kvmRunning` and `Libvirt.kvmRunningConducted`, where
+
+    kvmRunningConnected host = conducts host `requires` kvmRunning host
+
+The basic reason for separating these two properties is that for the conducting to work, various network things have to be set up, and there isn't a configuration that it would be sensible to have as a default.  More generally, libvirt isn't at all suited to declarative configuration.  What propellor can do well is build an image and have libvirt generate a barebones XML configuration file to boot the image.  This is what `Libvirt.kvmRunning` will do.  After that, we're going to have to leave it up to the user.  I suspect that outside of the very simplest cases, they are going to have to make a series of virsh(1) calls, using `flagFile` to ensure that it only happens once.
+
+`Libvirt.kvmRunning` will work like this:
+
+1. ensure libvirt etc. are installed
+2. build the image if it doesn't exist
+3. nuke the chroot used to build the image
+3. if VM config does not exist,
+    1. `virt-install -n vm-hostname --description \"vm-hostname VM\" --os-type=Linux --os-variant=debian9 --ram=1024 --vcpus=2 --autostart --disk path=/var/lib/libvirt/images/vm-hostname.img,device=disk,bus=virtio --import --print-xml >/tmp/foo`
+    2. `virsh define /tmp/foo`
+        - `virt-install --print-xml` and then `virsh define` avoids the problem of virt-install not exiting until after the VM has been shutdown at least once/the virt-viewer instance launched by virt-install has been closed
+    3. `virsh start vm-hostname`
+
+Sample usage:
+
+    laptop :: Host
+    laptop = host \"iris.silentflame.com\" $ props
+    	& osDebian (Stable \"stretch\") X86_64
+    	& Libvirt.kvmRunning Raw 1GB 2 develacc -- specification of image type, RAM and vCPUs to assign
+    
+    develacc :: Host
+    develacc = host \"develacc.iris.silentflame.com\" $ props
+    	& osDebian Unstable X86_64
+    	& hasPartition
+    		( partition EXT4
+    			`mountedAt` \"/\"
+    			`addFreeSpace` MegaBytes 10240
+    		)
+    	& Apt.installed [\"linux-image-amd64\"]
+    	& Grub.installed PC
+    
+    	& ipv4 \"192.168.122.31\"
+    	& Network.static \"ens3\" (IPv4 \"192.168.122.31\")
+    		(Just (Network.Gateway (IPv4 \"192.168.122.1\")))
+    		`requires` Network.cleanInterfacesFile
+    	& Hostname.sane
+"""]]

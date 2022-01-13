@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2020-08-14T16:44:43Z"
+ content="""
+I've merged your branch, thanks.
+
+It does seem to me that Borg.init could do the privdata lookup itself, and
+set `BORG_PASSPHRASE`. Otherwise the user is currently left with no
+indication of how to do that, except for the commit message
+[[!commit afab5b2f0b4e06a5c41f064d10f65ead063ab5af]].
+
+And, for BorgEncRepokey and BorgEncKeyfile, wouldn't backup and restore
+also need the passphrase to be provided?
+
+(I don't think these questions need to delay releasing propellor with your
+fixes, since AFAICS your changes won't impact anything that worked with
+propellor before.)
+"""]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="&quot;works&quot; might be overstating it for Grub.configured"
+ date="2019-08-18T14:32:13Z"
+ content="""
+What actually happens is the first run it fails, and leaves the chroot lying around. The second run it succeeds, but this seems pretty fragile? Also it ends up allocating too much free space in the disk image, but that's not the end of the world.
+"""]]

@@ -1,0 +1,81 @@
+Propellor comes with a lot of properties you can use. But eventually,
+you'll want to write a property of your own.
+
+This isn't hard. Often propellor has some properties you can use to build
+the property you want. Need to modify the content of a file? Use any of
+the properties in
+[Propellor.Property.File](http://hackage.haskell.org/package/propellor/docs/Propellor-Property-File.htm)
+Need to run some commands? Use [Propellor.Property.Cmd](http://hackage.haskell.org/package/propellor/docs/Propellor-Property-Cmd.html).
+
+To combine properties, the easiest way is to use `requires`.
+
+	someproperty `requires` otherproperty
+
+[Propellor.Property.List](http://hackage.haskell.org/package/propellor/docs/Propellor-Property-List.html)
+has a `propertyList` combinator that's also useful.
+
+[Propellor.Property](http://hackage.haskell.org/package/propellor/docs/Propellor-Property.html)
+has some other functions to modify Properties in useful ways.
+For example, `check` makes a Property call an `IO Bool` to check if the 
+Property needs be run.
+
+## example: User.hasLoginShell
+
+> As far as I can tell there is no easy way to set a user's
+> login shell. A Property User.hasLoginShell, which ensures
+> that a user has a specified login shell and that said shell
+> is in /etc/shells would be really helpful. Sadly, I lack the
+> skills to put this together myself :( -- weinzwang
+
+Propellor makes it very easy to put together a property like this.
+
+Let's start with a property that combines the two properties you mentioned:
+
+	hasLoginShell :: UserName -> FilePath -> Property UnixLike
+	hasLoginShell user shell = shellSetTo user shell `requires` shellEnabled shell
+
+The shellEnabled property can be easily written using propellor's file
+manipulation properties.
+
+	-- Need to add an import to the top of the source file.
+	import qualified Propellor.Property.File as File
+
+	shellEnabled :: FilePath -> Property UnixLike
+	shellEnabled shell = "/etc/shells" `File.containsLine` shell
+
+And then, we want to actually change the user's shell. The `chsh(1)`
+program can do that, so we can simply tell propellor the command line to
+run:
+
+	shellSetTo :: UserName -> FilePath -> Property UnixLike
+	shellSetTo user shell = cmdProperty "chsh" ["--shell", shell, user]
+
+The only remaining problem with this is that shellSetTo runs chsh every
+time, and propellor will always display that it's made a change each time
+it runs, even when it didn't really do much. Now, there's an easy way to
+avoid that problem, we could just tell propellor to assume that chsh
+has not made a change:
+	
+	shellSetTo :: UserName -> FilePath -> Property UnixLike
+	shellSetTo user shell = cmdProperty "chsh" ["--shell", shell, user]
+		`assume` NoChange
+
+But, it's not much harder to do this right. Let's make the property
+check if the user's shell is already set to the desired value and avoid
+doing anything in that case.
+
+	shellSetTo :: UserName -> FilePath -> Property UnixLike
+	shellSetTo user shell = check needchangeshell $
+		cmdProperty "chsh" ["--shell", shell, user]
+	  where
+		needchangeshell = do
+			currshell <- userShell <$> getUserEntryForName user
+			return (currshell /= shell)
+
+And that will probably all work, although I've not tested it. You might
+want to throw in some uses of `describe` to give the new properties
+more useful descriptions.
+
+I hope this has been helpful as an explanation of how to add properties to
+Propellor, and if you get these properties to work, a patch adding them
+to Propellor.User would be happily merged.

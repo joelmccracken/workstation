@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 10"""
+ date="2017-08-24T15:35:22Z"
+ content="""
+I've implemented the DiskImage type class.
+"""]]

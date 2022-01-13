@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 3"
+ date="2016-04-15T18:42:46Z"
+ content="""
+Thanks to your help I could convert my config.h... BUT now the compilation of my config.hs files eat all my RAM and faild after filling all the swap.
+I have a small computer i386 with only 700 Mo of RAM. Are you aware of this sort of \"side effect\" ;) with 3.0.1 ?
+"""]]

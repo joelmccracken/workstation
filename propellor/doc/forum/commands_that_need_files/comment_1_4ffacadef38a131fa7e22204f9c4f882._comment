@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 1"
+ date="2019-06-02T00:35:19Z"
+ content="""
+I would use (2).  Look for the string `withTmpFile` in Libvirt.hs to see how it's done.
+"""]]

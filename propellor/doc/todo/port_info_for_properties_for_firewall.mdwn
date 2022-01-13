@@ -1,0 +1,24 @@
+The firewall module could be improved if properties that set up a service
+on a port included info (see Propellor.Info and Propellor.Types.Info)
+about the port(s) used.
+
+While currently the ports have to be explicitly listed:
+
+	& Apache.installed
+	& Firewall.installed
+	& Firewall.addRule (Rule INPUT ACCEPT (Proto TCP :- Port 80))
+	& Firewall.addRule (Rule INPUT ACCEPT (Proto TCP :- Port 443))
+
+Instead the ports would be derived from the installed services.
+
+	& Apache.installed
+	& Firewall.installed
+
+There could also be some combinators to adjust the exposed
+ports of a property.
+
+	& localOnly Apache.installed
+	& exposedPorts [443,80] (Apt.serviceInstalledRunning "apache2")
+
+Such port enformation is also going to be needed as a basis of
+[[type_level_port_conflict_detection]]. --[[Joey]]

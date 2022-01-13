@@ -1,0 +1,6 @@
+Several comments and function names use the word "propigate" which seems to be a very uncommon spelling of "propagate". For example, Webster's dictionary knows about "[propagate](http://www.merriam-webster.com/dictionary/propagate)" but not about "propigate".
+
+Thus I propose to change the spelling into "propagate". I already did the change in the last commit on the branch `typo` in the repository `https://github.com/felgru/propellor.git`, from where you can pull the change.
+
+> A typo I often make, and not intentionally as with the propell*o*r
+> spelling. [[merged|done]] --[[Joey]]

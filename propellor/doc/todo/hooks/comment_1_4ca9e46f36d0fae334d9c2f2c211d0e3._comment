@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-10-20T16:40:43Z"
+ content="""
+There's `endAction` which can be used to register an action to run after
+all properties have run. This could pretty easily be extended to take
+a MVar associated with the action and use it to only run the action once.
+
+However, running actions at the end of the propellor run doesn't let other
+properties depend on the results of those actions. If an property
+configures apache, and another property somehow depends on apache being
+configured, deferring the apache restart to an endAction wouldn't work.
+"""]]

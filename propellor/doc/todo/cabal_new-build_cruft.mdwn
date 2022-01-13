@@ -1,0 +1,17 @@
+cabal new-build (now the default with recent cabal versions) stores stuff
+in dist-newstyle, versioned by the ghc version and the package version.
+
+So, as propellor builds itself on a host over and over again,
+and the host is upgraded and propellor is upgraded, dist-newstyle will
+accumulate cruft used by old builds.
+
+cabal clean can remove it of course, but then it won't update the build
+incrementally.
+
+What would be good is, a way to detect that the versioning has changed,
+and only then run cabal clean. One way to do that, would be when updating
+the propellor symlink to the cabal built binary, compare the old and new
+binary location. If they're not the same, the versioning has changed,
+and so cabal clean and re-build. --[[Joey]]
+
+(Note that stack probably has the same problem too.)

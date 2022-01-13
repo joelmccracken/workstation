@@ -1,0 +1,45 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-10-16T16:05:44Z"
+ content="""
+This is already implemented in propellor, but is currently only used
+when the remote host doesn't have git installed and apt fails to install
+it. I've used it for converting non-Debian systems to Debian eg.
+See Propellor.Spin.sendPrecompiled
+
+Going beyond what's there now is not a feature I need myself, and not a
+priority for me to implement, but I can help to some extent if you're going
+to work on it.
+
+Both the controller and host architecture matter of course in determining
+whether it will work. For example, an i386 controller will produce a
+propellor bundle that works on amd64. An amd64 controller's bundle *may*
+work on an i386 host, but only if its hardware and kernel happen to support
+64 bit. The simplest solution I can think of is to send the precompiled
+binary over to the host and check if it runs there before replacing any
+older propellor binary with it.
+
+The other question is, how to tell propellor when to use this mode. Some
+ideas, which build on each other.
+
+* --spin --precompiled
+
+* Add a `precompiled` property to the host that needs precompiled propellor.
+  The property can set Info, which --spin can look at to know if it needs
+  to use sendPrecompiled for this host, without needing --precompiled
+
+* Could also add a property that says a host is the controller for other
+  hosts. So, anytime propellor is run on the controller host, it
+  automatically spins the other hosts. And if the hosts it's spinning
+  have the `precompiled` property, the controller will honor it.
+
+Note that propellor's cron job will probably fail on a precompiled host,
+since even if it manages to pull changes from the central git repo
+(unlikely as a precompiled propellor currently isn't set up as a git repo),
+it can't locally compile them.
+
+So, in order to have a centralized repository with precompiled hosts,
+you need a controller that can handle sending the updated builds of
+propellor to them.
+"""]]

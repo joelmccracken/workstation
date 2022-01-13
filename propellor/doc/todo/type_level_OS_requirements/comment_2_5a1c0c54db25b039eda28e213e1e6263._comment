@@ -1,0 +1,43 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2016-03-08T18:44:25Z"
+ content="""
+I've made a typed-os-requirements branch that has type-level
+OS lists implemented.
+
+For example:
+
+	*Propellor.Types.OS.TypeLevel> let l = (debian `combineSupportedOS` freeBSD ) `intersectSupportedOS` unixlike
+	*Propellor.Types.OS.TypeLevel> l
+	OSList [OSDebian,OSFreeBSD]
+	*Propellor.Types.OS.TypeLevel> :t l
+	l :: OSList
+	       (IntersectOSList
+	          '[] '['OSDebian, 'OSFreeBSD] '['OSDebian, 'OSBuntish, 'OSFreeBSD])
+
+What this is lacking is type-level equality for OSList.
+The complicated type above should be equivilant to `OSList '[OSDebian, OSFreeBSD]`
+
+So, this doesn't type check yet:
+
+	foo :: OSList '[OSDebian, OSFreeBSD]
+	foo = (debian `combineSupportedOS` freeBSD ) `intersectSupportedOS` unixlike 
+
+	src/Propellor/Types/OS/Typelevel.hs:47:46:
+	    Couldn't match expected type ‘IntersectOSList
+	                                    '[]
+	                                    '['OSDebian, 'OSFreeBSD]
+	                                    '['OSDebian, 'OSBuntish, 'OSFreeBSD]’
+	                with actual type ‘'['OSDebian, 'OSFreeBSD]’
+	    In the expression:
+	      (debian `combineSupportedOS` freeBSD)
+	      `intersectSupportedOS` unixlike
+	    In an equation for ‘foo’:
+	        foo
+	          = (debian `combineSupportedOS` freeBSD)
+	            `intersectSupportedOS` unixlike
+
+Also, `intersectSupportedOS` should have an additional constraint,
+to prevent it from generating an empty type-level list.
+"""]]

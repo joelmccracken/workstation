@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="david@1439a1cab13195a56248b6a8fd98a62028bcba8a"
+ nickname="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="still in 5.3.6"
+ date="2018-08-24T02:12:44Z"
+ content="""
+I'm seeing this problem in 5.3.6, but only when the remote is Debian stable. Both ends are running 5.3.6 built from source.
+"""]]

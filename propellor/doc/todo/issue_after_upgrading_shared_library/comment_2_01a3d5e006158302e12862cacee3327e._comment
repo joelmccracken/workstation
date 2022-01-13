@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 2"
+ date="2015-04-02T09:24:07Z"
+ content="""
+Indeed, \"make clean\" on the server worked. I don't know it could be made more robust to this kind of upgrade...
+"""]]

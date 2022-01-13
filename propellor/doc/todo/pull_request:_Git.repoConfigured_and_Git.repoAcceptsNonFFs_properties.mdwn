@@ -1,0 +1,13 @@
+Please consider merging branch `repoAcceptsNonFFs` of the repository `https://git.spwhitton.name/propellor`.
+
+This branch adds
+
+- the revertable property `Git.repoAcceptsNonFFs` which sets `receive.denyNonFastForwards` on a repo; and
+- a simple property `Git.repoConfigured` to run `git config` for the above property.
+
+`Git.repoAcceptsNonFFs` is useful for running a git server, hosting repos with `Git.bareRepo`: some of them should be set to accept fast-forwards.
+
+Note that `Git.repoConfigured` uses a tuple instead of just two function arguments in order that it can be used infix in `config.hs` when connected to other properties with `&`, as `ConfFile.containsIniSetting`.
+
+> [[done]], thank you (had to fix some indents) --[[Joey]]
+>> Sorry about that!  Thought I had Emacs set up for your style guide.  --spwhitton

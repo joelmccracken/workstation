@@ -1,0 +1,4 @@
+Property.Sbuild claims to support Buntish Oses, but for me it fails in Apt.stdSourcesList, because that function currently (5.6.1) only supports
+Debian.  I suppose the right solution is to extend Apt.stdSourcesList, but maybe Property.Sbuild should do it's own thing?
+
+> Patch applied (and it is an API change) [[done]] --[[Joey]]

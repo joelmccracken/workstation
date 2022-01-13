@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2017-05-13T17:42:41Z"
+ content="""
+The way propellor handles running in a chroot or container is it exports
+its binary and support files into the container. This way the
+haskell code can run in a container, rather than being limited to
+only running shell commands in the container, and without needing ghc in
+the container.
+
+It does use the hardcoded `localdir` for that.
+It would certianly be possible to make it use propellor in a different
+location, perhaps using `getExecutablePath`.
+
+Since the git-annex outside the container passes command-line options to
+the one running inside the container to tell it what to do, using
+`mainProperties` would also not work since that does not look at
+command-line options. It would need to use `defaultMain` or
+`processCmdLine` and dispatch itself, or something..
+"""]]

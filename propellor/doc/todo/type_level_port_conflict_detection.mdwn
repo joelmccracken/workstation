@@ -1,0 +1,89 @@
+See <http://stackoverflow.com/questions/26027765/using-types-to-prevent-conflicting-port-numbers-in-a-list> --[[Joey]]
+
+Needs ghc newer than 7.6.3. It may be possible to port Data.Type.Equality
+and Data.Type.Bool to older versions; I got them to compile but they didn't
+work right. --[[Joey]]
+
+I have a `resourceconflict` branch that adds this in Propellor.Resources,
+but it is not yet integrated into the Property types. --[[Joey]]
+
+[[!tag user/joey]]
+
+> On the `typed-os-requirements` branch, I have the UsingPort 80 singleton
+> implemented. As soon as I tried to apply it to some apache properties
+> though, I realized a problem -- If multiple apache vhosts are defined
+> each as its own property, then each of those properties can't have
+> UsingPort 80. Because the idea is to not allow combining 2 properties
+> that use the same pprt.
+> 
+> Similarly, Apache.installed can't have UsingPort 80, because each of the
+> vhost properties requires that, and would inherit it.
+> 
+> So, this could be used for non-vhost stuff, like simple web servers, tor
+> nodes, etc. But how to handle vhosts?
+> 
+> Of course, there could be a single property that defines all of a host's
+> apache vhosts, and it could then have UsingPort 80. But that loses the
+> flexible composition of properties.
+> 
+> I suppose we could include the server: `UsingPort 80 Apache`
+> (or `UsingPort 80 "apache"` to avoid needing a data type with all the
+> servers. Or even write it `"apache" '> 80`)  
+> And allow combining properties that have the same server on the same
+> port. Don't allow combining `UsingPort 80 Apache` with `UsingPort 80 Ngnix`
+> 
+> --[[Joey]] 
+
+> > Also, it's not clear how to parameterize properties that support
+> > running a service on different ports. One way might be to 
+> > declare the ports in the type signatures; the property code
+> > can then use `usedPorts (getMetaTypes self)` to get a port list.
+> > 
+> > So, we'd start with a property definition that does not use any ports:
+> > 
+> > 	virtualHost :: Domain -> WebRoot -> RevertableProperty DebianLike DebianLike
+> > 	virtualHost domain docroot = 
+> > 		let self = property "vhost" (go (usedPorts (getMetaTypes self)))
+> > 		in self
+> > 	where
+> > 	  go [] = error "No ports specified"
+> > 	  go ports = ...
+> >
+> > And then to use it:
+> > 
+> > 	& virtualHost "example.com" "/var/www" :: RevertableProperty (UsingPort 80 + DebianLike) DebianLike
+> >
+> > But, this seems like a mouthful to write!
+> > 
+> > Maybe make a `using` that changes the metatypes of a property,
+> > adding a resource. That shortens what needs to be written some:
+> >
+> > 	& virtualHost "example.com" "/var/www" `using` (port :: UsingPort 80)
+> >
+> > (`port` here is just an alias for `sing`, possibly constrained to only
+> > construct port singletons.)
+> > 
+> > --[[Joey]]
+> > 
+> > A further problem with this is that it's not clear from the
+> > `virtualHost` type signature that it needs to have a port applied to
+> > it to get a usable property. So in a way, by adding this advanced
+> > type safety, we've lost the most fundamental type safety of all:
+> > Functions must have the right parameters applied!
+> >
+> > Well then, let's require a parameter.
+> > 
+> > 	virtualHost :: Domain -> WebRoot -> Resource port -> RevertableProperty DebianLike DebianLike
+> > 
+> > Make `Resource` only able to be constructed by `using`,
+> > so the user must say:
+> > 
+> > 	& virtualHost "example.com" "/var/www" `using` (port :: UsingPort 80)
+> >
+> > So the type of `using` would be something like:
+> >
+> > 	using :: (Resource r -> Property proptype) -> r -> Property (r + proptype)
+> >
+> > (Complicated some as it needs to also support RevertableProperty.)
+> > 
+> > --[[Joey]]

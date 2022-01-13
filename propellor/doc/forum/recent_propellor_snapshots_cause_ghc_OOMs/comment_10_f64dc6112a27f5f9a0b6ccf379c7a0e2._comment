@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 10"""
+ date="2016-06-02T22:14:23Z"
+ content="""
+Mistakes in the parameters of properties (leaving out a parameter, wrong type
+parameter, etc) don't cause these super-long error messages, even when the
+property is in the middle of a big block of other properties. 
+
+The problem occurs only when a lot of properties have
+been combined together using `&` and used in an ill-typed way; in this situation
+ghc can't infer the a simple type for the combined properties, due to the use
+of type level functions to combine them.
+
+So, at least in this case, it doesn't seem to be a problem users are likely
+to hit except during the propellor 3.0 ugrade or if they forget to use
+`props` at some other time.
+"""]]

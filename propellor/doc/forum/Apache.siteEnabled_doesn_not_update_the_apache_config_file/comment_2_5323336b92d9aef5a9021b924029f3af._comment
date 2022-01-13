@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="second run with content modified"
+ date="2014-12-08T09:37:43Z"
+ content="""
+Second run after adding a space here
+
+    -                  , \"  Options Indexes FollowSymLinks Multiviews\"
+    +                  , \"  Options Indexes  FollowSymLinks Multiviews\"
+
+
+    root@mordor:~/propellor/src# PROPELLOR_DEBUG=1 runhaskell config.hs 
+    [2014-12-08 10:34:19 CET] read: hostname [\"-f\"]
+    [2014-12-08 10:34:19 CET] command line:  Run \"mordor\"
+    [2014-12-08 10:34:19 CET] read: git [\"remote\"]
+    [2014-12-08 10:34:19 CET] read: git [\"symbolic-ref\",\"--short\",\"HEAD\"]
+    [2014-12-08 10:34:19 CET] call: git [\"fetch\"]
+    remote: Counting objects: 32, done.
+    remote: Compressing objects: 100% (6/6), done.
+    remote: Total 6 (delta 3), reused 0 (delta 0)
+    Dépaquetage des objets: 100% (6/6), fait.
+    Depuis git://git.kitenet.net/propellor
+       c5a8cae..9ac0dfb  master     -> origin/master
+    Pull from central git repository ... done
+    [2014-12-08 10:34:20 CET] read: git [\"show-ref\",\"--hash\",\"master\"]
+    [2014-12-08 10:34:20 CET] read: git [\"show-ref\",\"--hash\",\"master\"]
+    mordor has Operating System (Debian Unstable) \"i386\" ... ok
+    [2014-12-08 10:34:20 CET] read: apt-cache [\"policy\",\"etckeeper\"]
+    mordor apt installed etckeeper ... ok
+    [2014-12-08 10:34:21 CET] read: apt-cache [\"policy\",\"ssh\"]
+    mordor apt installed ssh ... ok
+    [2014-12-08 10:34:21 CET] read: passwd [\"-S\",\"root\"]
+    mordor root has password ... ok
+    [2014-12-08 10:34:21 CET] call: a2query [\"-q\",\"-s\",\"reprepro\"]
+    mordor create reprepro ... ok
+    mordor overall ... ok
+
+"""]]

@@ -1,0 +1,43 @@
+Hello Joey,
+
+here the onfiguration of my propellor repro.
+
+    [remote "origin"]
+        url = git+ssh://git.debian.org/git/users/picca/propellor
+        fetch = +refs/heads/*:refs/remotes/origin/*
+
+I use this central repository to manage a bunch of computers.
+The problem I is that all these computer do have acces only from this url
+
+    [remote "origin"]
+        url = https://anonscm.debian.org/git/users/picca/propellor.git
+        fetch = +refs/heads/*:refs/remotes/origin/*
+
+So I can use the deploy branch trick.
+
+BUT
+
+since I have clone of the first repository (in order to push via ssh) on all of these computer (let call them locals), I need to add
+the deploy branch on all of them.
+
+So I tryed to add this directly in the propellor configuration.
+
+      & PropellorRepo.hasOriginUrl "https://anonscm.debian.org/git/users/picca/propellor.git"
+
+But when I do the spin for the first time from the locals, the url put in the /usr/local/propellor/.git/config files
+is the one from the locals cloned repository which is the ssh adress and not the https one.
+
+So the propellor spin stop with a timeout because it tryes to  git fetch  with the wrong url.
+
+
+My question is  is it normal ?
+
+
+PS: I also tryed to add
+
+  & bootstrappedFrom (GitRepoUrl "https://anonscm.debian.org/git/users/picca/propellor.git")
+
+but the result was the same.
+
+
+Cheers

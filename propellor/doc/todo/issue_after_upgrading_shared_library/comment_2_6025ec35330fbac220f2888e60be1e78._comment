@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-04-02T14:27:26Z"
+ content="""
+So I thought of two approaches.
+
+1. Propellor could copy in all the shared libraries. It already contains
+   code to do this. But, this would add overhead to every build. And it
+   might not guard against all snafus.
+
+2. Make propellor --check that should exit 0. Make --spin check that
+   propellor works and rebuild if not. Also make the runPropellor cron job
+   do that.
+
+I've gone with option #2.
+"""]]

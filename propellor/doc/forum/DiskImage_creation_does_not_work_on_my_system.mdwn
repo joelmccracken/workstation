@@ -1,0 +1,36 @@
+Hello, I am trying to create a virtualbox image from my stretch system.
+
+But I hve two problems :)
+
+I took your example from the DiskImage property, but in the end, I got this
+
+/srv/diskimages/soleil.img.chroot no services started ... ok
+/srv/diskimages/soleil.img.chroot has Operating System (Debian Linux Unstable) X86_32 ... ok
+/srv/diskimages/soleil.img.chroot apt installed linux-image-i686 ... ok
+/srv/diskimages/soleil.img.chroot grub package installed ... ok
+/srv/diskimages/soleil.img.chroot root has insecure password ... done
+/srv/diskimages/soleil.img.chroot account for soleil ... ok
+/srv/diskimages/soleil.img.chroot soleil has insecure password ... done
+/srv/diskimages/soleil.img.chroot user soleil in group audio ... ok
+/srv/diskimages/soleil.img.chroot user soleil in group cdrom ... ok
+/srv/diskimages/soleil.img.chroot user soleil in group dip ... ok
+/srv/diskimages/soleil.img.chroot user soleil in group floppy ... ok
+/srv/diskimages/soleil.img.chroot user soleil in group video ... ok
+/srv/diskimages/soleil.img.chroot user soleil in group plugdev ... ok
+/srv/diskimages/soleil.img.chroot user soleil in group netdev ... ok
+/srv/diskimages/soleil.img.chroot user soleil is in standard desktop groups ... ok
+/srv/diskimages/soleil.img.chroot cache cleaned ... ok
+              0   0%    0.00kB/s    0:00:00 (xfr#0, to-chk=0/3)
+            930   0%    1.77kB/s    0:00:00 (xfr#3, to-chk=0/11069)   
+chroot: impossible d'exécuter la commande « update-initramfs »: No such file or directory
+loop deleted : /dev/loop0
+
+I will try to add the pacakge which contain update-initramfs and report back
+
+
+the second problem is thaht virtualbox is no more part of stretch.
+So it is not possible to create a virtualbox image.
+
+Cheers
+
+Frederic

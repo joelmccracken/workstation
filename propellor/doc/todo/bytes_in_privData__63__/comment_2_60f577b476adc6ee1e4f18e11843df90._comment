@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 2"
+ date="2015-04-21T12:59:42Z"
+ content="""
+Would you accept a patch converting PrivData from String to ByteString?
+"""]]

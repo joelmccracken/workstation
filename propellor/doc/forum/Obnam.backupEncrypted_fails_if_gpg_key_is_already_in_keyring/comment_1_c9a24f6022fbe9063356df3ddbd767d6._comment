@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-12-11T16:41:30Z"
+ content="""
+More accurately, it's Gpg.keyImported that's failing, and this is because
+it's implemented using a flagFile to remember if it's imported the gpg key
+before. So the fix would be to implement:
+
+	hasPrivKey :: GpgKeyId -> User -> IO Bool
+
+	hasPubKey :: GpgKeyId -> User -> IO Bool
+
+And then Gpg.keyImported could use those with `check` to avoid redundant
+import.
+"""]]

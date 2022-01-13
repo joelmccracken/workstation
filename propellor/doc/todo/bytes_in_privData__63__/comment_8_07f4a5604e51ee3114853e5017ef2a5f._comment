@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="andrew"
+ subject="comment 8"
+ date="2016-06-15T06:44:55Z"
+ content="""
+This has bit me one too many times, so here is a full implementation. There could be some dedup work to merge fileProperty and byteProperty, but I'd rather not break API with a trivial bug fix.
+
+<https://github.com/arcticwaters/propellor/commit/f5a921760ccabf0a3ebdda626c19ee6ecbe89629>
+"""]]

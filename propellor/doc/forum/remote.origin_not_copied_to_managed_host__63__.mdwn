@@ -1,0 +1,95 @@
+The only remote which seems to be copied to /root/.propellor/.git/config is upstream... My /home/user/.propellor/.git/config contains a "origin" remote, but this part (as well as the master branch part) of my git config is not copied to the /root/.propellor/.git/config of a host I'm trying to manage...
+
+propellor fails with the following message:
+
+    user@laptop:~$ PROPELLOR_DEBUG=1 propellor --spin laptop.localdomain
+    if ! cabal build; then cabal configure; cabal build; fi
+    Building propellor-0.5.0...
+    Preprocessing library propellor-0.5.0...
+    In-place registering propellor-0.5.0...
+    Preprocessing executable 'propellor' for propellor-0.5.0...
+    Preprocessing executable 'config' for propellor-0.5.0...
+    ln -sf dist/build/config/config propellor
+    
+    
+    [2014-04-21 18:07:45 CEST] command line:  Spin "laptop.localdomain"
+    [2014-04-21 18:07:45 CEST] call: make ["build"]
+    if ! cabal build; then cabal configure; cabal build; fi
+    Building propellor-0.5.0...
+    Preprocessing library propellor-0.5.0...
+    In-place registering propellor-0.5.0...
+    Preprocessing executable 'propellor' for propellor-0.5.0...
+    Preprocessing executable 'config' for propellor-0.5.0...
+    ln -sf dist/build/config/config propellor
+    Propellor build ... done
+    [2014-04-21 18:07:48 CEST] read: git ["config","remote.deploy.url"]
+    [2014-04-21 18:07:48 CEST] read: git ["config","remote.origin.url"]
+    [2014-04-21 18:07:48 CEST] call: git ["commit","--gpg-sign","--allow-empty","-a","-m","propellor spin"]
+
+    You need a passphrase to unlock the secret key for
+    ...
+
+    [master ee393d6] propellor spin
+    [2014-04-21 18:07:48 CEST] call: git ["push"]
+    Counting objects: 1, done.
+    Writing objects: 100% (1/1), 852 bytes | 0 bytes/s, done.
+    Total 1 (delta 0), reused 0 (delta 0)
+    To git@remote-origin:propellor.git
+        16a1f8b..ee393d6  master -> master
+    [2014-04-21 18:08:21 CEST] chat: ssh ["-o","ControlPath=/home/user/.ssh/propellor/laptop.localdomain.sock","-o","ControlMaster=auto","-o","ControlPersist=yes","root@laptop.localdomain","sh -c 'if [ ! -d /usr/local/propellor ] ; then apt-get --no-install-recommends --no-upgrade -y install git make && echo STATUSNeedGitClone ; else cd /usr/local/propellor && if ! test -x ./propellor; then make deps build; fi && ./propellor --boot laptop.localdomain ; fi'"]
+    Initialized empty Git repository in /root/.propellor/.git/
+    warning: no common commits
+    From https://github.com/joeyh/propellor
+    * [new branch]      joeyconfig -> upstream/joeyconfig
+    * [new branch]      master     -> upstream/master
+    * [new branch]      setup      -> upstream/setup
+    * [new tag]         0.1        -> 0.1
+    * [new tag]         0.1.1      -> 0.1.1
+    * [new tag]         0.1.2      -> 0.1.2
+    * [new tag]         0.2.0      -> 0.2.0
+    * [new tag]         0.2.1      -> 0.2.1
+    * [new tag]         0.2.2      -> 0.2.2
+    * [new tag]         0.2.3      -> 0.2.3
+    * [new tag]         0.3.0      -> 0.3.0
+    * [new tag]         0.3.1      -> 0.3.1
+    * [new tag]         0.4.0      -> 0.4.0
+    * [new tag]         0.5.0      -> 0.5.0
+    * [new tag]         debian/0.3.1 -> debian/0.3.1
+    * [new tag]         debian/0.4.0 -> debian/0.4.0
+    * [new tag]         debian/0.5.0 -> debian/0.5.0
+    Merge made by the 'ours' strategy.
+    if [ "cabal" = ./Setup ]; then ghc --make Setup; fi
+    cabal configure
+    Warning: The package list for 'hackage.haskell.org' does not exist. Run 'cabal
+    update' to download it.
+    Resolving dependencies...
+    Configuring propellor-0.5.0...
+    if ! cabal build; then cabal configure; cabal build; fi
+    Building propellor-0.5.0...
+    Preprocessing executable 'propellor' for propellor-0.5.0...
+    [ 1 of 14] Compiling Utility.Env      ( Utility/Env.hs, dist/build/propellor/propellor-tmp/Utility/Env.o )
+    ...
+    [14 of 14] Compiling Main             ( propellor.hs, dist/build/propellor/propellor-tmp/Main.o )
+    Linking dist/build/propellor/propellor ...
+    Preprocessing library propellor-0.5.0...
+    [ 1 of 58] Compiling Utility.QuickCheck ( Utility/QuickCheck.hs, dist/build/Utility/QuickCheck.o )
+    ...
+    [58 of 58] Compiling Propellor.CmdLine ( Propellor/CmdLine.hs, dist/build/Propellor/CmdLine.o )
+    In-place registering propellor-0.5.0...
+    Preprocessing executable 'config' for propellor-0.5.0...
+    [ 1 of 44] Compiling Utility.QuickCheck ( Utility/QuickCheck.hs, dist/build/config/config-tmp/Utility/QuickCheck.o )
+    ...
+    [44 of 44] Compiling Main             ( config.hs, dist/build/config/config-tmp/Main.o )
+    Linking dist/build/config/config ...
+    ln -sf dist/build/config/config propellor
+    fatal: No remote repository specified.  Please, specify either a URL or a
+    remote name from which new revisions should be fetched.
+    Git fetch ... failed
+    merge: origin/master - not something we can merge
+    propellor: /usr/local/propellor/.lock: openFd: does not exist (No such file or directory)
+    Setting up your propellor repo in /root/.propellor
+
+
+
+    ** error: protocol error (perhaps the remote propellor failed to run?)
+    propellor: user error (ssh ["-o","ControlPath=/home/user/.ssh/propellor/laptop.localdomain.sock","-o","ControlMaster=auto","-o","ControlPersist=yes","root@laptop.localdomain","sh -c 'if [ ! -d /usr/local/propellor ] ; then apt-get --no-install-recommends --no-upgrade -y install git make && echo STATUSNeedGitClone ; else cd /usr/local/propellor && if ! test -x ./propellor; then make deps build; fi && ./propellor --boot laptop.localdomain ; fi'"] exited 1)

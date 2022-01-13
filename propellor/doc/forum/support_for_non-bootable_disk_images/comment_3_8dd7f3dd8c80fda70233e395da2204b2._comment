@@ -1,0 +1,33 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2018-10-13T21:41:25Z"
+ content="""
+Code^Wwhitespace review:
+
+* I noticed some places were using spaces for indentation;
+  please use tabs in propellor.
+* In "module Propellor.Property.DirectBoot(installed)'
+  there should be a space after the name of the module.
+* Needs comments explaining what properties are for.
+
+Naming ideas: Basically this is using qemu as the bootloader, rather than
+going through an (emulated) BIOS to start a bootloader. So I'm thinking
+names like QemuBootloader or NoBootloader, or NoBIOS. Don't want to
+bikeshed this too hard, it would be ok to keep the DirectBoot name, but
+I think Propellor.Property.DirectBoot at least needs a comment explaining what it's
+for, it would be confusing for a propellor user to stumble across that
+module without context.
+
+Your idea to copy the kernel and initrd out of the image so qemu can use
+them seems to point toward having a Property that gets one of these images
+booted up using qemu. And then the QemuBootloader name would make a lot of
+sense, because it would allow for later expansion to other emulators. Not
+that you have to build such a thing, but it's worth considering that someone
+may later want to.
+
+(In fact I could use such a thing, but I don't know how I'd want it to
+work. Should propellor only use the chroot for initial image build, and
+then ssh into the booted VM and run propellor in there when there are
+config updates? Or restart the VM when the image is changed?)
+"""]]

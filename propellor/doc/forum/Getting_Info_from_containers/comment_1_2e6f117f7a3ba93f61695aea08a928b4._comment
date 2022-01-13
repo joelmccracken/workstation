@@ -1,0 +1,32 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-04-16T14:35:26Z"
+ content="""
+Info can propagate out of containers, but then it becomes Info of the Host
+that the container is part of. The IsInfo type class has a propagateInfo
+that controls whether a value of that type propagates from container to
+host.
+
+The ssh HostKeyInfo has a propagateInfo that prevents propagation.
+This makes sense with the current data structure because the ssh host key
+inside the container does not replace the host key used outside. The data
+structures would need to be changed in some way to support propagation.
+I guess HostKeyInfo could be changed to a map from hostname to what it
+contains now.
+
+There would be follow-on changes needed, eg Dns.genSSHFP adds the ssh host
+key to a dns record, and I think it would only make sense for that to add
+the host's ssh key, not one for each container.
+
+WRT the name of a systemd container, it's not a hostname, but a systemd
+machine name. Propellor does not currently track the hostname of a
+container as Info (and the Info system is actually not used for hostnames
+since the hostname is part of each Host). The closest thing available
+currently is Propellor.Info.alias which can be used in a container to add
+an CNAME to the Host that contains it.
+
+Anyway, changing the name of a systemd container would indeed build a new
+container. I'd probably revert the current property (so it deletes the
+current container) and add a new property with the new name.
+"""]]

@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2017-12-21T16:06:56Z"
+ content="""
+That's definitely due to the alignment changes, I knew those changes
+could run afoul of parted's checks, but in my tests they seemed to work.
+
+Could you paste /srv/router.img.parttable, that should have enough
+infromation for me to reproduce the problem.
+"""]]

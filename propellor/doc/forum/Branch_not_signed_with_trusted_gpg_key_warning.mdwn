@@ -1,0 +1,79 @@
+When I `propellor --spin HOST`, I started to get this warning:
+
+```
+** warning: git branch origin/master is not signed with a trusted gpg key; refusing to deploy it! (Running with previous configuration instead.)
+```
+
+Here's the relevant output from propellor:
+
+```
+Preprocessing library for propellor-5.9.1..                                                                                                                               
+Building library for propellor-5.9.1..                                                                                                                                    
+Preprocessing executable 'propellor-config' for propellor-5.9.1..                                                                                                         
+Building executable 'propellor-config' for propellor-5.9.1..                                                                                                              
+Propellor build ... done                                                                                                                                                  
+[master ee86ede9] propellor spin                                                                                                                                          
+Git commit ... done                                                                                                                                                       
+Enumerating objects: 1, done.                                                                                                                                             
+Counting objects: 100% (1/1), done.                                                                                                                                       
+Writing objects: 100% (1/1), 869 bytes | 869.00 KiB/s, done.                                                                                                              
+Total 1 (delta 0), reused 0 (delta 0)                                                                                                                                    
+To [redacted].com:sr/propellor.git                                                                                                                      
+   ed5038fa..ee86ede9  master -> master                                                                                                                                  
+Push to central git repository ... done                                                                                                                                  
+gpg: encrypted with 4096-bit RSA key, ID 0x[redacted]0F5, created 2016-09-06                                                                                          
+      "Siddharth Ravikumar <[redacted]@[redacted].com>"                                                                                                                      
+From [redacted].com:sr/propellor                                                                                                                        
+   ed5038fa..ee86ede9  master     -> origin/master                                                                                                                       
+Pull from central git repository ... done                                                                                                                                
+gpg: Signature made Thu Apr  9 09:09:25 2020 EDT                                                                                                                         
+gpg:                using RSA key [redacted]                                                                                               
+gpg: /usr/local/propellor/privdata/trustdb.gpg: trustdb created                                                                                                          
+gpg: Good signature from "Siddharth Ravikumar <[redacted]@[redacted].com>" [expired]                                                                              
+gpg: Note: This key has expired!                                                                                                                                         
+Primary key fingerprint: [redacted]                                                                                              
+gpg: Signature expires Fri Apr  9 09:09:25 2021 EDT                                                                                                                      
+** warning: git branch origin/master is not signed with a trusted gpg key; refusing to deploy it! (Running with previous configuration instead.)                         
+Sending privdata (5352 bytes) to cygnus.[redacted].net ... done                                                                                                        
+From .                                                                                                                                                                   
+ * branch              HEAD       -> FETCH_HEAD                                                                                                                          
+Sending git update to cygnus.[redacted].net ... done                                                                                                                   
+Pull from central git repository ... done                                                                                                                                
+gpg: Signature made Thu Apr  9 09:09:25 2020 EDT                                                                                                                         
+gpg:                using RSA key [redacted]                                                                                               
+gpg: /usr/local/propellor/privdata/trustdb.gpg: trustdb created                                                                                                          
+gpg: Good signature from "Siddharth Ravikumar <[redacted]@[redacted].com>" [expired]                                                                              
+gpg: Note: This key has expired!
+Primary key fingerprint: [redacted]
+gpg: Signature expires Fri Apr  9 09:09:25 2021 EDT
+** warning: git branch origin/master is not signed with a trusted gpg key; refusing to deploy it! (Running with previous configuration instead.)
+Preprocessing library for propellor-5.9.1..
+Building library for propellor-5.9.1..
+Preprocessing executable 'propellor-config' for propellor-5.9.1..
+Building executable 'propellor-config' for propellor-5.9.1..
+Propellor build ... done
+cygnus.[redacted].net has Operating System (Debian Linux (Stable "buster")) X86_64 ... ok
+cygnus.[redacted].net standard sources.list ... ok
+
+```
+
+
+The gpg key in question is not expired and the secret key for it is available on the machine from where I'm doing `propellor --spin`:
+
+
+```
+ gpg --edit-key '[fpr redacted]'
+Secret key is available.
+
+sec  rsa4096/0x[redacted]
+     created: 2016-09-06  expires: 2020-09-02  usage: SC
+     trust: ultimate      validity: ultimate
+ssb  rsa4096/0x[redacted]
+     created: 2016-09-06  expires: 2020-09-02  usage: E
+[ultimate] (1). Siddharth Ravikumar <[redacted]@[redacted].com>
+[ultimate] (2)  Siddharth Ravikumar <[redacted]@[redacted].com>
+
+```
+
+Any idea why I'm getting the warning about the branch not signed with a trusted a gpg key. How should I resolve this issue?
+

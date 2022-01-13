@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2015-09-21T19:47:17Z"
+ content="""
+So here's the code that runs that ssh command:
+
+	unlessM (boolSystem "ssh" (map Param $ cacheparams ++ ["-t", sshtarget, shellWrap runcmd])) $
+		error "remote propellor failed"
+
+I'm surprised it didn't fail with the error. This seems to say that ssh
+exited 0, but without running the command.
+
+Also, ssh seems to have decided to take down the shared connection of its
+own accord, which seems strange. Normally it should leave the shared
+connection open.
+
+If you're able to reproduce this reliably, look into whether making
+`sshCachingParams` return [] and thus get rid of this ssh connection caching somehow avoids the problem?
+"""]]

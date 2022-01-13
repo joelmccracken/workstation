@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 3"
+ date="2018-08-23T19:59:13Z"
+ content="""
+It's not a proper module, but my gitolite setup is here: https://git.spwhitton.name/propellor/tree/src/Propellor/Property/SiteSpecific/SPW/Sites.hs#n200
+"""]]

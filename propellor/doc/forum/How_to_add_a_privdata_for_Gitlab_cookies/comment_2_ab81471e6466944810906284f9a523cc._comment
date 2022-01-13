@@ -1,0 +1,66 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 2"
+ date="2017-11-27T15:50:08Z"
+ content="""
+Hello, joey
+
+I try this but It ends up with an error during the compilation
+
+    blabla' :: Property (HasInfo + DebianLike)
+    blabla' = withPrivData (Password \"xxxxxxxxxxxxxx\") (Context \"yyyyyyyyyyyyy\") $ \getdata ->
+      property' \"blabla\" $ \w -> getdata $ \privdata -> ensureProperty w
+      (buildAndInstall (Git (\"https://toto:\" ++ (privDataVal privdata) ++ \"@xxxxxxxxxxxxxx\") Nothing \"blabla\"))
+
+    blabla :: Property (HasInfo + DebianLike)
+    blabla = withOS \"Install BlaBla Stack\" $ \w o -> case o of
+            (Just (System (Debian _ Unstable) _)) -> ensureProperty w $ unstable
+            (Just (System (Debian _ (Stable \"jessie\")) _)) -> ensureProperty w $ jessie
+            (Just (System (Debian _ (Stable \"stretch\")) _)) -> ensureProperty w $ stretch
+            _ -> error $ \"Blabla installation not yet implemented on \" ++ show o
+        where
+              unstable :: Property (HasInfo + DebianLike)
+              unstable = propertyList \"Stretch Blabla\" $ props
+                         & Apt.installed [\"python3-gpyfft\"]
+                         & blabla'
+
+              jessie :: Property (HasInfo + Debian)
+              jessie = propertyList \"Jessie Blabla\" $ props
+                       & Apt.installedBackport [\"cython\", \"cython3\"]
+                       & Apt.installedBackport [\"python-sphinx\", \"python3-sphinx\"]
+                       & buildAndInstall (Backport \"appdirs\" Nothing Nothing)
+                       & buildAndInstall (Backport \"pytools\" Nothing Nothing)
+                       & buildAndInstall (Backport \"pyopencl\" Nothing (Just \"nodocs\"))
+                       & buildAndInstall (Backport \"clfft\" Nothing Nothing)
+                       & buildAndInstall (Backport \"gpyfft\" (Just \"nostrip\") Nothing)
+                       & blabla'
+
+              stretch :: Property (HasInfo + DebianLike)
+              stretch = propertyList \"Stretch Blabla\" $ props
+                        & buildAndInstall (Backport \"gpyfft\" (Just \"nostrip\") Nothing)
+                        & blabla'
+
+
+
+here the error
+
+    src/propellor-config.hs:810:60-75: error:
+    • Couldn't match type ‘'False’ with ‘'True’
+        arising from a use of ‘ensureProperty’
+    • In the expression: ensureProperty w
+      In the expression: ensureProperty w $ unstable
+      In a case alternative:
+          (Just (System (Debian _ (Unstable)) _))
+            -> ensureProperty w $ stretch
+
+It seems to me that this is an error with the HasInfo, but I could not manage to solve this problem by myself.
+
+do you have a Idea in ordert o solve this ?
+
+thanks
+
+Frederic
+
+
+"""]]

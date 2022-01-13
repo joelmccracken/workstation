@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-09-16T15:07:56Z"
+ content="""
+The problem is that you have "Debian + HasInfo" and the compiler expects
+"HasInfo + Debian". If you swap the order it will compile.
+
+Internally these types are represented as type-level lists, eg
+`[Debian, HasInfo]`. Unfortunately list items are ordered.
+What's needed is a type-level set. Using
+<http://hackage.haskell.org/package/type-level-sets>
+or something like it would avoid the problem, and is planned eventually.
+(But not yet, it [affects compile performance](https://github.com/dorchard/type-level-sets/issues/17)
+and [actually still depends on list ordering](https://github.com/dorchard/type-level-sets/issues/5).)
+
+In the meantime, there's a de-facto standard ordering of the items in a
+Property's metatypes list, and using some other ordering will result
+in this problem. If you let ghc infer the type of a property, the result
+will always use the standard ordering.
+"""]]

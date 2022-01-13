@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="anselmi@0a9758305bef5e058dd0263fa20a27b334b482c7"
+ nickname="anselmi"
+ avatar="http://cdn.libravatar.org/avatar/65b723eb35eb4e3b05fffafd3e13e0fd"
+ subject="Cache gpg passphrase."
+ date="2016-12-22T17:23:58Z"
+ content="""
+The bottom line on this is that gpg2 (via the agent and pinentry) doesn't prompt correctly when run from git. It does when run directly.
+
+One fix is to set GPG_TTY before running propellor: `export GPG_TTY=$(tty)` or some such.
+
+Anything else that caches the pass phrase in the agent works too since that removes the need to prompt.
+"""]]

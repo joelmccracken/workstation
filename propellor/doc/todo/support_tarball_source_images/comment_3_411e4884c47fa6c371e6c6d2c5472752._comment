@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="https://mathstuf.id.fedoraproject.org/"
+ nickname="mathstuf"
+ subject="comment 3"
+ date="2015-10-21T03:57:19Z"
+ content="""
+Here's my attempt at adding support for this: <https://github.com/mathstuf/propellor/tree/add-tarball-system>. `MinimalTarball` may be too verbose. Maybe `TarballImage`?
+"""]]

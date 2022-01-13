@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-10-16T18:23:21Z"
+ content="""
+Since the controller idea was useful beyond supporting precompiled hosts,
+I've implemented it first, in Propellor.Property.Spin.controller.
+"""]]

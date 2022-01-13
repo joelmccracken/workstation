@@ -1,0 +1,32 @@
+Hello here the error message I got while trying to compile on jessie
+
+    [ 91 of 113] Compiling Propellor.Bootstrap ( src/Propellor/Bootstrap.hs, dist/build/propellor-config/propellor-config-tmp/Propellor/Bootstrap.o ) src/Propellor/Bootstrap.hs:239:22:
+    No instance for (Typeable Bootstrapper)
+      arising from a use of `fromInfo'
+    Possible fix:
+      add an instance declaration for (Typeable Bootstrapper)
+    In the expression: fromInfo (maybe mempty hostInfo mh)
+    In a stmt of a 'do' block:
+      case fromInfo (maybe mempty hostInfo mh) of {
+        NoInfoVal
+          -> do { bs <- getGitConfigValue "propellor.buildsystem";
+                  case bs of {
+                    Just "stack" -> ...
+                    _ -> ... } }
+        InfoVal bs
+          -> case getBuilder bs of {
+               Cabal -> cabalBuild msys
+               Stack -> stackBuild msys } }
+    In the second argument of `($)', namely
+      `do { case fromInfo (maybe mempty hostInfo mh) of {
+              NoInfoVal -> do { ... }
+              InfoVal bs
+                -> case getBuilder bs of {
+                     Cabal -> ...
+                     Stack -> ... } } }'
+    Warning: The package list for 'hackage.haskell.org' does not exist. Run 'cabal
+    update' to download it.
+    Resolving dependencies...
+    Configuring propellor-4.7.6...
+
+Cheers

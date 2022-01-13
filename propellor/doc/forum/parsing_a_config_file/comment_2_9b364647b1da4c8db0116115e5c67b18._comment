@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-08-20T14:43:02Z"
+ content="""
+Sean and I have implemented a somewhat generic support for files with some
+kinds of sections, in Propellor.Property.ConfFile. 
+
+I think it could be used for this tor case, by making the SectionStart
+match the HiddenServiceDir line, and the SectionPast match any line that's
+not HiddenServicePort (or perhaps match the next HiddenServiceDir
+line?)
+"""]]

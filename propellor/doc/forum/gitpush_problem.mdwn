@@ -1,0 +1,68 @@
+Hello, since a few days I got this error message when I am doing 
+
+This is on a Debian unstable computer. I do no tknow if this is related to the
+git 2.4.x -> 2.5.x upgrade
+
+
+:~/.propellor$ propellor
+Building propellor-2.6.0...
+Preprocessing library propellor-2.6.0...
+In-place registering propellor-2.6.0...
+Preprocessing executable 'propellor' for propellor-2.6.0...
+Preprocessing executable 'propellor-config' for propellor-2.6.0...
+Propellor build ... done
+Enter passphrase for key '/home/picca/.ssh/id_rsa': 
+Pull from central git repository ... done
+Building propellor-2.6.0...
+Preprocessing library propellor-2.6.0...
+In-place registering propellor-2.6.0...
+Preprocessing executable 'propellor' for propellor-2.6.0...
+Preprocessing executable 'propellor-config' for propellor-2.6.0...
+Propellor build ... done
+[master 08f2f53] propellor spin
+Git commit ... done
+Enter passphrase for key '/home/picca/.ssh/id_rsa': 
+Décompte des objets: 1, fait.
+Écriture des objets: 100% (1/1), 202 bytes | 0 bytes/s, fait.
+Total 1 (delta 0), reused 0 (delta 0)
+To ssh://xxxxxxxxxxxxxxxxxxxxxxxxxxxx/propellor.git
+   3a4d960..08f2f53  master -> master
+Push to central git repository ... done
+root@xxxxxx's password: 
+Depuis git://xxxxxxxxxxxxxxxxxxxx/propellor
+   3a4d960..08f2f53  master     -> origin/master
+Pull from central git repository ... done
+Sending privdata (11 bytes) to mordor ... done
+error: unknown option `gitpush'
+usage : git fetch [<options>] [<dépôt> [<spécification-de-référence>...]]
+   ou : git fetch [<options>] <groupe>
+   ou : git fetch --multiple [<options>] [(<dépôt> | <groupe>)...]
+   ou : git fetch --all [<options>]
+
+    -v, --verbose         être plus verbeux
+    -q, --quiet           être plus silencieux
+    --all                 récupérer depuis tous le dépôts distants
+    -a, --append          ajouter à .git/FETCH_HEAD au lieu de l'écraser
+    --upload-pack <chemin>
+                          chemin vers lequel télécharger le paquet sur le poste distant
+    -f, --force           forcer l'écrasement de la branche locale
+    -m, --multiple        récupérer depuis plusieurs dépôts distants
+    -t, --tags            récupérer toutes les étiquettes et leurs objets associés
+    -n                    ne pas récupérer toutes les étiquettes (--no-tags)
+    -p, --prune           éliminer les branches de suivi distant si la branche n'existe plus dans le dépôt distant
+    --recurse-submodules[=<à la demande>]
+                          contrôler la récupération récursive dans les sous-modules
+    --dry-run             simuler l'action
+    -k, --keep            conserver le paquet téléchargé
+    -u, --update-head-ok  permettre la mise à jour de la référence HEAD
+    --progress            forcer l'affichage de l'état d'avancement
+    --depth <profondeur>  approfondir l'historique d'un clone superficiel
+    --unshallow           convertir en un dépôt complet
+    --update-shallow      accepter les références qui mettent à jour .git/shallow
+    --refmap <correspondance de référence>
+                          spécifier une correspondance de référence pour la récupération
+
+propellor: <stdout>: hIsTerminalDevice: illegal operation (handle is closed)
+error: git-upload-pack died of signal 13
+Sending git update to mordor ... failed
+propellor: user error (ssh ["-o","ControlPath=/xxxxxxxxxxxxxxxxxxxx.sock","-o","ControlMaster=auto","-o","ControlPersist=yes","root@xxxxxx","sh -c 'if [ ! -d /usr/local/propellor/.git ] ; then (if ! git --version >/dev/null; then apt-get update && apt-get --no-install-recommends --no-upgrade -y install git; fi && echo STATUSNeedGitClone) || echo STATUSNeedPrecompiled ; else cd /usr/local/propellor && if ! cabal configure >/dev/null 2>&1; then ( apt-get update ; apt-get --no-upgrade --no-install-recommends -y install gnupg ; apt-get --no-upgrade --no-install-recommends -y install ghc ; apt-get --no-upgrade --no-install-recommends -y install cabal-install ; apt-get --no-upgrade --no-install-recommends -y install libghc-async-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-missingh-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-hslogger-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-unix-compat-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-ansi-terminal-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-ifelse-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-network-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-quickcheck2-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-mtl-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-transformers-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-exceptions-dev ; cabal update ; cabal install --only-dependencies ) || true; fi&& if ! test -x ./propellor; then cabal configure && cabal build && ln -sf dist/build/propellor-config/propellor-config propellor; fi;if test -x ./propellor && ! ./propellor --check 2>/dev/null; then cabal clean && cabal configure && cabal build && ln -sf dist/build/propellor-config/propellor-config propellor; fi && ./propellor --boot mordor ; fi'"] exited 1)

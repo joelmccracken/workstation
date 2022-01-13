@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-04-05T02:17:00Z"
+ content="""
+This idea kind of makes sense, because swap partitions in /etc/fstab
+get swaponed at boot.
+
+But, the implementation doesn't take the types into account. The `mounted`
+property takes a FilePath for the mountpoint, but for swap that
+needs to be "none", which is not really a file-path. Also, the `fstabbed`
+property has a separate `SwapPartition` type, so making `mount` support
+swap partitions without using that type feels wrong.
+
+It might be simpler all round to treat swap partitions being able to
+be specified in /etc/fstab as a historical accident, which it kind of
+is (increasingly so, since eg systemd has other ways to accomplish
+that), and instead of shoehorning this into the `mounted` property,
+add a new `swaponed` property.
+"""]]

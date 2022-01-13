@@ -1,0 +1,14 @@
+Hello,
+
+by looking at the code, there is an onChange:
+
+	mounted fs src mnt opts = tightenTargets $
+		listed fs src mnt opts
+			`onChange` mountnow
+
+This means that if for any reason the FS is not mounted it will never be
+mounted again. Is it a bug or a feature?
+
+Thanks,
+
+Nicolas.

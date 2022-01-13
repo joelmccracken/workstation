@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="sravikumar@b98554d12f31e17b71dd07098f122792ca8837ce"
+ nickname="sravikumar"
+ avatar="http://cdn.libravatar.org/avatar/227f208e95d449decbc71eccc658cdbe"
+ subject="comment 1"
+ date="2020-07-10T20:04:47Z"
+ content="""
+Resolved the issue by adding the gpg signing key again to propellor with
+
+```
+propellor --add-key SIGNING_KEY_ID
+```
+"""]]

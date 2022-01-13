@@ -1,0 +1,40 @@
+When a property needs privdata to be set, it will fail at runtime when
+it's not available. Could this be detected at compile time instead?
+
+Here's an idea of a way to do it. Make propellor, whenever it adds/removes
+privdata, generate a haskell source file, Propellor/PrivData/Available.hs
+
+It would have one type-level function
+
+	data Available
+	type family HasPrivData source context
+	type instance HasPrivData "password" "foo.com" = Available
+	-- ^ supposed to be type level strings
+
+The file would be generated with 
+instances of the type family for each available privdata value.
+
+`withPrivData` would use this type level function, and require it to return
+Availble. If it didn't, the type checker would blow up. 
+
+(Controlling the type error message content to make it clear what went wrong
+may be tricky.)
+
+For this to work, `withPrivData` would need some interesting changes to its
+type signature, so that it has available the type level strings describing
+the privdata it's supposed to get. Is that practical? I think so,
+actually.. 
+
+Something like this, although my type-level comparison syntax may be off.
+
+	withPrivData :: (HasPrivData source context ~ Available) source -> context -> (((PrivData -> Propellor Result) -> Propellor Result) -> Property i) -> Property HasInfo
+
+All that's needed to use this is a way to provide a type level string from
+which a string value can be extracted that has the same string as the type.
+IIRC, that's supported by type level strings.
+
+But.. This may get tricky/unusable when source and context are constructed
+based on data now, since the type-level source and context need to be
+constructed at build time.
+
+--[[Joey]]

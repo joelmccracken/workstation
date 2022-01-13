@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="serge1cohen@4282f0c177ae4ac2f90ceddf63d2281e1f739cb1"
+ nickname="serge1cohen"
+ avatar="http://cdn.libravatar.org/avatar/c86bcca74216ed367c91a99ff27259f0"
+ subject="To be sure to understand…"
+ date="2018-01-08T20:49:28Z"
+ content="""
+Hi again,
+
+Thanks for the swift answer. As I am not (yet ?-) an expert of either Haskell or Propellor I'd prefer to be sure before going further.
+Your proposal is to somehow «copy» the machinery of Apt.installed and Apt.reConfigure but using this time «createProcess with {cwd = whatever}». And I should find useful examples/snippets to implement this in the Property.DnsSec.forceZoneSigned sources.
+
+If I manage that I'll definitely propose a contribution on it :-)
+
+By the way, thanks for the complete system. As often elegance comes with a great quality of use !
+
+Serge.
+"""]]

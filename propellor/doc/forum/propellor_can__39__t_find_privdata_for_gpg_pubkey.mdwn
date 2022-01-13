@@ -1,0 +1,44 @@
+I have the following property for one of my hosts:
+
+[[!format haskell """
+ File.hasPrivContent "/usr/share/debug-me/keyring/a_CS2613_prof.gpg"  anyContext
+"""]]
+
+Unsurprisingly, the first time I run `propellor --spin my-host` I get
+
+[[!format text """
+** warning: Missing privdata PrivFile "/usr/share/debug-me/keyring/a_CS2613_prof.gpg" (for any)
+Fix this by running:
+  propellor --set 'PrivFile "/usr/share/debug-me/keyring/a_CS2613_prof.gpg"' 'any' \
+    < /usr/share/debug-me/keyring/a_CS2613_prof.gpg
+"""]]
+
+I cut and paste the suggested lines (after previously copying the file into place manually, but it doesn't seem to change anything. On subsequent runs I get the same thing.
+
+if I run `propellor --dump  'PrivFile "/usr/share/debug-me/keyring/a_CS2613_prof.gpg"' 'any' | gpg` I get
+[[!format text """
+gpg: WARNING: no command supplied.  Trying to guess what you mean ...
+[2020-08-20 10:03:07 ADT] command line:  Dump (PrivFile "/usr/share/debug-me/keyring/a_CS2613_prof.gpg") (Context "any")
+[2020-08-20 10:03:07 ADT] read: git ["config","gpg.program"]
+[2020-08-20 10:03:07 ADT] process done ExitFailure 1
+[2020-08-20 10:03:07 ADT] chat: gpg ["--decrypt","privdata/privdata.gpg"]
+gpg: encrypted with 4096-bit RSA key, ID 70E3C0DE87068451, created 2019-06-08
+      "David Bremner <bremner@debian.org>"
+[2020-08-20 10:03:08 ADT] process done ExitSuccess
+pub   rsa4096 2014-09-22 [SC]
+      7A18807F100A4570C59684207E4E65C8720B706B
+uid           David Bremner <bremner@unb.ca>
+uid           David Bremner <david@tethera.net>
+uid           David Bremner <bremner@debian.org>
+sub   rsa4096 2014-09-22 [E] [expired: 2020-07-23]
+sub   rsa3072 2017-07-24 [S] [expired: 2020-07-23]
+sub   rsa4096 2017-07-24 [A] [expired: 2020-07-23]
+sub   rsa4096 2019-06-08 [S] [expires: 2021-06-07]
+sub   rsa4096 2019-06-08 [E] [expires: 2021-06-07]
+sub   rsa4096 2019-06-08 [A] [expires: 2021-06-07]
+"""]]
+
+I understand that the propellor run is using a different copy of privdata, but I verified the checksums match between my user propellor install and the one in /usr/local/propellor.
+
+Other uses of `privFileContent` with anyContext work fine on the same host.
+ 

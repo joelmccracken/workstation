@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="comment 2"
+ date="2016-03-08T02:52:40Z"
+ content="""
+In the end, I took the approach of making the thing that used the git repo update it before using it (since the use case was amenable to such a thing).
+"""]]

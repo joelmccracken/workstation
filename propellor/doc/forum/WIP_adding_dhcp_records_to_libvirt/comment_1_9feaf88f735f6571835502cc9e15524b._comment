@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-06-15T16:35:46Z"
+ content="""
+The former seems easier than parsing the XML.
+
+I mean, aeson is quite good and easy to parse XML with,
+but I prefer to keep propellor's haskell dependencies minimal
+and so if you used aeson there would be a big question about merging the
+result into propellor core.
+"""]]

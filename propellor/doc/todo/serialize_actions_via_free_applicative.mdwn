@@ -1,0 +1,34 @@
+A persistent problem with propellor is that Propellor actions cannot be
+compared for equality or serialized.
+
+This prevents eg, propellor outside a chroot from passing a Property to run
+to the propellor running inside the chroot. (Because Property contains 
+a Propellor action.) A workaround is used, that gives the 
+Property a name at compile time.
+
+Another problem is that Propellor actions currently run whatever IO they
+perform, and can't be examined in a no-op mode.
+
+If Propellor actions were somehow represented as an AST, all these problems
+would be eliminated; they could be serialized, compared, examined, and run
+in modes that don't really run them.
+
+(This might also allow the local propellor to ship the AST off to the
+remote propellor to run, without the remote propellor needing to be
+rebuilt, if they share the same version of the AST.)
+
+Unfortunately, a free Monad can't be serialized, it's an AST but an AST
+embedding haskell functions. However, a free Applicative can apparently be
+serialized. 
+
+See <https://www.cs.ox.ac.uk/jeremy.gibbons/publications/delivery.pdf>
+and <https://www.reddit.com/r/haskell/comments/7rlgu2/serialize_a_program_written_in_a_free_monad/>
+
+Question is, would an Applicative building an AST be sufficient for
+everything that a Propellor action needs to do?
+
+This needs some investigation of the kind of IO that Propellor actions do.
+Much of it, I suspect is not very monadic, in that it mostly does some IO
+and returns a Result, rather than building up complex IO sequences based on
+previous inputs. --[[Joey]]
+

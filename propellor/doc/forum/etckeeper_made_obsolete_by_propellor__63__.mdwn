@@ -1,0 +1,2 @@
+I'm still learning about these two programs.  I haven't use them yet, but I will (at least propellor). It seems to me there exists a bit of functionality overlapping between them: propellor's config file might be enough to describe all your changes you want to /etc for a host..? In this case, etckeeper would appear to be useful just as a "change log".. What's your thoughts on this? Do you use both propellor and etckeeper?
+-- eugen

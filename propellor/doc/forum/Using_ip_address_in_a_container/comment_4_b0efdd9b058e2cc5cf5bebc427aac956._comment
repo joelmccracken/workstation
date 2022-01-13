@@ -1,0 +1,28 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="Problem with resolvConfed"
+ date="2017-10-05T21:33:42Z"
+ content="""
+I tried to revert resolvConfed, but it seems to be ignored:
+
+    vzWeb2 :: Systemd.Container
+    vzWeb2 = Systemd.debContainer \"vz-web2\" $ props
+            & osDebian (Stable \"stretch\") X86_64
+            & ipv4 \"10.42.2.13\"
+            ! Systemd.resolvConfed
+            ...
+
+When it spins, there are two lines, one with, one without:
+
+    ...
+    vz-web2 has container configuration --link-journal=try-guest ... ok
+    vz-web2 has container configuration --bind=/etc/resolv.conf ... ok
+    vz-web2 has Operating System (Debian Linux (Stable \"stretch\")) X86_64 ... ok
+    vz-web2 has ipv4 10.42.2.13 ... ok
+    vz-web2 has container configuration without --bind=/etc/resolv.conf ... ok
+    ...
+
+And it is included in the systemd service file.
+
+"""]]

@@ -1,0 +1,36 @@
+[[!comment format=mdwn
+ username="arnaud@30aba4d9f1742050874551d3ddc55ca8694809f8"
+ nickname="arnaud"
+ subject="Using propellor as a library breaks build"
+ date="2015-10-12T10:24:34Z"
+ content="""
+I am reviving that old thread because I upgraded my configuration to use recent propellor and moved some part of our system to use propellor as a library, and it failed building propellor on the remote configured host due to dependencies version conflict. Here is the output:
+
+    Resolving dependencaies...
+    In order, the following would bbe installed:
+    network-2.6.2.1 (new version)
+    transformers-0.4.3.0 (new version)
+    monads-tf-0.1.0.2 (new package)
+    MonadCatchIO-transfaormers-0.3.1.3 (new version)
+    mtl-2.2.1 (new version)
+    hslogger-1.2.9 (new version)
+    parsec-3.1.9 (new version)
+    regex-base-0.93.2 (reinstall) changes: mtl-2.1.2 -> 2.2.1
+    regex-posix-0.95.2 (reinsltall)
+    regex-compat-0.95.1 (reinstall)
+    MissingH-1.3.0.1 (new version)
+    transformers-compat-0.4.0.4 (new package)
+    exceptions-0.8.0.2 (new version):
+    propellor-2.7.3 (new package)
+     The following packages are likely to be broken by the reinstalls:
+    MissingH-1.2.0.0
+    Use --force-reinstalls if you want to install anyway.
+    Resolving dependencies...
+    Configuring prod-0.0.1...
+    cabal: At least the following dependencies are missing:
+    propellor ==2.7.3
+    sh: 1: ./propellor: not found
+
+
+Am I missing something?
+"""]]

@@ -1,0 +1,5 @@
+The recent dependency on concurrent-output adding implies downloading, compiling, and executing as root of many (MissingH, hslogger, process, unix-compat, network, directory, ansi-terminal, unix, ...)  unstrusted sources. This seems like a huge security problem...
+
+Are these at least downloaded using https?
+
+> [[done]] --[[Joey]]

@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2016-02-29T21:44:19Z"
+ content="""
+There are several ways this could happen, along the lines of a power
+failure or ctrl-c at the wrong time. A failing postinst may also cause
+apt to leave other packages un-configured, although `dpkg configure -a`
+probably won't recover from that case.
+
+I think it makes sense for Apt.upgrade to run `dpkg --configure -a`
+in case the last upgrade got into this state. I don't think it makes sense
+for Apt.install to do that (too much overhead to do it every time,
+and I don't think that unconfigured packages normally prevent installing
+of an unrelated package anyway). I've made a change along these lines.
+"""]]

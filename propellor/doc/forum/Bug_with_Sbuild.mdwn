@@ -1,0 +1,68 @@
+Hello, I installed a machine with these properties
+
+
+           & sbuild (System (Debian Unstable) "i386") (Just proxy)
+           & Sbuild.piupartsConfFor (System (Debian Unstable) "i386")
+           & Sbuild.updatedFor (System (Debian Unstable) "i386") `period` Weekly (Just 1)
+           & Sbuild.usableBy (User "picca")
+           & Sbuild.shareAptCache
+
+where 
+
+
+    type Proxy = Maybe Url
+
+    sbuild :: System -> Proxy -> RevertableProperty (HasInfo + Linux) Linux
+    sbuild system@(System dist arch) proxy = Sbuild.builtFor system `before` setup
+        where
+          setup :: RevertableProperty (HasInfo + Linux) Linux
+          setup = Chroot.provisioned chroot
+          chroot = Chroot.debootstrapped Debootstrap.BuilddD chrootdir $ props
+                   & os
+                   & case proxy of
+                       (Just p) -> "/etc/apt/apt.conf.d/01proxy" `File.hasContent` ["Acquire::http::Proxy \"" ++ p ++ "\";"]
+                       Nothing -> doNothing
+                   & Apt.installed ["apt-transport-https"]
+                   & Apt.stdSourcesList
+                   & Apt.update `onChange` Apt.upgrade
+                   & Apt.cacheCleaned
+          chrootdir :: FilePath
+          chrootdir = "/srv/chroot" </>
+                      case dist of
+                        (Debian suite) -> Apt.showSuite suite ++ "-" ++ arch
+                        (Buntish suite) -> suite ++ "-" ++ arch
+          os = case dist of
+                 (Debian suite) -> osDebian suite arch
+
+
+But when I use it I get this error message
+
+
+    i686-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -I/usr/lib/python2.7/dist-packages/numpy/core/include -I/«PKGBUILDDIR»/src -I/usr/include/python2.7 -c /«PKGBUILDDIR»/python/cython/_fisx.cpp -o build/temp.linux-i686-2.7/«PKGBUILDDIR»/python/cython/_fisx.o
+    ccache: error: Failed to create directory /var/cache/ccache-sbuild/9/1: Permission denied
+    error: command 'i686-linux-gnu-gcc' failed with exit status 1
+    E: pybuild pybuild:274: build: plugin distutils failed with: exit code=1: /usr/bin/python setup.py build
+
+    picca@ORD03037:~/Debian/python-fisx/python-fisx$ ls -l /var/cache/ccache-sbuild/
+    total 76
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 0
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 1
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 2
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 3
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 4
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 5
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 6
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 7
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 8
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 9
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 a
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 b
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 c
+    -rw-rw-r-- 1 picca instrumentation   16 juin  16 16:32 ccache.conf
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 d
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 e
+    drwxr-xr-x 2 root  root            4096 juin  16 15:48 f
+    -r-xr-xr-x 1 root  root             172 juin  16 15:48 sbuild-setup
+    drwxrwxr-x 2 picca instrumentation 4096 juin  16 16:32 tmp
+
+

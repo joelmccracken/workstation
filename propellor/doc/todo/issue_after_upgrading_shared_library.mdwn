@@ -1,0 +1,25 @@
+After upgrading my server to jessie, I noticed that propellor does not work anymore. The issue seems to be that, libffi was upgraded from libffi5:amd64 to libffi6:amd64
+
+    $ ./propellor --spin myserver
+    Building propellor-2.2.1...
+    Preprocessing library propellor-2.2.1...
+    In-place registering propellor-2.2.1...
+    Preprocessing executable 'propellor' for propellor-2.2.1...
+    Preprocessing executable 'propellor-config' for propellor-2.2.1...
+    Propellor build ... done
+
+    You need a passphrase to unlock the secret key for
+    user: bla
+
+    [master 2aabb40] propellor spin
+    Git commit ... done
+    Counting objects: 1, done.
+    Writing objects: 100% (1/1), 852 bytes | 0 bytes/s, done.
+    Total 1 (delta 0), reused 0 (delta 0)
+    To root@myserver:/var/lib/git/private/propellor.git
+       b16f1a6..2aabb40  master -> master
+    Push to central git repository ... done
+    ./propellor: error while loading shared libraries: libffi.so.5: cannot open shared object file: No such file or directory
+    propellor: user error (ssh ["-o","ControlPath=/home/myuser/.ssh/propellor/myserver.sock","-o","ControlMaster=auto","-o","ControlPersist=yes","root@myserver","sh -c 'if [ ! -d /usr/local/propellor/.git ] ; then (if ! git --version >/dev/null; then apt-get update && apt-get --no-install-recommends --no-upgrade -y install git; fi && echo STATUSNeedGitClone) || echo STATUSNeedPrecompiled ; else cd /usr/local/propellor && if ! test -x ./propellor; then ( apt-get update ; apt-get --no-upgrade --no-install-recommends -y install gnupg ; apt-get --no-upgrade --no-install-recommends -y install ghc ; apt-get --no-upgrade --no-install-recommends -y install cabal-install ; apt-get --no-upgrade --no-install-recommends -y install libghc-async-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-missingh-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-hslogger-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-unix-compat-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-ansi-terminal-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-ifelse-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-network-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-quickcheck2-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-mtl-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-monadcatchio-transformers-dev ; cabal update ; cabal install --only-dependencies ) || true && cabal configure && cabal build && ln -sf dist/build/propellor-config/propellor-config propellor; fi && ./propellor --boot myserver ; fi'"] exited 127)
+
+> [[fixed|done]] --[[Joey]]

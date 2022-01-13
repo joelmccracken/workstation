@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2019-07-19T14:09:01Z"
+ content="""
+Funny, I never considered that the Firewall properties don't do anything
+persistent.
+
+I don't think we want to get propellor involved in booting the system,
+either..
+
+Using iptables-save seems to have a problem: If there are other iptables
+rules that were not set by this run of propellor, it will save those
+as well. So it could save rules that were set up by something else that was
+intended to be temporary, or perhaps rules that were set by a earlier
+propellor config and that then got deleted out of the propellor config.
+
+Another way to do it could be to have Firewall.rule add its configuration
+to Info and then Firewall.save could see the collected Info from all
+the rules and use it to generate the boot script itself.
+"""]]

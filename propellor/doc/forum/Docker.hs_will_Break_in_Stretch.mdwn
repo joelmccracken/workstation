@@ -1,0 +1,16 @@
+G'day Joey!
+
+I'm in the process of deploying Docker infrastructure via Propellor on both Jessie and Stretch and I've come to discover that Docker.io did not make it into Stretch:
+
+* [docker.io REMOVED from testing](https://packages.qa.debian.org/d/docker.io/news/20161012T163916Z.html)
+* [docker.io - Linux container runtime](https://tracker.debian.org/pkg/docker.io)
+* [Excuse for docker.io](https://qa.debian.org/excuses.php?package=docker.io)
+
+So the below from Docker.hs will fail beyond Jessie:
+
+    installed :: Property DebianLike
+    installed = Apt.installed ["docker.io"]
+
+Before I embarked on my own path to re-implement the above (probably based on [How to install Docker engine on Debian 9 Stretch Linux](https://linuxconfig.org/how-to-install-docker-engine-on-debian-9-stretch-linux)), I thought I'd see what you thought might be the way to resolve this, so that my work could be contributed upstream (if suitable).
+
+Thanks!

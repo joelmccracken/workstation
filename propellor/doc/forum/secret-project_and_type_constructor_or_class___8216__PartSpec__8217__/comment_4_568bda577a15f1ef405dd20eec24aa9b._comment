@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="patch"
+ date="2017-12-28T13:08:12Z"
+ content="""
+patch against the now existing README file
+
+	--- a/README
+	+++ b/README
+	@@ -4,3 +4,5 @@ based GUI. I ran it live in my \"Life After Debian\" talk at DebConf 17.
+	 http://meetings-archive.debian.net/pub/debian-meetings/2017/debconf17/life-after-debian.vp8.webm
+	 
+	 If you would like to build this, use stack, eg \"stack build\"
+	+
+	+FYI stack homepage is https://docs.haskellstack.org/en/stable/README/
+
+"""]]

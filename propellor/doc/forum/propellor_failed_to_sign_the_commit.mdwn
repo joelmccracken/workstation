@@ -1,0 +1,30 @@
+Hello since sometime on my computer gpgv1 -> gpgv2 transition on Debian 
+
+I get this error message. (I need to say that I am using a NitroKey Pro for my gpg keys)
+ 
+    Propellor build ... done
+    error: gpg n'a pas pu signer les données
+    fatal: échec de l'écriture de l'objet commit
+    Git commit ... failed
+
+reading this bug report
+
+    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=568375
+
+Ifound that I need to define
+
+
+    https://www.gnupg.org/documentation/manuals/gnupg/Common-Problems.html
+
+    The gpg-agent man page nowadays includes the following hint:
+
+      It is important to set the GPG_TTY environment variable in your login
+      shell, for example in the ‘~/.bashrc’ init script:
+
+      export GPG_TTY=$(tty)
+
+don't you think that propellor should define GPG_TTY in order to avoid this problem ?
+
+thanks
+
+Frederic

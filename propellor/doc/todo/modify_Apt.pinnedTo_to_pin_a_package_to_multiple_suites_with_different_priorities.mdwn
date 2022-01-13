@@ -1,0 +1,7 @@
+Please consider merging the `pin` branch of `https://git.spwhitton.name/propellor` (again).
+
+I've modified `Apt.pinnedTo` so that it can pin an `AptPrefPackage` to multiple suites with different pin priorities.  I've included a sample use-case in the function's haddock.
+
+--spwhitton
+
+> merged, [[done]] --[[Joey]]

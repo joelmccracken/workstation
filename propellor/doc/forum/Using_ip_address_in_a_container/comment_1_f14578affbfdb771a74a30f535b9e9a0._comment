@@ -1,0 +1,32 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-10-04T16:08:14Z"
+ content="""
+I'd also like to use systemd-nspawn with its own network in the container.
+Have not worked through all the necessary config, which seems fairly
+complicated on the systemd side. Examples of how to do that with propellor
+would be great to have! 
+
+(There's a partial example in the haddock for
+Systemd.publish, which uses networkd to auto-configure a private network,
+but IIRC that is missing some routing/masqerading to let the
+container access the internet.)
+
+As for `alias` and `ipv4` properties, when used in a container, their info
+does get propagated out to the info of the host as of propellor 4.8.1. 
+That was done because it's sometimes useful to have an `alias` be part
+of a container's configuration and get the DNS server automatically
+configured with that alias pointing at the host(s) that have the container.
+
+I agree it does not make sense for `ipv4`/`ipv6` used in a container
+to propagate out. I've changed propellor to not do that any longer,
+and allow controlling whether any given DNS info should propagate or not.
+
+As for the hostname, it's not currently part of the Info system,
+and so there's no risk of a container overriding its Host's name.
+Things like Hostname.sane that look at the hostname will see the parent
+host's name. Hostname.setTo should work in a container to give it
+its own name. (At some point it would probably be worth moving hostnames
+into Info to avoid the extra complication..)
+"""]]

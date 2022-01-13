@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2016-06-17T01:21:08Z"
+ content="""
+If Reboot.toKernelNewerThan doesn't reboot right away, then
+when a property `requires` it, the property's code is not
+guaranteed to run under the new kernel.
+So, an immediate reboot seems to make sense.
+
+Making the sbuild properties automatically include
+Reboot.toKernelNewerThan seems reasonable.
+"""]]

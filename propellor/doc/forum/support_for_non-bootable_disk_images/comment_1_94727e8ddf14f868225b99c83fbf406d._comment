@@ -1,0 +1,65 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="Initial attempt at a patch"
+ date="2018-10-08T12:48:38Z"
+ content="""
+Here is a simple approach, that at least allows the image building to complete. I also managed to boot one of the images on AMD64. Probably it needs more testing, and I'm sure there are style and naming issues.
+[[!format text \"\"\"
+diff --git a/src/Propellor/Property/DirectBoot.hs b/src/Propellor/Property/DirectBoot.hs
+new file mode 100644
+index 00000000..4807471e
+--- /dev/null
++++ b/src/Propellor/Property/DirectBoot.hs
+@@ -0,0 +1,7 @@
++module Propellor.Property.DirectBoot(installed) where
++
++import Propellor.Base
++import Propellor.Types.Bootloader
++
++installed :: Property (HasInfo + UnixLike)
++installed = pureInfoProperty \"direct boot\" [DirectBoot]
+diff --git a/src/Propellor/Property/DiskImage.hs b/src/Propellor/Property/DiskImage.hs
+index 289de151..a41af18c 100644
+--- a/src/Propellor/Property/DiskImage.hs
++++ b/src/Propellor/Property/DiskImage.hs
+@@ -228,6 +228,7 @@ imageBuilt' rebuild img mkchroot tabletype partspec =
+                        ubootFlashKernelFinalized p
+                [FlashKernelInstalled, UbootInstalled p] -> 
+                        ubootFlashKernelFinalized p
++                [DirectBoot] -> directBootFinalized
+                _ -> unbootable \"multiple bootloaders are installed; don't know which to use\"
+ 
+ -- | This property is automatically added to the chroot when building a
+@@ -469,6 +470,9 @@ grubFinalized grubtarget _img mnt loopdevs =
+ ubootFinalized :: (FilePath -> FilePath -> Property Linux) -> Finalization
+ ubootFinalized p (RawDiskImage img) mnt _loopdevs = p img mnt
+ 
++directBootFinalized :: Finalization
++directBootFinalized _img _mnt _loopDevs = doNothing
++
+ flashKernelFinalized :: Finalization
+ flashKernelFinalized _img mnt _loopdevs = FlashKernel.flashKernelMounted mnt
+ 
+diff --git a/src/Propellor/Types/Bootloader.hs b/src/Propellor/Types/Bootloader.hs
+index 65117bd2..cdb37a31 100644
+--- a/src/Propellor/Types/Bootloader.hs
++++ b/src/Propellor/Types/Bootloader.hs
+@@ -10,6 +10,7 @@ data BootloaderInstalled
+        = GrubInstalled GrubTarget
+        | FlashKernelInstalled
+        | UbootInstalled (FilePath -> FilePath -> Property Linux)
++        | DirectBoot
+        deriving (Typeable)
+ 
+ -- | Platforms that grub can boot.
+@@ -19,6 +20,7 @@ instance Show BootloaderInstalled where
+        show (GrubInstalled _) = \"GrubInstalled\"
+        show FlashKernelInstalled = \"FlashKernelInstalled\"
+        show (UbootInstalled _) = \"UbootInstalled\"
++        show DirectBoot = \"DirectBoot\"
+ 
+ instance IsInfo [BootloaderInstalled] where
+        propagateInfo _ = PropagateInfo False
+\"\"\"]]
+"""]]

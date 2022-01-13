@@ -1,0 +1,17 @@
+Since apt-get has changed behavior and refuses to update if the code name
+in a Release file has changed from the one it saw before, propellor systems
+that are tracking Unstable or Testing need a manual intervention after each
+major stable release (`apt-get update --allow-releaseinfo-change`).
+
+(It seems that when unattended-updates is available, it does automatically
+accept the change.)
+
+I am seeking advice about what propellor should do about this. Should 
+Apt.update include --allow-releaseinfo-change when the host is following a
+rolling suite? 
+
+Or does doing so defeat whatever presumably good rationalle there is for
+making this a manual action? Or perhaps there is no really good reason apt
+does this when following a folling suite?
+
+--[[Joey]]

@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2017-08-23T15:49:27Z"
+ content="""
+The `vmdkBuiltFor` property is provided to make a disk image
+usable with virtualbox. If your distribution chooses not to include
+virtualbox and so you don't have virtualbox installed, what good would
+such an image be to you?
+
+To use `vmdkBuiltFor` you must already have a disk image file, which qemu
+etc can already use.
+
+"qemu-img convert" writes a whole disk image file. This is a much more
+expensive operation than what `vmdkBuiltFor` currently does, which creates
+a tiny text file that makes virtualbox use the existing disk image.
+"""]]

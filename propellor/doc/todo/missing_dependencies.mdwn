@@ -1,0 +1,41 @@
+After upgrading to 2.4.0, I get this error:
+
+    ./propellor --spin myserver
+    Building propellor-2.4.0...
+    Preprocessing library propellor-2.4.0...
+    In-place registering propellor-2.4.0...
+    Preprocessing executable 'propellor' for propellor-2.4.0...
+    Preprocessing executable 'propellor-config' for propellor-2.4.0...
+    Propellor build ... done
+    Git commit ... done
+    Enter passphrase for /home/user/.ssh/id_rsa: 
+    Identity added: /home/user/.ssh/id_rsa (/home/user/.ssh/id_rsa)
+    Counting objects: 253, done.
+    Delta compression using up to 4 threads.
+    Compressing objects: 100% (253/253), done.
+    Writing objects: 100% (253/253), 173.59 KiB | 0 bytes/s, done.
+    Total 253 (delta 172), reused 0 (delta 0)
+    To root@myserver:/var/lib/git/private/propellor.git
+       d81fb7d..6f7f041  master -> master
+    Push to central git repository ... done
+    From myserver:/var/lib/git/private/propellor
+       d81fb7d..6f7f041  master     -> origin/master
+    Pull from central git repository ... done
+    ** warning: git branch origin/master is not signed with a trusted gpg key; refusing to deploy it! (Running with previous configuration instead.)
+    Sending privdata (87652 bytes) to myserver ... done
+    From .
+     * branch            HEAD       -> FETCH_HEAD
+    Sending git update to myserver ... done
+    Warning: The package list for 'hackage.haskell.org' is 47 days old.
+    Run 'cabal update' to get the latest list of available packages.
+    Resolving dependencies...
+    Configuring propellor-2.4.0...
+    cabal: At least the following dependencies are missing:
+    exceptions -any
+    propellor: failed to make dist/setup-config
+    Shared connection to myserver closed.
+    propellor: remote propellor failed
+
+As in https://propellor.branchable.com/todo/issue_after_upgrading_shared_library/, manually running "make clean" on the server fixed the issue
+
+> Ok, this is the same as [[problem_with_spin_after_new_dependencies_added]]. Closing this issue as I'm dealing with it in the other one. [[done]] --[[Joey]]

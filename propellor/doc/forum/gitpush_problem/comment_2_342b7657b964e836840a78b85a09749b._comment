@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-07-30T15:29:46Z"
+ content="""
+Hmm, I do reproduce same problem spinning a remote host that's been
+upgraded to this git version.
+"""]]

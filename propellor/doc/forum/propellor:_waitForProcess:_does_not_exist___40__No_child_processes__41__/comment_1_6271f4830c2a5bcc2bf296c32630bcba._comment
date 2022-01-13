@@ -1,0 +1,28 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="variation on the theme."
+ date="2020-08-14T14:30:52Z"
+ content="""
+Today for some reason I had one run produce more output, with many repeats of the same warning. It seems to be more than a warning, since the corresponding properties fail. I have rebooted the VM, in case there was some transient resource exhaustion problem.  Successive runs of /usr/local/bin/propellor_cronjob stop very early as in my original report. 
+
+ [[!format text \"\"\"
+lotus.casa.cs.unb.ca apt installed etckeeper apt-transport-https ... ok
+lotus.casa.cs.unb.ca unattended upgrades true ... failed
+lotus.casa.cs.unb.ca replace /etc/apt/apt.conf.d/20-propellor-auto-upgrades ... ok
+lotus.casa.cs.unb.ca git repo at /etc/ config setting user.email set to root@tethera.net ... ok
+** warning: waitForProcess: does not exist (No child processes)
+lotus.casa.cs.unb.ca git repo at /etc/ config setting user.name set to Root ... ok
+lotus.casa.cs.unb.ca ssh installed ... ok
+lotus.casa.cs.unb.ca ssh config: PermitRootLogin without-password ... ok
+lotus.casa.cs.unb.ca ssh config: PasswordAuthentication no ... done
+lotus.casa.cs.unb.ca root has authorized_keys ... failed
+** warning: waitForProcess: does not exist (No child processes)
+lotus.casa.cs.unb.ca root has authorized_keys ... failed
+** warning: waitForProcess: does not exist (No child processes)
+** warning: waitForProcess: does not exist (No child processes)
+lotus.casa.cs.unb.ca root has authorized_keys ... failed
+\"\"\"]]
+
+
+"""]]

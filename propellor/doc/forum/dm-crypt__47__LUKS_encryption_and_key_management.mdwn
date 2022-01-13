@@ -1,0 +1,1 @@
+Hi. Searching for *luks* in the git repository and the forum doesn’t bring up any hits. Am I right to assume, that encrypting the disk with dm-crypt/LUKS and managing keys/passwords is currently not easily doable?

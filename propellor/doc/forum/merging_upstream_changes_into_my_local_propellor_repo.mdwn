@@ -1,0 +1,21 @@
+When there were upstream changes available, propellor used to prompt me to
+merge upstream changes into my local propellor repo with:
+
+    git merge upstream/master
+
+Of late, propellor has not been prompting me to merge upstream changes and
+my local propellor repo is stuck at ~version 5.3.5
+
+Is there is (another manual) way to merge upstream changes into my local propellor
+repo?
+
+My propellor repo is at
+
+    git clone git://git.ricketyspace.net/propellor.git
+
+Note that I've have some minor updates under the `src/` directory. [Some][0] [of][1] [them][2] were
+merged into upstream.
+
+[0]: https://propellor.branchable.com/forum/DNS_-_Support_for_Multiline_TXT_records/
+[1]: https://propellor.branchable.com/forum/Make_clean_fails_in_openbsd/
+[2]: https://propellor.branchable.com/forum/__96__Propellor.Bootstrap.cabalBuild__96___fails_in_openbsd/

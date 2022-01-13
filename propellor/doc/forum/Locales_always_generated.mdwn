@@ -1,0 +1,18 @@
+I'm using the `Locale.available` property, and it seems the locales are always generated:
+
+```
+Generating locales (this might take a while)...
+  en_GB.UTF-8... done
+  en_US.UTF-8... done
+  en_ZA.UTF-8... done
+Generation complete.
+onyx.fusionapp.com en_ZA.UTF-8 locale generated ... done
+Generating locales (this might take a while)...
+  en_GB.UTF-8... done
+  en_US.UTF-8... done
+  en_ZA.UTF-8... done
+Generation complete.
+onyx.fusionapp.com en_US.UTF-8 locale generated ... done
+```
+
+I inspected the definition of the property, but I'm not sure where the bug is. Should `fileProperty` with identical contents be causing `onChange` to trigger?

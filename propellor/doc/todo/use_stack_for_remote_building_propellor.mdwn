@@ -1,0 +1,16 @@
+Among other features [stack](https://github.com/commercialhaskell/stack/) provides a clean and deep dependency management system that even takes care of installing toolchain (ghc, alex, happy, cabal...) in a segregated environment. Building remote propellor with stack would remove the limitation that code should be compilable with stock ghc from package manager. I have done some preliminary work on this feature in my [github clone](https://github.com/abailly/propellor) for propellor, currently from 2.17.2 branch (I wanted to reuse existing properties). The code is mostly in [Bootstrap](https://github.com/abailly/propellor/blob/master/src/Propellor/Bootstrap.hs) and is currently limited to linux systems. Adapting to FreeBsd should be straightforward as this is supported by slack and there are native builds available. 
+
+If there is interest in such a feature I would be happy to move it to HEAD and provide a patch.
+
+> I've implemented a bootstrapWith property, which can be added to a Host
+> to make it use stack:
+> 
+> 	& bootstrapWith (Robustly Stack)
+> 
+> So, for a propellor install that uses stack entirely, use
+> `stack install propellor` to install it to your laptop,
+> use `propellor --init` to set up `~/.propellor/config,hs`,
+> and in the config file, add the above property to all your 
+> Hosts (perhaps using `map` ..).
+> 
+> I feel that's enough to call this [[done]]. --[[Joey]]

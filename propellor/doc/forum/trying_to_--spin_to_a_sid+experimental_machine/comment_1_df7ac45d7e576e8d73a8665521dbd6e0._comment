@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawm-czsfuWENKQ0GI8l0gnGTeF1JEli1mA0"
+ nickname="Andreas"
+ subject="finally got it working"
+ date="2015-03-27T05:15:26Z"
+ content="""
+can spin to softland, my sid+experimental host now.
+
+with recent git://propellor.branchable.com/ updates
+and have used:
+
+```
+  & os (System (Debian Experimental) \"amd64\")
+```
+
+so sorry for the noise, still not sure about:
+
+* how to express my installation properly:
+  mostly unstable, ghc stuff from experimental
+
+* how to turn off the git push to branchable attempts
+  when just spinning to one of my mashines:
+  have set now:
+    ``` 
+    git branch --unset-upstream
+    ``` 
+ which shortcuts these attempts at least.
+
+"""]]

@@ -1,0 +1,58 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 2"
+ date="2016-05-22T01:48:27Z"
+ content="""
+Thanks for your feedback.
+
+> Re not running propellor in the sbuild chroot, I have in the past used
+> schroot for things where it would have made sense to run propellor in
+> the chroot. OTOH, systemd-container is a better fit for such uses
+> cases now, probably.
+
+I was thinking that if someone wanted to use a schroot and run
+propellor in it, useful properties could be appended to
+`Propellor.Property.Schroot`.  As far as types go, I think that the
+types in `Propellor.Property.Chroot` would be sufficient.
+
+> Is the ~/.sbuildrc necessary to use the sbuild properties? If so,
+> would it make sense to have a property that configures it?
+
+The only probably which *needs* the suggested ~/.sbuildrc is
+`Sbuild.piupartsConfFor`.  With the other properties and no
+~/.sbuildrc, you should be able to go ahead and use sbuild(1) to
+perform a clean build.
+
+I don't think there is a way to write a non-intrusive property to add
+anything to a user's ~/.sbuildrc.  That's because they will probably
+have different preferences for the options to pass to piuparts than I
+give in the example, and we would have to merge the adt-run code with
+any existing post-build-commands.  I'm not sure propellor should have
+a perl config file parser.
+
+> You could use Utility.DataUnits for Ccache's MaxSize. This would be
+> more flexible and consistent with other things in propellor.
+
+Done.
+
+> Limit could be a monoid. This would perhaps simplify hasGroupCache as
+> it could only be used once to set multiple limits.
+
+Done.
+
+> Maybe instead of Ccache.hasGroupCache, call it Ccache.hasCache?
+
+Done, I think that's better.  I was originally thinking that the name
+`Ccache.hasCache` might be for a property `User -> Property
+DebianLike`.  However, if someone wanted to write a property configuring
+a user cache, it would probably have the standard location
+`~/.ccache`.  This cache would be implicitly created when required, so
+the name `Ccache.hasCache` would be needed.
+
+> That is a weird build warning! But, I don't see it with ghc
+> 7.10.3. Normally you'd see that warning when the module's export list
+> exported the same symbol twice.
+
+I'm on GHC 7.10.3, too...
+
+"""]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-07-24T17:35:24Z"
+ content="""
+I see it; changed it to use `before` so the file creation/modification
+comes before any chmodding.
+"""]]

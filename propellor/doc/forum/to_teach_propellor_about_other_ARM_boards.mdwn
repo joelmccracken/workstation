@@ -1,0 +1,33 @@
+Inspirated by <http://joeyh.name/blog/entry/custom_ARM_disk_image_generation_with_propellor/>
+I started to teach propellor about other ARM boards.
+(After having a clean build for a supported ARM board)
+
+
+Using two directories, a `~/.propellor` with my hosts and `src/propellor` with propellor source code.
+
+In the code directory I modified `src/Propellor/Property/Machine.hs`,
+compiled with `debuild -uc -us` and installed with `dpkg -i ../propellor*.deb`.
+
+Then using my hosts directory to get a WTF moment
+
+	$ propellor --spin paddy.gpm.stappers.nl
+	Auto-merging src/Propellor/Property/Machine.hs
+	Auto-merging propellor.cabal
+	Auto-merging debian/changelog
+	Auto-merging config.hs
+	CONFLICT (add/add): Merge conflict in config.hs
+	Automatic merge failed; fix conflicts and then commit the result.
+	propellor: Failed to run git ["merge","279b9267952b598914037983f74606d4f9c4ff6e","-s",
+		"recursive","-Xtheirs","--quiet","-m","merging upstream version"
+		,"--allow-unrelated-histories"]
+	CallStack (from HasCallStack):
+	  error, called at src/Propellor/DotDir.hs:425:17 in main:Propellor.DotDir
+
+
+What did connect both directories and why?
+
+
+More important:
+
+What directory setup and workflow to use
+to teach propellor about other ARM boards?

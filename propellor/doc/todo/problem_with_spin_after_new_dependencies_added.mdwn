@@ -1,0 +1,48 @@
+Using --spin against a remote host after new cabal deps are added fails.
+
+<pre>
+Sending git update to clam.kitenet.net ... done
+Pull from central git repository ... done
+git branch origin/joeyconfig gpg signature verified; merging
+Already up-to-date.
+Warning: The package list for 'hackage.haskell.org' is 77.9 days old.
+Run 'cabal update' to get the latest list of available packages.
+Resolving dependencies...
+Configuring propellor-3.0.0...
+cabal: At least the following dependencies are missing:
+concurrent-output -any
+propellor: failed to make dist/setup-config
+Shared connection to clam.kitenet.net closed.
+propellor: remote propellor failed
+- exit 1
+</pre>
+
+This is a blocker for merging the typed-os-requirements branch.
+
+Problem is, the remote propellor runs Propellor.Bootstrap.build to build
+itself after updating the git tree. But that does not install any missing
+cabal deps.
+
+It can be made to, but there are three problems:
+
+1. For it to use depsCommand to install missing deps, it needs to know
+   the target OS of the host it's running on. That would need to be
+   extracted from other info.
+2. Propellor.Bootstrap.build is also run when local propellor builds
+   itself, and if cabal failed there, it's not running as root and so can't
+   install deps. And probably shouldn't try to anyhow.
+3. Even if Propellor.Bootstrap.build is fixed to install deps, 
+   this would still require an upgrade to get that fix before new deps can
+   be added. This presents difficulties in merging the
+   typed-os-requirements branch.
+
+Instead of fixing this in Propellor.Bootstrap.build, could it be fixed
+in the --spin code? That could run the depsCommand, but that's too
+expensive to do every time. Only need to do it if the remote
+propellor's build of itself fails. How to tell when that happened,
+vs when propellor built ok, ran, and exited nonzero due to a failing property?
+
+(Note that the cron job runs the depsCommand if cabal configure fails,
+so deps do get installed that way, only --spin is a problem.)
+
+> [[done]] --[[Joey]]

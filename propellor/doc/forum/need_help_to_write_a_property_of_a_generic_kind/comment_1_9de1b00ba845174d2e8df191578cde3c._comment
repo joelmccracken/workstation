@@ -1,0 +1,67 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-04-01T15:54:33Z"
+ content="""
+Building that, the first error message is this:
+
+      Expected type: RevertableProperty (HasInfo + DebianLike) UnixLike
+        Actual type: RevertableProperty
+                       (CombinedType
+                          (Property
+                             (Propellor.Types.MetaTypes.MetaTypes
+                                '['Propellor.Types.MetaTypes.WithInfo,
+                                  'Propellor.Types.MetaTypes.Targeting 'OSDebian,
+                                  'Propellor.Types.MetaTypes.Targeting 'OSBuntish,
+                                  'Propellor.Types.MetaTypes.Targeting 'OSArchLinux,
+                                  'Propellor.Types.MetaTypes.Targeting 'OSFreeBSD]))
+                          (Property UnixLike))
+                       UnixLike
+
+It's really complaining
+that it expected HasInfo + DebianLike and got HasInfo + UnixLike; ie your
+property seems to also support ArchLinux and FreeBSD. (Whether it really
+does, I don't know.)
+
+There seem to be several similar errors in the supported OS's, which don't
+help with focusing on the other errors..
+
+I have not found a solution to all of those, but part of the problem
+is that, inside a where clause a type annotation with a type variable
+such as `i` is not understood to refer to the same variable in the
+outer type annotation. There's some ghc extension that enables that,
+but I can never remember its name.
+
+After removing those inner type annotations, the remaining type error
+was with userGrantedProp.. So I removed its type annotation as well
+and let ghc infer its type. (Had to enable LANGUAGE TypeFamilies for it
+to be able to.) Here's what ghc thinks it is:
+
+    Top-level binding with no type signature:
+      userGrantedProp :: (Propellor.Types.Singletons.SingI outer,
+                          Propellor.Types.MetaTypes.NotSuperset
+                            '['Propellor.Types.MetaTypes.Targeting 'OSDebian,
+                              'Propellor.Types.MetaTypes.Targeting 'OSBuntish,
+                              'Propellor.Types.MetaTypes.Targeting 'OSArchLinux,
+                              'Propellor.Types.MetaTypes.Targeting 'OSFreeBSD]
+                            (Propellor.Types.MetaTypes.Targets outer)
+                          ~ 'Propellor.Types.MetaTypes.CanCombine) =>
+                         User
+                         -> [Privilege]
+                         -> ((((String -> Propellor Result) -> Propellor Result)
+                              -> Property (Propellor.Types.MetaTypes.MetaTypes outer))
+                             -> Property setupmetatypes)
+                         -> Desc
+                         -> ([Char] -> String -> [Char] -> [Char])
+                         -> ([Char] -> String -> [Char] -> String)
+                         -> RevertableProperty setupmetatypes UnixLike
+
+That's not very human friendly a way to write its type, but it gives some
+good direction. Note in particular that the type of withPassword seems to
+involve two different types of Property, not the single `Property i` that
+your original type uses in both places.
+
+I have a feeling though that there may be a bug in the code around withPassword
+that is leading to this type and that the type error is not really the root
+problem.
+"""]]

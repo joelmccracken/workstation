@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="craige@a46118dff5bc0fad85259759970d8b4b9fc377d7"
+ nickname="craige"
+ subject="Source"
+ date="2016-05-31T02:10:53Z"
+ content="""
+Thanks for getting back to me Joey. BTW a friend of mine (Fractalcat | Sharif) met you at ICFP where you claimed I was your fourth user of propellor ;-)
+
+I'm not sure which source you're specifically after and my propellor repo is not yet public. Perhaps now's the time to do that :-)
+
+Here's where it's getting stuck in the propellor --spin cycle, this last one ran for 3 hours consuming most RAM and swap before I killed it:
+
+compile: input file src/config.hs
+*** Checking old interface for Main:
+[89 of 89] Compiling Main             ( src/config.hs, dist/build/propellor-config/propellor-config-tmp/Main.o )
+*** Parser:
+*** Renamer/typechecker:
+^C^C^C^C
+
+My GHC flags in propellor.cabal are:
+
+Executable propellor-config                                                                                                                                    
+  Main-Is: config.hs                                                                                                                                           
+  GHC-Options: -threaded -Wall -fno-warn-tabs -O0 -v3 -j1                                                                                                      
+  Extensions: TypeOperators                                                                                                                                    
+  Hs-Source-Dirs: src                                                                                                                                          
+  Build-Depends:                                                                                                                                               
+    base >= 4.5, base < 5,                                                                                                                                     
+    MissingH, directory, filepath, IfElse, process, bytestring, hslogger,                                                                                      
+    unix, unix-compat, ansi-terminal, containers (>= 0.5), network, async,                                                                                     
+    time, mtl, transformers, exceptions (>= 0.6), stm, text
+
+Some googling made me think my custom types were causing this and they needed to be upgraded so I commented out all my custom types but this did not help.
+
+I'm happy to paste up my source when I know which files you need.
+
+Thanks!
+"""]]

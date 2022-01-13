@@ -1,0 +1,5 @@
+I need to run some random binaries in the guest I created with Libvirt.defined as part of the configuration.
+
+I can define Cmd.property in the host definition, but what happens for the initial image creation? 
+
+Is there some idiom for this I am missing?

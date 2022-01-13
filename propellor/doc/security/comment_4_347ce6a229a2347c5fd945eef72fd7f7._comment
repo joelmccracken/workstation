@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawmtnXa0F3OsNh8H7yf5EEbtuufPZG-3StI"
+ nickname="Arnaud"
+ subject="Output from propellor --spin $host"
+ date="2014-08-30T07:17:52Z"
+ content="""
+Here is the output (truncated):
+
+
+    Permission denied (publickey).
+    fatal: Could not read from remote repository.
+    
+    Please make sure you have the correct access rights
+    and the repository exists.
+    Git fetch ... failed
+    fatal: ambiguous argument 'origin/master': unknown revision or path not in the working tree.
+    Use '--' to separate paths from revisions, like this:
+    'git <command> [<revision>...] -- [<file>...]'
+    propellor: user error (git [\"log\",\"-n\",\"1\",\"--format=%G?\",\"origin/master\"] exited 128)
+
+
+"""]]

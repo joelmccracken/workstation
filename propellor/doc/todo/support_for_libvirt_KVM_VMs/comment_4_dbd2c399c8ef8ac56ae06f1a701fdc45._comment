@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2018-10-14T01:10:16Z"
+ content="""
+I do think that the conditional property would be a good way for this to
+work.
+
+I think there could also be VMs where you don't want the overhead of
+running propellor inside the VM (especially if the emulation is slow, or
+you don't want to allocate that much memory to the VM, or just have a lot
+of VMs), and the content is disposable. Then propellor could restart the VM
+when it changes the disk image.
+
+There's room for multiple ways to do it.. 
+
+The disk image building side of this looks easy to me, so if you do the libvirt
+stuff, Sean, I might contribute something. :)
+"""]]

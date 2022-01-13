@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 5"
+ date="2014-11-27T08:17:36Z"
+ content="""
+Just looked at augeas, and add it to propellor would be great. Much more robust than Propellor.Property.File.{containsLine,containsLines,lacksLine}, at least.
+"""]]

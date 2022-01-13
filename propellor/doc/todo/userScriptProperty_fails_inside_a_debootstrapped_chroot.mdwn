@@ -1,0 +1,25 @@
+Config snippet to reproduce:
+
+    	& Chroot.provisioned sidChroot
+      where
+    	sidChroot = Chroot.debootstrapped mempty "/tmp/sid" $ props
+    		& osDebian Unstable X86_64
+    		& User.accountFor (User "spwhitton")
+    		& userScriptProperty (User "spwhitton")
+    			[ "echo hello > /home/spwhitton/greeting" ]
+    		`assume` MadeChange
+
+During a spin, I see the error `Cannot execute /bin/sh`.
+
+I can obtain the error manually as follows.  My `/tmp` is not mounted `noexec`.
+
+    iris ~ % sudo chroot /tmp/sid /bin/bash       
+    [sudo] password for spwhitton:         
+    root@iris:/# su --shell /bin/sh -c "echo hello > /home/spwhitton/greeting" spwhitton
+    Cannot execute /bin/sh
+    root@iris:/# su --shell /bin/sh spwhitton
+    Cannot execute /bin/sh: Permission denied
+
+--spwhitton
+
+> [[fixed|done]] --[[Joey]]

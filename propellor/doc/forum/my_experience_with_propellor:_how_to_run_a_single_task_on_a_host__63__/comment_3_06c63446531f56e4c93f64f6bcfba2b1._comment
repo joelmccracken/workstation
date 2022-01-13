@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-04-14T19:42:22Z"
+ content="""
+[period](http://hackage.haskell.org/package/propellor-2.2.1/docs/Propellor-Property-Scheduled.html)
+is not a cron job, it just modifies the Property to only do anything
+every so often.
+
+It's also possible to modify a Property so it only runs once. 
+[flagFile](http://hackage.haskell.org/package/propellor-2.2.1/docs/Propellor-Property.html#v:flagFile)
+can be used to do that.
+
+But there are good reasons for propellor to default to checking all
+Properties of a system each time:
+
+* It means that most Properties are idempotent, which has many good
+  features, like being able to recover from a crash.
+* If a system no longer has a configured Property, to fix it back to having
+  the property it's supposed to have.
+* Or, if it can't be fixed, to tell you with an error message in red.
+* It keeps propellor mostly stateless; rather than having to record state
+  about how it thinks a system is, which could diverge from reality,
+  it just looks at how it actually is.
+"""]]

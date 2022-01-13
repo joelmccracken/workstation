@@ -1,0 +1,106 @@
+G'day Joey. Trying to deploy to a new host and I'm hitting this error:
+
+    cabal: Unrecognised flags: propellor-config
+    sh: 1: ./propellor: not found
+    propellor: user error (ssh ["-o","ControlPath=/home/craige/.ssh/propellor/os01.mcwhirter.io.sock","-o","ControlMa
+    ster=auto","-o","ControlPersist=yes","root@os01.mcwhirter.io","sh -c 'if [ ! -d /usr/local/propellor/.git ] ; the
+    n (if ! git --version >/dev/null; then apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qq --no-install-
+    recommends --no-upgrade -y install git; fi && echo STATUSNeedGitClone) || echo STATUSNeedPrecompiled ; else cd /u
+    sr/local/propellor && if ! cabal configure >/dev/null 2>&1; then ( apt-get update ; DEBIAN_FRONTEND=noninteractiv
+    e apt-get -qq --no-upgrade --no-install-recommends -y install gnupg ; DEBIAN_FRONTEND=noninteractive apt-get -qq 
+    --no-upgrade --no-install-recommends -y install ghc ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --n
+    o-install-recommends -y install cabal-install ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-inst
+    all-recommends -y install libghc-async-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install
+    -recommends -y install libghc-missingh-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install
+    -recommends -y install libghc-hslogger-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install
+    -recommends -y install libghc-unix-compat-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-inst
+    all-recommends -y install libghc-ansi-terminal-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no
+    -install-recommends -y install libghc-ifelse-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-i
+    nstall-recommends -y install libghc-network-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-in
+    stall-recommends -y install libghc-mtl-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install
+    -recommends -y install libghc-transformers-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-ins
+    tall-recommends -y install libghc-exceptions-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-i
+    nstall-recommends -y install libghc-stm-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-instal
+    l-recommends -y install libghc-text-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-re
+    commends -y install make ; cabal update ; cabal install --only-dependencies ) || true; fi&& if ! test -x ./propel
+    lor; then cabal configure && cabal build propellor-config && ln -sf dist/build/propellor-config/propellor-config 
+    propellor; fi;if test -x ./propellor && ! ./propellor --check; then cabal clean && cabal configure && cabal build
+     propellor-config && ln -sf dist/build/propellor-config/propellor-config propellor; fi && ./propellor --boot os01
+    .mcwhirter.io ; fi'"] exited 127)
+
+When I build propellor manually on the remote host, same issue:
+
+    /usr/local/propellor# cabal build propellor-config
+    cabal: Unrecognised flags: propellor-config
+
+Building without the propellor-config flag *appears* to work fine:
+
+    /usr/local/propellor# cabal build
+    Building propellor-3.0.4...
+    Preprocessing executable 'propellor-config' for propellor-3.0.4...
+    ...
+    Linking dist/build/propellor-config/propellor-config ...
+    Preprocessing executable 'propellor' for propellor-3.0.4...
+
+So when I change line 39 in Bootstrap.hs to drop "propellor-config" it appears to work OK, locally:
+
+    % ~/.propellor/propellor --spin os01.mcwhirter.io
+    Preprocessing executable 'propellor-config' for propellor-3.0.4...
+    [85 of 90] Compiling Propellor.Bootstrap ( src/Propellor/Bootstrap.hs, dist/build/propellor-config/propellor-config-tmp/Propellor/Bootstrap.o )
+    Linking dist/build/propellor-config/propellor-config ...
+    Propellor build ... done
+
+    You need a passphrase to unlock the secret key for
+    user: ????
+    4096-bit RSA key, ID ?????, created ????
+
+    [master 0e810ff] propellor spin
+     1 file changed, 4 insertions(+), 3 deletions(-)
+    Git commit ... done
+    Resolving dependencies...
+    Configuring propellor-3.0.4...
+    Warning: 'license: BSD2' is not a recognised license. The known licenses are:
+    GPL, GPL-2, GPL-3, LGPL, LGPL-2.1, LGPL-3, BSD3, MIT, Apache, Apache-2.0,
+    PublicDomain, AllRightsReserved, OtherLicense
+    Building propellor-3.0.4...
+    Preprocessing executable 'propellor-config' for propellor-3.0.4...
+    Preprocessing executable 'propellor' for propellor-3.0.4...
+    Preprocessing library propellor-3.0.4...
+    ...
+
+However it still fails with the original error on the remote host, despite the new Bootstrap.hs having been copied in place correctly.
+
+    % ~/.propellor/propellor --spin os01.mcwhirter.io
+    Preprocessing executable 'propellor-config' for propellor-3.0.4...
+    [85 of 90] Compiling Propellor.Bootstrap ( src/Propellor/Bootstrap.hs, dist/build/propellor-config/propellor-config-tmp/Propellor/Bootstrap.o )
+    Linking dist/build/propellor-config/propellor-config ...
+    Propellor build ... done
+
+    You need a passphrase to unlock the secret key for
+    user: ?????
+    4096-bit RSA key, ID ?????, created ?????
+
+    [master bf1b056] propellor spin
+     1 file changed, 1 deletion(-)
+    Git commit ... done
+    Sending privdata (11 bytes) to os01.mcwhirter.io ... done
+    Sending git update to os01.mcwhirter.io ... done
+    remote: Counting objects: 5, done.        
+    remote: Compressing objects: 100% (5/5), done.        
+    remote: Total 5 (delta 4), reused 0 (delta 0)        
+    From .
+     * branch            HEAD       -> FETCH_HEAD
+    cabal: Unrecognised flags: propellor-config
+    Resolving dependencies...
+    Configuring propellor-3.0.4...
+    Warning: 'license: BSD2' is not a recognised license. The known licenses are:
+    GPL, GPL-2, GPL-3, LGPL, LGPL-2.1, LGPL-3, BSD3, MIT, Apache, Apache-2.0,
+    PublicDomain, AllRightsReserved, OtherLicense
+    cabal: Unrecognised flags: propellor-config
+    propellor: cabal build failed
+    Shared connection to os01.mcwhirter.io closed.
+    propellor: remote propellor failed
+
+I feel like I'm working around another local issue but so far my "fix" has been in Bootstrap.hs.
+
+Thoughts?

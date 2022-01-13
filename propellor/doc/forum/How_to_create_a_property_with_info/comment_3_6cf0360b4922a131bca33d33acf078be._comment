@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-08-28T22:38:55Z"
+ content="""
+Finding a way to type check that, I don't know. It would certianly be nice
+to be able to statically check such things. The way that Info is
+implemented as a monoid that contains many different types seems to
+preclude exposing enough information for the type checker to catch such a
+problem. So it would have to be changed somehow, I don't know how.
+"""]]

@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-12-06T21:14:36Z"
+ content="""
+I'd use `PROPELLOR_SPIN_BRANCH`. No objections to `PROPELLOR_DIRTY_NOSPIN`
+as long as it's not default.
+
+Note that Cron.runPropellor does not use /usr/bin/propellor, and there are
+other ways of running propellor that don't use that wrapper. So I don't
+think the wrapper is the place to implement this kind of thing.
+
+Why use environment variables for configuration? That makes it hard to make
+sure propellor gets the same configuration every way it can be run. And,
+propellor has a config file. :)
+
+Implementation could be something like, add a `configuredMain` that takes a
+monoidial configuration value for such global config settings. 
+(so `defaultMain = configuredMain mempty`)
+
+Hmm, I suppose the issue with `PROPELLOR_SPIN_BRANCH` is that when a
+different branch is checked out, that branch's config.hs would not have that
+configured, or would perhaps set it to use that branch. So, that's why
+you were thinking environment variables?
+
+Maybe use git-config?
+"""]]

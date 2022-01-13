@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2018-04-30T13:24:30Z"
+ content="""
+Seems this must be caused by [[!commit d8d2faece72eabd18c2ff303e5fb63c3a69961f6]]
+
+And I guess you've modified the config.hs in propellor
+for your own systems?
+
+You will indeed need to add dependencies to the cabal stanza for
+propellor-config.
+
+I think that you may be able to add Other-Modules: Utility.FileMode
+to the cabal stanza for propellor-config and get access to the unexported
+module that way. Not 100% sure.
+
+I'm curious: Is there part of propellor's published modules that made you
+need something from Utility.FileMode to use it, or were you writing your
+own property and happened to use something from Utility.FileMode?
+"""]]

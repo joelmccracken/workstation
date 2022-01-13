@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 3"
+ date="2015-09-10T09:30:57Z"
+ content="""
+The host has 128Mo of RAM :-). All dependencies should be available to apt-get, though... as it runs debian jessie. I used propellor on several other hosts running jessie also, and (it seems that) they didn't download the package list.
+
+Downloading anything from hackage is problematic because cabal uses insecure http (potential MITM), and a new version of a dependency may introduce security holes.
+
+As side note, stack may be an alternative to cabal in the case where apt can't find all the dependencies: it downloads everything securely, and stackage allows to deal with dependencies issues: the build may probably fail if new incompatible versions of propellor dependencies are released to hackage. Or maybe using strict versioning would be a solution there. Or maybe building propellor (at least for host with the same architecture) before sending it to the host?
+"""]]

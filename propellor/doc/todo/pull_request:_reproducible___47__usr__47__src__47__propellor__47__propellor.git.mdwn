@@ -1,0 +1,9 @@
+Please consider merging branch `reproducible` of repository `https://git.spwhitton.name/propellor`.
+
+This makes the generated `/usr/src/propellor/propellor.git` reproducible, so that the whole Debian package can be built reproducibly.
+
+So far as I can tell, this is the only part of the propellor build that is not reproducible at present.  It's also the only issue listed on the [[reproducible builds team website|https://reproducible.debian.net/rb-pkg/unstable/amd64/propellor.html]].
+
+--spwhitton
+
+> merged; [[done]] --[[Joey]]

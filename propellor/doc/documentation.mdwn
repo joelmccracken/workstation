@@ -1,0 +1,15 @@
+The [API documentation](http://hackage.haskell.org/package/propellor) of
+Propellor's modules is the most important documentation of propellor.
+
+Other documentation:
+
+* [[man page|usage]]
+* [[Haskell Newbie]]
+* [[Writing Properties]]
+* [[Automated Spins]] (and centralized git repositories)
+* [[Components]]
+* [[Contributing]]
+* [[Interface Stability]]
+* [[Coding Style]]
+* [[Security]]
+* [[Debugging]]

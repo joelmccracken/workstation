@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="http://joeyh.name/"
+ ip="131.252.200.111"
+ subject="comment 2"
+ date="2014-08-29T21:52:02Z"
+ content="""
+--add-key puts your **public** key in the repository, not the private key.
+"""]]

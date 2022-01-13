@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-07-30T15:00:57Z"
+ content="""
+About all I can tell from this is that "git fetch" is failing, and
+apparently complaining about being passed a "gitpush" option. 
+
+Since the only occurrance of "gitpush" is a internal flag that propellor
+passes to itself, and not to git fetch, I don't know why your propellor
+would be doing this. Perhaps if you turn on `PROPELLOR_DEBUG` you'll find
+out more.
+"""]]

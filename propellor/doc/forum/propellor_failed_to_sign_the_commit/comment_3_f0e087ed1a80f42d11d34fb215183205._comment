@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-07-30T15:33:02Z"
+ content="""
+I've made propellor set `GPG_TTY` and verified that this lets gpg prompt
+for the password at the linux console.
+
+Since I was not able to reproduce git commit signing not working, I don't
+know for sure that this fixed that, but imagine it probably would.
+"""]]

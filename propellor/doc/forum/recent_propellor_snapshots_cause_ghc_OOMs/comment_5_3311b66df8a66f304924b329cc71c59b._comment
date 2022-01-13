@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2016-05-31T16:23:16Z"
+ content="""
+I'm looking for a test case to reproduce the problem. Your config.hs would
+probably do unless it refers to modules that don't ship with propellor.
+"""]]

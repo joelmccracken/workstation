@@ -1,0 +1,25 @@
+I am using this property in order to remove a bunch of file
+
+    cmdProperty "rm" ["-f", "-v", "/etc/schroot/chroot.d" </> (chrootname ++ "-sbuild-*")]
+
+during the process it is ok
+
+    xxx@xxxx rm -f -v /etc/schroot/chroot.d/jessie-i386-sbuild-* ... done
+
+but
+
+    ~$ ls /etc/schroot/chroot.d/jessie-i386-sbuild-*
+    /etc/schroot/chroot.d/jessie-i386-sbuild-0ClOnm  /etc/schroot/chroot.d/jessie-i386-sbuild-fAxdL6  /etc/schroot/chroot.d/jessie-i386-sbuild-PG9d8D  /etc/schroot/chroot.d/jessie-i386-sbuild-tweTLd
+    /etc/schroot/chroot.d/jessie-i386-sbuild-1qXV4i  /etc/schroot/chroot.d/jessie-i386-sbuild-hLZtEV  /etc/schroot/chroot.d/jessie-i386-sbuild-thaExp  /etc/schroot/chroot.d/jessie-i386-sbuild-uJHP6m
+    /etc/schroot/chroot.d/jessie-i386-sbuild-6wSjGH  /etc/schroot/chroot.d/jessie-i386-sbuild-KNUVIo  /etc/schroot/chroot.d/jessie-i386-sbuild-tUcBcL  /etc/schroot/chroot.d/jessie-i386-sbuild-UnfRTK
+
+So it seems that this property did not worked.
+
+So I ran propellor with PROPELLOR_DEBUG=1 and the return code of the rm command is a Success
+
+When I use a scriptProperty  it works
+
+    scriptProperty
+            [ "rm -f -v " ++ "/etc/schroot/chroot.d" </> (chrootname ++ "-sbuild-*") ]
+
+So it seems that something is wrong with the cmdProperty

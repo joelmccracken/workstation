@@ -1,0 +1,3 @@
+For some reason (and I'm not sure exactly when this started), when I propellor --spin a host when the control master socket does not yet exist, none of the output from the remote host comes back. The remote run works fine, I just have to ^C the local propellor once I see that the remote run is done (by watching top on the remote host or something). If the socket does already exist (eg. spinning again immediately), then everything is fine.
+
+I assume this is some issue with my local SSH version or config, but I have no clue what. Anyone have any ideas?

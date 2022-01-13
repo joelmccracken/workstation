@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 2"
+ date="2016-02-10T06:41:49Z"
+ content="""
+Thanks a lot joey :)
+
+I am learning haskell for now and I am not very confortable yet with the haskell Monoid, functor, applicative and monad.
+
+So what you are saying is that it would be great to do something like
+
+    instance monoid Property where
+         mempty = doNothing
+         mappend p1 p2 = combineProperty [p1, p2]
+         mconcat ps = combineProperty ps
+
+in order to combine properties.
+my question is why did you choose to create combineProperty instead of a Monoid at first ?
+
+thanks
+
+Frederic
+"""]]

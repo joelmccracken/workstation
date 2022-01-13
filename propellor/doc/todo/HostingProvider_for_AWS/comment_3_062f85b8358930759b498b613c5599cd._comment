@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="evan@0e4cded17eab71af967a38b123fbc211cf215421"
+ nickname="evan"
+ subject="Container Service"
+ date="2016-03-08T02:54:27Z"
+ content="""
+I forgot to mention that as well. Scheduling Docker containers with the container service on dedicated instances with AWS.
+
+I have needs, and a lot of stubbornness.
+"""]]

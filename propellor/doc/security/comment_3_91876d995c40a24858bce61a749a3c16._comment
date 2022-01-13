@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawmtnXa0F3OsNh8H7yf5EEbtuufPZG-3StI"
+ nickname="Arnaud"
+ subject="Remote host fails to connect"
+ date="2014-08-30T06:40:33Z"
+ content="""
+Makes sense of course, but the message one gets when doing that is a bit misleading. 
+
+I ran into another issue: propellor deploys itself to remote host, but then the propellor instance run on remote host cannot read the remote git repo, because:
+
+1. the host key is not initially present in root's known_hosts, then
+2. the user's (root) public key is unknown to the remote git repo, in my case bitbucket.org, and the URL used is git@bitbucket.org:abailly/capital-match-infra.git which implies connection goes through SSH
+
+I am puzzled: Does this mean I should add some for use by the remote host deployed to? This does not make sense so there should be another way... If I change the origin url to use https, then I cannot push locally anymore. 
+
+Thanks for your help
+"""]]

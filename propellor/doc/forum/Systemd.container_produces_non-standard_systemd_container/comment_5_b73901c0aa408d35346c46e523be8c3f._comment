@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 5"
+ date="2016-03-28T19:39:22Z"
+ content="""
+The error message is one thing, but shouldn't the container built with Systemd.container be clonable? Maybe by adding an additional \"export-tar/import-tar\" step to Systemd.container or by using something different from mkchroot?
+"""]]

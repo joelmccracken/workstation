@@ -1,0 +1,85 @@
+Propellor 3.0 is a major new version with large changes to the API.
+
+Property types have been improved to indicate what systems they target.
+This prevents using eg, Property FreeBSD on a Debian system.
+
+This forum topic is to help users with the upgrade. Post comments
+if you're having trouble and [[Joey]] will get back to you. ;)
+
+Now, the transition guide as far as your config.hs goes:
+
+* Add `props` to host definitions.
+
+		host name
+			& foo
+			& bar
+
+  Becomes
+
+  		host name $ props
+			& foo
+			& bar
+
+* Similarly, `propertyList` and `combineProperties` need `props`
+  to be used to combine together properties; they no longer accept
+  lists of properties. (If you have such a list, use `toProps`.)
+* And similarly, Chroot, Docker, and Systemd container need `props`
+  to be used to combine together the properies used inside them.
+* The `os` property is removed. Instead use `osDebian`, `osBuntish`,
+  or `osFreeBSD`. These tell the type checker the target OS of a host.
+* GHC needs `{-# LANGUAGE TypeOperators #-}` to use these fancy types.
+  This is enabled by default for all modules in propellor.cabal. But
+  if you are using propellor as a library, you may need to enable it
+  manually.
+
+Additional things you need to do if you've written your own properties:
+
+* Change `Property NoInfo` to `Property UnixLike`
+* Change `Property HasInfo` to `Property (HasInfo + UnixLike)`
+* Change `RevertableProperty NoInfo` to  
+  `RevertableProperty UnixLike UnixLike`
+* Change `RevertableProperty HasInfo` to  
+  `RevertableProperty (HasInfo + UnixLike) UnixLike`
+* If you know a property only works on a particular OS, like `Debian`
+  or `FreeBSD`, use that instead of `UnixLike`. For example:
+  `Property Debian`
+* It's also possible make a property support a set of OS's, for example:
+  `Property (Debian + FreeBSD)`
+* Removed `infoProperty` and `simpleProperty` constructors, instead use
+  `property` to construct a Property.
+* Due to the polymorphic type returned by `property`, additional type
+  signatures tend to be needed when using it. For example, this will
+  fail to type check, because the type checker cannot guess what type
+  you intend the intermediate property `go` to have:
+
+		foo :: Property UnixLike
+		foo = go `requires` bar
+		  where
+			go = property "foo" (return NoChange)
+
+  To fix, specify the type of go:
+
+			go :: Property UnixLike
+
+* `ensureProperty` now needs to be passed a witness to the type of the 
+  property it's used in.
+
+  		foo = property desc $ ... ensureProperty bar
+
+  Becomes
+
+		foo = property' desc $ \w -> ... ensureProperty w bar
+
+* General purpose properties like cmdProperty have type `Property UnixLike`.
+  When using that to run a command only available on Debian, you can
+  tighten the type to only the OS that your more specific property works on.
+  For example:
+
+		upgraded :: Property Debian
+		upgraded = tightenTargets (cmdProperty "apt-get" ["upgrade"])
+
+* Several utility functions have been renamed:  
+  getInfo to fromInfo  
+  propertyInfo to getInfo  
+  propertyDesc to getDesc  
+  propertyChildren to getChildren

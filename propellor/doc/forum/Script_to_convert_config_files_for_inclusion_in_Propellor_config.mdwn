@@ -1,0 +1,41 @@
+This script turns
+
+    Section "Monitor"
+    	Identifier "Configured Monitor"
+    EndSection
+
+into this:
+
+    [ "Section \"Monitor\""
+    , "\tIdentifier \"Configured Monitor\""
+    , "EndSection"
+    ]
+
+for the inclusion of short config files in your Propellor config using `File.hasContent`.
+
+[[!format haskell """
+#!/usr/bin/runhaskell
+
+main = interact $ unlines . propellorLines . lines
+
+propellorLines        :: [String] -> [String]
+propellorLines (x:xs) = ("[ " ++ wrapEscapeLine x) : propellorLines' xs
+
+propellorLines' :: [String] -> [String]
+propellorLines' = foldr step ["]"]
+  where
+    step x xs = (", " ++ wrapEscapeLine x) : xs
+
+wrapEscapeLine      :: String -> String
+wrapEscapeLine line = "\"" ++ (foldr step "" line) ++ "\""
+  where
+    step x xs
+    	| x == '\t' = "\\t" ++ xs
+        | x == '\\' = x : x : xs
+        | x == '"'  = '\\' : x : xs
+        | otherwise = x : xs
+"""]]
+
+Usage: `cat config_file | propellor_lines` (or in Emacs, dump the config file into your propellor config, select the region and use `C-u M-|` to pipe it through).
+
+-- [[spwhitton|https://spwhitton.name]]

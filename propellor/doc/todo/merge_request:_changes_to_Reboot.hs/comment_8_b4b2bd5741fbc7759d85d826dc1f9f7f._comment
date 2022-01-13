@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 8"
+ date="2016-06-19T12:31:40Z"
+ content="""
+Please consider merging my new `reboot` branch which addresses the discussion we've had.
+
+I also included some other improvements to `Sbuild.hs`, a bug fix in `Ccache.hs` and some GHC 7.6 compatibility fixes.  With one exception,[1] I think that the changes are sufficiently self-explanatory that `git diff master..spwhitton/reboot` will be enough for you to review the branch.  If not, I will happily split the commits into several branches.
+
+[1] I changed the haddocks on some functions in Sbuild.hs so that they will be properly hyperlinked, and did some other documentation rearrangements.
+"""]]

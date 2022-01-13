@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-07-05T20:39:45Z"
+ content="""
+I don't think that anyone has integrated it with LDAP yet.
+
+It's easy to use propellor from another location; just put the propellor 
+git repository anywhere you want, use `make` to build it once,
+and run `./propellor` thereafter.
+
+The only thing that hardcodes using ~/.propellor is the /usr/bin/propellor
+wrapper, by running the propellor you built yourself you bypass the need
+for the wrapper. I keep propellor in ~/src/propellor on my laptop 
+and run it this way myself.
+"""]]

@@ -1,0 +1,3 @@
+Does propellor have a dry run mode? I'm not sure I trust either it or myself enough to let it make changes without checking them first!
+
+I looked in the manual page etc and tried grepping the source for likely names but couldn't find anything.

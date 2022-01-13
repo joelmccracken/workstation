@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-06-07T17:13:29Z"
+ content="""
+propellor-config is the name of the Executable component
+in the cabal file that we want cabal to build.
+
+	Usage: cabal build [FLAGS]
+	   or: cabal build COMPONENTS [FLAGS]
+
+It's the COMPONENT shown in the cabal build help. It seems that your cabal
+doesn't not understand this syntax. What version of cabal is that?
+
+(Based on the license warning, I'm guessing its an older version of cabal
+than the 1.22.6.0 I'm using here. The cabal 1.20.0.3 in Debian stable also
+supports this syntax.)
+
+Only building the propellor-config Executable is only an optimisation;
+otherwise cabal build also builds propellor as a library which is not
+needed here. So your workaround to drop that parameter should be ok.
+
+You probably need to rebuild propellor on the remote host manually
+after updating the code there, since the remote host has a version of
+propellor compiled such that it tries to recompile itself using that parameter..
+"""]]

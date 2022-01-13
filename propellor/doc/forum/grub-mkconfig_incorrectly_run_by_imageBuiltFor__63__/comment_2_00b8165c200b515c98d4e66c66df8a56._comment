@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 2"
+ date="2017-12-19T22:01:17Z"
+ content="""
+manually adding \"--target\" and \"i386-coreboot\" to grub-install arguments seems to make the build successful:
+
+         17,512,735  69%  155.80MB/s    0:00:00 (xfr#1, to-chk=0/5)
+                129   0%    0.14kB/s    0:00:00 (xfr#3, to-chk=0/33524)   
+    update-initramfs: Generating /boot/initrd.img-4.9.0-4-amd64
+    Installing for i386-coreboot platform.
+    grub-install: warning: WARNING: no platform-specific install was performed.
+    Installation finished. No error reported.
+    Generating grub configuration file ...
+    Found linux image: /boot/vmlinuz-4.9.0-4-amd64
+    Found initrd image: /boot/initrd.img-4.9.0-4-amd64
+    done
+    loop deleted : /dev/loop0
+    laptop built disk image /srv/router.img ... done
+    laptop overall ... done
+
+I've not tested the image yet, but I guess we need to a BIOS argument to bootsMounted, or put the BIOS property is Info.
+
+/srv/router.img.chroot/boot/ still contains only, config-4.9.0-4-amd64, System.map-4.9.0-4-amd64, initrd.img-4.9.0-4-amd64, vmlinuz-4.9.0-4-amd64. There is no /srv/router.img.chroot/boot/grub/
+
+"""]]

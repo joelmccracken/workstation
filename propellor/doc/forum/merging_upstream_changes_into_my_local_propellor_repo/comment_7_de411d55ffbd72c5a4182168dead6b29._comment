@@ -1,0 +1,46 @@
+[[!comment format=mdwn
+ username="s@aa9ff9ce06b08acfd2a93ebd342ce6879430fbdd"
+ nickname="s"
+ avatar="http://cdn.libravatar.org/avatar/81bf27f8b35011d1846711fa37a5588f"
+ subject="comment 7"
+ date="2019-06-06T03:13:02Z"
+ content="""
+Documenting it (in case there is another user who wishes to do the same):
+
+Add upstream repo and fetch tags:
+
+```
+$ cd ~/.propellor
+
+$ git remote add u git://propellor.branchable.com/propellor
+$ git fetch u --tags
+```
+
+Look for the list releases:
+
+```
+$ git tag -l
+0.1
+0.1.1
+0.1.2
+0.2.0
+0.2.1
+...
+...
+...
+X.Y.Z
+```
+
+To merge release `X.Y.Z` into your master branch, do:
+
+```
+$ git merge -X theirs --allow-unrelated-histories X.Y.Z
+```
+
+Fix any conflicts and:
+
+```
+$ git commit
+```
+
+"""]]

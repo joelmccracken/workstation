@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-03-06T18:43:37Z"
+ content="""
+Added some debugging, I found that processes run by concurrent-output tend to
+alternate between running foreground and background. So, when the socket
+exists and is old, it will run one more process than otherwise to
+stop ssh on that socket, and this will change which run method is
+used for subsequent processes.
+
+However, it really shouldn't matter if a process starts in the background;
+concurrent-output shoud notice when the output lock frees up, and start
+displaying the processes's output.
+
+So, this theory explains why the ssh socket seems to be involved, perhaps,
+but it doesn't really explain what's happening to prevent the remote
+propellor output from being shown.
+
+Unless some other foreground process is hanging around and keeping
+the output lock. Or some bug in concurrent-output..
+"""]]

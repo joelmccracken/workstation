@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 11"
+ date="2018-02-19T06:31:32Z"
+ content="""
+Yes sir :)
+
+    picca@mordor:~/.propellor$ git remote -v
+    deploy  https://salsa.debian.org/picca/propellor.git (fetch)
+    deploy  https://salsa.debian.org/picca/propellor.git (push)
+    origin  git@salsa.debian.org:picca/propellor.git (fetch)
+    origin  git@salsa.debian.org:picca/propellor.git (push)
+    upstream        /usr/src/propellor/propellor.git (fetch)
+    upstream        /usr/src/propellor/propellor.git (push)
+
+"""]]

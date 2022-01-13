@@ -1,0 +1,25 @@
+Hello, I try to copy a vm image to a directory like this
+
+    & "/nfs/share-temp/panbox-rel.img" `File.isCopyOf` panboxName
+
+
+but when I run this, I get this error message
+
+    sixs3.exp.synchrotron-soleil.fr /root/vm/panbox-rel.img owner picca:grp-instrumentation ... done
+    cp: failed to preserve ownership for '/nfs/share-temp/panbox-rel.img.propellor-new~': Operation not permitted
+    ** error: cp failed
+    ** warning: Cannot continue!
+    CallStack (from HasCallStack):
+      error, called at src/Propellor/Message.hs:143:9 in propellor-5.6.0-GGUJL7KihFnDmzjFSP3dov:Propellor.Message
+    sixs3.exp.synchrotron-soleil.fr /nfs/share-temp/panbox-rel.img is copy of /root/vm/panbox-rel.img ... failed
+
+I understand thaht it is not possible to use cp --preserve... on the nfs system.
+
+So is seems that Propellor miss a copyFile whcih is usable also on nfs system :).
+what is the best way to solve this problem.
+
+I can copy the file without the preserve flag.
+
+Cheers
+
+Fred

@@ -1,0 +1,33 @@
+The following seems to more or less work (at least the output from
+"iptables -L -v" looks plausible. But it's not persistent.
+It doesn't seem sensible to wait for propellor to run again to set up a firewall after reboot. Any ideas for how to make this persistent?
+
+[[!format haskell """
+module Propellor.Property.SiteSpecific.Tethera.Firewall (
+  ipFirewall,
+  ) where
+
+import Propellor.Base
+import Propellor.Property.Firewall
+
+ipFirewall :: [Port] -> [Port] -> Property DebianLike
+ipFirewall tcpPorts udpPorts = propertyList "IPTables based firewall" $ props
+  & installed
+  & rule INPUT Filter DROP (Ctstate [INVALID])
+  & rule INPUT Filter ACCEPT (InIFace "lo")
+  & rule OUTPUT Filter ACCEPT (OutIFace "lo")
+  & rule INPUT Filter ACCEPT (Ctstate [ESTABLISHED, RELATED])
+  & rule INPUT Filter ACCEPT (Proto ICMP)
+  & openPorts TCP tcpPorts
+  & openPorts UDP udpPorts
+  & rule OUTPUT Filter ACCEPT Everything
+  & rule INPUT Filter DROP Everything
+  & rule FORWARD Filter DROP Everything
+  where
+    openPorts proto lst = combineProperties "open TCP ports" $
+                   toProps (map
+                             (\p -> (rule INPUT Filter ACCEPT 
+                                     ((Proto proto) :- (DPort p)) ))
+                             lst)
+      
+"""]]

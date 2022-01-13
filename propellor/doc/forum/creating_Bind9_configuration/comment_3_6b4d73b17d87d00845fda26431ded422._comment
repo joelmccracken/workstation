@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 3"
+ date="2017-08-28T14:03:35Z"
+ content="""
+It might be a configuration from my server provider, maybe I should do a clean install :)
+
+If not using a full clone, I also have problem because I cannot use things like Utility.Units.
+"""]]

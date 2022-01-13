@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2018-07-11T16:01:37Z"
+ content="""
+Marked the module as unmaintained. If you would like to take over
+maintanance of it, just send me patches putting your name in the maintainer
+slot etc.
+"""]]

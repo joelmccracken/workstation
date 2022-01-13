@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-10-02T15:21:17Z"
+ content="""
+Annoyed me a few times too, but not enough to do anything about it.
+
+It might make sense to add a command-line option to enable debug mode,
+so that propellor can pass it when it runs propellor elsewhere..
+"""]]

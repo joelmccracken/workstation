@@ -1,0 +1,12 @@
+Hey all, I just thought I'd mention I'm working on porting Propellor to FreeBSD. Here's my [GitHub fork](https://github.com/misandrist/propellor/tree/FreeBSD), and the branch is called FreeBSD.
+
+Currently:
+
+- I've started passing the System down into the Bootstrap to choose the right shell commands and package dependencies
+- I've briefly commented out the Cron job creation
+- I've added a module for FreeBSD, and a really minimal property for Pkg
+- I've created a sample configuration which is only tests pkg update
+
+It's pretty encouraging so far, and I'm hoping to have more working soon.
+
+Thanks!

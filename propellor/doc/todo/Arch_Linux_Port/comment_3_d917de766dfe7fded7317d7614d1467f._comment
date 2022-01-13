@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-02-04T20:55:02Z"
+ content="""
+> Instead,  I changed some properties in DiskImage from Linux to
+> DebianLike.  Is it the correct way to do it?
+
+Looking at it, kpartx is DebianLike-specific, so imageBuiltFrom which uses it
+should be too. The only reason it wasn't marked as DebianLike already and
+was type Linux is because Linux used to be the same as DebianLike and so
+the type checker didn't see a difference. No longer, thanks to your patch.
+
+So, it makes complete sense that you have to change this. You're paying
+the price of blazing the trail of the first non-DebianLike Linux distro in
+Propellor..
+
+---
+
+Looks like your [[!commit 25f6871e1dda3de252fbc6c8ac6962eb0cd9311a]]
+dealt with all my review suggestions. And so, I've merged it.
+
+Unless you have anything else that needs to be done, I'll release
+propellor soon with the added Arch Linux support. Thank you very much!
+"""]]

@@ -1,0 +1,1 @@
+I just observed that installing texlive via propellor means I have A4 paper chose as a default. Which is all very good from an ideological point of view, but it means I can't submit this grant application ;).  Is it worth having a propellor property that runs paperconfig?

@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="Progress"
+ date="2018-01-02T14:19:53Z"
+ content="""
+Hi,
+
+FYI  I'm making progress in teaching propellor about other ARM boards.
+
+What I have done is deleting `~/.propellor/` and creating a new one.
+
+The new one is a full .propellor repository.
+
+
+See also <http://propellor.branchable.com/components/>
+"""]]

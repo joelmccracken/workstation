@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2016-03-28T16:06:43Z"
+ content="""
+sm noticed that running the propellor wrapper after stack install propellor
+sets up ~/.propellor/ but fails to build in there, because it uses cabal.
+
+So, it appeared to him as if the propellor command didn't accept switches,
+since it never got to the point of running propellor-config. Which is
+pretty confusing behavior.
+
+To fully support stack, the wrapper or build process would need to notice
+that it was installed using stack, and build using stack. This conflicts
+somewhat with my idea about noticing if stack.yaml exists as the flag.
+"""]]

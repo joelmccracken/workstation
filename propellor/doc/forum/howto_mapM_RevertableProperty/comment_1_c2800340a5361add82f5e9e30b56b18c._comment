@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-02-08T15:00:26Z"
+ content="""
+combineProperties takes a list of PropertyListType, which is a type family
+consisting of [Property NoInfo] and [Property HasInfo]. So, you need to get
+from RevertableProperty NoInfo to one of those. `toProp` can do that.
+
+	combineProperties "desc" (map (toProp . myProperty) confs)
+
+But! I had a look and it was easy to make [RevertableProperty i] an
+instance of PropertyListType, which makes what you already tried type check
+too. I've done so in git.
+
+It would perhaps be nice to make lists of various sorts of properties
+instances of Traversable, so that mapM etc could be used over them. That
+would need some kind of monad for combining properties though, which does
+not currently exist. Might make more sense to make an instance of Foldable
+or just Monoid for properties. Any improvements in this area would be
+appreciated!
+"""]]

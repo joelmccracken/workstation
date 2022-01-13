@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-11-27T20:41:40Z"
+ content="""
+Yes, ensureProperty cannot be used with a Property HasInfo as that would
+prevent propellor from collecting that Info.
+
+You could avoid that by factoring the `blabla'` out of the properties
+that install packages, to the top level of the property:
+
+	blabla = blabla' `requires` installpackages
+	  where
+		installpackages = withOS "Install BlaBla Stack" $ \w o -> case o of
+			...
+"""]]

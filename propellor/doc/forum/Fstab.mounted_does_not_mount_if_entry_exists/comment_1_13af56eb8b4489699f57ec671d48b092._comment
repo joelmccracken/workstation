@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="Some precision"
+ date="2017-10-08T10:54:57Z"
+ content="""
+I think the first time I forgot the `File.dirExists` for the mount point, so
+the fstab modification was done, but not the mount.
+
+"""]]

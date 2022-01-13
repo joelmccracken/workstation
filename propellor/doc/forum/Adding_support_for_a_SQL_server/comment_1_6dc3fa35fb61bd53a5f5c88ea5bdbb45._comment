@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-06-12T14:38:22Z"
+ content="""
+We want to avoid adding heavy dependencies to propellor since that makes
+propellor more expensive to bootstrap and adds a point of failure.
+
+But, it should be easy enough to add dependencies to your own 
+~/.propellor/config.cabal and write your properties using them. It would
+also be fine to have additional libraries of propellor properties extending
+propellor.
+
+As for crypto hashes, it's certianly general enough to consider adding to
+propellor, but it's also striking that propellor has mostly avoided needing
+any hashes (except for some small uses of hashable and one place that
+shells out to sha1). If there's a general purpose property that uses a
+crypto hash, we could talk about adding it.
+"""]]

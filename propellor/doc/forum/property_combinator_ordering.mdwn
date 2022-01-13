@@ -1,0 +1,8 @@
+when I write
+
+	setDistribution cfg = f `File.hasContent` cfg
+		`onChange` update
+		`requires` File.dirExists confDir
+
+is update called before ensuring the confiDir Exist ?
+It seems to me but who knows ?

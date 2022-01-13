@@ -1,0 +1,14 @@
+I'd like a convenient way to add dhcp info for libvirt guests (to libvirt's internal dhcp server).
+
+I'm thinking something along the lines of
+
+          Libvirt.dhcp  "default" (MAC "52:54:00:00:00:01") (IPv4 "192.168.122.31")
+
+where I guess the MAC (or a better name?) has to be defined. "default" is the libvirt network name.
+That property (and the undo) would translate into some call to "virsh net-update".
+
+This presumably needs a way to assign a matching MAC to the guest. We could maybe provide a convenience API that did both to avoid mismatches.
+
+I don't so far see a nice way to update the mac address on the guest. There is a --network mac=  for virt-install, so maybe an optional parameter for defined? I guess it needs to be different function, called by defined to avoid breaking API?
+
+

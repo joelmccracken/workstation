@@ -1,0 +1,114 @@
+Should be possible to add this, to construct a bunch of properties and 
+run them in parallel:
+
+	concurrently :: IsProp p => (a -> p) -> [a] -> p
+
+Another version also nice to have:
+
+	race :: IsProp p => p -> p -> p
+
+Basic implementation should be pretty easy; propellor does not have a lot of
+mutable state to get in the way.
+
+The only hard part is, ensuring a property may cause arbitrary output,
+and it's not line-buffered necessarily, so there could be messy
+interleaving. I'm not sure how to deal with this, short of forking
+off a sub-process to ensure the property.
+
+----
+
+If forkProcess could be used, it could fork a subprocess that knows the
+action it's to perform, and jiggers stdio to feed through a pipe back to the
+parent. 
+
+But, I have had bad luck in the past using forkProcess in haskell,
+in combination with the -threaded runtime.
+
+	forkProcess comes with a giant warning: since any other running threads
+	are not copied into the child process, it's easy to go wrong: e.g.
+	by accessing some shared resource that was held by another thread in
+	the parent.
+
+It may well be that since propellor has very
+little shared resources, and properties are run quite independently of
+one-another, a forkProcess to run a property might not be a problem.
+
+At least, until someone gets creative:
+
+	foo = property "foo" $ do
+		v <- liftIO newEmptyMVar
+		ensureProperty $
+			foo v `race` bar v -- FAIL
+
+We could detect if inside ensureProperty and refuse to do anything
+concurrent because the user might be up to such tricks.
+
+---
+
+Instead of forking, execing a new process would work. But, how to tell that
+sub-process which property it's supposed to ensure? There's no property
+serialization, and not even a Eq to use.
+
+Hmm, if it could come up with a stable, unique Id for each property, then
+the sub-process could be told the Id, and it'd then just look through its
+Host to find the property.
+
+This could be done by propellor's defaultMain, using Data.Unique (or a
+reimplementation that lets us get at the actual integer, rather than a hash
+of it). As long as it processes properties in a consistent order, that will
+generate the same Id for a property each time (until propellor is
+recompiled of course). The Id can be paired with the description of the
+property, to catch any version skew.
+
+But, this seems to not get all the way there. Having Id's for the top-level
+properties doesn't help in a situation like:
+
+	& propertyList "foo"
+		[ x `race` y
+		, a `race` b
+		]
+
+x y a b are not top-level properties of a Host, so won't get unique Id's.
+Unless we can build up some tree of Id's that can be walked from the
+top-level down to the sub-properties, this won't work. Help?
+
+Also, what about mixing concurrency with ensureProperty?
+
+	foo = property "foo" $ do
+		liftIO defCon5
+		ensureProperty $
+			missleDefense `race` diplomacy
+	  where
+		missleDefense = ...
+		diplomacy = ...
+
+Here there's no way for a propellor sub-process to know it needs to 
+run part of foo to get to diplomacy. I think it would be ok to fall back to
+sequential mode in this case. So, the sub-process could signal with a
+special exit code that it couldn't find the requested Id, and then `race`
+can just wait for missleDefense to finish, and then run diplomacy.
+(Granted, this order may not be ideal in this specific case..)
+
+----
+
+Final option is to say, there are two sources of output when
+ensuring a property:
+
+* Propellor's own output, which is mostly gated through a few functions,
+  although of course the user can print anything they want too.
+* Output from running commands. Mostly done via cmdProperty, although
+  the user's also free to run commands in other ways.
+
+So, the Propellor monad could have a flag added to say that all output
+should be captured rather than output now, and just do that on a
+best-effort basis.
+
+Could even redirect stderr and stdout to a pipe, to capture any errant
+output. We'd not be able to tell which of the concurrent actions was
+responsible for such output, but it could be printed out, with appropriate
+warnings, at the end.
+
+[[!tag user/joey]]
+
+> [[done]]; use Propellor.Property.Concurrent to make properties run
+> concurrently. --[[Joey]]

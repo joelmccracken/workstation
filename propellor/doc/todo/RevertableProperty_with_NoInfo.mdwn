@@ -1,0 +1,48 @@
+Currently, a RevertableProperty's Properties always both HasInfo. This
+means that if a Property NoInfo is updated to be a RevertableProperty, and
+someplace called ensureProperty on it, that will refuse to compile.
+
+The workaround is generally to export the original NoInfo property under
+a different name, so it can still be used with ensureProperty.
+
+This could be fixed:
+
+	data RevertableProperty i1 i2 where
+		RProp :: Property i1 -> Property i2 -> RevertableProperty i1 i2
+
+However, needing to write "RevertableProperty HasInfo NoInfo" is quite
+a mouthful!
+
+Since only 2 places in the propellor source code currently need to deal
+with this, it doesn't currently seem worth making the change, unless a less
+intrusive way can be found.
+
+> Hmm.. I'm not sure what I meant by that last paragraph, but I'm sure 
+> this wart is annoying in more than 2 places by now. --[[Joey]] 
+
+> Would be nice to instead have `RevertableProperty i`, where the i was inherited
+> from the currently active property. This would be less of a mouthful,
+> and models the info transfer correctly. Ie, if I have a
+> RevertableProperty that includes dns settings on its setup side,
+> reverting it means dropping those dns settings, so the result is NoInfo.
+
+> Unfortunately, when I tried to implement this, the types prevented it.
+> In particular, anything to do with the second property in a
+> `RevertableProperty i` is a problem because we don't know what
+> type of Property it is. For example:
+
+	data RevertableProperty i where
+	        RIProperty :: Property HasInfo -> Property i -> RevertableProperty HasInfo
+	        RSProperty :: Property NoInfo -> Property i -> RevertableProperty NoInfo
+
+	activeProperty :: RevertableProperty i -> Property i
+	activeProperty (RIProperty p _) = p
+	activeProperty (RSProperty p _) = p
+
+	inactiveProperty :: RevertableProperty i -> Property x
+
+> The x is unknown and cannot be deduced from the available types.
+>
+> What could be done, instead, is to make a `RevertableProperty i` specify
+> the info of both its sides. While this doesn't perfectly model
+> the info propigation, the types work. [[done]] --[[Joey]]

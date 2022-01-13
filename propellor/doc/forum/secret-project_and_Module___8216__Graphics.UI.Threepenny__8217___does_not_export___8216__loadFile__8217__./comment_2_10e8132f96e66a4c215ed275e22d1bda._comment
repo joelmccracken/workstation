@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-12-28T17:01:21Z"
+ content="""
+The zip file pointed to by the stack.yaml file contains a patched version
+of threepenny-gui 0.8.0.0, the same as the cabal file requires.
+
+Downgrading the dependency won't work, thus your build problems. All I can
+tell you is it's built successfully with stack every time I've tried to
+build it, and stack pins all package versions to ensure a reproducible
+build.
+
+It may be that you're using too old a version of stack or 
+something like that; I've used stack 1.1.2.
+"""]]

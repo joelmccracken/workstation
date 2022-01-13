@@ -1,0 +1,40 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""code review"""
+ date="2018-11-06T14:59:06Z"
+ content="""
+Let's comment out the QCow2 constructor until that case is handled.
+
+With NumVCPUs and MiBMemory both Int, and used in the same property, they
+could get mixed up. Recommend newtypes.
+
+Would it make sense for defaultNetworkAutostarted
+to itself run the virsh net-start? It would simplify the example.
+
+It's named kvmDefined; is it actually guaranteed to use kvm and not some other VM?
+
+What happens when osVariant is Nothing and no --os-variant is passed?
+When osType is Nothing? Is it still likely to work?
+
+Please make osType not have a default case and define it for all the
+current constructors. That way, the next person to
+add an Linux distro to propellor won't forget to update it.
+
+The chroot nuking code depends on some implementation details in DiskImage,
+so I'd be inclined to move it to that module. (Which probably has similar
+code that can be factored out.)
+
+The "defined" scriptProperty uses a lot of values that are unlikely to
+contain spaces or other script unsafe stuff, but it would still be good to
+shellEscape them. (Or it could be rewritten to run virt-install w/o a
+shell, read its output, and write the file.)
+
+The "started" scriptProperty also needs some escaping. (Although I'd be
+inclined to parse virsh list in haskell, but up to you.)
+
+Minor: The `& Libvirt.defaultNetworkAutostarted` example line is currently
+indented by spaces while the other lines use tabs.
+
+Minor: I'd use `$` in some of the places where you have a parenthesized
+do block or other multiline block of code.
+"""]]

@@ -1,0 +1,11 @@
+I am trying to create a Property to install (and configure) gitlab through Propellor.
+To perform the installation and configuration I am using Apt.installed and Apt.reConfigure. When ever Propellor has to go though configuration of the package it «fails» (cf. bug report on gitlab package : 
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=886657
+
+Awaiting a resolution of the bug itself, a workaround would be to perform the apt-get install or dpkg-reconfigure from a «world-readable» directory (such as /tmp or /etc or ...). Currently these properties are executed with CWD eing the propellor repository.
+
+I have looked for, but not found yet, a way to perform the work of this property within a specific directory.
+
+Thanks in advance for any help or pointers,
+
+Serge.

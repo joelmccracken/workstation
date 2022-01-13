@@ -1,0 +1,9 @@
+Would be useful to have a `hostChroot :: Host -> Chroot`.
+
+For a Debian host, this would use debootstrapped and pass all the Host's
+properties to it. --[[Joey]] 
+
+Would need to make privdata use the context of the input Host. And would
+need to propigate privdata info, but not other info. --[[Joey]]
+
+> [[done]] --[[Joey]]

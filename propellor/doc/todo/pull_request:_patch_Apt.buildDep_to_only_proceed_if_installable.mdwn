@@ -1,0 +1,6 @@
+Please consider merging branch `builddepfix` of repo `https://git.spwhitton.name/propellor`
+
+Patches `Apt.buildDep` to check whether the build deps are installable, so that it no longer registers a change every spin.
+
+> Apt.buildDep now checks if the dpkg status file has changed, so [[done]]
+> --[[Joey]]

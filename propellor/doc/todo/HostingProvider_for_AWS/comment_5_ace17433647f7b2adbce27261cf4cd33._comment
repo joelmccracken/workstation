@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="evan@0e4cded17eab71af967a38b123fbc211cf215421"
+ nickname="evan"
+ subject="Amazonka"
+ date="2016-03-10T03:24:47Z"
+ content="""
+[Amazonka](http://brendanhay.nz/amazonka-doc/amazonka-ec2/index.html) is really thorough, and I think I'm going to start writing some properties to spin up some things tomorrow. I wrote some PKI stuff today for work so we can start launching things without SSH open to the world, and this is definitely a good next step.
+
+I've already got a hand-mashed set of subnets I'm really itching to automate. 
+
+
+
+Thanks
+"""]]

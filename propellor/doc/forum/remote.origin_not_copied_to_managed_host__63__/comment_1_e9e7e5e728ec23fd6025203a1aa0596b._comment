@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="http://joeyh.name/"
+ ip="209.250.56.114"
+ subject="comment 1"
+ date="2014-04-24T17:47:41Z"
+ content="""
+I tried using propellor from scratch on a fresh system, and I cannot reproduce this problem.
+
+/root/.propellor should only be created if /usr/bin/propellor is run as root. A normal use of propellor does not run /usr/bin/propellor as root (and your commands don't show you doing that).
+
+This is the instant where something unexplained happens:
+
+<pre>
+[2014-04-21 18:08:21 CEST] chat: ssh [\"-o\",\"ControlPath=/home/user/.ssh/propellor/laptop.localdomain.sock\",\"-o\",\"ControlMaster=auto\",\"-o\",\"ControlPersist=yes\",\"root@laptop.localdomain\",\"sh -c 'if [ ! -d /usr/local/propellor ] ; then apt-get --no-install-recommends --no-upgrade -y install git make && echo STATUSNeedGitClone ; else cd /usr/local/propellor && if ! test -x ./propellor; then make deps build; fi && ./propellor --boot laptop.localdomain ; fi'\"]
+Initialized empty Git repository in /root/.propellor/.git/
+</pre>
+
+It ssh's in, and it apparently runs propellor. But apparently without running \"make deps build\" first, which is weird. (And as we see later, without /usr/local/propellor existing at all, which is weirder!)
+The ./propellor (in /usr/local/propellor) that it's supposed to run should be a symlink to dist/build/config/config, which is the program built from config.hs. It's not the same program as /usr/bin/propellor, which is a wrapper build from propellor.hs. However, it appears that in your case, when it sshed in, it ran /usr/bin/propellor, or something that behaves a lot like it..
+
+My guesses:
+
+1. Perhaps you modified the source tree in some strange way. (Doubtful)
+2. Perhaps you have some other configuration, eg a ssh authorized keys file for root with a forced command that runs /usr/bin/propellor. This will defeat propellor's own bootstrap code, and would exactly explain what you pasted.
+"""]]

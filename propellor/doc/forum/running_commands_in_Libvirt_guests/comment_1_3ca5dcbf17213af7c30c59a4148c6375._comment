@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="Not a problem after all?"
+ date="2019-08-18T14:04:06Z"
+ content="""
+It seems like the two things I was worried about are working fine, namely
+
+- running dconf update
+- running Grub.configured. I thought the latter was a problem but I just needed to make sure it came after Grub.installed.
+"""]]

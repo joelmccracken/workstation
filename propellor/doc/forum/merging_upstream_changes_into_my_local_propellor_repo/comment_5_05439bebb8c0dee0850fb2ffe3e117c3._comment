@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 5"
+ date="2019-06-05T15:08:02Z"
+ content="""
+You can pass `-X theirs --allow-unrelated-histories` or similar.
+"""]]

@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 2"
+ date="2019-04-14T20:44:31Z"
+ content="""
+Thanks for the analysis.
+
+My `withPassword` parameter can actually have two different types, depending
+on whether it gets password from privdata or not.
+
+Most of my problems when writing complex properties are due to the Property
+kind, may be I should write simpler properties :)
+
+"""]]

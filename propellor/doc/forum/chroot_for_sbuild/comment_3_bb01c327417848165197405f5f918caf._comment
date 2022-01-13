@@ -1,0 +1,34 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 3"
+ date="2015-09-30T10:05:08Z"
+ content="""
+Thanks for the information,
+
+Now I use the provision part but I am facing a problem when I try to create the chroot using withTmpDir
+I do not understand exactly how it must work
+
+here the signature of my two methods
+
+    sbuild :: System -> RevertableProperty
+    sbuild system = withTmpDir \"sbuild\" $ \tmpdir -> sbuild' system tmpdir
+
+And here the property which does the work (it works thanks to your comment, I will have other questions about this part later ;)
+
+    sbuild' :: System -> FilePath -> RevertableProperty
+    sbuild' system chrootdir = mksbuild `requires` create
+    ...
+
+When I tried this I got this error
+
+    src/config.hs:166:17:
+        Couldn't match expected type `RevertableProperty'
+                    with actual type `m0 RevertableProperty'
+        In the expression:
+          withTmpDir \"sbuild\" $ \ tmpdir -> return $ sbuild' system tmpdir
+        In an equation for `sbuild':
+            sbuild system
+              = withTmpDir \"sbuild\" $ \ tmpdir -> return $ sbuild' system tmpdir
+
+I need to extract the property from the monad, but I do not know how ?
+"""]]

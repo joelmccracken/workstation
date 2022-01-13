@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="s@aa9ff9ce06b08acfd2a93ebd342ce6879430fbdd"
+ nickname="s"
+ avatar="http://cdn.libravatar.org/avatar/81bf27f8b35011d1846711fa37a5588f"
+ subject="comment 2"
+ date="2018-06-24T14:58:53Z"
+ content="""
+joeyh, Thanks for the feedback.
+
+I updated the definition of `TXT`'s `rValue` according to your suggestion and removed the `MTXT` record -- [patch][patch].
+
+I would like to get the patch merged into upstream, let me know if I've to refactor it.
+
+[patch]: https://ricketyspace.net/file/0001-update-rValue-of-Dns-TXT-record-type.patch
+"""]]

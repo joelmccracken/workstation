@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 8"
+ date="2018-10-19T20:34:10Z"
+ content="""
+Hello,
+
+I have made a second version.
+
+About reverting `installed`, I noticed that it only removes the meta package, which is quite useless. May be I should just drop revertability on this one.
+
+The problem of installing a software just to revert a property can also be seen in `Apache.modEnabled` for exemple.
+
+Any comments are welcome.
+
+Thanks.
+"""]]

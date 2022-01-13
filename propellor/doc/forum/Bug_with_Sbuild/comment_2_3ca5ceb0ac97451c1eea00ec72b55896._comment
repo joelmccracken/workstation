@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 2"
+ date="2016-06-19T07:19:33Z"
+ content="""
+Thank you for reporting this and for finding the fix, Fred.  In a branch I'll be submitting soon I have modified `Ccache.hasCache` to chmod setgid the cache root, and this should propagate to all newly created subdirectories.
+
+Joey: what do you think about adding `cmdProperty \"chmod\" [\"-R\", \"g+s\" \"/var/cache/ccache-foo\"]` to `Ccache.hasCache` to fix existing broken setups?  In my view it would be better to just add a note to the changelog suggesting this fix, but I'm not sure what you think would be best.
+"""]]

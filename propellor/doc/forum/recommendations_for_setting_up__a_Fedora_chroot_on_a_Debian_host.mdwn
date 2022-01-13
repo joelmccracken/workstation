@@ -1,0 +1,9 @@
+I'd like a way to set up Fedora chroots for testing purposes on my Debian workstations. Currently I use the example from the systemd-nspawn manpage
+[[!format text """
+# machinectl pull-raw --verify=no \
+                 https://download.fedoraproject.org/pub/fedora/linux/releases/31/Cloud/x86_64/images/Fedora-Cloud-Base-31-1.9.x86_64.raw.xz \
+                 Fedora-Cloud-Base-31-1.9.x86-64
+# systemd-nspawn -M Fedora-Cloud-Base-31-1.9.x86-64
+"""]]
+
+If I understand correctly the existing Systemd.container function needs a way to make a chroot.

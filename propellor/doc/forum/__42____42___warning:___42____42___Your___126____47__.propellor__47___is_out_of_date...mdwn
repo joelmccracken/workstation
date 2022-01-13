@@ -1,0 +1,20 @@
+Hi,
+
+After upgrading from propellor 5.1.0 to 5.2.0  I do get
+
+    ** warning: ** Your ~/.propellor/ is out of date..
+
+
+
+The `~/.propellor` directory was created with
+
+    propellor --init
+
+
+
+Is there a
+
+     propellor --update-my-home-propellor
+
+
+??

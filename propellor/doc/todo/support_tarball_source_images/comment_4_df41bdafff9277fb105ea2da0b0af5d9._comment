@@ -1,0 +1,37 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2015-10-21T21:07:53Z"
+ content="""
+I don't think it makes sense to add MinimalTarball as an operating System.
+
+If you make ChrootTarball contain the FilePath to the tarball,
+then ChrootBootstrapper ChrootTarball instance doesn't need to look
+at the system parameter at all; instead it can just look inside the
+ChrootTarball to get the path to it, and extract that.
+
+So, the user would write, say:
+
+	bootstrapped (System (Debian Unstable) "amd64") (ChrootTarball "/tmp/debian.tar.gz") "/chroot"
+
+What might make sense it to change the first parameter of boostrapped 
+to Maybe System, for cases where you don't want to specify it.
+
+----
+
+It would probably also be good to document what kind of tarball is
+expected. Ie, that it can be compressed, and should not consist
+of a single subdirectory, but one subdirectory for each top-level
+root directory.
+
+----
+
+Also, as a minor point, I don't think you need to pass standardPathEnv;
+it should be fine to use boolSystem with the regular enviroment as
+far as I can see. In fact, you could probably simplify extractTarball
+by implementing it like this:
+
+	check (unpopulated target) $
+		cmdProperty "tar" params
+			`requires` File.dirExists target
+"""]]

@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2019-04-16T18:18:55Z"
+ content="""
+Sure, look at how `Container` is defined:
+
+	data Container = Container MachineName Chroot.Chroot Host
+
+Getting a Host out of that is easy. :)
+
+	getContainerHost (Container _ _ h) = h
+
+(Has to be put inside the Systemd module as it does not export the
+Container constructor.)
+
+That's specific to systemd containers, other container systems
+have different data types. Here's the one from the Docker module:
+
+	data Container = Container Image Host
+
+If you wanted to you could even make a type class that these and other
+containers are part of, with a method to extract the Host. I would be happy
+to merge such a patch.
+
+And yeah, this seems like a good way around wanting to get otherwise
+unpropigated info out of containers. It's worth noting that the Host
+inside a systemd Container has as its hostname the MachineName used
+for the container.
+"""]]

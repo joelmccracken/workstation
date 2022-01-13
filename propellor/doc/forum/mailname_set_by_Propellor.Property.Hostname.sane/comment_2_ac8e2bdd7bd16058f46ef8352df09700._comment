@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 2"
+ date="2018-08-10T10:36:35Z"
+ content="""
+Could you explain why it's right to not use the full hostname, please?
+
+Careless use of `Hostname.sane` on my part recently broke my mail sending setup.  I discovered that I am relying on /etc/mailname containing the full hostname, but maybe I should not be doing that.
+"""]]

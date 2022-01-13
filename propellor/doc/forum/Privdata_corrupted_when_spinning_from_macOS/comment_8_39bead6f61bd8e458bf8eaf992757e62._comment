@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi"
+ avatar="http://cdn.libravatar.org/avatar/869963bdf99b541c9f0bbfb04b0320f1"
+ subject="comment 8"
+ date="2018-08-18T14:19:42Z"
+ content="""
+I tested printing out the encoding after changing it to make sure it was UTF-8, and it is, but the privdata is somehow still corrupt. Could the problem have something to do with writing out the privdata instead?
+"""]]

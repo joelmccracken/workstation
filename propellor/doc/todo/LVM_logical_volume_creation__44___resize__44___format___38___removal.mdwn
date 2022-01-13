@@ -1,0 +1,9 @@
+I have made a new property to handle logical volume with propellor.
+
+I am not confident my haskell code is good looking as this is my first real life haskell code, can you please have a look?
+
+You can pull the lvm branch at http://git.ni.fr.eu.org/nicolas/propellor.git
+
+Thanks!
+
+> merge [[done]] --[[Joey]]

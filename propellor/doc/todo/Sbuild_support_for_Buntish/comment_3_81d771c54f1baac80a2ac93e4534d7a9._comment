@@ -1,0 +1,64 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2019-03-06T22:11:45Z"
+ content="""
+Something like this (only tested it compiles):
+
+	diff --git a/src/Propellor/Property/Sbuild.hs b/src/Propellor/Property/Sbuild.hs
+	index 8cc2e3bec..25d5f6236 100644
+	--- a/src/Propellor/Property/Sbuild.hs
+	+++ b/src/Propellor/Property/Sbuild.hs
+	@@ -29,6 +29,7 @@ Suggested usage in @config.hs@:
+	 >    where
+	 >  	sidSchrootBuilt = Sbuild.built Sbuild.UseCcache $ props
+	 >  		& osDebian Unstable X86_32
+	+>		& Sbuild.standard
+	 >  		& Sbuild.update `period` Weekly (Just 1)
+	 >  		& Sbuild.useHostProxy mybox
+	 
+	@@ -64,6 +65,7 @@ module Propellor.Property.Sbuild (
+	 	built,
+	 	-- * Properties for use inside sbuild schroots
+ 		update,
+	+	standard,
+ 		useHostProxy,
+ 		-- * Global sbuild configuration
+	 	-- blockNetwork,
+	@@ -126,7 +128,7 @@ built'
+	 	-> String
+	 	-> String
+	 	-> RevertableProperty (HasInfo + DebianLike) Linux
+	-built' cc (Props ps) suite arch = provisioned <!> deleted
+	+built' cc ps suite arch = provisioned <!> deleted
+	   where
+	 	provisioned :: Property (HasInfo + DebianLike)
+	 	provisioned = combineProperties desc $ props
+	@@ -220,10 +222,7 @@ built' cc (Props ps) suite arch = provisioned <!> deleted
+	 
+	 	-- the schroot itself
+	 	schroot = Chroot.debootstrapped Debootstrap.BuilddD
+	-			schrootRoot (Props schrootProps)
+	-	schrootProps =
+	-		ps ++ [toChildProperty Apt.stdSourcesList
+	-		, toChildProperty $ Apt.installed ["eatmydata", "ccache"]]
+	+			schrootRoot ps
+	 
+	 	-- static values
+	 	suiteArch = suite ++ "-" ++ arch
+	@@ -251,6 +250,14 @@ built' cc (Props ps) suite arch = provisioned <!> deleted
+	 	  where
+	 		base = ["eatmydata"]
+	 
+	+-- | Some properties that will be wanted in most any Debian schroot.
+	+--
+	+-- Compiler caching, eatmydata, and standard apt sources.
+	+standard :: Property Debian
+	+standard = propertyList "standard sbuild properties" $ props
+	+	& Apt.stdSourcesList
+	+	& Apt.installed ["eatmydata", "ccache"]
+	+
+	 -- | Ensure that an sbuild schroot's packages and apt indexes are updated
+	 --
+	 -- This replaces use of sbuild-update(1).
+"""]]

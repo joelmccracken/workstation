@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 1"
+ date="2015-09-29T12:35:27Z"
+ content="""
+ok, so I created this property but it does not work
+
+    sbuild :: System -> FilePath -> Property NoInfo
+    sbuild system tarball =
+      chroot `onChange` Tar.create chrootdir tarball
+        where
+          chroot = Chroot.debootstrapped system Debootstrap.BuilddD chrootdir
+          chrootdir = \"/tmp/chroot\"
+
+it fails with this error message
+
+    src/config.hs:167:3:
+        Couldn't match expected type `Property x0'
+                    with actual type `Chroot.Chroot'
+        In the first argument of `onChange', namely `chroot'
+        In the expression: chroot `onChange` Tar.create chrootdir tarball
+
+What I understand it that onChange expect a Property instead of a Chroot.
+So what is the right way to tell propellor look at this chrootdir directory and create a tarball if its containt changed.
+"""]]

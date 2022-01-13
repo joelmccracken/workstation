@@ -1,0 +1,22 @@
+Hello,
+
+Writing properties, I often hesitate between using types `HostName` or `Domain` for the FQDN of a machine.
+This is not 'very important' since both are "just" `String`, but the type carries semantics and I'd rather keep consistent (helps understanding the code better).
+
+Here are the docs :
+
+http://hackage.haskell.org/package/propellor-5.9.1/docs/Propellor-Types-OS.html#t:HostName
+http://hackage.haskell.org/package/propellor-5.9.1/docs/Propellor-Types-Dns.html#t:Domain
+
+So `HostName` documentation to me looks like really corresponding to a machine's FQDN, but may also be the IP of the machine.
+Conversely `Domain` is not documented (in its module) but it is used in the 'domain part of the FQDN' in some modules; eg. in Propellor/Property/Hostname.hs
+Even clearer is the `Propellor.Property.DNS` module in which I clearly understand the choice of `Domain` vs. `HostName`.
+
+Still it seems to me that sometimes one sees `Domain` where a `HostName` would be expected. One such example is in `LetsEncrypt`
+Maybe I am just to confused by a few places where `Domain` is used while I would (maybe wrongly) expect `HostName` ?
+
+What am I missing ?
+
+Cheers,
+
+Serge.

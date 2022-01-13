@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-12-08T16:15:43Z"
+ content="""
+Perhaps runPropellor could be parameterized in some way, so
+you can provide whatever check you decide you want.
+
+This is where [[todo/integrate_shell-monad]] would come in handy, to
+build up and manipulate the shell script for the cron job.
+"""]]

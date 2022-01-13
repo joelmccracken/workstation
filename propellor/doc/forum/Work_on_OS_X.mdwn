@@ -1,0 +1,5 @@
+I'm interested in using Propellor on OS X. I understand that it is not supported though.
+
+Is there anyone doing this? If it was developed, would support for OS X be merged upstream?
+
+Thanks!

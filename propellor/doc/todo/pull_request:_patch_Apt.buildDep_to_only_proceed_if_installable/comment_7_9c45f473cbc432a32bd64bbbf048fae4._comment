@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2015-12-02T16:10:34Z"
+ content="""
+The two combinators are indeed very similar. The reason I wrote
+changesFile the way I did is that that allows it to be applied repeatedly
+when a property can change any of several files.
+
+	trivial someprop
+		`changesFile` "foo"
+		`changesFile` "bar"
+
+That seems fairly likely to come up, while it would be unusual for a
+property to have to change multiple files at once to be considered
+to make a change at all, which is what multiple applications of
+`noChangeIfUnchanged` leads to.
+
+But neither combinator causes apt's output to not be displayed,
+which is what I thought we were talking about.
+"""]]

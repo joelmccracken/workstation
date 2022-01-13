@@ -1,0 +1,101 @@
+Hello,
+
+I am working on making a property to setup a CMS, involving configuration with passwrod...
+
+I have a first property installing the required packages with signature :
+
+    wp_pkgs :: Property Debian
+
+I have made a second property to store the password/priv data to the 'proper file' which has signature (the data is stored in the privData with context the hostname and field the 'DbId')
+
+    type DbId = String
+    wp_dbconf ::  HostName -> DbId -> Property (Debian + HasInfo)
+
+
+I now want to combine those properties to make a single entry point using the following code :
+
+
+    wordpressSite :: HostName -> DbId -> Property (Debian + HasInfo)
+    wordpressSite hn id = desc ==> wp_conf hn id
+      where
+        desc :: String
+        desc = ("Installing and configuring WordPress to answer at name " ++ hn)
+ 
+        wp_conf :: HostName -> DbId -> Property (Debian + HasInfo)
+        wp_conf hn id =
+          wp_pkgs
+         `before` wp_dbconf hn id
+
+which gives me this error :
+
+    /src/Propellor/Property/SiteSpecific/IPANEMA.hs:221:7: error:
+        • Couldn't match type ‘'Propellor.Types.MetaTypes.Targeting
+                                 'OSDebian’
+                         with ‘'Propellor.Types.MetaTypes.WithInfo’
+          Expected type: Property (Debian + HasInfo)
+            Actual type: CombinedType
+                           (Property Debian)
+                           (Property
+                              (Propellor.Types.MetaTypes.MetaTypes
+                                 '['Propellor.Types.MetaTypes.Targeting 'OSDebian,
+                                   'Propellor.Types.MetaTypes.WithInfo]))
+        • In the expression: wp_pkgs `before` wp_dbconf hn id
+          In an equation for ‘wp_conf’:
+              wp_conf hn id = wp_pkgs `before` wp_dbconf hn id
+          In an equation for ‘wordpressSite’:
+              wordpressSite hn id
+                = desc ==> wp_conf hn id
+                where
+                    desc :: String
+                    desc
+                      = ("Installing and configuring WordPress to answer at name " ++ hn)
+                    wp_conf :: HostName -> DbId -> Property (Debian + HasInfo)
+                    wp_conf hn id = wp_pkgs `before` wp_dbconf hn id
+        |
+    221 |       wp_pkgs
+        |       ^^^^^^^...
+
+I understand that `before` is not happy having different types of Property on both sides.
+
+I then tried also using *props* (with or without embedding it within a *propertyList*). Here is the version with *propertyList*
+
+      wp_conf hn id =
+      propertyList "Setting up a wordpress site" $ props
+         & wp_pkgs
+         & wp_dbconf hn id
+
+Which also complains that I am trying to combine Debian with (Debian + HasInfo) (or at least that is how I understand the error message) :
+
+    src/Propellor/Property/SiteSpecific/IPANEMA.hs:221:52: error:
+        • Couldn't match type ‘'Propellor.Types.MetaTypes.Targeting
+                                 'OSDebian’
+                         with ‘'Propellor.Types.MetaTypes.WithInfo’
+          Expected type: Props
+                           (Propellor.Types.MetaTypes.MetaTypes
+                              '['Propellor.Types.MetaTypes.Targeting 'OSDebian,
+                                'Propellor.Types.MetaTypes.WithInfo])
+            Actual type: Props
+                           (Propellor.Types.MetaTypes.MetaTypes
+                              (Propellor.Types.MetaTypes.Combine
+                                 '['Propellor.Types.MetaTypes.Targeting 'OSDebian]
+                                 '['Propellor.Types.MetaTypes.Targeting 'OSDebian,
+                                   'Propellor.Types.MetaTypes.WithInfo]))
+        • In the second argument of ‘($)’, namely
+            ‘props & wp_pkgs & wp_dbconf hn id’
+          In the expression:
+            propertyList "Setting up a wordpress site"
+              $ props & wp_pkgs & wp_dbconf hn id
+          In an equation for ‘wp_conf’:
+              wp_conf hn id
+                = propertyList "Setting up a wordpress site"
+                    $ props & wp_pkgs & wp_dbconf hn id
+        |
+    221 |       propertyList "Setting up a wordpress site" $ props
+        |                                                    ^^^^^...
+
+
+I guess that is a regular pattern (mixing few properties with *HasInfo* with other that do not *HasInfo*) but all the code that I am looking at seems to work with *props* or some *before* or *require* combination.
+
+I don't understand what I am doing *wrong* here.
+
+

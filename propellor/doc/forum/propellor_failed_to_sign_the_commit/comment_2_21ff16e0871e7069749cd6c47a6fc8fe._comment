@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-07-30T15:15:45Z"
+ content="""
+It seems that setting `GPG_TTY` does not force gpg to prompt at a tty
+when in a GUI. At least in X with gpg 2.1, I still get a GUI prompt from
+gpg. Good.
+"""]]

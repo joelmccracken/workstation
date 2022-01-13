@@ -1,0 +1,13 @@
+Hi,
+
+I'd like to run propellor differently:
+
+- create a static binary from `config.hs`.
+- upload it to the target machine (which can be ARM, do not have GHC, et al).
+- run it.
+
+Propellor would build the binary if I ask it to with `propellor --build`; not static yet, but I think I can figure it out.
+
+How would I run a propellor binary on the local host, without trying to connect anywhere? I would be grateful if you could suggest an approach.
+
+Thank you!

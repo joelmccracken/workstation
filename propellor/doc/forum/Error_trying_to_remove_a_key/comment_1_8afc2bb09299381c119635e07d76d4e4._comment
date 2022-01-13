@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 1"
+ date="2020-12-19T21:46:21Z"
+ content="""
+Workaround: move the secret key elsewhere, then remove the key from the propellor keyring.
+
+I tried with `--disable-dirmngr` with no success.
+"""]]

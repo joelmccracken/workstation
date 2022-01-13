@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-09-29T14:34:07Z"
+ content="""
+So you have a Chroot and want a Property of some kind.
+If you look in the Chroot module, see this:
+
+	provisioned :: Chroot -> RevertableProperty
+
+Which is just what you're looking for.
+"""]]

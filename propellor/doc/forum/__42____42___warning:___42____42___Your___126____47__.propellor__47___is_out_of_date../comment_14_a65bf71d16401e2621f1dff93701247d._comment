@@ -1,0 +1,35 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 14"
+ date="2018-03-04T10:41:01Z"
+ content="""
+Hello, sorry to bother you with this BUT :))
+
+Now I have the right message which explain how to upgrade my .propellor
+(sorry for the french)
+
+    picca@mordor:~$ propellor
+    Fusion automatique de src/Propellor/Property/Systemd.hs
+    Fusion automatique de src/Propellor/Property/SiteSpecific/JoeySites.hs
+    Fusion automatique de src/Propellor/Property/Git.hs
+    Fusion automatique de src/Propellor/Git/VerifiedBranch.hs
+    Fusion automatique de src/Propellor/Git.hs
+    Fusion automatique de src/Propellor/EnsureProperty.hs
+    Fusion automatique de src/Propellor/DotDir.hs
+    Fusion automatique de propellor.cabal
+    Fusion automatique de joeyconfig.hs
+    Fusion automatique de doc/README.mdwn
+    Fusion automatique de debian/changelog
+    ** warning: ** Your ~/.propellor/ is out of date..
+       A newer upstream version is available in /usr/src/propellor/propellor.git
+       To merge it, run: git merge upstream/master
+
+but when I try to do the merge, I get this error message
+
+    picca@mordor:~/.propellor$ LANG=C git merge upstream/master
+    fatal: refusing to merge unrelated histories
+
+How can I help to solve this issue ?
+
+"""]]

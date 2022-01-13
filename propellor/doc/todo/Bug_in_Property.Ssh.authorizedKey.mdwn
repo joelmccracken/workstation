@@ -1,0 +1,8 @@
+If Ssh.authorizedKey in propellor 2.0.0 is used to create .ssh/authorized_keys for
+a user other than root, it will be owned by root:root and won't
+work for the user. Adding a key to an existing authorized_keys
+file doesn't change its ownership and therefore works fine.
+
+-- weinzwang
+
+> Thanks, [[fixed|done]] this and will make a release.

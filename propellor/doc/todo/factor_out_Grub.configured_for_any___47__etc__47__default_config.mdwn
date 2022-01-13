@@ -1,0 +1,17 @@
+It would be useful to have a property to set key value pairs in /etc/default configs.  The code is in Grub.configured.  I have not written a patch yet because I am not sure what the module should be called.  Possibilities are:
+
+    & EtcDefault.set "anacron" "ANACRON_RUN_ON_BATTERY_POWER" "no"
+
+or maybe
+
+    & ConfFile.hasShellSetting "/etc/default/anacron" ("ANACRON_RUN_ON_BATTERY_POWER", "no")
+
+Or possibly both of these, with the former implemented in terms of the latter.
+
+Notes:
+
+* The use of a tuple for the last two parameters ensures that the property can be used infix.
+
+* I think this property should deduplicate the config key after setting it.  I.e. after uncommenting and modifying ANACRON_RUN_ON_BATTERY_POWER it should remove any further ANACRON_RUN_ON_BATTERY_POWER settings further down the config.  This allows a seamless transition from just using File.containsLine to add to the end of the file.
+
+--spwhitton

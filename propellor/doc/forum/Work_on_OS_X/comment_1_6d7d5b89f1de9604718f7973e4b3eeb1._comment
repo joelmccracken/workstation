@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-04-13T21:36:20Z"
+ content="""
+I got a patch some years back to make propellor compile on OSX.
+I merged it. You might want to get in touch with its author, as
+he may be doing something with propellor on OSX.
+<https://github.com/tittoassini/propellor>
+
+Anyway, I'd probably merge OSX patches, if they were not super
+intrusive. And I don't see why it would be, as propellor already supports
+FreeBSD.
+
+Since `Property` is parameterized by the operating systems it
+supports, it should be easy to start by only porting the core parts
+of propellor, and then port over individual Properties one by one as
+needed. See the commits for the recent FreeBSD port for a nice walkthough
+of the changes you'll want to make.
+"""]]

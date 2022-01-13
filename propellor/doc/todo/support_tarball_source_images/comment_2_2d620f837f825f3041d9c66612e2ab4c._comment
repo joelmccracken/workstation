@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-10-20T16:27:07Z"
+ content="""
+I've done all I plan to do about this particular todo, so look forward to
+modules being contributed for other ways to bootstrap chroots.
+"""]]

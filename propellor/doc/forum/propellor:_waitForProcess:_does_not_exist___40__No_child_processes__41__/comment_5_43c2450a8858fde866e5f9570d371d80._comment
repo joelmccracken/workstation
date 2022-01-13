@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2020-08-14T19:57:07Z"
+ content="""
+On second thought, there may be other changes in concurrent-output
+after 1c330fa3814baadf23c1934a8014c91a3251234a that depend on that change.
+I'm not sure, and don't want to find out by breaking it in propellor.
+So, I've reverted this change and will wait the necessary several years.
+"""]]

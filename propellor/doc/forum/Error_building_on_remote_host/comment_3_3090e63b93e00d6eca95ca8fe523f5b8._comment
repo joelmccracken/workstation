@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-07-26T00:49:51Z"
+ content="""
+The haskell-stack package is available in Debian stretch
+<https://packages.debian.org/search?keywords=haskell-stack>
+"""]]

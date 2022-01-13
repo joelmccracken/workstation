@@ -1,0 +1,7 @@
+Hello joey,
+
+I would like to know your opinion, on the best way to install from scratch a cluster of at least 20 machines all identical, with propellor.
+I saw the FAI project, but I am wondering if this can be achieved with propellor only.
+The installation should be done remotly without human intervention except the propellor config :) and Indeed power on the cluster :)
+
+Fred 

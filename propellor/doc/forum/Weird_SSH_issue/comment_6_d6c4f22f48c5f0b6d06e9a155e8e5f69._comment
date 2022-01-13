@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="comment 6"
+ date="2016-03-06T21:27:18Z"
+ content="""
+Might it have something to do with how ssh forks (but doesn't double fork or \"daemonize\") to start the control master, if one isn't already running?
+"""]]

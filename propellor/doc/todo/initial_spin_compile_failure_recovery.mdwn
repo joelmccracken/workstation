@@ -1,0 +1,5 @@
+When initial propellor --spin host fails to compile propellor
+perhaps due to a ghc compatability bug, spinning again doesn't fix the
+problem. IIRC /usr/local/propellor has a git repo set up, but no remote
+set, and so the subsequent spin doesn't update it, since propellor is not
+running there to receive a git push into the repo. --[[Joey]]

@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 6"
+ date="2016-06-24T10:08:51Z"
+ content="""
+Ahhh! I didn't realize this, now it makes sense to me, thanks! maybe you could make withFile' available in propellor? (and maybe even override withFile)
+"""]]

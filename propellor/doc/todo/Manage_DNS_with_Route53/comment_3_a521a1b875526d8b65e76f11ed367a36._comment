@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="comment 3"
+ date="2015-06-08T01:22:14Z"
+ content="""
+aws-ec2 doesn't seem to support Route53, unless I'm missing something.
+"""]]

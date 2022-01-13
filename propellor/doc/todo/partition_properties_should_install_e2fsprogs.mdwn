@@ -1,0 +1,3 @@
+The e2fsprogs package is becoming non-essential in Debian.  Properties that invoke `mkfs.ext*` should start explicitly requiring that the package is installed (probably using `Apt.installed`).  --spwhitton
+
+> [[done]] seems no change needed --[[Joey]]

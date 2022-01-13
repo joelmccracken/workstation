@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="In this case I really should make a package"
+ date="2018-10-04T10:19:35Z"
+ content="""
+After some reflection I realized that have propellor drop things in /usr/share/qemu is just going to make me sad in the long run. I still think the general question is potentially useful, but I guess it's a bit hypothetical at this point.
+"""]]

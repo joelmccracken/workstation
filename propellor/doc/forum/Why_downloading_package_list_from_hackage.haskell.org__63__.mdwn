@@ -1,0 +1,13 @@
+When running
+
+    propellor --spin newhost
+
+I get (after installing gnupg, ghc, libghc-*, make)
+
+    ....
+    Downloading the latest package list from hackage.haskell.org
+    Killed
+    Killed
+    Killed
+
+maybe there is not enough memory, or propellor has a kind of timeout somewhere (newhost is a slow arm router), but I don't understand why propellor (cabal) needs this package list.

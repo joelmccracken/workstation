@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="s@aa9ff9ce06b08acfd2a93ebd342ce6879430fbdd"
+ nickname="s"
+ avatar="http://cdn.libravatar.org/avatar/81bf27f8b35011d1846711fa37a5588f"
+ subject="comment 2"
+ date="2018-10-28T19:43:21Z"
+ content="""
+> ...I suspect it would be sufficient to use -p?
+
+I think you're right, `-pf` should be sufficient.
+
+> If you're going to be posting a bunch of openbsd porting patches, which I hope you are, please use [[/todo]] so they don't flood the forum and so it's obvious which have been applied and which not.
+
+Apologies for the haste. I'll post patches under [[/todo]] in<br/>
+the future and take a look at [[/contributing]]. Thanks for<br/>
+pointing out.
+"""]]

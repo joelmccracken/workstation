@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-04-16T15:12:20Z"
+ content="""
+Well spotted, I've fixed it to create the directory.
+
+userKeyAt's documentation doesn't actually specify that the filepath
+provided can't be relative, and if it were relative, it seems to make sense
+for it to be relative to the usual .ssh directory. Done so.
+"""]]

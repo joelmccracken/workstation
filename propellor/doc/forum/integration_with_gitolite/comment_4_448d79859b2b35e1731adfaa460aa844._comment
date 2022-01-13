@@ -1,0 +1,33 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="version 2"
+ date="2018-08-25T17:25:03Z"
+ content="""
+I didn't see how you were handling keys, Sean. Did I miss something obvious or are you handling them outside propellor?
+
+Anyway, here's my second version
+[[!format haskell \"\"\"
+gitoliteKeys :: User -> [(FilePath, String)] -> Property UnixLike
+gitoliteKeys user@(User username) keys = property' (\"set up gitolite keys for \" ++ username) $ \w -> do
+      home <- liftIO (User.homedir user)
+      ensureProperty w $ go home
+  where
+    go :: FilePath -> Property UnixLike
+    go home = installKeys keys
+                `onChange` recompile
+                `requires` File.dirExists keydir
+        where
+          keydir = home </> \".gitolite/keydir/zzz/propellor\"
+          recompile = Cmd.userScriptProperty user [ \"gitolite trigger POST_COMPILE\" ]
+                      `changesFile` (home </> \"gitolite/.ssh/authorized_keys\")
+          installKeys :: [(FilePath, String)] -> Property UnixLike
+          installKeys [] = doNothing
+          installKeys ((path, content):rest) = File.hasContent (keydir </> path ++ \".pub\") [content]
+                                               `before` installKeys rest
+\"\"\"]]
+
+I spent a while talking to the gitolite author, and managed to write something more optimal than \"gitolite trigger POST_COMPILE\", but then I realized that
+had my username hardcoded into it. So it takes about 1s longer to run, but is more robust this way.
+
+"""]]

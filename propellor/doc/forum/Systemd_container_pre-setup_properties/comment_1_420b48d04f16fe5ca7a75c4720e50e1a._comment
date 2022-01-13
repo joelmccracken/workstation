@@ -1,0 +1,35 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-06-17T01:49:24Z"
+ content="""
+Currently, Chroot.provisioned' is passed a `systemdonly :: Bool`,
+which limits the chroot provisioning to the Systemd.installed
+property.
+
+What you want to do needs a more flexible interface there.
+Add a `Maybe ChildProperty` parameter to specify what should be done
+to finish provisioning the chroot.
+
+Then, change the Systemd.Container data type:
+
+	-data Container = Container MachineName Chroot.Chroot Host
+	+data Container metatypes = Container
+	+	{ containerMachinName :: MachineName
+	+	, containerChroot :: Chroot.Chroot
+	+	, containerHost :: Host
+	+	, containerChrootProvision :: Property metatypes
+	+	}
+
+And Systemd.nspawned will pass
+`(Just (toChildProperty (containerChrootProvision c)))` to `Chroot.provisioned'`
+
+Systemd.Container constructor functions will default to setting 
+`containerChrootProvision = Systemd.Core.installed`, but
+the user can then change the Container to add more properties
+to run in the chroot when provisioning it.
+
+(There's also a tricky bit where Systemd.nspawned needs to extract any info
+from containerChrootProvision and add it onto its own info to propigate
+it. If you do the rest of it, I will handle this tricky bit..)
+"""]]

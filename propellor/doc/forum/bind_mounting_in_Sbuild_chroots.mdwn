@@ -1,0 +1,2 @@
+I typically bind mount some user writable directory into an Sbuild chroot, so that I can e.g. access in a git repo or package to install.
+Is there a clean way to do this with propellor's Sbuild module, or is the intent maintain a seperate container / chroot of some kind for interactive debugging?

@@ -1,0 +1,10 @@
+Propellor seems inaccessible to me.
+
+The contribution workflow is based on emails or unstructured todo wiki subpages. It is unclear where to get help.
+
+I suggest you switch to using https://gitlab.haskell.org for example
+
+Getting contributions in open source is about how accessible your project is. That includes not only codebase, but especially workflow.
+I also barely see anyone respond to propellor topics on #haskell freenode.
+
+We use propellor at work and I'm already wondering if ansible would have been a better choice.

@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2016-05-30T14:56:57Z"
+ content="""
+If ghc is using 8 gb of memory, that sounds like a ghc bug.
+
+Can you share the source code that causes this behavior?
+"""]]

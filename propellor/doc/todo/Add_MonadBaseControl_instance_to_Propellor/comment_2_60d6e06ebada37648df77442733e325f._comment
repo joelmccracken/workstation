@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="chris"
+ subject="""comment 2"""
+ date="2016-12-01T18:14:10Z"
+ content="""
+Agree on all points. I would rather not add the dependencies to propellor
+proper either, but such was the requirement for this change. I'd be happy
+enough with the MonadBase IO derivation and implementing this externally,
+no argument here.
+
+As for what it does :) I cribbed the implementation from the Snap server (
+https://github.com/snapframework/snap/blob/
+bda15d0a0f29b0107fd69fbb8b7e8cc5ce5fa7e4/src/Snap/Snaplet/Internal/Types.hs#
+L277),
+and it seems to work, essentially it is a way to take the outer
+transformer, and wrap it inside the inner Monad, but in such a way that the
+inner Monad now has access to the outer transformer !? Yeah, I'm still not
+fully grokking it myself, but it type checks and functions.
+
+Anyway feel free to implement at your leisure, it does seem that I could
+even derive the MonadBase IO instance manually and not have to change
+Propellor in the least, though the auto-derived instance would seem like a
+simple and harmless addition.
+"""]]

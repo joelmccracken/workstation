@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 4"
+ date="2016-05-22T22:39:24Z"
+ content="""
+I've copied the relevant part to the documentation for that property.
+
+I'd like to retain the whole suggested ~/.sbuildrc content at the top of the haddock.  The purpose of the suggested config.hs lines is to set up everything you need to be able to run sbuild with both piuparts and adt-run -- the \"complete setup\".  You don't get all of that by just running `sbuild-createchroot` from a command line.  So having both the config.hs lines and the ~/.sbuildrc lines at the top of the haddock makes it clear what the module can do for the user.
+"""]]

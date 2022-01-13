@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-10-01T23:35:54Z"
+ content="""
+AFAICS, `Debootstrap.built` will always depend on `Debootstrap.installed`.
+
+Maybe remove debootstrap and check if adding the `Debootstrap.installed`
+property gets debootstrap installed; perhaps that property was somehow
+not working for you.
+"""]]

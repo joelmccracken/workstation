@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="Works on my machine ;)"
+ date="2019-03-16T00:19:05Z"
+ content="""
+I had to hand apply most of Joey's patch for reasons that escape me, but it seems to work OK. I just built an ubuntu chroot and used sbuild to build a package in it. I did have to copy part of the definition of standard into my own setup code (the installation of \"eatmydata\" and \"ccache\"). So maybe there is something that could be made smoother there.
+
+"""]]

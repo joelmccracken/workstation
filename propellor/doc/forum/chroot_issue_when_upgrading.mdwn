@@ -1,0 +1,42 @@
+Hello,
+
+It seems that my unstable chroot is broken.
+When I do an upgrade, I get this error message
+
+
+    E: dpkg was interrupted, you must manually run 'dpkg --configure -a' to correct the problem. 
+    /srv/chroot/unstable-i386-sbuild has Operating System (Debian Unstable) "i386" ... ok
+    /srv/chroot/unstable-i386-sbuild noop property ... ok
+    /srv/chroot/unstable-i386-sbuild apt installed apt-transport-https ... ok
+    /srv/chroot/unstable-i386-sbuild standard sources.list ... ok
+    Hit:1 http://ftp2.fr.debian.org/debian unstable InRelease
+    Hit:2 http://mirrors.kernel.org/debian unstable InRelease
+    /srv/chroot/unstable-i386-sbuild apt update ... failed
+    /srv/chroot/unstable-i386-sbuild apt cache cleaned ... ok
+    mordor chroot /srv/chroot/unstable-i386-sbuild provisioned ... failed
+
+the properties are here
+    sbuild :: System -> Proxy -> RevertableProperty HasInfo
+    sbuild system proxy = Sbuild.schroot schrootname chroot
+      where
+        chroot = Chroot.debootstrapped Debootstrap.BuilddD chrootdir
+                 & os system
+                 & case proxy of
+                      (Just p) -> "/etc/apt/apt.conf.d/01proxy" `File.hasContent` ["Acquire::http::Proxy \"" ++ p ++ "\";"]
+                      Nothing -> doNothing
+                 & Apt.installed ["apt-transport-https"]
+                 & Apt.stdSourcesList
+                 & Apt.update `onChange` Apt.upgrade
+                 & Apt.cacheCleaned
+        schrootname = Sbuild.schrootname system
+        chrootdir = "/srv/chroot" </> schrootname
+
+so the update failed and the solution seems to be
+
+    dpkg --configure -a
+
+Is it possible to deal with this problem in the update property in order to make it transparent for the users.
+
+Cheers
+
+Frederic

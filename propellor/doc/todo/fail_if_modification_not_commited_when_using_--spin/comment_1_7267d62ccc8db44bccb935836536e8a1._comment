@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2014-11-23T18:41:40Z"
+ content="""
+Letting --spin commit is part of my workflow. It's great when you're just
+changing config.hs to quickly blast out the changes.
+
+Granted, it is not so nice when doing Property development, as changes get
+fragmented across the spins used to test them. I'd be happy to find some
+way to improve that. Perhaps a way could be found to get this structure of
+git commits:
+
+	manual commit------------------------->manual commit--merge
+	            \--spin--spin--spin--spin--spin------------/
+
+Where the second manual commit has an identical tree committed as does the
+spin just underneath it, and so the following merge doesn't change any files,
+just grafts the two branches back together.
+
+I guess that could be handled by haing a checkpoint command, that squashes
+all the previous spins since the last checkpoint together into one commit,
+lets the user edit the commit message of that, and the juggles the branches
+into place and creates the merge commit -- which then becomes the new last
+checkpoint.
+
+I'll take patches for such a thing, or more simply a way to configure --spin's
+auto-committing behavior. However, I don't want to change the default
+behavior to not commit.
+"""]]

@@ -1,0 +1,290 @@
+I'm trying to get propellor running, and for now, I'd prefer
+to not use a central git repo, according to what I have read 
+
+```
+  propellor --spin host 
+```
+
+should do just that: not use git.
+
+So I have cabal installed propellor locally, and
+in addition cloned
+
+```
+  git clone git://propellor.branchable.com/ .propellor
+```
+
+in my $HOME
+
+My local machine (from where I run propellor) runs debian testing, the
+machine I want to spin to: softland, debian unstable+experimental,
+ie. unstable in general + all things ghc from experimental, to get ghc
+7.8.4 (but not any more than that from experimental).
+
+was not sure, what the right propellor config would be in that case:
+
+```
+& os (System (Debian Experimental) "amd64") 
+```
+which I have used, or
+
+```
+ & os (System (Debian Unstable) "amd64")
+```
+because in general I want Unstable
+
+
+First thing I notice, when running
+
+
+```
+$ propellor --spin softland
+```
+
+propellor nevertheless tries to git push (but fails, obviously,
+somewhere down in propellors output):
+
+```
+...
+Building propellor-2.2.1...
+Preprocessing library propellor-2.2.1...
+In-place registering propellor-2.2.1...
+Preprocessing executable 'propellor' for propellor-2.2.1...
+Preprocessing executable 'propellor-config' for propellor-2.2.1...
+Propellor build ... done
+[master 8ca2715] propellor spin
+Git commit ... done
+Counting objects: 10, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (10/10), 913 bytes | 0 bytes/s, done.
+Total 10 (delta 6), reused 0 (delta 0)
+remote: you are not allowed to change config.hs
+To git://propellor.branchable.com/
+ ! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to 'git://propellor.branchable.com/'
+Push to central git repository ... failed
+Stop listening request sent.
+Hit http://ftp.uk.debian.org sid InRelease
+Hit http://ftp.uk.debian.org experimental InRelease
+Get:1 http://ftp.uk.debian.org sid/main amd64 Packages/DiffIndex [7,876 B]
+...
+```
+
+Note in particular the lines:
+
+```
+  To git://propellor.branchable.com/
+   ! [remote rejected] master -> master (pre-receive hook declined)
+  error: failed to push some refs to 'git://propellor.branchable.com/'
+  Push to central git repository ... failed
+```
+
+Shouldn't propellor be completely quiet about git /
+not try to push at all?
+
+OK, never mind, let's see what's next: some long
+output, propellor finally fails, I assume it's because
+of my sid+experimental configuration?
+
+
+```
+Stop listening request sent.
+Hit http://ftp.uk.debian.org sid InRelease
+Hit http://ftp.uk.debian.org experimental InRelease
+Get:1 http://ftp.uk.debian.org sid/main amd64 Packages/DiffIndex [7,876 B]
+Get:2 http://ftp.uk.debian.org sid/contrib amd64 Packages/DiffIndex [7,819 B]
+Get:3 http://ftp.uk.debian.org sid/non-free amd64 Packages/DiffIndex [7,819 B]
+Get:4 http://ftp.uk.debian.org sid/contrib Translation-en/DiffIndex [7,819 B]
+Get:5 http://ftp.uk.debian.org sid/main Translation-en/DiffIndex [7,876 B]
+Get:6 http://ftp.uk.debian.org sid/non-free Translation-en/DiffIndex [7,819 B]
+Get:7 http://ftp.uk.debian.org sid/main Sources [7,633 kB]
+Get:8 http://ftp.uk.debian.org sid/contrib Sources [57.1 kB]
+Get:9 http://ftp.uk.debian.org sid/non-free Sources [105 kB]
+Get:10 http://ftp.uk.debian.org experimental/main Sources/DiffIndex [7,819 B]
+Get:11 http://ftp.uk.debian.org experimental/contrib Sources/DiffIndex [7,819 B]
+Get:12 http://ftp.uk.debian.org experimental/non-free Sources/DiffIndex [7,819 B]
+Get:13 http://ftp.uk.debian.org experimental/main amd64 Packages/DiffIndex [7,819 B]
+Get:14 http://ftp.uk.debian.org experimental/contrib amd64 Packages/DiffIndex [7,819 B]
+Get:15 http://ftp.uk.debian.org experimental/contrib Translation-en/DiffIndex [7,819 B]
+Get:16 http://ftp.uk.debian.org experimental/main Translation-en/DiffIndex [7,819 B]
+Fetched 7,897 kB in 6s (1,169 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Skipping gnupg, it is already installed and upgrade is not set.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Skipping ghc, it is already installed and upgrade is not set.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Skipping cabal-install, it is already installed and upgrade is not set.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Skipping libghc-async-dev, it is already installed and upgrade is not set.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+The following packages have unmet dependencies:
+ libghc-missingh-dev : Depends: libghc-hunit-dev-1.2.5.2-6e02e
+                       Depends: libghc-array-dev-0.4.0.1-3b784
+                       Depends: libghc-base-dev-4.6.0.1-8aa5d
+                       Depends: libghc-containers-dev-0.5.0.0-ab1da
+                       Depends: libghc-directory-dev-1.2.0.1-91a78
+                       Depends: libghc-filepath-dev-1.3.0.1-b12cb
+                       Depends: libghc-hslogger-dev-1.2.1-028cc
+                       Depends: libghc-mtl-dev-2.1.2-94c72
+                       Depends: libghc-network-dev-2.4.1.2-040ce
+                       Depends: libghc-old-locale-dev-1.0.0.5-6729c
+                       Depends: libghc-old-time-dev-1.1.0.1-2f8ea
+                       Depends: libghc-parsec-dev-3.1.3-6c6e2
+                       Depends: libghc-process-dev-1.1.0.2-76e05
+                       Depends: libghc-random-dev-1.0.1.1-43fdc
+                       Depends: libghc-regex-compat-dev-0.95.1-121c7
+                       Depends: libghc-time-dev-1.4.0.1-10dc4
+                       Depends: libghc-unix-dev-2.6.0.1-4f219
+E: Unable to correct problems, you have held broken packages.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+The following packages have unmet dependencies:
+ libghc-hslogger-dev : Depends: libghc-base-dev-4.6.0.1-8aa5d
+                       Depends: libghc-containers-dev-0.5.0.0-ab1da
+                       Depends: libghc-directory-dev-1.2.0.1-91a78
+                       Depends: libghc-mtl-dev-2.1.2-94c72
+                       Depends: libghc-network-dev-2.4.1.2-040ce
+                       Depends: libghc-old-locale-dev-1.0.0.5-6729c
+                       Depends: libghc-process-dev-1.1.0.2-76e05
+                       Depends: libghc-time-dev-1.4.0.1-10dc4
+                       Depends: libghc-unix-dev-2.6.0.1-4f219
+E: Unable to correct problems, you have held broken packages.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+The following packages have unmet dependencies:
+ libghc-unix-compat-dev : Depends: libghc-base-dev-4.6.0.1-8aa5d
+                          Depends: libghc-unix-dev-2.6.0.1-4f219
+E: Unable to correct problems, you have held broken packages.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Skipping libghc-ansi-terminal-dev, it is already installed and upgrade is not set.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+The following packages have unmet dependencies:
+ libghc-ifelse-dev : Depends: libghc-base-dev-4.6.0.1-8aa5d
+E: Unable to correct problems, you have held broken packages.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Skipping libghc-network-dev, it is already installed and upgrade is not set.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Skipping libghc-quickcheck2-dev, it is already installed and upgrade is not set.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Skipping libghc-mtl-dev, it is already installed and upgrade is not set.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+The following packages have unmet dependencies:
+ libghc-monadcatchio-transformers-dev : Depends: libghc-base-dev-4.6.0.1-8aa5d
+                                        Depends: libghc-extensible-exceptions-dev-0.1.1.4-255a3
+                                        Depends: libghc-monads-tf-dev-0.1.0.2-731f0
+                                        Depends: libghc-transformers-dev-0.3.0.0-ff2bb
+E: Unable to correct problems, you have held broken packages.
+Downloading the latest package list from hackage.haskell.org
+Skipping download: Local and remote files match.
+Resolving dependencies...
+All the requested packages are already installed:
+Use --reinstall if you want to reinstall anyway.
+Resolving dependencies...
+Configuring propellor-2.2.1...
+Building propellor-2.2.1...
+Preprocessing library propellor-2.2.1...
+In-place registering propellor-2.2.1...
+Preprocessing executable 'propellor' for propellor-2.2.1...
+Preprocessing excaecutable 'propellor-bal: can't find source for configconf in src
+ig' for propellor-2.2.1...
+propellor: user error (ssh ["-o","ControlPath=/home/rx/.ssh/propellor/softland.sock","-o","ControlMaster=auto","-o","ControlPersist=yes","root@softland","sh -c 'if [ ! -d /usr/local/propellor/.git ] ; then (if ! git --version >/dev/null; then apt-get update && apt-get --no-install-recommends --no-upgrade -y install git; fi && echo STATUSNeedGitClone) || echo STATUSNeedPrecompiled ; else cd /usr/local/propellor && if ! test -x ./propellor; then ( apt-get update ; apt-get --no-upgrade --no-install-recommends -y install gnupg ; apt-get --no-upgrade --no-install-recommends -y install ghc ; apt-get --no-upgrade --no-install-recommends -y install cabal-install ; apt-get --no-upgrade --no-install-recommends -y install libghc-async-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-missingh-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-hslogger-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-unix-compat-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-ansi-terminal-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-ifelse-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-network-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-quickcheck2-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-mtl-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-monadcatchio-transformers-dev ; cabal update ; cabal install --only-dependencies ) || true && cabal configure && cabal build && ln -sf dist/build/propellor-config/propellor-config propellor; fi && ./propellor --boot softland ; fi'"] exited 1)
+rx@varenne ~/work/propellor $
+```
+
+I should add, that I have tried to --spin to another
+machine, and ... finally got that working:
+
+
+```
+ , host "laptop"
+  & os (System (Debian Testing) "amd64")
+```
+
+Not sure, if I need more than that, want to keep it to the
+minimum first, anyway:
+
+
+```
+  propellor --spin laptop
+```
+
+this works, yeah - sorry for the noise, above -  but still I get
+
+
+```
+Git commit ... done
+To git://propellor.branchable.com/
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'git://propellor.branchable.com/'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+Push to central git repository ... failed
+```
+
+Possible to turn off these git push attempts?
+
+
+Thanks,
+  Andreas

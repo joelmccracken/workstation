@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="wzhd"
+ avatar="http://cdn.libravatar.org/avatar/d5a499b7c476ca9960cc8dccdf455bae"
+ subject="comment 2"
+ date="2017-02-04T01:53:49Z"
+ content="""
+Thanks!
+
+
+I didn't find the right way to do it;  `pickOS` is so much easier than `withOS` !
+
+
+`Propellor.Property.Partition` was modified to get rid of some compiling errors in DiskImage and didn't support anything new. So I removed the changes.
+
+
+Instead,  I changed some properties in DiskImage from Linux to DebianLike.  Is it the correct way to do it?
+
+"""]]

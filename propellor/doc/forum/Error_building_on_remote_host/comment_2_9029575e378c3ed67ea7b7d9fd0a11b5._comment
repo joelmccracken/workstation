@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="mithrandi"
+ avatar="http://cdn.libravatar.org/avatar/869963bdf99b541c9f0bbfb04b0320f1"
+ subject="comment 2"
+ date="2017-07-25T22:50:42Z"
+ content="""
+Okay, got it to work:
+
+1. Installed haskell-stack by hand from unstable (the package works fine even on jessie).
+2. Removed the \"dist\" directory in the remote /usr/local/propellor.
+
+After that the build was successful; I think that points to the original failure being due to the ancient GHC in jessie, but I'm not 100% sure.
+"""]]

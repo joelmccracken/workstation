@@ -1,0 +1,177 @@
+Having taken the inital hurdle of getting propellor running
+(cf. my last post in this forum), I am beginning to like propellor
+quite a lot. - This comes not too much as a surprise, as I am
+a Haskeller really. - I would love to use it for all my configuration
+needs, and to that end ditch ansible.
+
+Propellor's biggest show stopper for me is this (maybe I am misunderstanding
+propellor?):
+
+I can run
+
+```
+  propellor --spin myhost
+```
+
+from the command line, and all the tasks/properties that I have
+defined myhost to have beforehand will be executed/realized/configured.
+
+Say eg. I haved defined (sorry for the bad formatting,
+seems I have to do it line by line to get the markdown look nice)
+  
+```
+myhost :: Host
+```
+
+```
+myhost = host "myhost"
+         & os (System (Debian Testing) "amd64")
+         & emacs
+         & apt
+```
+
+```
+emacs :: Property HasInfo
+```
+
+```
+emacs = propertyList "install & configure emacs" $ props
+        & Apt.installed ["emacs"
+                        , "auto-complete-el"]
+```
+
+```
+  apt :: Property HasInfo
+```
+
+```
+apt = propertyList "apt update + upgrade" $ props
+      & Apt.update
+      & Apt.upgrade
+```
+
+
+Then running
+
+```
+  propellor --spin myhost
+```
+
+will make sure, that emacs is installed, and all my
+packages on myhost are up to date.
+
+It does so every time I run propellor, but normally I install
+emacs only once (and I know it's installed), whereas
+the apt update+upgrade combo I would want to run every other day.
+
+So what I would like is this: have just a minimal config for
+myhost, like this:
+
+```
+myhost :: Host
+```
+
+```
+myhost = host "myhost"
+         & os (System (Debian Testing) "amd64")
+```
+
+and then run a task (require a property ?) on myhost, somehow
+from the command line, like this
+
+```
+  propellor --spin myhost --task apt
+```
+
+Many other properties / installation steps I could run in this
+manner, like installing emacs initially
+
+```
+  propellor --spin myhost --task emacs
+```
+
+In ansible I can do this with playbooks:
+
+```
+  ansible-playbook -l myhost apt.yml
+```
+
+with some preconfigured playbook apt.yml that does just
+the apt update + upgrade task and nothing else. But I would
+have other tasks in other playbooks of course: I can install & configure
+emacs on myhost
+
+```
+  ansible-playbook -l myhost emacs.yml
+```
+
+etc.
+
+Related to that (but maybe not strictly the same question):
+
+I wouldn't mind writing my own haskell script that does
+the command line parsing (with optparse applicative eg):
+I could have options for
+
+``` 
+  --host (myhost/...)
+```
+
+and
+
+```
+  --task (emacs/apt/...)
+```
+
+and then just call into propellor. Unfortunately propellor's
+defaultMain does more than I want: gets the command line
+from processCmdLine.
+
+So I tried to create my own otherMain (similar to defaultMain,
+but would let me do my own command line parsing):
+
+```
+  otherMain :: [Host] -> CmdLine -> IO ()
+```
+
+but then at some point just gave up: for one thing: things
+were getting complicated, because of all the indirection:
+the propellor command line tool recompiles itself (?),
+does all this git stuff etc.
+
+And then: maybe I am approaching things in the wrong direction:
+maybe it's just not meant to be used that way
+(but ansible works fine for me in this regard)?
+
+And I thought: I don't really want to start a major programming
+task just to get this thing working, the way that seems
+reasonable to me. Or maybe it's possible already, and I just
+don't know how to use it? (So I am stuck with ansible for the time
+being).
+
+Still more or less related:
+
+Say this otherMain function existed, that allowed me to
+to do my own command line parsing and just
+call propellor on some host with the one or the other task,
+I am not 100% what's the right
+way to ensure/require/execute such a task on a host:
+
+above I am just using
+
+```
+   host & property
+```
+
+(from PropAccum), but maybe ensureProperty is better suited
+for that?
+
+Also for the wish list: some CONFIG_FILE env variable that
+would allow me to keep my config.hs somewhere other than
+in ~/.propellor/config.hs
+
+
+Anyway, thanks so far
+I would certainly want to switch to propellor completely.
+
+  Andreas

@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-04-15T22:58:44Z"
+ content="""
+Memory use did go up. Building with -O0 helped a lot for me, and it's doing
+ok on a 500 mb memory machine. So I recommend -O0 in your cabal file if you
+don't have that already.
+
+I wrote down my memory benchmarks here:
+<http://source.propellor.branchable.com/?p=source.git;a=commit;h=af7b2d61c0c7f9b4fe53d8f5d18b5426a93cbd7b>
+"""]]

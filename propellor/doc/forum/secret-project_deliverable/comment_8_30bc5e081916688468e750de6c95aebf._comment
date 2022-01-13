@@ -1,0 +1,36 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="Happy New Year"
+ date="2018-01-01T14:51:59Z"
+ content="""
+	stappers@paddy:~/src/secret-project
+	$ git config propellor.buildsystem stack
+	stappers@paddy:~/src/secret-project
+	$ propellor --spin paddy.gpm.stappers.nl
+	Building all executables for `secret-project' once. After a successful build of all of them, only specified executables will be rebuilt.
+	secret-project-0.0: build (exe)
+	Preprocessing executable 'propellor-config' for secret-project-0.0...
+	[1 of 9] Compiling Installer.Types  ( Installer/Types.hs, .stack-work/dist/x86_64-linux-nopie/Cabal-1.24.2.0/build/propellor-config/propellor-config-tmp/Installer/Types.o )
+	
+	/home/stappers/src/secret-project/Installer/Types.hs:3:1: error:
+	    Failed to load interface for ‘Propellor.Property.Installer.Types’
+	    There are files missing in the ‘propellor-5.2.0’ package,
+	    try running 'ghc-pkg check'.
+	    Use -v to see a list of the files searched for.
+	
+	--  While building custom Setup.hs for package secret-project-0.0 using:
+	      /home/stappers/.stack/setup-exe-cache/x86_64-linux-nopie/Cabal-simple_mPHDZzAJ_1.24.2.0_ghc-8.0.2 \
+		--builddir=.stack-work/dist/x86_64-linux-nopie/Cabal-1.24.2.0 build exe:propellor-config \
+		--ghc-options \" -ddump-hi -ddump-to-file\"
+	    Process exited with code: ExitFailure 1
+	Propellor build ... failed
+	** error: Propellor build failed!
+	propellor: Cannot continue!
+	CallStack (from HasCallStack):
+	  error, called at src/Propellor/Message.hs:143:9 in main:Propellor.Message
+	stappers@paddy:~/src/secret-project
+	$ 
+
+"""]]

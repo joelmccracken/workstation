@@ -1,0 +1,36 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 7"
+ date="2016-04-01T05:47:33Z"
+ content="""
+Hello Joey
+
+with 2.17.2 I get this. (there is nevertheless a progression in the right direction :p)
+
+    [2016-04-01 07:42:02 CEST] process done ExitSuccess
+    /srv/chroot/unstable-i386-sbuild has Operating System (Debian Unstable) \"i386\" ... ok
+    /srv/chroot/unstable-i386-sbuild noop property ... ok
+    /srv/chroot/unstable-i386-sbuild apt installed apt-transport-https ... ok
+    /srv/chroot/unstable-i386-sbuild standard sources.list ... ok
+    Hit:1 http://ftp2.fr.debian.org/debian unstable InRelease
+    Hit:2 http://mirrors.kernel.org/debian unstable InRelease
+    Reading package lists...
+    Reading package lists...
+    Building dependency tree...
+    Reading state information...
+    You might want to run 'apt-get -f install' to correct these.
+    The following packages have unmet dependencies:
+     g++-5 : Depends: gcc-5-base (= 5.3.1-7) but 5.3.1-8 is installed
+     gcc-5 : Depends: cpp-5 (= 5.3.1-7) but 5.3.1-8 is installed
+             Depends: gcc-5-base (= 5.3.1-7) but 5.3.1-8 is installed
+     libgcc-5-dev : Depends: gcc-5-base (= 5.3.1-7) but 5.3.1-8 is installed
+     libstdc++-5-dev : Depends: gcc-5-base (= 5.3.1-7) but 5.3.1-8 is installed
+     libstdc++6 : Depends: gcc-5-base (= 5.3.1-7) but 5.3.1-8 is installed
+    /srv/chroot/unstable-i386-sbuild apt update ... failed
+    /srv/chroot/unstable-i386-sbuild apt cache cleaned ... ok
+    mordor chroot /srv/chroot/unstable-i386-sbuild provisioned ... failed
+    mordor replace /etc/schroot/chroot.d/unstable-i386-sbuild ... failed
+
+so now the  proposition is to run `apt -f install`
+So what is the right way to solve this  (I hope) last issue during chroot upgrade?
+"""]]

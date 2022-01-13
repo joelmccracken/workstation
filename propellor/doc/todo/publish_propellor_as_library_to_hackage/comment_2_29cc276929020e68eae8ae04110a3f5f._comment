@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-02-28T17:08:28Z"
+ content="""
+Ok, I got --spin to not use the Makefile any more. So with the 2.2.0
+release, if you want to make ~/.propellor contain only a config.hs
+file and a foo.cabal file, that will work. The cabal file would contain
+something like:
+
+<pre>
+Executable propellor-config
+  Main-Is: config.hs
+  GHC-Options: -Wall -threaded -O0
+  Build-Depends: propellor, base >= 4.5, base < 5
+</pre>
+"""]]

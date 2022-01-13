@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 10"""
+ date="2015-10-02T16:45:44Z"
+ content="""
+Seems like you could have a parameter giving the name of the schroot,
+and use that as the basis for both the location of the chroot, and the
+schroot config file.
+"""]]

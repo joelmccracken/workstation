@@ -1,0 +1,44 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2015-09-30T14:57:26Z"
+ content="""
+You really have to follow the types here. `withTmpDir` passes a tmp dir to
+a monadic action. A RevertableProperty is not a monadic action (although it
+does contain one), so your code doesn't type check.
+
+What you can do is use `ensureProperty` to run a property from within
+the Propellor action of an enclosing property. The type of that is 
+`ensureProperty :: Property NoInfo -> Propellor Result` , 
+so it can't be used on a RevertableProperty like your `sbuild'`. 
+If you can get a `foo :: System -> FilePath -> Property NoInfo`, you can
+use it with `ensureProperty` like this:
+
+	sbuild system = property "some desc" $ do
+		ensureProperty $
+			withTmpDir "sbuild" $ \tmpdir -> foo system tmpdir
+
+But .. To get from a RevertableProperty to a Property NoInfo is a fraught
+conversion. `toProp` can get to a Property HasInfo. You'd have to use
+`ignoreInfo` to get from there to a Property NoInfo, and a lot of care
+should be taken when using `ignoreInfo`.
+
+It *might* be ok to ignoreInfo in this case; the agument would go that this
+is a chroot being used to create a sbuild image, so any Info belonging to
+properties of the chroot doesn't affect the host that it's built on,
+and so it doesn't need to propagate out. But, consider that this would
+break any properties inside the chroot that use privdata, since
+privdata works via info.
+
+I'd probably take an alternate tack here. Make `sbuild` use a chroot
+directory in a fixed location, instead of a temp directory. It could
+base the chroot location on the filename of the tarball it's creating 
+`(++ ".chroot")`, for example.
+
+That approach also has the benefit of letting you alter properties of the
+chroot and propellor will modify the existing chroot to meet those
+properties, which is faster than building a new chroot every time.
+
+(Then you can use `onChange` to update the schroot tarball anytime the
+chroot changes.)
+"""]]

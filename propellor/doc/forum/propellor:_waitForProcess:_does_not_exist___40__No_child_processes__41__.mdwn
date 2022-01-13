@@ -1,0 +1,1 @@
+An s390x running Ubuntu Bionic has starting failing with the message in the subject when I run propellor. Any ideas what might be going on there? It seems to be right after it fetches from the central git repo.

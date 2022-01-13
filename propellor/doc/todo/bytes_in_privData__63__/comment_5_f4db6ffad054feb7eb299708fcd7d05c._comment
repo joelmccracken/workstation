@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2015-04-23T13:25:50Z"
+ content="""
+Can you put the patch up somewhere? I'll take a look. Might see a way to
+short-curcuit the bytestring before everything becomes one..
+
+One way might be:
+
+	writeFileProtected :: FileContent content => FilePath -> content -> IO ()
+
+Which would also at least partly avoid foot-shooting over which parameter is which.
+(Fixed that type signature.)
+"""]]

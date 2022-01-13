@@ -1,0 +1,81 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="stuck"
+ date="2017-12-30T23:27:11Z"
+ content="""
+Hi,
+
+I feel stupid because I'm still stuck.
+
+What I have is ''secret-project'' from git, commit 14433a9494ed2946c8683a19a13dde54eae64723,
+Author: Joey Hess <joeyh@joeyh.name>,
+Date:   Sat Dec 30 13:38:06 2017 -0400
+
+I, stappers, work on host with FQDN  paddy.gpm.stappers.nl  so I have these changes:
+
+	--- a/config.hs
+	+++ b/config.hs
+	@@ -31,7 +31,7 @@ hosts =
+	 -- to build the installer disk images, by running, as root:
+	 --     propellor installer.builder
+	 installer_builder :: Host
+	-installer_builder = host \"installer.builder\" $ props
+	+installer_builder = host \"previous_attempt_on_paddy.gpm.stappers.nl\" $ props
+	        & bootstrapWith (Robustly Stack) -- temporary
+	        & osDebian Unstable X86_64
+	        & installerBuilt
+	@@ -42,12 +42,12 @@ installer_builder = host \"installer.builder\" $ props
+	 --     propellor --spin darkstar.kitenet.net
+	 -- (Replace darkstar with your own hostname.)
+	 darkstar :: Host
+	-darkstar = host \"darkstar.kitenet.net\" $ props
+	+darkstar = host \"paddy.gpm.stappers.nl\" $ props
+	        & bootstrapWith (Robustly Stack) -- temporary
+	        & osDebian Unstable X86_64
+	        & installerBuilt
+	-               `before` File.ownerGroup \"/srv/installer.img\" (User \"joey\") (Group \"joey\")
+	-               `before` File.ownerGroup \"/srv/installer.vmdk\" (User \"joey\") (Group \"joey\")
+	+               `before` File.ownerGroup \"/srv/installer.img\" (User \"stappers\") (Group \"stappers\")
+	+               `before` File.ownerGroup \"/srv/installer.vmdk\" (User \"stappers\") (Group \"stappers\")
+	 
+	 -- | Build a disk image for the installer.
+	 installerBuilt :: RevertableProperty (HasInfo + DebianLike) Linux
+	
+
+When I follow the instructions from README  I get:
+
+	$ stack build
+	secret-project-0.0: build (exe)
+	Preprocessing executable 'propellor-config' for secret-project-0.0...
+	[9 of 9] Compiling Main             ( config.hs, .stack-work/dist/x86_64-linux-nopie/Cabal-1.24.2.0/build/propellor-config/propellor-config-tmp/Main.o )
+	Linking .stack-work/dist/x86_64-linux-nopie/Cabal-1.24.2.0/build/propellor-config/propellor-config ...
+	
+	Warning: The following modules should be added to exposed-modules or other-modules in /home/stappers/src/secret-project/secret-project.cabal:
+	             - In propellor-config component:
+	                 Installer.Types
+	         
+	         Missing modules in the cabal file are likely to cause undefined reference errors from the linker, along with other problems.
+	secret-project-0.0: copy/register
+	Installing executable(s) in
+	/home/stappers/src/secret-project/.stack-work/install/x86_64-linux-nopie/lts-8.12/8.0.2/bin
+	$ sudo stack --allow-different-user exec propellor-config paddy.gpm.stappers.nl
+	Pull from central git repository ... done
+	paddy.gpm.stappers.nl has propellor bootstrapped with stack ... ok
+	paddy.gpm.stappers.nl has Operating System (Debian Linux Unstable) X86_64 ... ok
+	** error: cannot find chroot /srv/installer.img.chroot on host paddy.gpm.stappers.nl
+	propellor: Cannot continue!
+	CallStack (from HasCallStack):
+	  error, called at src/Propellor/Message.hs:143:9 in main:Propellor.Message
+	** warning: user error (chroot [\"/srv/installer.img.chroot\"
+		,\"/usr/local/propellor/chroot/_srv_installer.img.chroot.shim/propellor\"
+		,\"--continue\"
+		,\"ChrootChain \\"paddy.gpm.stappers.nl\\" \\"/srv/installer.img.chroot\\" False True\"] exited 1)
+	paddy.gpm.stappers.nl built disk image /srv/installer.vmdk ... failed
+	paddy.gpm.stappers.nl overall ... failed
+	$ 
+
+How do I get unstuck??
+
+"""]]

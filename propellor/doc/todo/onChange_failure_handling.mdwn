@@ -1,0 +1,41 @@
+> Please consider the following three properties
+> - p1,
+> - p2 and
+> - p3 = onChange p1 p2.
+> 
+> If p1 returns MadeChange and p2 FailedChange, then p3 is FailedChange.
+> If we apply this property again without any changes, then p3 is
+> NoChange.
+> 
+> This behavior could create problematic situations since p3 can be
+> required by another property which thinks that p3 has been applied
+> whereas it's not the case...
+> 
+> -- Antoine
+
+Very well stated.
+
+I looked over existing uses of onChange in propellor, and many of them
+seem safe.
+
+The safe ones are where there's eg, a daemon, with a Property that it's
+running, and another Property that configures it in some way with
+onChange restart. If the restart fails, then the daemon is presumably
+left not running (unless it failed to stop the daemon somehow); a state
+that the former Property will attempt to take care of (or at least
+continue to indicate failure on) the next time propellor runs.
+
+Hmm, there are also lots of uses of onChange reloaded. If the new
+configuration of a daemon is broken, this can fail to reload it, and
+leave the daemon running with the old configuration. So that's more
+problimatic, and then there are some more problimatic yet uses of
+onChange, like the one that runs apt-get update after a change to
+sources.list.
+
+--[[Joey]]
+
+----
+
+The `onChangeFlagOnFail` combinator is a safer alternative to `onChange`
+that avoids this problem. But, it can be difficult to come up with unique
+names for the flag files it uses.

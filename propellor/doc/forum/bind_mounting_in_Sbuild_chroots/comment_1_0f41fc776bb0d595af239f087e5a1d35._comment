@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 1"
+ date="2018-09-08T16:54:24Z"
+ content="""
+You could use
+
+    & File.containsLine \"/etc/schroot/sbuild/fstab\" \"...\"
+
+but yes, I think it's cleaner to use the sbuild chroots only for building, and for interactive use some other chroot.
+"""]]

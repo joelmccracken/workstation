@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2016-03-19T18:49:26Z"
+ content="""
+Yes, that was the main reason to add
+[Propellor.Property.Concurrent](http://hackage.haskell.org/package/propellor-2.16.0/docs/Propellor-Property-Concurrent.html)
+
+It should be able to parallelize any properties using the combinators in
+there. Including `Propellor.Property.Conductor.conducts`
+
+For example:
+
+	conducts hostfoo `concurrently` conducts hostbar `concurrently` conducts hostbaz
+
+Or, something like this to conduct a whole list of hosts in parallel
+(have not tried to compile it, may need minor tweaking):
+
+	concurrentList (pure 10) "conduct web servers in parallel" $
+		PropList $ map toProp $ conduct webservers
+
+	webservers :: [Host]
+
+Note that concurrent output will be serialized, so you'll probably see propellor
+running live on the first host and then the ones that were conducted in the
+background will have their output dumped the console later on.
+"""]]

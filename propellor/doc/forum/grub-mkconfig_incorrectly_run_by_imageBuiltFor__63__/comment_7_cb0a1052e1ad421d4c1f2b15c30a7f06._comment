@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 7"
+ date="2017-12-20T21:54:30Z"
+ content="""
+But that seems to fail without switching the two (see my original problem and my first comment), or is there another problem?
+
+I can provide the patch for BIOS tomorrow.
+"""]]

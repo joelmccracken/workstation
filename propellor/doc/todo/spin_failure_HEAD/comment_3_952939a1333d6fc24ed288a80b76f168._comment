@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="definitely network related"
+ date="2018-08-24T13:58:49Z"
+ content="""
+I can spin the same host from a different host on the office LAN (in fact they are connected to a cheapo hub, so that might not be much of a test), and from itself. So I guess it definitely has to do with networking. Does propellor need anything other than port 22 open?
+"""]]

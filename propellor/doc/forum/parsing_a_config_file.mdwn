@@ -1,0 +1,11 @@
+I have an issue with how parsing a tor config file. Hidden services are defined like this: first you specify a dir with "HiddenServiceDir" and then, (on the following lines) you define the port mappings with one or more "HiddenServicePort". You can have multiple hidden services defined in the same tor config file.
+
+    HiddenServiceDir /var/lib/tor/myhttponion
+    HiddenServicePort 80 127.0.0.1:80
+    HiddenServicePort 8080 127.0.0.1:8080
+    HiddenServiceDir /var/lib/tor/myirconion
+    HiddenServicePort 6667 127.0.0.1:6667
+
+I used "configured" to define "hiddenService" in "Propellor.Property.Tor", but I didn't realized that there can be multiple hidden services, each with multiple ports. So, defining multiple hiddenService properties does not work as expected ("Propellor.Property.Tor.configured" assumes there is only one line for one config variable)...
+
+A kind of general file parsing functions on multilines (based on AST?) may be a nice addition to Propellor.Property.File, but it sounds too hard for my skills :-). Maybe someone would have an idea to solve this problem?

@@ -1,0 +1,4 @@
+Aggregating propellor blog posts etc..
+
+* [[!aggregate expirecount=25 name="joey" feedurl="http://joeyh.name/blog/propellor/index.rss" url="http://joeyh.name/blog/propellor/"]]
+

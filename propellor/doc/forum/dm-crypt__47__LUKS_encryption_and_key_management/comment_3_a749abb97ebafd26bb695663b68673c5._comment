@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="maybe some equivalent of CryptPassword"
+ date="2018-10-16T11:51:23Z"
+ content="""
+Storing plaintext luks passwords on disk doesn't sound great for most applications, but I wonder if the encrypted form could be stored in privdata. Something using e.g. \"cryptsetup luksDump\" or \"cryptsetup luksHeaderBackup\". I have no idea how practical it is to generate such data without being logged into the machine in question.
+"""]]

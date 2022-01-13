@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="just needs Apt.update?"
+ date="2018-08-25T13:04:50Z"
+ content="""
+Thinking about this a bit more, it should be enough to require Apt.update once per host, then rely on Apt.installed to do the right thing. I'll have to test this next time I roll out a new version. In theory I could run apt.update for a single source, but that seems to be tricky on the apt level.
+"""]]

@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-04-05T02:22:54Z"
+ content="""
+I am not entirely happy with this patch, because it seems that if
+Git.cloned took care to preserve permissions in this case, it could be
+argued that it should also preserve permissions when the directory already
+exists but has the wrong content. Or equally well argued that it should not
+preserve permissions, which might be a leftover from some past unwanted
+state.
+
+Is that really the best way to do it? You could instead say:
+
+	Git.cloned user repo dir Nothing
+		`onChange` recursiveSetGID user dir
+
+And then you just have to write a recursiveSetGID which would be a
+generally useful property.
+"""]]

@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 8"
+ date="2015-12-02T21:44:37Z"
+ content="""
+My original goal was to have `Apt.buildDep` return NoChange if the build deps are already installed.  As a welcome but unexplained side-effect, on my system `noChangeIfUnchanged` *does* cause apt's output not to be displayed.
+
+I'll think about ways to combine our two combinators.
+"""]]

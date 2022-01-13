@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2017-10-25T16:51:54Z"
+ content="""
+@Nicolas, the reason it appears twice is that resolveConfed is added by
+default, and then you added it again reverted. That display could certianly
+be improved, perhaps by having it look to see if there's a resolveConfed
+setting before adding in the default one.
+
+As to why reverting it didn't work, that was a Info ordering bug, which
+I've now fixed.
+"""]]

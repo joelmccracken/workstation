@@ -1,0 +1,9 @@
+I try to use propellor to deploy a secondary DNS server.
+
+In your configuration, I see nothing to change the `listen-on { 127.0.0.1; };` option, did I miss something?
+
+Also, in `Dns.secondaryFor`, I do not know how to set `confLines` to something else, should I use this function and peel the result until I can change this or shoud I add a `Dns.secondaryFor'` version with an extra argument?
+
+By the way, is it really advisable to use a "minimal config" instead of a full clone?
+
+Thanks!

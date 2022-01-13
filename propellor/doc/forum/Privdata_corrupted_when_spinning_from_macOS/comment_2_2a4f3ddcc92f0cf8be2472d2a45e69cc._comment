@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi"
+ avatar="http://cdn.libravatar.org/avatar/869963bdf99b541c9f0bbfb04b0320f1"
+ subject="comment 2"
+ date="2018-08-15T18:53:03Z"
+ content="""
+I get `Just UTF-8` in both cases and the corruption is not fixed. I think the problem may be on the _receiving_ side? On macOS my `$LC_CTYPE` is set to `\"UTF-8\"` which is passed through by SSH but is an invalid locale on Linux. Running `env LC_CTYPE=C.UTF-8 ./propellor --spin blah` fixes the corruption.
+"""]]

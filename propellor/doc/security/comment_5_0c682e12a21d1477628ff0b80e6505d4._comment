@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawmtnXa0F3OsNh8H7yf5EEbtuufPZG-3StI"
+ nickname="Arnaud"
+ subject="Got it working..."
+ date="2014-08-31T12:50:17Z"
+ content="""
+OK, I manage to get my first propellor config run fine by setting different branch.master.url and branch.master.pushUrl configurations: 
+
+* Use a https:// based url for the first 
+* Use a git:// based url for the second
+
+I had to nuke the remote /usr/local/propellor directory because it still had wrong configuration with a single remote url.
+"""]]

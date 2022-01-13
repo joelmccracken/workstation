@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-11-30T21:07:26Z"
+ content="""
+I'm not entirely opposed to it, but this does add another two
+dependencies that have to be installed on every host managed by propellor.
+
+Also, I don't really understand the instance MonadBaseControl
+implementation. (And have always had that difficulty with
+monad-control, which is one of the reasons I've stopped using it.)
+This and not having anything to test it with makes me fear maintaining it.
+
+It looks like it would be sufficient make Propellor derive MonadBase IO,
+and then the MonadBaseControl instance could be shipped in another
+package (or even implemented in your config.hs). Does that sound like a
+reasonable compromise?
+"""]]

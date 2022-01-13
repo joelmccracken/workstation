@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2019-11-21T15:16:36Z"
+ content="""
+Also, when the propellor configuration is changed, it's very useful to have
+a record of how that change affected the host. While etckeeper's record is
+limited to /etc, that does cover a large percentage of such changes.
+"""]]

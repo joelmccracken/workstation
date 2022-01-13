@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 1"
+ date="2017-12-20T19:00:54Z"
+ content="""
+When I add a `File.dirExists \"/boot/efi\"` property, it goes further, but fails at the end:
+
+                  0 100%    0.00kB/s    0:00:00 (xfr#0, to-chk=0/1)
+         26,454,269 100%  163.62MB/s    0:00:00 (xfr#5, to-chk=0/8)
+        770,765,173  99%   53.06MB/s    0:00:13 (xfr#26256, to-chk=0/33584)   
+    update-initramfs: Generating /boot/initrd.img-4.9.0-4-amd64
+    Installing for x86_64-efi platform.
+    Installation finished. No error reported.
+    Generating grub configuration file ...
+    Found linux image: /boot/vmlinuz-4.9.0-4-amd64
+    Found initrd image: /boot/initrd.img-4.9.0-4-amd64
+    done
+    umount: /tmp/mntAMcRoY/boot/efi: not mounted.
+    ** fatal error: failed unmounting /tmp/mntAMcRoY/boot/efi
+    ** warning: /tmp/mntAMcRoY: removeDirectoryRecursive:removeContentsRecursive:removeDirectory: resource busy (Device or resource busy)
+    device-mapper: remove ioctl on loop0p3  failed: Device or resource busy
+    loop deleted : /dev/loop0
+    laptop built disk image /srv/router.img ... failed
+    laptop overall ... failed
+
+"""]]

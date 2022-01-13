@@ -1,0 +1,11 @@
+I'm using Fedora for the desktop and CentOS on my server. I have many software packages to install. I store them in shell scripts, with lines like this:
+
+    yum -y install vim-common vim-enhanced gvim vim-X11 # the latter for clipboard support
+
+I'm thinking about some more elaborate way to do that (to put some packages to specific hosts and groups). Propellor seems an interesting tool for that, but when I see an [example configuration file](https://git.joeyh.name/index.cgi/propellor.git/tree/joeyconfig.hs), it looks like this is a mixture of data and logic, which is considered [not a very good practice](https://softwareengineering.stackexchange.com/questions/229479/how-did-separation-of-code-and-data-become-a-practice).
+
+I know that Haskell itself is a very declarative language (in the sense it's not imperative), but still I have this feeling of a mixture of code with constants. What do you think of that?
+
+Is there a way to cleanly store names of packages (with comments and some configuration options (e.g. on what hosts they should be used)) in one place and use propellor's logic to install them in another place? 
+
+I understand that the power of propellor is to `do` things apart of just enumerating them, but I think that this separation could be useful.

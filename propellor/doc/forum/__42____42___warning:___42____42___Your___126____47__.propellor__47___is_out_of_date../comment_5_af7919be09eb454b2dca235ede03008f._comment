@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2018-01-02T17:08:07Z"
+ content="""
+@spwhitton ah, I had not noticed that case. I found a way to avoid the
+unncessary warning in that case; since there's no upstream/master ref when
+~/.propellor has not been cloned from the debian git bundle, it can detect
+that and avoid warning. Done so.
+"""]]

@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2015-05-30T15:06:06Z"
+ content="""
+I have made Propellor.Property.Cmd re-export the wrapped createProcess
+that does debug logging.
+
+I can see how processTranscript would be useful. I'm on the fence about
+re-exporting that one.
+"""]]

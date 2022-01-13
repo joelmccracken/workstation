@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-05-03T16:46:45Z"
+ content="""
+Agreed on all points, also there are some 
+`File.containsLine` properties for /etc/default files elsewhere that
+don't necessarily work correctly if a later line changes the value,
+that could be converted to use this new property.
+
+Your name ideas sound fine to me.
+"""]]

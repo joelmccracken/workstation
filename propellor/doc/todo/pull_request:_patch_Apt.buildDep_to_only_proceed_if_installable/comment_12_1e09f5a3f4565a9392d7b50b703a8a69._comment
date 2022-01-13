@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 12"""
+ date="2015-12-05T22:52:42Z"
+ content="""
+I had a thought about this;
+[[trivial is a code smell|type-level_trivial_avoidance]] and adding
+UncheckedProperty type avoids needing to use trivial.
+
+So, now cmdProperty, runApt, and other things that make a Property but
+can't really detect when it MadeChange can instead make an
+UncheckedProperty, and changesFile is one of the ways to convert that into
+a Property.
+
+My implementation also allows applying changesFile multiple times, to
+detect a change to multiple files.
+"""]]

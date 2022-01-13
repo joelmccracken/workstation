@@ -1,0 +1,11 @@
+propellor 5.13 released with [[!toggle text="these changes"]]
+[[!toggleable text="""  * Network: Added support for network interfaces with several address
+    stanzas, eg ipv4 and ipv6.
+    Thanks, Nicolas Schodet
+  * Sudo.enabledFor: Deal with new @includedir syntax in sudoers file.
+  * Apt.securityUpdates: Stop generating testing-security lines, as
+    testing-security is unused per debian documentation.
+  * Utility.HumanNumber: Fix rounding bug that could result in
+    sometimes quite wrong values, eg "1.1 GB" when the input value was a
+    few bytes less than 2 GB. Properties in Ccache and Journald that
+    used it to generate config files were affected by this bug."""]]

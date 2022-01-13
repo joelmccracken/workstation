@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="https://launchpad.net/~barthelemy"
+ nickname="barthelemy"
+ avatar="http://cdn.libravatar.org/avatar/e99cb15f6029de3225721b3ebdd0233905eb69698e9b229a8c4cc510a4135438"
+ subject="comment 2"
+ date="2020-01-07T00:38:09Z"
+ content="""
+Hi Joey,
+
+thank you for the feedback. I'm glad to know it is supposed to work in those cases.
+It seems freedombox uses btrfs and swapfiles do not work on btrfs partitions. I thus tried with zram (apt get install zram-tools, which set up a 256 MiB swap).
+
+I could then run propellor --spin to the server, it passed.
+Then I rm -rf /usr/local/propellor on server and ran propellor --spin again.
+The build passed again (it took ~75 minute and at some point ghc took 570MiB but it succeedded).
+
+I'm back on track, thank you again!
+"""]]

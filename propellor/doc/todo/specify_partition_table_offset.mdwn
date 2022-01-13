@@ -1,0 +1,19 @@
+I was trying to use propellor to build an image for a RockPro64 board.
+
+It'd be convenient if there was an easier way to specify where on the disk a partition should start.
+
+The board seems to assume a specific partition layout that's difficult to do with propellor commands.
+
+See http://opensource.rock-chips.com/wiki_Partitions for the official layout.
+
+And a community built image for the RockPro64's table looks like this:
+
+    Number  Start   End     Size    Type     File system  Flags
+     1      16.8MB  83.9MB  67.1MB  primary  fat32        boot, lba
+     2      134MB   5377MB  5243MB  primary  ext4         boot
+
+While the one I generated with propellor (that doesn't work) looks like:
+
+    Number  Start   End     Size    File system  Name     Flags
+     1      4194kB  273MB   268MB   ext2         primary  boot, esp
+     2      273MB   1854MB  1581MB  ext4         primary

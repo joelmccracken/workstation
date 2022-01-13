@@ -1,0 +1,44 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawm-czsfuWENKQ0GI8l0gnGTeF1JEli1mA0"
+ nickname="Andreas"
+ subject="comment 4"
+ date="2015-04-15T10:15:17Z"
+ content="""
+Well thanks a lot, and yes I am learning: propellor has a lot
+of powerful features under the hood already.
+
+I still remain sceptical for the time being:
+
+Propellor's overall approach seems: one spin of propellor does ensure
+that a complete systems is properly installed (and then one can
+declare exceptions: don't check this every time...). I can even see
+how this is useful: if I where a sys admin with a huge farm of
+systems, I wouldn't want to deal with half installed systems, but just
+have propellor do a complete job.
+
+As far as I am only concerned with a few personal computers of mine, I
+prefer to stick to my task by task approach, though, and for tasks
+that come up reapeatedly (like keeping my apt cache + installed
+packages up to date) that seems reasonable to me as well. - having
+only a minimal required configuration for a host, and then building
+upon that (I think/hope, you got the idea by now). The fact, that
+this model is nicely supported by ansible, seems to suggest at least,
+that this kind of reasoning/approach is not completely flawed.
+
+What is not 100% clear to me: if propellor could be bent to support my
+kind of workflow: I would think that it's possible? (even though I
+might not have the time to bend it that way myself). Or are there any
+fundamental issues with it?
+
+What I am suggesting is: that propellor be at my disposal,
+more as a library, and would not also impose a certain
+command line interface / workflow on me.
+
+Anyway, you would certainly win me as a user (don't know
+how much that counts, and cannot speak for other people's
+needs).
+
+Thanks anyway.
+  Andreas
+
+"""]]

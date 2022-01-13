@@ -1,0 +1,3 @@
+s [propels some computers][1] using propellor.
+
+[1]: https://git.ricketyspace.net/propellor/tree/config.hs

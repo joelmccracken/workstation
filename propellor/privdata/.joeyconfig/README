@@ -1,0 +1,8 @@
+This is the privdata used by propellor's author, Joey Hess.
+
+While it has lots of important data in it, it's thankfully encrypted, so
+you can't read it.
+
+If you're bothered by this directory cluttering up your clone of propellor,
+feel free to delete it. Just don't expect Joey to merge any branches that
+delete it.

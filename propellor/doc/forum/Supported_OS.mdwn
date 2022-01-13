@@ -1,0 +1,5 @@
+What are the requirements for the configured OS ? Does it need to be Debian ?
+
+Would Propellor work for Arch linux, RHEL, Windows, AIX or linux on pSeries) ?
+
+Cheers

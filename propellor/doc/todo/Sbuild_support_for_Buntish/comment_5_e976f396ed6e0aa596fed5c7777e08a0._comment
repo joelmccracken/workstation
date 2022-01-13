@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 5"
+ date="2019-03-18T01:35:38Z"
+ content="""
+`Sbuild.builtFor` assumes that ccache and eatmydata are installed, so I think that those need to be moved out of `Sbuild.standard` and back where they were.
+
+David, have you tested that Debian schroots still work with Joey's patch?
+"""]]

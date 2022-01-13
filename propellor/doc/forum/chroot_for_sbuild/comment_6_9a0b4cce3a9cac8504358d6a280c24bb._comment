@@ -1,0 +1,48 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 6"
+ date="2015-10-02T14:15:23Z"
+ content="""
+Just for information, here my solution. It is not perfect but it works :)
+thanks a lot for your help
+
+    sbuild :: System -> RevertableProperty
+    sbuild system = sbuild' chroot
+      where
+        chroot = Chroot.debootstrapped system Debootstrap.BuilddD \"/var/lib/sbuild\"
+                 & \"/etc/apt/apt.conf.d/01proxy\" `File.hasContent` [\"Acquire::http::Proxy \\"http://w.x.y.z:8080\\";\"]
+                 & Apt.installed [\"apt-transport-https\"]
+
+
+    sbuild' :: Chroot -> RevertableProperty
+    sbuild' chroot@(Chroot basedir system _ _) = setup <!> cleanup
+      where
+        setup = toProp (Chroot.provisioned chroot) `onChange` setup'
+    
+        setup' = property (\"sbuild-creatchroot \" ++ chrootdir) $ do
+          -- unmount helper filesystems such as proc from the chroot
+          -- before getting sizes
+          liftIO $ Mount.unmountBelow chrootdir
+            -- use the chroot for sbuild
+          ensureProperty $
+              scriptProperty (rmconfig chrootdir ++ 
+                              [ \"sbuild-createchroot --setup-only --keep-sbuild-chroot-dir --make-sbuild-tarball=\" ++ tarball ++ \" \" ++ name ++ \" \" ++ chrootdir ++ \" http://httpredir.debian.org/debian\"
+                              ])
+
+        cleanup = scriptProperty (rmconfig chrootname ++ [\"rm -f -v \" ++ tarball])
+                  `onChange` toProp (revert (Chroot.provisioned chroot))
+      
+        (name, arch) = case system of
+          (System (Debian (Stable suite)) a) -> (suite, a)
+
+        chrootname = name ++ \"-\" ++ arch
+
+        chrootdir = basedir </> chrootname
+
+        tarball = chrootdir ++ \".tar.gz\"
+
+        rmconfig c = [ \"rm -f -v \" ++ \"/etc/schroot/chroot.d\" </> (c ++ \"-sbuild-*\")
+                     , \"rm -f -v \" ++ \"/etc/sbuild/chroot\" </> (c ++ \"-sbuild\")
+                     ]
+
+"""]]

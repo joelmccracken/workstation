@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="http://joeyh.name/"
+ subject="comment 1"
+ date="2016-03-30T19:30:50Z"
+ content="""
+Well, I don't see a way around needing to release a version of propellor that fixes this bug before I can release a version of propellor that depends on the fix (by adding a new dependency on concurrent-output).
+
+So, I'll go that route. Users will need to upgrade all deployed hosts to propellor 2.17.2 first, before 3.0.0. If a user neglects to do so, and tries to update a host using propellor --spin, it will fail. The user can then either 
+
+1. Wait for the cron job to run, if they set it up, which will install the deps.
+2. Manually log into the host and fix the deps by eg, cabal install concurrent-output as root.
+"""]]

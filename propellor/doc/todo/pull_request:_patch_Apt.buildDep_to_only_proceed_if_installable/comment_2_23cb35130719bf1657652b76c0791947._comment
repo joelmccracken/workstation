@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-11-26T12:48:25Z"
+ content="""
+How about simply checking if /var/lib/dpkg/status is changed?
+
+I added a `changesFile` property combinator which should be helpful for
+that.
+"""]]

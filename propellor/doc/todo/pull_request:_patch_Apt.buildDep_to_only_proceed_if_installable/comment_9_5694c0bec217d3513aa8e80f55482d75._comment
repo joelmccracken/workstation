@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 9"
+ date="2015-12-03T02:08:58Z"
+ content="""
+I can get what I want if I use `trivial` and `changesFile` in the way you described.  So please consider adding your method as a combinator:
+
+    p `changeIfChanges` f = (trivial p) `changesFile` f
+
+which is okay because `trivial` is idempotent so `changeIfChanges` may be applied more than once (I've got this in my branch with a decent docstring and I've applied it to `Apt.buildDep`).
+
+I think that this ought to be its own combinator, rather than just a recommendation to use `trivial` and `changesFile` in such cases, because this doesn't follow the semantics of `trivial`: it's not necessarily the case that it is the same amount of work to check if the property needs to be ensured as it is to ensure it.
+
+(In this language, my `noChangeIfUnchanged` could be called `changeOnlyIfChanges`.  I agree that it's very unlikely to useful.)
+
+(Again, on my machine, applying `changeIfChanges` to `Apt.buildDep` magically hides apt's output if the build-deps are already installed.)
+"""]]

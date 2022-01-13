@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2020-01-04T19:02:08Z"
+ content="""
+500 mb seems a bit higher than typical; my own config.hs (500 lines)
+needs 416 mb to build, and the example config.hs included in propellor
+needs 245 mb.
+
+I typically install swapspace on systems with 1 gb or less and it works
+fine. I think the smallest system I've used propellor with was 500 mb.
+"""]]

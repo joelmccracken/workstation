@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2014-11-06T15:46:56Z"
+ content="""
+All I've needed for this is `& Apt.installed ["etckeeper"]`
+
+Patches welcome, I suppose.
+"""]]

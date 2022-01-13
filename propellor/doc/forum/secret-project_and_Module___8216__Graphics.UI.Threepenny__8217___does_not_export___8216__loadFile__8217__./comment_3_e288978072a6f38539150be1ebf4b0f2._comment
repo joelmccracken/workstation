@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="my stack version"
+ date="2017-12-28T22:13:21Z"
+ content="""
+    $ stack --version
+    Version 1.6.3, Git revision b27e629b8c4ce369e3b8273f04db193b060000db (5454 commits) x86_64 hpack-0.20.0
+
+"""]]

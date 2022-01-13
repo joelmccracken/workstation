@@ -1,0 +1,127 @@
+Once you have several hosts managed with propellor, you'll probably find
+yourself making changes to config.hs, that might affect multiple hosts.
+
+You can manually run `propellor --spin $HOST` for each affected host in
+turn. But that can get old. Time to automate it.
+
+There are two approaches you can follow:
+
+* Set up a centralized git repository, and make your hosts
+  check it for updates using cron. Then you can `git commit -S`
+  and `git push` changes that affect any number of hosts.
+
+* Set up a conductor host. When propellor is run on this host,
+  it will automatically spin the other hosts.
+
+We'll start with a centralized git repository and cron, because that's
+the easiest thing to set up, and it's a good idea to have one as a backup.
+Especially if you have co-maintainers, you'll obviously want to use
+a centralized repository to allow collaboration.
+
+## where to put the central repository
+
+The central repository does not need to be trusted; it can be hosted 
+anywhere, and propellor will only accept verified gpg signed git commits
+from it. See [[security]] for details, but this means you can put it
+on github without github being able to 0wn your propellor driven hosts, for
+example.
+
+Or, you can just add some properties to one of your hosts to make it
+serve the central repository. Using `Propellor.Property.Git.daemonRunning`
+for example.
+
+## how to set up the central repository
+
+You can add a central git repository to your existing propellor setup easily:
+
+1. Push propellor's git repository to a central server (github or your own):
+   `cd ~/.propellor/; git remote add origin ssh://git.example.com/propellor.git; git push -u origin master`
+
+2. Configure the url your hosts should use for the git repository, if
+   it differs from the url above, by setting up a remote named "deploy":
+   `cd ~/.propellor/; git remote add deploy git://git.example.com/propellor.git`
+
+3. Add a cron job property to your hosts, which will make them periodically
+   check for changes that were committed to the central repository:
+   `Cron.runPropellor (Cron.Times "*/30 * * * *")`
+
+4. Let your hosts know about the changed configuration (including the url
+   to the central repository), by running `propellor --spin $HOST` for each
+   of your hosts.
+
+Now the hosts will automatically update every 30 minutes, and you can
+`git commit -S` and `git push` changes that affect any number of
+hosts.
+
+## setting up a conductor host
+
+When propellor is run on a conductor host, it will automatically
+spin some other hosts.
+
+Using a conductor host has many benefits over a centralized git
+repository and cron:
+
+* Private data, set with `propellor --set`, is gpg encrypted, and
+  hosts cannot decrypt it when their cron job pulls changes from
+  the central repository. So after updating the private data of a host,
+  you still need to manually run `propellor --spin $HOST`. A conductor
+  avoids this problem.
+* You have to wait a while for a change you commit to be
+  deployed by cron. It would be nice to be able to run "propellor"
+  once and have it update all your hosts immediately.
+* When there's a problem, a cron job can hide it, while if you're
+  running propellor yourself, you can notice the problem more easily.
+* You might want to update hosts in a specific order. For example,
+  update your dns server last. Cron jobs can't do this, but conductors
+  can.
+
+Conductors are configured using the
+[Propellor.Property.Conductor module](http://hackage.haskell.org/package/propellor/docs/Propellor-Property-Conductor.html).
+
+If you decide to go this route, pick the host you want to make a conductor,
+and add some properties to it:
+
+	mylaptop = host "mylaptop.example.com"
+		& conducts [somehost, otherhost, lasthost]
+		& Ssh.userKeys (User "root")
+			[(SshEd25519, somelongstring)]
+
+The Ssh.userKeys is used to give the root user on the conductor a known
+ssh public key. You'll need to feed the private ssh key into propellor's
+privdata store (see [[security]]).
+
+Each of the hosts that is being conducted needs to have its ssh host key
+specified as well. This is needed so that the conductor can ssh into
+the hosts.
+
+	somehost = host "somehost.example.com"
+		-- This sets the private key as well, so it will need to
+		-- be fed into propellor's privdata store.
+		& Ssh.hostKeys hostContext [(SshEd25519, somelongstring)]
+
+	lasthost = host "lasthost.example.com"
+		-- This way indicates the public key, but doesn't change
+		-- the actual host configuration.
+		& Ssh.hostPubKey SshEd25519, somelongstring
+
+Also, make this change:
+
+	- main = defaultMain hosts
+	+ main = defaultMain (orchestrate hosts)
+
+Give each of the hosts you changed one last manual --spin, to set
+things up for the conductor.
+
+Now you're ready to use the conductor. When you spin the conductor
+host, it will in turn spin each of the hosts it's conducting.
+
+This simple conductor configuration can be easily adapted to 
+better meet your needs. For example, if you have a host that should only
+be spinned once all the other hosts have successfully been updated,
+the conductor can be configured to do that:
+
+		& conducts [somehost, otherhost]
+			`before` conducts lasthost
+
+Other possibilities include chains of conductors spinning other conductors
+that spin hosts, etc.

@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 4"
+ date="2017-12-20T18:01:33Z"
+ content="""
+Should update-grub and grub-install be swapped (as I did) in Grub.bootsMounted?
+
+
+"""]]

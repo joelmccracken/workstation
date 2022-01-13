@@ -1,0 +1,146 @@
+Long ago, nomeata pointed out that RevertableProperty required the user to
+keep track of different versions of a Host, in a way that should be able to
+be automated. When the user decides to revert a RevertableProperty, they
+have to keep the reverted property on the Host until propellor runs there,
+and only then can remove it.
+
+What if instead, there was a way to store the old version of a Host
+somewhere. Let's not worry about where or how, but assume we have 
+`(old, new) :: (Host, Host)`
+
+Propellor could compare `old` and `new`, and if it finds a
+RevertableProperty in `old` that is not in `new`, add it in reverted form
+to `new'`.
+
+Also, if propellor finds a Property in `old` that is not in `new`, it can
+tell the user that this Property needs to be reverted, but cannot be, so
+`new` won't fully describe the state of the host. --[[Joey]]
+
+----
+
+There are a lot of ways such a capability could be used, especially if
+there were a way to pull the old version of a Host out of a previous
+version of config.hs or something like that. But leaving aside such magic,
+here are some nice use cases:
+
+* Suppose we want to generate several disk images, which are somewhat
+  similar, but differ in some properties. Rather than building a separate
+  chroot for each, we can build a chroot for the first, update the first
+  disk image, compare that with the second and update the chroot
+  accordingly, and so on.
+* When propellor is used to build a OS installer disk image, that installer
+  could know the properties used to create it, and the properties of the
+  system that is desired to be installed. To install, it can rsync the
+  installer disk contents to `/target` and then run propellor in `/target`,
+  differentially updating it as needed.
+
+----
+
+Here's the catch: It can't be implemented currently! The comparison of
+properties needs an `Eq` instance for Property (and RevertableProperty).
+But, a property contains an action in the IO monad, which can't have an
+`Eq` instance, and so there's no good way to compare properties.
+
+Making propellor use an ESDL could get us `Eq`. But it would make it rather
+clumsy to write properties, something like this. 
+
+<pre>
+appendfoo f = WriteFile f (ListAppend "foo" (ReadFile f))
+</pre>
+
+(Perhaps a deeply embedded DSL would be better.)
+
+Could a Free monad get us `Eq`? Well, there can apparently be free monads that
+have an `Eq` instance, but I tried building one for a simple teletype, and
+failed, which does not bode well. Here's the code; this fails to compile
+because of a missing instance `(Eq1 ((->) String))`, and of course comparing
+functions for equality is not generally feasible.
+
+<pre>
+{-# LANGUAGE FlexibleContexts, UndecidableInstances #-}
+
+import Control.Monad.Free
+import Prelude.Extras
+
+data TeletypeF x
+        = PutStrLn String x
+        | GetLine (String -> x)
+
+instance Functor TeletypeF where
+        fmap f (PutStrLn str x) = PutStrLn str (f x)
+        fmap f (GetLine k) = GetLine (f . k)
+
+instance (Eq1 ((->) String)) => Eq1 TeletypeF  where
+        PutStrLn a x ==# PutStrLn b y = a == b && x == y
+        GetLine a ==# GetLine b = a ==# b
+
+type Teletype = Free TeletypeF
+
+putStrLn' :: String -> Teletype ()
+putStrLn' str = liftF $ PutStrLn str ()
+
+getLine' :: Teletype String
+getLine' = liftF $ GetLine id
+
+foo :: Teletype ()
+foo = do
+        putStrLn' "name?"
+        name <- getLine'
+        putStrLn' ("hello, " ++ name)
+
+fooisfoo :: Bool
+fooisfoo = foo ==# foo
+</pre>
+
+-----
+
+## the best we can do without Eq
+
+Is, perhaps:
+
+	data Version = A | B | C
+		deriving (Enum, Ord)
+
+	foo :: Versioned Hoso
+	foo = versionedHost "foo" $ do
+		ver A someprop
+			<|> othervers otherprop
+		ver A somerevertableprop
+		ver [B, C] newprop
+
+That's ... pretty ok, would hit as least some of the use cases described
+above. Seems to need a Reader+Writer monad to implement it,
+without passing the Version around explicitly. 
+
+Is it allowable for `newprop` to not be revertable?
+Once `foo` gets that property, it is never removed if we're moving only
+forwards. On the other hand, perhaps the user will want to roll back to
+version A. Allowing rollbacks seems good, so `inVersion` should only
+accept `RevertableProperty`.
+
+Another interesting case is this:
+
+	foo = versionedHost "foo" $ do
+		ver A bar
+		always otherprop
+		ver [B, C] bar
+	
+Is version A of foo identical to verion B? If so, this should be allowed to
+compile even when `bar` cannot be reverted. On the other hand, perhaps
+ordering of the properties matters, in which case the systems are subtly
+different, and there's no way to get from A to B.
+
+It's certianly possible for ordering to matter in propellor properties, 
+although it's generally a bug when it does. So, it seems ok for this
+case to be rejected.
+
+As well as `Versioned Host`, it would be possible to have 
+`Versioned (Property metatypes)`.
+Indeed, that would make sense to he used internally in the 
+examples above. And that allows composition of properties with versioning:
+
+	someprop :: Versioned (Property DebianLike)
+	someprop = versionedProperty $ do
+		ver A foo <|> ver [B, C] bar
+
+> [[done]] in Propellor.Property.Versioned. --[[Joey]]

@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-03-01T22:20:54Z"
+ content="""
+I added trustsKey in 2014, but my current config is not using
+it for anything, so it seems likely it's bitrotted in some way.
+And there's no rationalle documented for why it manually drives gpg.
+
+I've applied your change to use apt-key.
+
+I wonder if the nukeFile of the "gpg dropping" is actually needed
+anymore?
+"""]]

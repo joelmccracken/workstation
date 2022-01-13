@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-03-06T19:01:17Z"
+ content="""
+This output comes from Propellor.Property.Rsync.rsync because it runs 
+`rsync --info=progress2`.
+
+I suppose it could check if stdout is going to a tty and only enable
+it then.
+
+However, I do have some code I wrote once that uses propellor to build a live
+disk image that runs propellor to partition and then used the rsync property to
+copy the live image to disk (followed by applying more properties to it to
+configure the system it installed). And that code caught the rsync progress
+output and used it to display some kind of graphical progress bar.
+That kind of thing would be broken by such a change.
+(That's in my secret-project repository.)
+
+I don't know of anyone using such a thing in production, so I think it would be
+ok to just have a `PROPELLOR_VERBOSEPROGRESS=1` that such code could use to
+enable verbose progress from rsync etc, and otherwise disable it when stdout is
+not a tty.
+"""]]

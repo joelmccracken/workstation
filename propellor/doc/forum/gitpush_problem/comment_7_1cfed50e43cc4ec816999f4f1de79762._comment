@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 7"
+ date="2015-08-19T07:40:38Z"
+ content="""
+Yes you are right I generated the Debian package but not from a tagged version.
+Now that I created the 2.7.1 version from the tag, it works.
+
+thanks
+"""]]

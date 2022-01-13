@@ -1,0 +1,7 @@
+Please consider merging branch `rngd-robust` of repo `https://git.spwhitton.name/propellor`
+
+Several changes to the `Sbuild.keypairInsecurelyGenerated` property to make it more robust.  Please see comments added by the diff.
+
+> <s>done</s> ... however, that sleep 10 after killing rngd seems quite dodgy. --[[Joey]]
+
+>> final merge [[done]] --[[Joey]]

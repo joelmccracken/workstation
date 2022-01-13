@@ -1,0 +1,1 @@
+I think this may be a bit more of a back-burner thing, but with virtual networking and software-defined networking, like what OpenStack, AWS VPC, and others have, adding another type at the same level as Host currently, but for networks might be an interesting thing to consider ways of doing.

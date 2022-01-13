@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="http://joeyh.name/"
+ ip="2001:4830:1600:187::2"
+ subject="comment 1"
+ date="2014-06-09T16:34:29Z"
+ content="""
+wrapper should be named propellor. This is fixed in git.
+"""]]

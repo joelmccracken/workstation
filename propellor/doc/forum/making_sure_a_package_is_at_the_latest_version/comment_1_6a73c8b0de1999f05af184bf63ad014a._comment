@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 1"
+ date="2018-08-24T23:12:17Z"
+ content="""
+The existing properties cannot do what you want.  You are going to need to write a new one.  Simplest implementation would be something that calls `apt-get install foo=1.2.3`.
+"""]]

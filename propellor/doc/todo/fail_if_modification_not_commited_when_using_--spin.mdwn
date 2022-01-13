@@ -1,0 +1,3 @@
+Sometimes I forget to commit a modification, and running "propellor --spin" automatically commits this stuff. It would be better if "propellor --spin" failed (or, even better, warned the user) that there are uncommited changes, and "propellor --spin" would just always add an empty commit.
+
+> --merge added; [[done]] --[[Joey]]

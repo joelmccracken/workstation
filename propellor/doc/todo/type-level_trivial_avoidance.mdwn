@@ -1,0 +1,92 @@
+The `trivial` property combinator is a bit of a code smell. It's almost
+always better for a property to do the work to return MadeChange
+accurately. While it doesn't matter if a property directly attached to a
+Host is trivial, it can matter a great deal when eg, a disk image needs to
+be regenerated when a property makes a change to the source chroot.
+
+So, I'd like to move propellor to having all properties return an accurate
+MadeChange. Of course, it's up to the implementation to get that right, but
+avoiding `trivial` would go a long way.
+
+At the same time, it's sometimes useful to use trivial along the way to a
+non-trivial property.
+
+	trivial (cmdProperty "apt-get" ["-y", "install", "foo"])
+		`changesFile` "/var/lib/dpkg/status"
+
+Here the cmdProperty normally returns MadeChange, so trivial is used to
+throw that innaccurate value away and the changesFile combinator checks for
+changes.
+
+(The alternative would be for cmdProperty to normally return NoChange, and
+then have changesFile cause MadeChange to be returned. However, this
+approach has plenty of foot-shooting potential of its own, for example
+using cmdProperty and forgetting to check if it made any changes. If
+trivial is a code smell, making cmdProperty and similar generic property
+building tools trivial by default is surely not good..)
+
+----
+
+## So, could this be fixed at the type level? 
+
+----
+
+### UncheckedProperty as an alternative to Property
+
+Perhaps it would make sense to
+have a UncheckedProperty, which could be used for things like
+`cmdProperty`. Combinators like `changesFile` would convert it to a
+Property.
+
+(A `trivial` combinator could still be written of course, but it wouldn't be
+necessary in cases like the above example anymore, so it would be more
+clearly a code smell to use `trivial`.)
+
+If UncheckedProperty was added, we'd want all the usual property
+combinators to also work with it. Including `requires`. This is entirely
+doable, but it's going to need quite a lot of duplicated code.
+
+For instance, there are 4 instances currently to handle combining properties
+with and without info; here's one of them:
+
+	instance Combines (Property HasInfo) (Property HasInfo) where
+		combineWith f _ (IProperty d1 a1 i1 cs1) y@(IProperty _d2 a2 _i2 _cs2) =
+			IProperty d1 (f a1 a2) i1 (y : cs1)
+ 
+Adding UncheckedProperty to the mix, we need another 4 instances for combining
+two of those. Plus 4 more for Property + UncheckedProperty = UncheckedProperty.
+Plus 4 more for combining UncheckedProperty + Property! Each of those instances
+has to be implemented separately. The code duplication doesn't stop at
+instances; also need constructors for UncheckedProperty, etc.
+
+### extending Property
+
+Another approach would be `Property i Unchecked|Checked`. But that seems
+overcomplicating for the end user, since most properties that users will
+deal with are not checked.
+
+### minimal UncheckedProperty
+
+Maybe add UncheckedProperty, but without the combining instances?
+
+How about this simple interface:
+
+	unchecked :: Property i -> UncheckedProperty i
+
+	checkResult :: ResultCheckable p => IO a -> (a -> IO Result) -> p i -> Property i
+
+	-- Both Property and UncheckedProperty are ResultCheckable.
+
+	changesFile :: Checkable p => p i -> FilePath -> Property i
+	changesFile p f = checkWith getstat comparestat p
+	  where
+		getstat = ...
+	 	comparestat old = do
+			new <- getstat
+			return $ if old == new then MadeChange else NoChange
+
+Then, cmdProperty would construct a regular property, but apply `unchecked`
+to it. Users of `cmdProperty` would need to apply changesFile or a similar
+check to it before combining it with any other properties.
+
+> Yes, let's go this way. [[done]] --[[Joey]]

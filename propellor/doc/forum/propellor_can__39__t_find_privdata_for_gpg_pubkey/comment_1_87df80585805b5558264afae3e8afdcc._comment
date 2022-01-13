@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2020-08-20T16:44:27Z"
+ content="""
+I think there could be some confusion here about where you run the
+propellor command to set the privdata.
+
+I always run those commands locally, not on the host being managed by
+propellor. --spin decrypts it and copies the parts a host needs to the
+host.
+"""]]

@@ -1,0 +1,16 @@
+Hi all, I'm an Arch Linux user and I've been learning Haskell and working on an Arch Liux Port in the last several months. Here's my [GitHub fork](https://github.com/wzhd/propellor/tree/archlinux), and the branch is called archlinux.
+
+Currently, I've added types, modified Bootstrap.hs, and added a Property for the package manager Pacman. I've been using it for a while and it seems to be working.
+
+I've made some addtional minor changes to make propellor compile without errors:
+
+- User.nuked now has type Property Linux
+- OS.cleanInstallOnce now has type Property DebianLike, because one of its dependencies, User.shadowConfig only supports DebianLike
+- tightenTargets is added to Reboot.toDistroKernel to get the expeted type
+- pattern for Arch Linux is added to Debootstrap.extractSuite to silence warning "non-exhaustive pattern match"
+- several properties in Parted and Partition are converted to Property Linux
+- Rsync.installed and Docker.installed now supports Pacman as well
+
+Hope you enjoy it!
+
+> [[merged|done]]; it was indeed enjoyable. thank you! --[[Joey]]

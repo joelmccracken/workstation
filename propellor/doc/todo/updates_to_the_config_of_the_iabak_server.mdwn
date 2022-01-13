@@ -1,0 +1,5 @@
+New user accounts for our two shardmasters, mucking about with group membership, and some tools installed via apt.
+
+Git repo is located at iabak:~db48x/propellor; the branch is called iabak.
+
+> [[merged|done]] --[[Joey]]

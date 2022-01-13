@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 5"
+ date="2017-12-16T15:11:05Z"
+ content="""
+Thanks.  So I think that Sbuild.userConfig should either install the backport when the host's info indicates that it runs Jessie, or simply say in its docstring that it works for stretch or newer.  Joey, which do you prefer?
+"""]]

@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 9"
+ date="2018-02-18T19:10:32Z"
+ content="""
+Hello, I think that my problem is related to this one.
+
+I have a repository created from the Debian package and which is from the 5.1.0 version.
+I just upgrade the package to 5.3.1 and now I do not have the message explaining that a new upstream version is available.
+So I do not know how to upgrade my current repository.
+
+Before, I just had to do
+
+    git merge upstream/master
+
+And now ?
+
+
+thanks for your help
+"""]]

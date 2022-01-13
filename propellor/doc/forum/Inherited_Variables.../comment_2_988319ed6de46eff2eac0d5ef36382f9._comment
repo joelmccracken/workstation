@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-01-26T06:50:39Z"
+ content="""
+A worked example:
+
+	server :: Property Debian
+	server = property' "some description" $ \w -> do
+		os <- getOS
+		hostname <- asks hostName
+		ensureProperty w $
+			File.hasContent "/etc/apt/sources.list.d/matrix.list"
+				(genSourcesList os hostname)
+"""]]

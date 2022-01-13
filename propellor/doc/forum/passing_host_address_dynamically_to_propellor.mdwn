@@ -1,0 +1,2 @@
+I would like to be able to pass the address of a host dynamically to propellor, e.g. to do something like `./propellor 1.2.3.4` so that I can apply some predefined set of properties.
+I tried to implement, it compiles just fine, but does fail to run properly on the remote (or even local) host because `defaultMain` does some transformation of command-line and of course the host name/address does not exist statically in the git repo that's built and run on the remote host. Would there be another way to do what I want? 

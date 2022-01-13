@@ -1,0 +1,20 @@
+Please consider merging branch `sbuild` of repository `https://git.spwhitton.name/propellor`.
+
+This branch adds the following features:
+
+- A new module `Propellor.Property.Sbuild` with properties for configuring sbuild schroots
+- A new module `Propellor.Property.Schroot` with a property supporting those in `Propellor.Property.Sbuild`
+- A new module `Propellor.Property.Ccache` with a property supporting those in `Propellor.Property.Sbuild`
+- An export of `extractSuite` from `Propellor.Property.Debootstrap`, used in `Propellor.Property.Sbuild`
+- Two new types of iptables matching rules in `Propellor.Property.Firewall`.
+
+The additions to `Propellor.Property.Firewall` were made to support `Sbuild.blockNetwork`, which is a hack from the Debian Wiki which doesn't seem to work with the latest version of sbuild.  I left the additions to `Propellor.Property.Firewall` in my branch since they are probably independently useful.  I left the `blockNetwork` property commented-out in `Sbuild.hs` in case I or someone else can make it work at a later date.
+
+I get the following strange warning from GHC thanks to my new export from `Propellor.Property.Debootstrap`.  I can't figure out the problem and would be grateful for help.
+
+    src/Propellor/Property/Debootstrap.hs:8:9: Warning:
+        `extractSuite' is exported by `extractSuite' and `extractSuite'
+
+--spwhitton
+
+> [[merged|done]]; thank you! --[[Joey]]

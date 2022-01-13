@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-11-02T14:29:29Z"
+ content="""
+Indeed, this will probably keep biting it for different data types
+as they're added, since the new ghc builds without the explicit instance.
+
+I've fixed this one in git now.
+"""]]

@@ -1,0 +1,2 @@
+Since "git pull" has the potential to fail because of merge problems (this is not theoretical, it happened to me today), I'd prefer to just fetch into a bare repo.
+I don't know the best way to go about this. Maybe a "Git.fetched" function that does not assume a non-bare repo (as Git.cloned currently does). 

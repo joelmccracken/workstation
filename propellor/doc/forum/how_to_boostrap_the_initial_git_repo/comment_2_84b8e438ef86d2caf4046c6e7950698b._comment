@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-10-04T17:30:30Z"
+ content="""
+I don't know what deploy branch trick you're referring to using.
+
+There is the deploy remote, which I think should do what you want:
+
+> Additionally, the url of a remote named "deploy", if it exists
+> in your ~/.propellor/ repository, is used as the origin url for
+> the other repositories.
+
+When you have a deploy remote configured in your local repository,
+the first time you spin a new host, it will clone its /usr/local/propellor
+from the url of the deploy remote. On subsequent spins, it sends the
+url over, and the host's repository's url is updated too.
+
+The PropellorRepo.hasOriginUrl property doesn't take effect until
+propellor runs with that configuration, which could be a bit of a chicken and
+egg situation. Except hmm, spin could look for that property and use
+repo url instead of the deploy remote's url. Yeah, I've done that now!
+"""]]

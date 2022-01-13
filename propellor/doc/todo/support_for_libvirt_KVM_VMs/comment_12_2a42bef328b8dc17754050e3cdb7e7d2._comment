@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 12"
+ date="2018-11-10T23:29:35Z"
+ content="""
+(Hmm, here on Debian stretch, passing `--autostart` does not actually cause the VM to be marked for autostarting.  This is a bug in virt-install, though, as we're using the command line interface as documented --  I confirmed this using `PROPELLOR_DEBUG=1`.)
+"""]]

@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2020-02-20T17:47:46Z"
+ content="""
+Seems odd that the way Arch has installed ghc would
+make `cabal install` fail without additional options being added very time.
+That does not strike me as a good decision if it's the case. I guess that
+the -dynamic should only be set on Arch, since only it has inflicted this
+problem on itself.
+
+Would appreciate a patch with the ghc 8.8 fixes.
+
+I would not be surprised if cabal new-build does not provide any good way
+to find out where the executable was put, because after all cabal build
+doesn't either (just it's easier to guess there). Cabal expects a workflow
+where that's followed by cabal install, or cabal run.
+
+This might be one way: `cabal new-install --symlink-bindir=.`  
+But with my older version of cabal, that seems to not actually work,
+indeed I can't get it to install the binaries anywhere. Maybe it does
+work with the newer cabal where new-install is the default.
+
+Needing to detect whether new-build was used or not is an added
+complication.
+
+Best way I've found:
+
+	find dist-newstyle/ -executable -type f |grep 'propellor$'
+"""]]

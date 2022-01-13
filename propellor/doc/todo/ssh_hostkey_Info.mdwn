@@ -1,0 +1,9 @@
+* Either `Ssh.hostKey` should set the sshPubKey info
+  (which seems hard, as info needs to be able to be calculated without
+  running any IO code, and here IO is needed along with decrypting the
+  PrivData..), or the public key should not be stored in
+  the PrivData, and instead configured using the info.
+  Getting the ssh host key into the info will allow automatically
+  exporting it via DNS (SSHFP record)
+
+[[done]]; although I did not implement SSHFTP yet, it should be doable now.

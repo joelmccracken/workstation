@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2018-08-10T14:56:07Z"
+ content="""
+I have probably generalized too much from my own use case then, where
+I always have foo.example.com as the full hostname, but want mail to be
+sent with example.com as the name.
+"""]]

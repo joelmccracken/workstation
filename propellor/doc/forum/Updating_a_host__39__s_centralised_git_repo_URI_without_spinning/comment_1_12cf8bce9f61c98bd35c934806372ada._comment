@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-11-11T19:09:43Z"
+ content="""
+Makes sense, and should work. I've exposed propellor's existing code to do
+that as Propellor.Property.PropellorRepo.hasOriginUrl
+"""]]

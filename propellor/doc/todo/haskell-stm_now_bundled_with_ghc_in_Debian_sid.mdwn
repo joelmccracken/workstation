@@ -1,0 +1,7 @@
+haskell-stm is included with ghc and won't be shipped as an installable package in Debian buster.
+
+Propellor needs to stop trying to install haskell-stm on Debian buster or newer (and it should also be dropped from debian/control of course, but that can happen on the Debian side).
+
+--spwhitton
+
+> [[done]] --[[Joey]]

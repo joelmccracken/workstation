@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 8"
+ date="2017-08-24T07:04:07Z"
+ content="""
+It is true that my uszer prefer the embeded virtual image :).
+
+Maybe we could have a DiskImage export property which could take an output format type
+I do not know how many format are out there for these kind of virtual machines.
+Maybe this could be also a way to prepare images for the cloud. (I do not use this mayself but why not).
+What is the difference between Diskimage and containers ?
+
+Cheers
+
+Frederic
+
+"""]]

@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-05-21T17:41:11Z"
+ content="""
+Re not running propellor in the sbuild chroot, I have in the past used
+schroot for things where it would have made sense to run propellor
+in the chroot. OTOH, systemd-container is a better fit for such uses cases
+now, probably.
+
+Is the ~/.sbuildrc necessary to use the sbuild properties? If so, 
+would it make sense to have a property that configures it?
+
+You could use Utility.DataUnits for Ccache's MaxSize. This would be
+more flexible and consistent with other things in propellor.
+
+Limit could be a monoid. This would perhaps simplify hasGroupCache
+as it could only be used once to set multiple limits.
+
+Maybe instead of Ccache.hasGroupCache, call it Ccache.hasCache?
+
+That is a weird build warning! But, I don't see it with ghc 7.10.3.
+Normally you'd see that warning when the module's export list exported the same
+symbol twice.
+"""]]

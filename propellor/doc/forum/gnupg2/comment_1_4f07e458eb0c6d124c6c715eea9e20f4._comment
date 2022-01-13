@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-08-26T18:21:45Z"
+ content="""
+The two are very command-line compatable, and I'd be surprised if propellor
+hits any incompatabilities.
+
+So, if your distribution has a way to make "gpg" run gpg2, that should d
+it. If not, `git grep '"gpg"'` will find the few places the command name
+needs to be changed. Those could be centralized into one place for easier
+configuation; send patches.
+"""]]

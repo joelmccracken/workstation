@@ -1,0 +1,16 @@
+This seems redundant, since propellor must be running to ensure such a
+Property, but a Property to install propellor is useful when eg, creating a
+disk image that itself will need to run propellor. --[[Joey]]
+
+Should support:
+
+* Cloning the git repo propellor is running in. (Using eg `hostChroot`)
+* Cloning some other git repo.
+* Installing the precompiled propellor binary.
+* Installing the propellor haskell library using cabal/stack/apt.
+
+Much of this is already implemented, in non-Property form, in
+Propellor.Bootstrap, but will need adjustments for this new context.
+--[[Joey]]
+
+> [[done]]

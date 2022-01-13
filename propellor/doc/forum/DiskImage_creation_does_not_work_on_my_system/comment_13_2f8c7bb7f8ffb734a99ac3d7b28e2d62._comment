@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 13"""
+ date="2017-08-24T21:11:07Z"
+ content="""
+Yes, there are two levels of caches. This does make updating the images a
+whole lot faster!
+
+Some systems don't have a very large /var partition and so I think it's
+better to let the user pick where they go. The documentation could
+certainly (always) be improved.
+
+Note that reverting any of the properties in DiskImage will clean up
+all the cache files as well as the final disk image.
+"""]]

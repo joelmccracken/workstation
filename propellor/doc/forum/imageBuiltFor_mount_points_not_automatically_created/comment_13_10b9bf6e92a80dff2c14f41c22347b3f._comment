@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 13"
+ date="2017-12-22T12:20:57Z"
+ content="""
+         17,514,598  66%   53.61MB/s    0:00:00 (xfr#1, to-chk=0/7)
+                129   0%    0.06kB/s    0:00:01 (xfr#3, to-chk=0/33583)   
+    update-initramfs: Generating /boot/initrd.img-4.9.0-4-amd64
+    Generating grub configuration file ...
+    Found linux image: /boot/vmlinuz-4.9.0-4-amd64
+    Found initrd image: /boot/initrd.img-4.9.0-4-amd64
+    done
+    Installing for x86_64-efi platform.
+    Installation finished. No error reported.
+    loop deleted : /dev/loop0
+    laptop built disk image /srv/router.img ... done
+    laptop overall ... done
+
+
+\o/. Let's see if it boots... I just have one try, then I'll have to move for a few days...
+"""]]

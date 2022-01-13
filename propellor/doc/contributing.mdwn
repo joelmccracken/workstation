@@ -1,0 +1,23 @@
+Propellor is free software, released under a BSD license. Anyone is free to
+modify and distribute it; indeed doing so is a fundamental part of how 
+propellor is configured and used.
+
+You don't have to contribute your patches, but you're encouraged to do so;
+let's all make propellor awesome together! Also, contributing patches is a
+good way to make sure that your code keeps working in new versions of
+propellor. See [[interface_stability]].
+
+Patches can be sent to 
+<propellor@joeyh.name> or pull requests can be posted to [[todo]].
+
+To certify that a change is released under propellor's BSD license,
+you can use `git commit --signoff`.
+
+Propellor has its own [[coding_style]], which you are encouraged to follow
+-- at least when you want to get a patch merged into propellor. 
+When writing code for your own internal use, feel free to ignore all the
+rules, except the ones about avoiding partial functions.
+
+Also, mainline Propellor aims to be buildable with the version of ghc
+shipped in Debian stable. And, additional weighty dependencies are best
+avoided.

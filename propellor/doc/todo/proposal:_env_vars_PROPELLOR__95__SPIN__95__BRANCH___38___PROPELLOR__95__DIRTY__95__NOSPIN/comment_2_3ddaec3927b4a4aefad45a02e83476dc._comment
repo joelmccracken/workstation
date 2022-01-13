@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 2"
+ date="2015-12-06T22:24:06Z"
+ content="""
+I was thinking environment variables because I saw both of these as just safety checks for the user, spinning hosts from their xterm on their laptop.  I'll implement both as `git-config` variables; that's a good idea as it covers more cases.
+
+I don't think that this patch need touch the propellor executable run by `Cron.runPropellor`, because if the check has already ensured that the correct branch got pushed to the host during the most recent spin, then `propellor_cronjob` is guaranteed to pull the correct branch.
+"""]]

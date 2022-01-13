@@ -1,0 +1,3 @@
+`propellor.cabal` claims that propellor is licensed under the 3-clause BSD license.  `debian/copyright` says it's licensed under the 2-clause BSD license.  Which is correct?  An ftp-master noticed.  Thanks.  --spwhitton
+
+> [[fixed|done]] --[[Joey]]

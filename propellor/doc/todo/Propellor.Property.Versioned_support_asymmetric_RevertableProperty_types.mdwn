@@ -1,0 +1,7 @@
+Currently, this module requires `RevertableProperty t t`.
+That can be annoying, it would be good to support at least
+`RevertablePropery (HasInfo + t) t` and ideally all 
+`RevertableProperty t1 t2`
+
+There should be no reason that can't be done; I was just having
+problems getting the type checker happy on the day I wrote it. --[[Joey]]

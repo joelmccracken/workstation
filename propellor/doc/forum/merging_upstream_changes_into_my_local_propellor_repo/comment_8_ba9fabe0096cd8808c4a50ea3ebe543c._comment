@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 8"
+ date="2019-06-08T20:21:57Z"
+ content="""
+The `git://` protocol is unencrypted and unauthenticated and you're not verifying Joey's PGP signature on the tag that you merge, so this approach is dangerous.
+
+I would insert a `git verify-tag` step in there.  You'd want to make a record of (and perhaps locally sign) Joey's PGP key.
+"""]]

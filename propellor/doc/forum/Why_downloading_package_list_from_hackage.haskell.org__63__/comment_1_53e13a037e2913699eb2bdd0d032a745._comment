@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 1"
+ date="2015-09-08T16:15:17Z"
+ content="""
+looking at newhost logs, I found:
+
+   Sep  8 18:02:44 newhost kernel: Out of memory: Kill process 31874 (cabal) score 824 or sacrifice child
+
+"""]]

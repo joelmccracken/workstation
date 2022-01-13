@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 6"
+ date="2015-09-23T11:44:21Z"
+ content="""
+I did the test without the cache system and it was not better (same error message).
+Then I removed /usr/local/propellor and run propellor from scratch-> it worked :)
+
+So now I have a working propellor directory and a non working one.
+I checked that putting back the old /usr/local/propellor cause the same trouble.
+
+If you want I can send you in private both version of the directory.
+"""]]

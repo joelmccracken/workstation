@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-06-17T14:31:35Z"
+ content="""
+Implementation has:
+
+	check (isInstallable ps) go
+
+So, if the packages are not isInstallable, nothing is done, and the property
+succeeds.
+
+I think this check was intended to avoid running apt-get install unncessarily
+when the packages are already installed. However, isInstalled doesn't
+differentiate between a package being already installed and not available.
+
+So, fixing.
+"""]]

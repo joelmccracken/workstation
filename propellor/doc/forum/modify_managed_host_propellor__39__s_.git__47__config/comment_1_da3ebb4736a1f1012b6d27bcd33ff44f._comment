@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2014-10-31T14:40:33Z"
+ content="""
+I'm curious what you need to configure there..
+
+But, there seems to be a simple solution: Add a Property that configures
+the .git/config however you need to! :)
+"""]]

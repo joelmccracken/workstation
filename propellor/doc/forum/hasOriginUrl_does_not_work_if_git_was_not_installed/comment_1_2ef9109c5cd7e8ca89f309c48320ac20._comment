@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-08-08T15:28:13Z"
+ content="""
+I've made the property require Git.installed. 
+
+I guess this was not noticed because either I was using some other property
+that also installed git, or I only tried it outside a virtual machine, and
+so propellor had installed git as part of its process of bootstrapping a
+host.
+"""]]

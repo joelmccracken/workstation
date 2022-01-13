@@ -1,0 +1,48 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2015-04-28T19:24:12Z"
+ content="""
+I've followed the same path in the wip-bytestring-privdata branch.
+
+It needs to round trip through String anyway to handle Read/Show
+serialization the same as before. I think this is doable without falling
+over on invalid encodings, but it's certianly ugly.
+
+And yeah, changing Line to ByteString and all the other follow-on changes
+just don't seem right. Everything that uses withPrivData would need to deal
+with it being a ByteString, and would need to worry about encoding problems
+when it needed to convert to a String, or Text, or whatever.
+
+So this feels like kicking the can down the road in the wrong direction...
+
+----
+
+Maybe it would be better to handle this by adding a type to wrap up an
+encoded ByteString in the PrivData. Could use base64 or something like
+that for the encoding. Then only consumers of these ByteStrings would be a
+little complicated by needing to unwrap it.
+
+Then it would be handly to give --set, --dump and --edit some
+special handling of fields encoded like that. They could operate on raw
+ByteStrings when handling such fields, and take care of the encoding
+details.
+
+Add a new constructor to PrivDataField for binary files:
+
+	| PrivBinaryFile FilePath
+
+And a function to get the encoder and decoder:
+
+	type Encoder = ByteString -> PrivData
+	type Decoder = PrivData -> ByteString
+
+	privDataEncoding :: PrivDataField -> Maybe (Encoder, Decoder)
+
+Then --set, --dump, and --edit could use that to encode and decode the
+data.
+
+And finally, a `withBinaryPrivData` that uses ByteString.
+
+(Maybe this could be made more type safe though..)
+"""]]

@@ -1,0 +1,15 @@
+Please consider merging branch `locale` of repo `https://git.spwhitton.name/propellor`
+
+It adds the following properties:
+
+- `Locale.selectedFor` to choose a locale for a locale variable
+- `Locale.available`, used by `Locale.selectedFor` to ensure a locale is generated
+
+Example usage (I'm British but I live in the US):
+
+    & "en_GB.UTF-8" `Locale.selectedFor` ["LANG", "LANGUAGE"]
+    & "en_US.UTF-8" `Locale.selectedFor` ["LC_PAPER"]
+
+Pretty sure I've got the indentation right this time too ;)
+
+> merged, thanks! [[done]] --[[Joey]] 

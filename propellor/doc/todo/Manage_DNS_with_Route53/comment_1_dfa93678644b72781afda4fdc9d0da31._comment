@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-05-14T16:18:37Z"
+ content="""
+I think this would be great. Patches accepted.
+
+If I were going to implement this, I'd use
+<http://hackage.haskell.org/package/amazonka-route53>
+to write the propellor Property.
+
+A question is, what host would the Property be attached to?
+One way to do it would be to make the property be called something like
+`route53Controller`. So then you pick a host, or hosts, and give them this
+property for a domain, and those hosts then take care of making the
+necessary API calls to route53. Presumably some API keys will be needed
+on those hosts, which can be provided via the privdata.
+
+I'm happy to offer advice on implementation, but don't plan to code this up
+myself, as I'm happily self-hosting my DNS servers.
+"""]]

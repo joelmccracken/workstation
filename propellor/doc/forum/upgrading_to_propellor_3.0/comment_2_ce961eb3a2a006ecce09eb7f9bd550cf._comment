@@ -1,0 +1,63 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2016-04-13T16:14:46Z"
+ content="""
+There are a few things in your example that seem to reference other
+parts of your schroot module, which I don't have handy. But, I was able
+to add dummy versions of those (hopefully with close to the real types)
+and reproduce what looks like the same type errors.
+
+Let's first deal with "type variable x is ambiguous". Because if the type
+checker cannot infer a type, the other errors are not likely to be useful.
+
+So, the first of these involves the definition of `umount`, which uses
+`property`. And like it says in the transition guide:
+
+> Due to the polymorphic type returned by `property`, additional type
+> signatures tend to be needed when using it.
+
+So, write down the type of `umount` to fix this.
+
+	umount :: Property Linux
+
+Next thing that stuck out to me is that two places are using
+`toChildProperty`. I'm at a bit of a loss to why, this is a new function
+that's a bit of an implementation detail, documented as "Gets a
+ChildProperty representing the Property. You should not normally need to
+use this." And indeed, you do not need to use it here. I simply removed it,
+and the types lined up without it, hurrah!
+
+With those fixes, my version of the code is compiling.
+
+    schroot :: String -> Chroot -> RevertableProperty (HasInfo + DebianLike) DebianLike
+    schroot sn chroot@(Chroot.Chroot chrootdir _ _) = (setup `requires` installed) <!> cleanup
+        where
+          setup :: Property (HasInfo + DebianLike)
+          setup = conf `requires` (provision `onChange` targz)
+              where
+                provision :: Property (HasInfo + DebianLike)
+                provision = Chroot.provisioned chroot `before` umount
+                    where
+                      umount :: Property Linux
+                      umount = property ("umount " ++ chrootdir) $ do
+                                 liftIO $ Mount.unmountBelow chrootdir
+                                 return NoChange
+          cleanup :: Property DebianLike
+          cleanup = File.notPresent (schrootChrootD </> sn)
+                    `requires` File.notPresent tarball
+                    `requires` revert (Chroot.provisioned chroot)
+          tarball = chrootdir <.> "tar.gz"
+          -- dummy stuff added to make it compile as I don't have the real
+          -- stuff handy.
+          installed = undefined :: Property DebianLike
+          conf = undefined :: Property DebianLike
+          targz = undefined :: Property DebianLike
+          schrootChrootD = undefined :: FilePath
+
+Hope this helps!
+
+BTW, looks like you also have a type error outside the code you showed,
+on line 98 of Sbuild.hs, which again looks to need the type of `property`
+to be explicitly specified to fix it.
+"""]]

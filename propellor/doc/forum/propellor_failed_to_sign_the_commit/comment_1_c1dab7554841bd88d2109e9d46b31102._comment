@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-07-30T14:51:13Z"
+ content="""
+I guess the problem involves running propellor at a unix tty, not in a
+GUI's virtual terminal?
+
+My limited understanding of `GPG_TTY`, refreshed by re-reading this ooold
+thread <https://bugs.debian.org/316388> is that gpg is normally able to
+detect if it's in a GUI or at a tty, and will prompt in the tty if
+necessary. Where that may fall down is when gpg is run with its stdio
+connected to pipes, since then probably isatty fails. Although in at least
+some cases, gpg apparently then 
+[falls back to /dev/tty](https://dev.gnupg.org/T1434).
+
+Propellor runs gpg with stdin and stdout piped to it when eg, decrypting
+the privdata file. I tried `propellor --list-fields` at the linux console
+and it fails there.
+
+But, when I tried `propellor --spin host` at the linux console, that worked
+ok, including making the gpg signed git commit. Of course git is running
+gpg in this case, and perhaps my version of git has its own way to avoid
+this problem.
+
+This does seems like something propellor could work around fairly
+inexpensively.
+
+(See also [[propellor_and_gpg2]].)
+"""]]

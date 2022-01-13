@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2015-09-25T13:35:47Z"
+ content="""
+Cabal is going to download securely soon enough. There's already a branch
+of cabal that can do it.
+"""]]

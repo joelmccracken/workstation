@@ -1,0 +1,3 @@
+I started out looking at how to make usage.mdwn into a man page, but that's a little more work than I wanted to do tonight. Instead, I added more information to the usage message. Commit is fa0e8d83 on iabak:~db48x/propellor if you want it.
+
+> merged [[done]] tnx --[[Joey]] 

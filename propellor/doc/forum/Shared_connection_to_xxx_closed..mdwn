@@ -1,0 +1,58 @@
+Hello,
+
+yesterday I was affected by a power outrage will deploying a machine with propellor.
+Once restarted, I discovered that my git repository containing the propello (aka. ~/.propellor) was corrupted some  objects were empty).
+So I decided to  make a clean clone of my central propellor repository.
+
+what I did exactly, is
+mv ~/.propello ~/.propellor.orig
+mkdir ~/.propellor
+cd ~/.propellor && git init
+cp ~/.propellor.orig/.git/config ~/.propellor/.git/
+
+then I did
+
+git pull --all
+
+but now when I run propellor, I get this error message.
+
+:~$ propellor
+** warning: ** Your /home/picca/.propellor is out of date..
+   A newer upstream version is available in /usr/src/propellor/propellor.git
+   To merge it, run: git merge upstream/master
+   
+Building propellor-2.7.3...
+Preprocessing library propellor-2.7.3...
+In-place registering propellor-2.7.3...
+Preprocessing executable 'propellor' for propellor-2.7.3...
+Preprocessing executable 'propellor-config' for propellor-2.7.3...
+Propellor build ... done
+
+
+Pull from central git repository ... done
+git branch origin/master gpg signature verified; merging
+Already up-to-date.
+Building propellor-2.7.3...
+Preprocessing library propellor-2.7.3...
+In-place registering propellor-2.7.3...
+Preprocessing executable 'propellor' for propellor-2.7.3...
+Preprocessing executable 'propellor-config' for propellor-2.7.3...
+Propellor build ... done
+
+Une phrase secrète est nécessaire pour déverrouiller la clef secrète de
+l'utilisateur : « Picca Frédéric-Emmanuel <picca@debian.org> »
+clef RSA de 4096 bits, identifiant 4696E015, créée le 2011-02-14
+
+[master dc8fbd3] propellor spin
+Git commit ... done
+Décompte des objets: 1, fait.
+Écriture des objets: 100% (1/1), 862 bytes | 0 bytes/s, fait.
+Total 1 (delta 0), reused 0 (delta 0)
+To git+ssh://xxxxxxxx/propellor
+   8b1647f..dc8fbd3  master -> master
+Push to central git repository ... done
+Shared connection to xxxxx closed.
+
+I would like to know if you think this could be problem in propellor (I do not know all the magic involved in the deployment process of propellor).
+
+thanks

@@ -1,0 +1,43 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="patch"
+ date="2017-12-30T23:37:58Z"
+ content="""
+After applying this
+
+	--- a/secret-project.cabal
+	+++ b/secret-project.cabal
+	@@ -35,6 +35,7 @@ Executable propellor-config
+	     Installer.Progress
+	     Installer.Server
+	     Installer.StoreUserInput
+	+    Installer.Types
+	     Installer.UI
+	     Installer.User
+	     Installer.UserInput
+
+is `stack build` happy.
+
+But help needed for:
+
+	$ sudo stack --allow-different-user exec propellor-config paddy.gpm.stappers.nl
+	Pull from central git repository ... done
+	paddy.gpm.stappers.nl has propellor bootstrapped with stack ... ok
+	paddy.gpm.stappers.nl has Operating System (Debian Linux Unstable) X86_64 ... ok
+	** error: cannot find chroot /srv/installer.img.chroot on host paddy.gpm.stappers.nl
+	propellor: Cannot continue!
+	CallStack (from HasCallStack):
+	  error, called at src/Propellor/Message.hs:143:9 in main:Propellor.Message
+	** warning: user error (chroot [\"/srv/installer.img.chroot\"
+		,\"/usr/local/propellor/chroot/_srv_installer.img.chroot.shim/propellor\"
+		,\"--continue\"
+		,\"ChrootChain \\"paddy.gpm.stappers.nl\\" \\"/srv/installer.img.chroot\\" False True\"] exited 1)
+	paddy.gpm.stappers.nl built disk image /srv/installer.vmdk ... failed
+	paddy.gpm.stappers.nl overall ... failed
+	$ 
+
+
+
+"""]]

@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2016-03-25T21:26:20Z"
+ content="""
+If someone wants to improve this more later, it would suffice to make
+`sshCachingParams` fall back to using a temp file in /tmp for the socket
+when HOME is too long, as long as repeated calls to `sshCachingParams`
+inside the same propellor process returned the same temp file each time
+(for a given HostName). Of course, the temp files would need to be cleaned
+up when propellor exists.
+"""]]

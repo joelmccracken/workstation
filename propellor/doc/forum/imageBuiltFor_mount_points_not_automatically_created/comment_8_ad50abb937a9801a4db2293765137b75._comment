@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 8"
+ date="2017-12-21T20:40:56Z"
+ content="""
+parted seems pretty hairy with partition alignment. In case it's too hard to integrate parted with propellor, maybe fdisk would be easier?
+"""]]

@@ -1,0 +1,22 @@
+Please consider merging branch `apt-cacher-ng` of repo `https://git.spwhitton.name/propellor`.
+
+Sample text for changelog/description of changes:
+
+    * Add Apt.proxy property to set a host's apt proxy.
+    * Add Apt.useLocalCacher property to set up apt-cacher-ng.
+    * Rework Sbuild properties to use apt proxies/cachers instead of bind-mounting
+      the host's apt cache.  This makes it possible to run more than one build at
+      a time, and lets sbuild run even if apt's cache is locked by the host's apt.
+      - If Apt.proxy is set, it is assumed that the proxy does some sort of
+        caching, and sbuild chroots are set up to use the same proxy.
+      - If Apt.proxy is not set, we install apt-cacher-ng, and point sbuild
+        chroots at the local apt cacher.
+      - Drop Sbuild.piupartsConfFor, Sbuild.piupartsConf, Sbuild.shareAptCache
+        (API change)
+        No longer needed now that we are using apt proxies/cachers.
+      - Update sample config in haddock for Propellor.Property.Sbuild.
+        Please compare both your config.hs and your ~/.sbuildrc against the haddock.
+
+--spwhitton
+
+> merge [[done]] --[[Joey]]

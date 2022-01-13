@@ -1,0 +1,127 @@
+Some simple mistakes in config.hs can make ghc use gigabytes of memory,
+apparently just to display a huge type error message.
+
+For example, add this to the beginning of
+a Host that has a few dozen other properties after it:
+
+	& Apt.setSourcesListD [] -- missing a parameter
+
+The size of the ghc error output doubles with each added property.
+With 7 it is 518 lines, with 8, 1030 lines. Once it's up to 100000 lines or
+so, it's already using almost a gigabyte of memory.
+
+The error message looks like this (when built with -f-WithTypeErrors):
+
+	executables/propellor-config.hs:175:42: error:
+	    • Cannot combine Properties:
+	        Property HasInfo + Debian
+	        Property Propellor.Types.MetaTypes.PrettyPrintMetaTypes y0
+	...
+	executables/propellor-config.hs:175:42: error:
+	    • Cannot combine Properties:
+	        Property Propellor.Types.MetaTypes.PrettyPrintMetaTypes
+	                   (Propellor.Types.MetaTypes.Concat
+	                      (Data.Type.Bool.If
+	                         (Propellor.Types.MetaTypes.Elem
+	                            'Propellor.Types.MetaTypes.WithInfo
+	                            (Propellor.Types.MetaTypes.NonTargets y0))
+	                         (Propellor.Types.MetaTypes.NonTargets y0)
+	                         ('Propellor.Types.MetaTypes.WithInfo
+	                            : Propellor.Types.MetaTypes.NonTargets y0))
+	                      (Data.Type.Bool.If
+	                         (Propellor.Types.MetaTypes.Elem
+	                            ('Propellor.Types.MetaTypes.Targeting 'OSDebian)
+	                            (Propellor.Types.MetaTypes.Targets y0))
+	                         '[ 'Propellor.Types.MetaTypes.Targeting 'OSDebian]
+	                         '[]))
+	        Property Debian + Buntish
+	...
+	executables/propellor-config.hs:175:42: error:
+	    • Cannot combine Properties:
+	        Property Propellor.Types.MetaTypes.PrettyPrintMetaTypes
+	                   (Propellor.Types.MetaTypes.Concat
+	                      (Propellor.Types.MetaTypes.Union
+	                         (Propellor.Types.MetaTypes.NonTargets
+	                            (Propellor.Types.MetaTypes.Concat
+	                               (Data.Type.Bool.If
+	                                  (Propellor.Types.MetaTypes.Elem
+	                                     'Propellor.Types.MetaTypes.WithInfo
+	                                     (Propellor.Types.MetaTypes.NonTargets y0))
+	                                  (Propellor.Types.MetaTypes.NonTargets y0)
+	                                  ('Propellor.Types.MetaTypes.WithInfo
+	                                     : Propellor.Types.MetaTypes.NonTargets y0))
+	                               (Data.Type.Bool.If
+	                                  (Propellor.Types.MetaTypes.Elem
+	                                     ('Propellor.Types.MetaTypes.Targeting 'OSDebian)
+	                                     (Propellor.Types.MetaTypes.Targets y0))
+	                                  '[ 'Propellor.Types.MetaTypes.Targeting 'OSDebian]
+	                                  '[])))
+	                         '[])
+	                      (Propellor.Types.MetaTypes.Intersect
+	                         (Propellor.Types.MetaTypes.Targets
+	                            (Propellor.Types.MetaTypes.Concat
+	                               (Data.Type.Bool.If
+	                                  (Propellor.Types.MetaTypes.Elem
+	                                     'Propellor.Types.MetaTypes.WithInfo
+	                                     (Propellor.Types.MetaTypes.NonTargets y0))
+	                                  (Propellor.Types.MetaTypes.NonTargets y0)
+	                                  ('Propellor.Types.MetaTypes.WithInfo
+	                                     : Propellor.Types.MetaTypes.NonTargets y0))
+	                               (Data.Type.Bool.If
+	                                  (Propellor.Types.MetaTypes.Elem
+	                                     ('Propellor.Types.MetaTypes.Targeting 'OSDebian)
+	                                     (Propellor.Types.MetaTypes.Targets y0))
+	                                  '[ 'Propellor.Types.MetaTypes.Targeting 'OSDebian]
+	                                  '[])))
+	                         '[ 'Propellor.Types.MetaTypes.Targeting 'OSDebian,
+	                            'Propellor.Types.MetaTypes.Targeting 'OSBuntish]))
+	        Property Debian + Buntish
+
+Since the type checker is getting stuck it pretty-prints the type level
+expression it was trying to solve, all expanded out, so this can get
+arbitrarily huge.
+
+This really seems like a ghc bug, and may be worth filing? But maybe propellor
+could also avoid it. Perhaps there's some way to write the MetaTypes code
+that avoids this.
+
+Hmm, the "Cannot combine properties" custom type message includes the types
+of the two properties in question. I tried leaving those out, and the error
+message is no longer huge. (But also not comprehensible in other cases.)
+Here's how that change affected memory use:
+
+	-50.50user 4.79system 0:59.28elapsed 93%CPU (0avgtext+0avgdata 2010848maxresident)k
+	+8.70user 0.72system 0:09.41elapsed 100%CPU (0avgtext+0avgdata 964804maxresident)k
+
+Wow! (900 mb or so is what it usually takes to build my config, so there's
+no excess memory use at all really after that change.)
+
+So there are changes to propellor that basically solve this, looks like.
+Question is, how to solve it without eliminating nice things like
+
+	    • Cannot combine Properties:
+	        Property HasInfo + Debian
+	        Property HasInfo + FreeBSD
+
+WithTypeErrors tries to detect just that case, making that message
+check if they're stuck, and not display them. That works as far
+as preventing displaying massive type errors, but ghc still
+uses too much memory despite not displaying them. Here's the
+memory use when it's enabled:
+
+	20.48user 1.36system 0:21.96elapsed 99%CPU (0avgtext+0avgdata 1942220maxresident)k
+
+I think what's probably going on is, WithTypeErrors uses IsStuck, which
+causes ghc to do an equivilant amount of buffering as displaying the type would.
+
+Well, I can't see a way to keep the nice display of metatypes in the non-stuck
+case, while avoiding blowup in the stuck case. But on the other hand,
+it's pretty unusual to actually try to use a FreeBSD on a Debian system
+when adding properties to a host. The metatypes are really more useful
+when programming properties, to eg, avoid using Apt.installed inside
+some property that's LinuxLike and so also needs an implementation for 
+non-Debian.
+
+So, ok, we'll skip displaying the metatypes when (&) is used to combine
+properties eg in a Host definition, but display it when properties are combined
+in other ways. [[done]] --[[Joey]]

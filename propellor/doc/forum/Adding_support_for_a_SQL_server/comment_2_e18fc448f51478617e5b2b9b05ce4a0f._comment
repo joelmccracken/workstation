@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 2"
+ date="2018-06-19T18:56:28Z"
+ content="""
+I am looking for a solution which could be integrated to propellor. Is it possible to include those additional libraries in propellor sources and have them included in the build on demand? I am not very familiar with the haskell build systems.
+
+About generated passwords, a nice solution would be to do it in PrivData.  The user would provide a salt as the private data and it would be combined to context to generate a password.  I can try find how this could be done.
+"""]]

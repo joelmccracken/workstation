@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="problems with worms."
+ date="2020-08-15T14:18:25Z"
+ content="""
+Dangling is the wrong word. I had a symlink pointing to an old build of propellor.
+"""]]

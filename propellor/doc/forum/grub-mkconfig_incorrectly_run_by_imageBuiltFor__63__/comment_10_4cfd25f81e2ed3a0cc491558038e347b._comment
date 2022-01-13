@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 10"""
+ date="2017-12-21T04:05:40Z"
+ content="""
+Implemented --target passing based on Grub.installed's Info.
+"""]]

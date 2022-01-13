@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joelmccracken"
+ avatar="http://cdn.libravatar.org/avatar/45175015b9eb3dd3f6c740b3fe920fed"
+ subject="comment 4"
+ date="2017-04-20T02:23:06Z"
+ content="""
+So, it turns out that yes, root is a thing on os x... but it is complicated. I'm going to put what I learned here because I think it will be useful, at least for telling folks how to use propellor on os x.
+
+1. Enable the root account. Steps are here: https://support.apple.com/en-us/HT204012
+2. password-authentication as root is disabled -- if you try to `ssh root@localhost`, it wont work. you need a key pair. 
+3. use su/sudo to install a public key (probably at `.ssh/id_rsa.pub`) to roots authorized_keys. adapted from: https://discussions.apple.com/thread/4078360?start=0&tstart=0
+4. copy the the pub file to authorized keys: `sudo cp /Users/joel/.ssh/id_rsa.pub /var/root/.ssh/authorized_keys`
+5. you should now be able to `ssh root@localhost` without a password.
+
+I'm not super sure that this is even the best way forward, but lets get this working first, then we'll see.
+"""]]

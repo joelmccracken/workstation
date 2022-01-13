@@ -1,0 +1,12 @@
+It can be annoying to need to move privdata values around when moving
+services between hosts, which is otherwise often just a cut-n-paste
+of a line in config.hs.
+
+It would be better if privdata were all stored in one Map, and the set of
+privdata that a host's current properties need were sent to it
+automatically, rather than the current 1-file-per-host separation.
+
+For this to work though, each property that uses privdata would need to add
+to the host's Info the privdata field it uses.
+
+> [[done]]! --[[Joey]]

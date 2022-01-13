@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="https://launchpad.net/~jml"
+ nickname="jml"
+ subject="comment 2"
+ date="2015-05-15T08:53:34Z"
+ content="""
+Glad you think so. I had a very quick poke around and also discovered [aws-ec2](https://hackage.haskell.org/package/aws-ec2) as well as the amazonka package. Any particular reason for preferring amazonka to aws-ec2? 
+"""]]

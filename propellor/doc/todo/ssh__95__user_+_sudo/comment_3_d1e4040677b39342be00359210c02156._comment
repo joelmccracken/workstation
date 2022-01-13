@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://joeyh.name/"
+ ip="209.250.56.114"
+ subject="comment 3"
+ date="2014-04-24T22:17:31Z"
+ content="""
+Except that it led you to run into the failure mode described at [[forum/remote.origin_not_copied_to_managed_host?]]
+
+So now we have a concrete change to make: Make /usr/bin/propellor work if it's forced as the only command that can be run. Including making propellor's host bootstrapping work via it.
+"""]]

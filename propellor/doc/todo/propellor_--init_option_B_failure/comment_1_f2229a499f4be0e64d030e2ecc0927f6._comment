@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-05-02T12:03:24Z"
+ content="""
+You need to update the Debian package to include the propellor
+haskell library in binary form. I had not included the haskell library in
+the package before in binary form, because I was targeting only option A,
+where it's cloned from the git archive in the package.
+
+Any other installation method than the debian package that I know of
+installs both the propellor command and the propellor haskell library.
+
+(Note that propellor 3.0.1^W3.0.3 fixes an unrelated bug that prevented option B
+from working.)
+"""]]

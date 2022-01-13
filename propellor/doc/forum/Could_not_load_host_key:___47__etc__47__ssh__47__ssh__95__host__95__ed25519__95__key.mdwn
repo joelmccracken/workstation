@@ -1,0 +1,23 @@
+After adding a new key with
+
+    ssh-keygen -C '' -N '' -f ssh_host_ed25519_key -t ed25519
+
+And making propellor aware of this with the property
+
+    Ssh.hostKeys "myhost" [ (SshEd25519, "ssh-ed25519 ...") ]
+
+and running 
+
+    cat ssh_host_ed25519_key | propellor --set 'SshPrivKey SshEd25519 ""' 'myhost'
+    propellor --spin myhost
+
+I got the following error in my auth.log:
+
+    error: Could not load host key: /etc/ssh/ssh_host_ed25519_key
+
+after adding a newline at the end of /etc/ssh/ssh_host_ed25519_key, everything works well...
+
+Is that a bug in propellor?
+
+
+

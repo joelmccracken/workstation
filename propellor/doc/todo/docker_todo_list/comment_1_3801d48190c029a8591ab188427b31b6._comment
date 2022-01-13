@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="gueux"
+ ip="109.190.19.251"
+ subject="CMD"
+ date="2014-04-21T13:49:08Z"
+ content="""
+It would be great to be able to set the CMD of a docker container.
+
+http://docs.docker.io/reference/builder/#cmd
+"""]]

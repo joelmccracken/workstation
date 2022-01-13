@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-10-04T17:11:42Z"
+ content="""
+All this property needs to do when `inChroot` is True is unmount anything
+bound below /usr/local/propellor and delete that directory, which should be
+empty.
+
+OF course it's harder to implement it for use outside a chroot, but a
+property that works in a chroot would be enough for sbuild and would be a
+reasonable start.
+
+I don't think there's any sane way to remove cabal and stack cruft
+without deleting it all.
+
+Seems like to uninstall the build deps, it would be useful to get the build
+deps installed in the first place in a way that makes `apt-get autoremove`
+able to remove them. Currently, Bootstrap.depsCommand hardcodes
+a list of debian packages. It could instead just install propellor.deb,
+which depends on the same stuff, so the build deps get autoremoved after
+propellor is removed. 
+
+But, different versions of the propellor package might have different deps
+than the version of propellor being bootstrapped.
+"""]]

@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-11-20T16:55:25Z"
+ content="""
+This is due to `Debootstrap.built'` removing world read access from the
+chroot it creates.
+
+So, /tmp/sid/ is not accessible by spwhitton, and when su
+has switched id to spwhitton, it can't access anything inside the chroot.
+
+See commit f6afeb889f4b11418daac7825c1adb1df4ff145c for when this was
+added. I think that the risk of farming old security vulnerabilities from
+chroots is real, but this is not a good approach for a fix.
+
+(It would work to put the chroot in a parent
+directory that is itself not world readable, then the root directory inside the
+chroot would be world readable. But this would require relocating existing
+chroots. At least when chroots are used for systemd containers,
+/var/lib/container has appropriately locked down permissions anyway.)
+
+I'm reverting that commit, and adding some permissions fixup code.
+"""]]

@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 5"
+ date="2016-06-07T07:32:49Z"
+ content="""
+Unfortunately, the more general type doesn't seem to work:
+
+    withMyAcc
+        :: (SingI outer, Cannot_ensureProperty_WithInfo inner ~ 'True,
+            NotSuperset (Targets inner) (Targets outer) ~ 'CanCombine)
+        => Desc
+        -> (User -> Property (MetaTypes inner))
+        -> Property (MetaTypes outer)
+    withMyAcc desc mkp = property' desc $ \w -> do
+        u <- getMyAcc
+        ensureProperty w (mkp u)
+
+    accountForSean :: Property DebianLike
+    accountForSean = withMyAcc \"account for Sean\" User.accountFor
+
+yields
+
+    src/Propellor/Property/SiteSpecific/SPW/Account.hs:85:18:
+        Couldn't match kind ‘*’ with ‘MetaType’
+        Expected type: Property DebianLike
+          Actual type: Property (MetaTypes outer0)
+        In the expression: withMyAcc \"account for Sean\" User.accountFor
+        In an equation for ‘accountForSean’:
+            accountForSean = withMyAcc \"account for Sean\" User.accountFor
+
+    src/Propellor/Property/SiteSpecific/SPW/Account.hs:85:47:
+        Couldn't match kind ‘MetaType’ with ‘*’
+        Expected type: User -> Property (MetaTypes inner0)
+          Actual type: User -> Property DebianLike
+        In the second argument of ‘withMyAcc’, namely ‘User.accountFor’
+        In the expression: withMyAcc \"account for Sean\" User.accountFor
+
+"""]]

@@ -1,0 +1,36 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-09-20T15:14:19Z"
+ content="""
+The compiler error message here is not nice; if
+[[todo/use_ghc_8.0_custom_compile_errors]] is able to be implemented some
+time, I'd hope for a error message more like:
+
+	Couldn't match Property DebianLike with UncheckedProperty UnixLike
+	Perhaps you forgot to use `changesFile` or `assume MadeChange`?
+
+Instead of the current mess which has a lot of bloat from type families. 
+The meat of the error is here:
+
+	src/Propellor/Property/SiteSpecific/Pebble.hs:29:5:
+	    Couldn't match type ‘Propellor.PropAccum.GetMetaTypes
+	                           (CombinedType (UncheckedProperty UnixLike) (Property UnixLike))’
+	                   with ‘Propellor.Types.Singletons.Sing y0’
+	    The type variable ‘y0’ is ambiguous
+	    Expected type: Propellor.PropAccum.GetMetaTypes
+	                     (CombinedType (UncheckedProperty UnixLike) (Property UnixLike))
+	      Actual type: Propellor.Types.MetaTypes.MetaTypes y0
+
+cmdProperty has type UncheckedProperty UnixLike; in order to get
+a Property that runs a command, you have to provide some way of checking
+if the command made a change to the system.
+
+Since running tar certianly changes the system, adding `assume MadeChange`
+after it should do.
+
+Running pip install may not alwways change the system; it's up to you if
+you want to do a real check for change there or again `assume MadeChange`.
+
+I think those two changes are all you'll need to get it to compile.
+"""]]

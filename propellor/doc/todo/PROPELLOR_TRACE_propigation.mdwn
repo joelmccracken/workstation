@@ -1,0 +1,6 @@
+`PROPELLOR_TRACE` is not propigated when spinning a remote host, 
+conducting a host, and probably not when provisioning a docker or machined
+container.
+
+It is propgiated when provisioning a chroot. That's all I needed, so I
+didh't bother implementing propigation. --[[Joey]]

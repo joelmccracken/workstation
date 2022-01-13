@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="craige@a46118dff5bc0fad85259759970d8b4b9fc377d7"
+ nickname="craige"
+ subject="Source"
+ date="2016-06-02T04:55:19Z"
+ content="""
+My config.hs is here:
+https://git.mcwhirter.io/snippets/1
+
+I've added my propellor.cabal as there may be value in that:
+https://git.mcwhirter.io/snippets/2
+
+I do have my own modules. Disabling them was one of my first steps. This should now be only using shipped Propellor modules.
+
+I'm interested in seeing your thoughts.
+
+Thanks Joey.
+"""]]

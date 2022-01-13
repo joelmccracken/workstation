@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 2"
+ date="2018-04-05T10:41:02Z"
+ content="""
+The same we get from using http://deb.debian.org/debian instead of http://ftp.debian.org/debian : redundancy, avoiding overloading security.debian.org, ...
+"""]]

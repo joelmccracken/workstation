@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2015-11-30T16:57:45Z"
+ content="""
+I think it would probably depend on the user when that makes sense to do.
+If I'm installing build deps over a slow network connection, I'd like to
+see the output.
+
+It would be awesome if this transformation could be applied to any 
+arbitrary Property. I don't immediately know how to do that, although it
+seems useful that all process spawning already goes through
+concurrent-output, which can buffer the output and display it only when the
+command finishes.
+
+Perhaps an extension to concurrent-ouput could let it buffer the output
+of all commands run by a property and then discard the buffer if the
+property finished with NoChange. But I don't see a way to make this work
+when multiple properties are being run concurrently.
+"""]]

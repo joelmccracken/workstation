@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-03-06T17:06:16Z"
+ content="""
+What seems to be going on is, /etc/locale.gen is changed, uncommenting
+the line, but then the dpkg-reconfigure locales rewrites the file
+with the same set of locales enabled but a different set of lines and
+comments. So, next time the property runs, it wants to change the file again.
+
+I changed it to run locale-gen instead, which avoids the problem.
+"""]]

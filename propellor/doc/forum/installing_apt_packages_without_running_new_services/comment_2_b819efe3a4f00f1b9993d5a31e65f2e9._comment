@@ -1,0 +1,99 @@
+[[!comment format=mdwn
+ username="serge1cohen"
+ avatar="http://cdn.libravatar.org/avatar/df873622c2eeb5b34222b7af0d47abd0"
+ subject="Using noServices to configure apache before running it..."
+ date="2019-10-31T22:56:56Z"
+ content="""
+Hello there,
+
+I was typically in this situation : starting an apache server on a specific IP (the other IPs of the machine -on port 80- are used by other server processes), in particular to be able to get a certificate from let's encrypt.
+
+When using :
+
+    micro_apache :: Domain -> String -> FilePath -> Property DebianLike
+    micro_apache fqdn ip dr = combineProperties \"Setting a micro apache server running only for interface\" $ props
+    	& Apache.installed
+    	& File.hasContent \"/etc/apache2/ports.conf\" [(\"Listen \" ++ ip ++ \":80\")]
+    	& Apache.siteDisabled \"000-default\"
+    	& Apache.siteEnabled fqdn
+    		[ \"<VirtualHost \" ++ ip ++ \":80>\"
+    		, \"ServerName \" ++ fqdn ++ \":80\"
+    		, \"DocumentRoot \" ++ dr
+    		, \"ErrorLog /var/log/apache2/\" ++ fqdn ++ \"_error.log\"
+    		, \"LogLevel warn\"
+    		, \"CustomLog /var/log/apache2/\" ++ fqdn ++ \"_access.log combined\"
+    		, \"ServerSignature On\"
+    		, \"</VirtualHost>\"
+    		]
+    	& Apache.restarted
+    	& Apache.reloaded
+
+The property is problematic (the initial 'Apache.installed' starts the apache server listening to ALL IPs). 
+But at least at the end it seems that I get a 'running' service :
+
+    root@d4:~# systemctl status apache2.service 
+    ● apache2.service - The Apache HTTP Server
+       Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+       Active: active (running) since Thu 2019-10-31 16:59:41 CET; 17min ago
+
+
+
+To avoid the transient service wrongly configured (it also messes up with the server serving port 80 on another IP) case I tried :
+
+    micro_apache :: Domain -> String -> FilePath -> Property (HasInfo + DebianLike)
+    micro_apache fqdn ip dr = combineProperties \"Setting a micro apache server running only for interface\" $ props
+      	& ( Apache.installed `requires` Service.noServices ) -- => Needs to change type to Property (HasInfo + DebianLike)
+    	& File.hasContent \"/etc/apache2/ports.conf\" [(\"Listen \" ++ ip ++ \":80\")]
+    	& Apache.siteDisabled \"000-default\"
+    	& Apache.siteEnabled fqdn
+    		[ \"<VirtualHost \" ++ ip ++ \":80>\"
+    		, \"ServerName \" ++ fqdn ++ \":80\"
+    		, \"DocumentRoot \" ++ dr
+    		, \"ErrorLog /var/log/apache2/\" ++ fqdn ++ \"_error.log\"
+    		, \"LogLevel warn\"
+    		, \"CustomLog /var/log/apache2/\" ++ fqdn ++ \"_access.log combined\"
+    		, \"ServerSignature On\"
+    		, \"</VirtualHost>\"
+    		]
+      	& ( revert Service.noServices `before` Apache.restarted ) -- => Needs to change type to Property (HasInfo + DebianLike)
+
+But then the configuration leads to having apache in an \"ghost state\", neither started nor stopped :
+
+    root@d4:~# systemctl status apache2
+    ● apache2.service - The Apache HTTP Server
+       Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+       Active: inactive (dead)
+         Docs: https://httpd.apache.org/docs/2.4/
+
+Which leads to an unavailable http service, and as a consequence to a failure in ACME / let's encrypt.
+Indeed it seems that the service is started using the 'old' Service system. The nice thing is that this makes it possible to use the 'noServices' property. The problem is that the systemd module is in a state not working anymore with 'Service'.
+
+Finally I had to mix the 'noServices' property with a couple of 'Systemd' properties so that the server is properly restarted once the configuration is correct. This leads to a bit longer property but at least it works :
+
+    micro_apache :: Domain -> String -> FilePath -> Property (HasInfo + DebianLike)
+    micro_apache fqdn ip dr = combineProperties \"Setting a micro apache server running only for interface\" $ props
+      	& ( Apache.installed `requires` Service.noServices ) -- => Needs to change type to Property (HasInfo + DebianLike)
+    	& Systemd.stopped \"apache2\"  -- 'clean' of the systemd module 
+    	& File.hasContent \"/etc/apache2/ports.conf\" [(\"Listen \" ++ ip ++ \":80\")]
+    	& Apache.siteDisabled \"000-default\"
+    	& Apache.siteEnabled fqdn
+    		[ \"<VirtualHost \" ++ ip ++ \":80>\"
+    		, \"ServerName \" ++ fqdn ++ \":80\"
+    		, \"DocumentRoot \" ++ dr
+    		, \"ErrorLog /var/log/apache2/\" ++ fqdn ++ \"_error.log\"
+    		, \"LogLevel warn\"
+    		, \"CustomLog /var/log/apache2/\" ++ fqdn ++ \"_access.log combined\"
+    		, \"ServerSignature On\"
+    		, \"</VirtualHost>\"
+    		]
+      	& ( revert Service.noServices  -- => Needs to change type to Property (HasInfo + DebianLike)
+    		`before` Systemd.running \"apache2\" ) -- restarting through systemd
+
+With this done, it seems to work.
+
+Notice, however, that if apache was completely avoiding the 'old service' system, then we could not even benefit from the 'noService' in the first place. Would there be another solution to reach the same result ?
+
+Hope this might help
+
+Serge.
+"""]]

@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2016-06-22T19:24:43Z"
+ content="""
+Unfortunately `withFile` uses IO, instead of being generalized to MonadIO,
+so the approaches that work with `withUmask` don't work with it.
+
+One way is to write a version of withFile that's generalized to MonadIO:
+
+	withFile' :: (MonadIO m, MonadMask m) => FilePath -> IOMode -> (Handle -> m r) -> m r
+	withFile' name mode = bracket (liftIO $ openFile name mode) (liftIO . hClose)
+"""]]

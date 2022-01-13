@@ -1,0 +1,5 @@
+Please consider merging branch `fix-init-build` of repository `https://git.spwhitton.name/propellor`.
+
+`propellor --init` can fail if the build system is cabal and the user has `require-sandbox: True` in `~/.cabal/config`.  This patch fixes that.
+
+> [[merged|done]] --[[Joey]]

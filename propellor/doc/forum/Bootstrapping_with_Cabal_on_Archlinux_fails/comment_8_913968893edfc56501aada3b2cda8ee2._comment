@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 8"""
+ date="2020-08-14T17:02:55Z"
+ content="""
+Hmm, it overwrites /usr/local/propellor with:
+
+	rename safetycopy "propellor"
+
+That is safe against dangling symlinks. The safetycopy is created
+using `cp -pfL` which also seems safe against dangling symlinks
+(or symlinks pointing to files, though not to directories).
+"""]]

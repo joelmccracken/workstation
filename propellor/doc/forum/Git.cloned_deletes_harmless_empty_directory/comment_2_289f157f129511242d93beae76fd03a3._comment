@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="db48x@80bd751a72d5a80737e2f875342cf845629c7202"
+ nickname="db48x"
+ avatar="http://cdn.libravatar.org/avatar/ad2688127feb555a92154b16d8eeb5d3"
+ subject="comment 2"
+ date="2017-04-05T02:37:44Z"
+ content="""
+Yea, I guess that's a fair point about the other cases.
+
+It just seems inelegant to go back over all the files and fix up their permissions, when it could just have been set right to begin with.
+"""]]

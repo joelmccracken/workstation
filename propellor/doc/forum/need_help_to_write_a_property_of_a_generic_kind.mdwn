@@ -1,0 +1,69 @@
+Hello,
+
+I have written a property to create a Mysql user which take the password from
+privdata. Now, I need to generate many passwords for several PHP sites, so I
+wrote a function to generate password using a hash of a secret salt and
+information from the context (site name).  This password will be written in a
+.php file to configure the application.
+
+I added a function `Mysql.userGrantedOnDatabaseWithPassword`, so that I can give
+it the computed password and use a common function to return the property.
+The problem is that when using privdata, the common function should return a:
+
+    ReversibleProperty (HasInfo + DebianLike) UnixLike
+
+And when not using privdata, it should return a:
+
+    ReversibleProperty DebianLike UnixLike
+
+The function takes a parameter to handle the password retrieval (`i` is `(HasInfo
++ DebianLike)` or `DebianLike`):
+
+    ((((String -> Propellor Result) -> Propellor Result) -> Property i) -> Property i)
+
+This is a type similar to `withPrivData`, but adapted to give just the
+password:
+
+	-- | Common code to get password from private data.
+	withPasswordFromPrivData
+		:: IsContext c
+		=> User
+		-> c
+		-> ((((String -> Propellor Result) -> Propellor Result)
+			-> Property (HasInfo + UnixLike))
+				-> Property (HasInfo + UnixLike))
+	withPasswordFromPrivData (User username) context = \mkprop ->
+		withPrivData (Password username) context
+			$ \getdata -> mkprop
+				$ \a -> getdata $ \priv -> a $ privDataVal priv
+
+	-- | Common code to pass password from parameter.
+	withPasswordFromParameter
+		:: String
+		-> ((((String -> Propellor Result) -> Propellor Result)
+			-> Property UnixLike) -> Property UnixLike)
+	withPasswordFromParameter password = \mkprop ->
+		mkprop $ \a -> a password
+
+I do not find a way to write the type of my function with the common code, the
+current best is:
+
+	userGrantedProp
+		:: Combines (Property i) (Property UnixLike)
+		=> User
+		-> [Privilege]
+		-> ((((String -> Propellor Result) -> Propellor Result)
+			-> Property i) -> Property i)
+		-> String
+		-> (String -> String -> String -> String)
+		-> (String -> String -> String -> String)
+		-> RevertableProperty (CombinedType (Property i) (Property UnixLike)) UnixLike
+	userGrantedProp (User username) privs withPassword setupDesc setupSql userGrants =
+
+But it still does not compile.
+
+The full code is available on my `mysql-wip` branch on
+`http://git.ni.fr.eu.org/nicolas/propellor.git`, I would be glad if you can have
+a look, pure haskell fun guaranteed :-).
+
+Thanks.

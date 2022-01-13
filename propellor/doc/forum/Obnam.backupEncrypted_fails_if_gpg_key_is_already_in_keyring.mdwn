@@ -1,0 +1,13 @@
+    Obnam.backupEncrypted "/" (Cron.Times "44 2 * * *") [] Obnam.OnlyClient (Gpg.GpgKeyId "XXXXXX")
+
+    $ propellor --spin myhost
+    myhost apt installed obnam ... ok
+    gpg: key XXXXXX: already in secret keyring
+    gpg: Total number processed: 1
+    gpg:       secret keys read: 1
+    gpg:  secret keys unchanged: 1
+    ** warning: user error (su ["-c","gpg --import","root"] exited 2)
+    myhost / backed up by obnam ... failed
+    myhost overall ... failed
+    Shared connection to myhost closed.
+    propellor: remote propellor failed

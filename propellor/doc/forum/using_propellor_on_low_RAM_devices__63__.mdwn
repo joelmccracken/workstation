@@ -1,0 +1,18 @@
+I'm trying to use propellor (and to learn haskell!) to manage my laptop and a small server, both running debian stable. 
+
+The server is a lime2 soc [1], with only 1GiB of RAM, and no swap (I think this is the default setup from the freedombox image).
+
+propellor --spin failed when targeting the server: on the server, ghc got killed by the OOM killer.
+
+I then simplified my config.hs and successfully ran "cabal build -j1" from the server.
+At some point during the successful build, ghc was using 400MiB of memory.
+This is 40% of the whole memory, I fear the OOM killer will strike again if I don't change something.
+I'll probably try to enable swap.
+
+Propellor seems designed with embedded devices in mind (eg. with the image builder), I'm surprised it demands that much RAM.
+Am I missing something?
+Do people cross-compile propellor to avoid the issue?
+
+Cheers!
+
+[1] https://www.olimex.com/Products/OLinuXino/A20/A20-OLinuXino-LIME2

@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="andrew"
+ subject="comment 2"
+ date="2016-09-19T04:29:14Z"
+ content="""
+I’ve made the changes you’ve suggested, but I think I’ve run into that tricky bit that you were mentioning. I think I’ve figured out how chroots work in propellor, but I’m not seeing how you were thinking of referencing these extra properties. I know that chroots fork off a new propellor instance inside the chroot which get properties via a folder/hostname lookup in the configuration, but these include the systemd container properties as well. Were you thinking of isolating the container properties and move chroot properties to `hostProperties` or just the opposite?
+
+[Here](https://github.com/arcticwaters/propellor/commit/605af4cdcf76e728290d242675f3fa3fea9309b5) is what I’ve done so far minus much of the mess I made in `Chroot.hs`.
+
+I should mention that one unintended consequence of my code is that systemd containers now only accept `DebianLike` properties. This is fine for me and an implicit condition in the code, but isn’t strictly correct. I don’t know haskell or the codebase well enough to fix this. I suppose anyone who tried to use container images which weren't debian like already encountered this issue and made changes to the code base manually.
+"""]]

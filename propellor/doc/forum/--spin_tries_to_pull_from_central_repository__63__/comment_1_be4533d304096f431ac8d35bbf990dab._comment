@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-02-22T15:34:07Z"
+ content="""
+--spin has always pushed/pulled from origin, if there is
+a central git repository.
+
+It's an optional thing though, since the update is pushed directly to the
+host it spins too.
+
+I've improved the code to avoid this particular crash..
+"""]]

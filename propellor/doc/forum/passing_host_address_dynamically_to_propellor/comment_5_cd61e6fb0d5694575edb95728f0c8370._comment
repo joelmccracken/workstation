@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="arnaud@30aba4d9f1742050874551d3ddc55ca8694809f8"
+ nickname="arnaud"
+ subject="Works like a charm..."
+ date="2015-06-11T19:19:07Z"
+ content="""
+I implemented this feature using a file, aptly named `hosts` that is versioned in the repo and populated (at the moment manually but will be automatic...) when boxes are created in DO.
+Then the following main will extract the information and create hosts config to be passed to main from propellor, reading the needed file:
+
+```
+main :: IO ()
+main = do
+  h <- map words <$> lines <$> readFile \"hosts\" `catch` (\ (_ :: IOException) -> return \"\")
+  let hosts = map selectHost h
+  defaultMain hosts
+
+selectHost :: [String] -> Host
+selectHost [\"prod\",ip,sha1]    = host ip  & Lending.lendingHost sha1
+selectHost [\"prod\",ip]         = host ip  & Lending.lendingHost currentSha1
+selectHost [\"monitor\",name,ip] = host name  & Monitoring.monitoringHost ip
+selectHost h                   = error $ \"doesn't know how to handle host definition \" ++ show h
+```
+"""]]

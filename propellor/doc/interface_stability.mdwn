@@ -1,0 +1,13 @@
+Propellor is versioned using the Haskell [Package Version Policy](https://www.haskell.org/haskellwiki/Package_versioning_policy).
+
+This means that propellor 2.10.x contains some changes to its API;
+code written for propellor 2.9.x may need to be changed. Conversely,
+there are no breaking changes between 2.10.1 and 2.10.2.
+
+Whenever possible, breaking changes are made in a way that either changes a
+data type, or a function name, so that code that used the old API version
+won't compile under the new one.
+
+Sometimes, changes to the behavior of properties also merit a major version
+change. For example, propellor 0.8.0 completely revamped the privdata
+storage, and users had to manually transition.

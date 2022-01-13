@@ -1,0 +1,39 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2016-06-13T20:23:37Z"
+ content="""
+One easy way would be something like:
+
+	shellMonadProperty :: Control.Monad.Shell.Script Result -> Property UnixLike
+
+But, I don't know if that would really be useful. The better use case for
+shell-monad seems to be where things like `userScriptProperty` take a
+`Script`, that is currently an alias for `String`. Since shell-monad can
+generate a shell script, it would be easy to write:
+
+	shellMonad :: Control.Monad.Shell.Script () -> Script
+
+Or, perhaps change userScriptProperty to accept either a stringy-Script or
+a shell monad Script, via a type class. Then it could be used like this:
+
+	userScriptProperty (User "joey") $ do
+		cmd "echo" "hello"
+		cmd "rm" "/home/joey/something"
+
+Turtle seems to not have its own monad but simply uses MonadIO. So seems
+you can use Turtle in the implementation of propellor properties the same as
+other IO actions. Which is great, it should be easy to use it if you want
+to. Something like:
+
+	import Turtle.Prelude
+
+	myProperty :: Property UnixLike
+	myProperty = property "my property using turtle" $ liftIO $ do
+		echo "hello"
+		rm "/something"
+		return NoChange
+
+But I don't think turtle can generate shell scripts like used by
+`userScriptProperty`.
+"""]]

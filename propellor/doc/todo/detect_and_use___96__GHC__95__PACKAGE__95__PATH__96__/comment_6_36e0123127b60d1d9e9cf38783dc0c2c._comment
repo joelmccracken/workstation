@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2016-03-08T22:00:37Z"
+ content="""
+When stack.yaml exists, using --spin would need to get stack installed
+on the remote host, and use it to build propellor. Much as --spin currently
+gets cabal and ghc installed and uses them to build.
+"""]]

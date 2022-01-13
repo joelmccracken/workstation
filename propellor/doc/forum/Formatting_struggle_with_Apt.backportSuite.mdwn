@@ -1,0 +1,9 @@
+I have tried what seems like all permutations possible to make
+
+    & Apt.backportSuite  "Stable "jessie""
+
+work (square brackets, normal brackets, escape, combinations of all that...) but no success so far.
+
+It seems there should go a string after backportSuite, which according to what I read should be double-quoted. However, the release also needs to be double-quoted.
+
+What is the right way of doing this?

@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 9"
+ date="2018-11-06T03:12:26Z"
+ content="""
+Thanks.  I've now implemented enough of this to support my usecase in the libvirt branch of <https://git.spwhitton.name/propellor>.
+
+There are TODOs, but now seems as good a time as any for someone to implement the qcow2 support . . .
+
+With regard to your idea, taking down the VM and running propellor on the qcow2 file seems like it will not be useful to very many people.  ISTM that treating the VM as a host and spinning it is right.
+"""]]

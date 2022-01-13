@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-12-08T15:53:27Z"
+ content="""
+Looks like a lacking FQDN indeed. There's a property to fix that! ;)
+
+Git is also picky about the user having a name.
+
+AFAIK, git does not make commits for fast-forward merges, but it does for
+non-fast-forward merges. I suspect that it's making such a merge in your
+case.
+"""]]

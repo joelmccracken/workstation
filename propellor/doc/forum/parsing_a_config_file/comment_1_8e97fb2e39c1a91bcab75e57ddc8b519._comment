@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-08-03T19:14:00Z"
+ content="""
+This probably needs a smarter parser for torrc files that understands
+the method that tor uses to decide which config lines go together.
+
+Or, perhaps, a way to add additional torrc files that are included into the
+main one or that tor is otherwise configured to use, which would avoid the
+parsing complexity.
+"""]]

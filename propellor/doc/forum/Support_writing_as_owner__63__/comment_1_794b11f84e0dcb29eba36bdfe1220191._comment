@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-03-17T15:13:20Z"
+ content="""
+If propellor could fork and then setuid, that would allow this. But..
+
+* forking is problimatic in haskell since the RTS state gets shared
+  and bad things happen
+* the result of the setuid action would need to be communicated back to the
+  main process somehow
+
+The other way would be to re-exec propellor as the user 
+with a parameter that somehow tells it what action to run. But I don't know
+a general way to do that, without some way to name the property.
+(A problem which has also complicated some other parts of propellor eg
+running inside chroots.)
+"""]]

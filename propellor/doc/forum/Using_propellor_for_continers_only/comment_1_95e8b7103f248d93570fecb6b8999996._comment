@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-03-29T19:09:37Z"
+ content="""
+Sounds like you may want to write a program that uses propellor as a
+library. `Propellor.Engine.mainProperties` is a reasonable
+entry point, just pass it a Host that has the properties you want
+to run.
+
+For example:
+
+	import Propellor
+	import Propellor.Engine
+	import Propellor.Property.DiskImage
+
+	main :: IO ()
+	main = mainProperties $ host "whatever" $ props
+		& imageBuilt "/some/disk.img" ...
+"""]]

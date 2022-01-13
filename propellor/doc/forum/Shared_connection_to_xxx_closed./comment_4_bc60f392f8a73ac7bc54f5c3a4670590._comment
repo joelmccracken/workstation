@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 4"
+ date="2015-09-17T06:59:44Z"
+ content="""
+[2015-09-17 08:57:49 CEST] call: ssh [\"-o\",\"ControlPath=/home/picca/.ssh/propellor/xxxx.sock\",\"-o\",\"ControlMaster=auto\",\"-o\",\"ControlPersist=yes\",\"-t\",\"root@xxx\",\"sh -c 'cd /usr/local/propellor && ./propellor --continue '\\"'\\"'SimpleRun \\"xxx\\"'\\"'\\"''\"]
+Shared connection to xxxxx closed.
+picca@ORD03037:~/.propellor$ echo $?
+0
+
+
+so it seems thaht there is no error but the share connection was closed before running propellor on the host.
+"""]]

@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 11"""
+ date="2016-06-17T13:16:17Z"
+ content="""
+Hmm, the way Strings are used for PrivData takes advantage of ghc's
+"filename encoding", which is supposed to allow arbitrary bytes to be
+included in filenames; unicode surrogate characters are used to map
+them to unicode.
+
+But, Property.File is using readFile, witeFile, and writeFileProtected,
+which will bail on invalid unicode as the filename encoding is not used.
+Your patch avoids that problem I see.
+"""]]

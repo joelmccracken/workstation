@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 8"
+ date="2016-06-24T10:29:09Z"
+ content="""
+Oh, MonadIO is actually in base. We \"just\" miss the generelized functions...
+"""]]

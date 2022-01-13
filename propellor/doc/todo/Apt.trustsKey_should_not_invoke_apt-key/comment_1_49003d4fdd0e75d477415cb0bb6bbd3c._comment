@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-09-17T18:16:56Z"
+ content="""
+Fine by me as long as it cleans up or overwrites the file that apt-key
+installed earlier.
+"""]]

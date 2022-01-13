@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-09-23T18:27:03Z"
+ content="""
+The file privdata/keyring.gpg is where propellor keeps the public 
+keys it uses to sign the privdata. This is a regular gpg keyring, so can 
+be manipulated by regular gpg commands.
+
+I also just added propellor --rm-key to make it easy to remove a key.
+"""]]

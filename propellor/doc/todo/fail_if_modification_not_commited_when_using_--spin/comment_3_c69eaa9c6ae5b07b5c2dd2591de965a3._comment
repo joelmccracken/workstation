@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2014-11-23T21:12:19Z"
+ content="""
+Here's a almost-script to do it, which worked when it did it by hand:
+
+<pre>
+get old-head (git show-ref HEAD -s)
+get curr-branch (refs/heads/master eg)
+find old-commit (look back through git log for the first commit that was not "propellor spin")
+git reset old-commit
+git commit -a # user gets to edit commit message for all the spins and any staged changes here
+git merge -S -s ours old-head
+get current-commit (result of merge)
+git update-ref curr-branch current-commit
+git checkout curr-branch
+</pre>
+"""]]

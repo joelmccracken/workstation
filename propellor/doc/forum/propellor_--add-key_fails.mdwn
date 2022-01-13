@@ -1,0 +1,64 @@
+Hi,
+
+When following the instructions on the web site, I get the following error in step 4:
+
+```
+olpe4718@admin:~$ propellor --add-key CD9BFD10
+Building propellor-2.8.0...
+Preprocessing library propellor-2.8.0...
+In-place registering propellor-2.8.0...
+Preprocessing executable 'propellor' for propellor-2.8.0...
+Preprocessing executable 'propellor-config' for propellor-2.8.0...
+Propellor build ... done
+
+
+gpg: privdata/keyring.gpg: nyckelring skapad
+gpg: nyckel CD9BFD10: publika nyckeln "Per Olofsson (DSV) <pelle@dsv.su.se>" importerades
+gpg: Totalt antal behandlade enheter: 1
+gpg:                     importerade: 1  (RSA: 1)
+adding key to propellor's keyring ... done
+staging propellor's keyring ... done
+updating encryption of any privdata ... done
+configuring git commit signing to use key ... done
+error: pathspec 'privdata/privdata.gpg' did not match any file(s) known to git.
+committing changes ... failed
+```
+
+Simply running `git commit -S` afterwards seems to work though.
+
+Debug mode output:
+
+```
+olpe4718@admin:~$ PROPELLOR_DEBUG=1 propellor --add-key CD9BFD10                      
+Building propellor-2.8.0...
+Preprocessing library propellor-2.8.0...
+In-place registering propellor-2.8.0...
+Preprocessing executable 'propellor' for propellor-2.8.0...
+Preprocessing executable 'propellor-config' for propellor-2.8.0...
+Propellor build ... done
+
+
+[2015-10-04 10:55:50 CEST] command line:  AddKey "CD9BFD10"
+[2015-10-04 10:55:50 CEST] call: sh ["-c","gpg --export CD9BFD10 | gpg --options /dev/null --no-default-keyring --keyring privdata/keyring.gpg --import"]
+gpg: privdata/keyring.gpg: nyckelring skapad
+gpg: nyckel CD9BFD10: publika nyckeln "Per Olofsson (DSV) <pelle@dsv.su.se>" importerades
+gpg: Totalt antal behandlade enheter: 1
+gpg:                     importerade: 1  (RSA: 1)
+[2015-10-04 10:55:50 CEST] process done ExitSuccess
+adding key to propellor's keyring ... done
+[2015-10-04 10:55:50 CEST] call: git ["add","privdata/keyring.gpg"]
+[2015-10-04 10:55:50 CEST] process done ExitSuccess
+staging propellor's keyring ... done
+updating encryption of any privdata ... done
+[2015-10-04 10:55:50 CEST] read: gpg ["--list-secret-keys","CD9BFD10"]
+[2015-10-04 10:55:50 CEST] process done ExitSuccess
+[2015-10-04 10:55:50 CEST] call: git ["config","user.signingkey","CD9BFD10"]
+[2015-10-04 10:55:50 CEST] process done ExitSuccess
+configuring git commit signing to use key ... done
+[2015-10-04 10:55:50 CEST] call: git ["commit","privdata/keyring.gpg","privdata/privdata.gpg","-m","propellor add-key","--gpg-sign"]
+error: pathspec 'privdata/privdata.gpg' did not match any file(s) known to git.
+[2015-10-04 10:55:50 CEST] process done ExitFailure 1
+committing changes ... failed
+```
+
+Seems that it tries to check in privdata.gpg which does not exist yet.

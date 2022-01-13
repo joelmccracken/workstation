@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2017-12-20T21:33:31Z"
+ content="""
+update-grub generates the grub config file, so AFAIK it needs to come
+before grub-install.
+
+If you can do the patches for BIOS please do.
+"""]]

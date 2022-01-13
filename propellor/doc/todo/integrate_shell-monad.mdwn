@@ -1,0 +1,11 @@
+Propellor often generates some shell code to run. 
+Examples include Propellor.Bootstrap, but also things like 
+userScriptProperty where a shell command has to be built that can be fed
+into sudo.
+
+The current code for this is just all strings and easy to make mistakes in.
+It would be good to integrate <http://hackage.haskell.org/package/shell-monad>
+(or a similar library) as a way to generate shell code. --[[Joey]]
+
+<http://hackage.haskell.org/package/turtle> might be another good option
+--[[Joey]]

@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-12-11T16:35:43Z"
+ content="""
+Doesn't rebuilding propellor overwrite lots of files too? Is the
+privdata.local file somehow a particular problem, perhaps becuase
+of its permissions?
+
+You should find it easy enough to make propellor read any existing
+file and only update the file when there are changes. But it seems to me
+your integrity checker would still go off whenever a new version
+of the file is legitimately reveiced. Perhaps it would be better to
+write a property to configure your integrity checker to not fire on
+this file?
+
+(I've thought from time to time about having rsync update the privdata.local
+file. Since it's unchanged in most spins, that would probably save network
+bandwidth.)
+"""]]

@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-10-01T14:06:35Z"
+ content="""
+Your NFS server must have root squash enabled then. So any propellor
+properties that try to set the owner will fail (File.ownerGroup).
+
+It's entirely reasonable for properties to need to set the owner of a file.
+Many properties make files owned by a specific user and having them
+squashed to "nobody" would break their purpose.
+
+There's only one property in propellor that currently uses File.isCopyOf,
+and that property is in fact installing a user's configuration file, which
+needs to be owned by that user. So changing that property's behavior is
+out.
+
+So your options are, disable the NFS root squash, or avoid using propellor
+properties that set file ownership. If you wanted to make a variant of
+isCopyOf that didn't preserve permissions, we could perhaps look at adding
+that to propellor.
+"""]]

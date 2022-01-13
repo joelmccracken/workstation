@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="mithrandi"
+ avatar="http://cdn.libravatar.org/avatar/869963bdf99b541c9f0bbfb04b0320f1"
+ subject="comment 1"
+ date="2017-07-25T22:22:49Z"
+ content="""
+I tried adding:
+
+      & bootstrapWith (Robustly Stack)
+
+But that fails trying to install stack:
+
+    Fetched 413 kB in 7s (54.3 kB/s)                           
+    Reading package lists...                                   
+    E: Unable to locate package haskell-stack                  
+    sh: 1: stack: not found                                    
+    sh: 1: stack: not found                                    
+
+That's not really too surprising, of course, since this package isn't in jessie (or stretch, for that matter).
+
+"""]]

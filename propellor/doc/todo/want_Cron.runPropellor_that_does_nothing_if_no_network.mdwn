@@ -1,0 +1,9 @@
+I don't have `Cron.runPropellor` on my laptop because it is often offline.  But I would like a cronjob that tries to spin the host if it's online.  Mainly to keep sbuild chroots up-to-date.
+
+I was wondering what the cleanest way to implement this would be.  `Cron.runPropellor` could be split into `Cron.runPropellor` and `Cron.runPropellorWhenOnline`, the latter of which does `wget http://google.com >/dev/null` and exits if that command fails.
+
+Or there could be some kind of property which, when set on a host, causes all spins to abort if the host if offline.
+
+And is wgetting Google's homepage the right way to check that we have Internet access?
+
+--spwhitton

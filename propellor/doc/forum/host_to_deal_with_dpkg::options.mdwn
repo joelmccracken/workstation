@@ -1,0 +1,41 @@
+[[!meta title "how to deal with dpkg::options"]]
+
+Hello
+
+I try to create a distUpgrade property in order to migrate one of my computer from jessie -> stretch
+
+I started wit this
+
+    distUpgrade :: String -> Property DebianLike
+    distUpgrade p = combineProperties ("apt " ++ p) $ props
+	& Apt.pendingConfigured
+	& Apt.runApt ["-y", "--force-yes", "-o", "Dpkg::Options::=\"--force-confnew\"", p]
+		`assume` MadeChange
+
+But when I try to use this
+
+    ...
+    & distUpgrade dist-upgrade
+
+ I get this error message
+
+    PrÃ©configuration des paquets...
+    setting xserver-xorg-legacy/xwrapper/allowed_users from configuration file
+    dpkg: erreur: requiert une option d'action
+
+    Utilisez Â«Â dpkg --helpÂ Â» pour obtenir de l'aide Ã  propos de l'installation et la dÃ©sinstallation des paquets [*]Â ;
+    Utilisez Â«Â aptÂ Â» ou Â«Â aptitudeÂ Â» pour gÃ©rer les paquets de m1578 mis Ã  jour, 376 nouvellement installÃ©s, 72 Ã  enlever et 0 non mis Ã  jour.
+    Il est nÃ©cessaire de prendre 0 o/1 458 Mo dans les archives.
+
+I checked that if I run this command on the command line it works
+
+    apt-get -y --force-yes -o Dpkg::Options::="--force-confnew" dist-upgrade
+
+even If I write this it works
+
+    apt-get -y --force-yes -o Dpkg::Options::=\"--force-confnew\" dist-upgrade
+
+So it seems to me that there is a problem with the runApt method or I missed something
+
+thanks
+

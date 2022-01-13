@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-07-20T15:54:17Z"
+ content="""
+That seems like a good plan to me, and nice use of the Conductor module.
+
+Of course, `conducts` is a Property, not an IO action and presumably
+so is `debootstrapTheChrootAndPackIntoQcow2File`,
+so to check if the disk image exists, you'll instead
+want to use the `check` combinator. Something like:
+
+	& check (not <$> doesFileExist "/path/to/image.qcow2")
+		debootstrapTheChrootAndPackIntoQcow2File theHost
+	& check (doesFileExist "/path/to/image.qcow2")
+		conducts [theHost] `requires` KVM.booted theHost
+
+Perhaps the redundancy in that can be reduced with a new combinator
+that chooses which action to run.
+
+You may want to also delete the chroot once the disk image is built.
+
+There could also be a minor gotcha with the Conductor module trying to
+conduct the VM before it's gotten set up yet, at worst this would make
+propellor display a warning.
+
+Let me know if you need help with this, 
+although I will next be available on July 30th.
+"""]]

@@ -1,0 +1,4 @@
+Currently, AFAIK, one needs to fork propellor repo, add its own configuration and compile propellor binary from all the source tree.
+It would be handy and more modular to allow one to have a propellor configuration linked to propellor as a library, hosted on hackage.
+
+> [[done]] --[[Joey]]

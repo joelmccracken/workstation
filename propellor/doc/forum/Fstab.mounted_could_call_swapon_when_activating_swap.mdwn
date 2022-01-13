@@ -1,0 +1,3 @@
+The mount command won't work when activating a swap partition/file, so we should call swapon instead.
+
+https://github.com/ArchiveTeam/glowing-computing-machine/tree/fstab-swap

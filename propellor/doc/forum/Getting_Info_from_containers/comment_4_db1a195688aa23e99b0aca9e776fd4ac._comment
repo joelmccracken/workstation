@@ -1,0 +1,41 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 4"
+ date="2019-04-20T21:54:16Z"
+ content="""
+After thinking about it, it would be nicer if an Host could give information about
+several of its children, that would be a larger change, but having the wrapper
+would then be useless and propellor would be able to find containers
+automatically.
+
+As a container is created by a property, a container Host could be included in
+Info of a Host. If an entry is to be propagated, then it is added as an entry
+of the host, else it is kept as an entry of the container.
+
+When looking up a host, we have to search for one Host of a [Host] list, but
+also for any Host listed in the containersInfo of all the listed Host.
+
+Not sure this is clear, here is a example to try to make it clearer:
+
+    hard_node :: Host
+        hostName = \"hard-node.example.org\"
+        hostProperties = ...
+        hostInfo =
+            [ a HostKeyInfo for riva
+            , a DnsInfoUnpropagated for riva
+            , a DnsInfoPropagated from container-web
+            , a ContainersInfo =
+                [ container_web :: Host
+                    hostName = \"container-web\"
+                    hostProperties = ...
+                    hostInfo =
+                        [ a HostKeyInfo for container-web
+                        , a DnsInfoUnpropagated for container-web
+                        ]
+                , container_git :: Host
+                    ...
+                ]
+            ]
+
+"""]]

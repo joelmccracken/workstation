@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2015-11-13T04:25:47Z"
+ content="""
+It depends. If it makes sense for your property to remove the software
+when it's reverted, then make `installed` revertable like that.
+
+Maybe that doesn't make sense though, you only want to make sure it's
+installed before using it, but you don't necessarily want to remove it just
+because this one property that uses it gets reverted. You can express that
+this way:
+
+	((setup `requires` installed) <!> cleanup)
+
+I do think it was a good change, in propellor 2.13.0, to make "revertable
+`requires` nonrevertable" not be a RevertableProperty. Now when we want a
+RevertableProperty, we have to think about whether it makes sense to revert
+the whole thing or not; before this change we just got back a so-called
+RevertableProperty that was not actually fully revertable, and probably
+didn't think about it enough.
+"""]]

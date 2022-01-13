@@ -1,0 +1,14 @@
+The Debian package of propellor ships its full source code because
+propellor is configured by rebuilding it, and embraces modification of any
+of the source code.
+
+/usr/bin/propellor is a wrapper which will set up a propellor git
+repository in ~/.propellor/, and run ~/.propellor/propellor if it exists.
+Edit ~/.propellor/config.hs to configure it.
+
+Note that upgrading the propellor package will not update your
+~/.propellor/ repository. This is because you may have local changes
+to the source, or may need to adapt your config.hs to work with the new
+version of propellor. Instead, if your ~/.propellor/ is from an older
+version of propellor, /usr/bin/propellor will warn that it's out of date,
+and tell you how to merge in the changes.

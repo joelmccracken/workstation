@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="craige@a46118dff5bc0fad85259759970d8b4b9fc377d7"
+ nickname="craige"
+ subject="comment 2"
+ date="2016-06-07T22:32:04Z"
+ content="""
+Local (Debian \"Stretch\"):
+
+    % cabal -V    
+    cabal-install version 1.22.9.0
+    using version 1.22.8.0 of the Cabal library
+
+Remote (Buntish 14.04):
+
+    # cabal -V
+    cabal-install version 1.16.0.2
+    using version 1.16.0 of the Cabal library
+
+This host needs to remain 14.04 for reasons out of my control.
+
+When I land in a few hours, I'll try upgrading cabal on that host and I expect the problem will disappear.
+
+Thanks!
+
+(kicking myself for not thinking of cabal versions)
+"""]]

@@ -1,0 +1,20 @@
+> Is the ghc ppa needed past 12.04LTS? Past that version, they seem to
+> have ghc 7.6.3 or newer, which is the current target version as it's the
+> version in debian stable. If only specific ubuntu versions need the ghc
+> ppa it would be best to avoid using it on newer ones.
+
+Oh! I hadn't realized 7.6.3 was the target, so I upgraded to 7.10.3 (which is what I've been using for things). I can definitely try a spin without it. I can't remember why I thought 7.6.3 was failing there but I'll definitely dig into it.
+
+> Even type aliases
+> would be an improvement but probably newtypes or ADTs would improve on
+> it. Also there may be some overlap with typees in Propellor.Property.Firewall
+
+Oh yes, definitely. I'll take a pass at that too, and dig into Firewall to see what's there.
+
+> Isn't Property HasInfo a shorter way to write that? I'm somewhat
+> surprised you arrived at the partially applied type family there; ghc
+> normally tells you the simplified type.
+
+    CombinedType (Property NoInfo) (Property HasInfo)
+
+That's an excellent question. I think ultimately I tried a type hole to find out what I was missing, and that's what it came up with, but it also might be differences in ghc versions I stumbled into. I'll give it a try with 7.6.3. I'm using Trusty 14.04.4 for the project this is for.

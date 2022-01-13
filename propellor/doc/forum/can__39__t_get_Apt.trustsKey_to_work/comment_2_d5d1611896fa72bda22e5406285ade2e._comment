@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject=" GPG keybox database version 1"
+ date="2018-08-24T00:29:50Z"
+ content="""
+I have propellor 5.3.6 running on debian testing. If I spin to the testing host, trustsKey works fine. On stretch I get at 'GPG keybox database version 1' installed. I guess on stretch it's still building propellor from the old sources? In any case, gpg doesn't know what do do with that keybox file (i.e. gpg < file craps out). Weird but true. In any case this breaks apt-key on that host, which is unfortunate. I guess I'll try overriding the trustsKey function in my config.hs
+
+"""]]

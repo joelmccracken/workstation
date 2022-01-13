@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-12-20T16:40:36Z"
+ content="""
+I think it makes sense to pass BIOS to Grub.bootsMounted (and also to
+Grub.boots). Of course the image building properties will also get an added
+parameter. This should be straightforward to do.
+
+(Using info for it could work, but I don't know if it would avoid any
+duplication of configuration.)
+"""]]

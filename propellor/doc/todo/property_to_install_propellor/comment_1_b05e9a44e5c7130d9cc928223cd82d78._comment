@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-04-09T17:42:10Z"
+ content="""
+Making this work when propellor is setting up a chroot is difficult,
+because the localdir is bind mounted into the chroot.
+
+Hmm, `unshare` could be helpful. Run shell commands to clone the localdir
+inside `unshare -m`, prefixed with a `umount localdir`. This way, the bind
+mount is avoided, and it writes "under" it. Limits the commands that can be
+run to set up the localdir to shell commands, but bootstrap already
+operates on terms of shell commands so that seems ok.
+
+`unshare` is linux-specific; comes in util-linux on modern linuxes.
+"""]]

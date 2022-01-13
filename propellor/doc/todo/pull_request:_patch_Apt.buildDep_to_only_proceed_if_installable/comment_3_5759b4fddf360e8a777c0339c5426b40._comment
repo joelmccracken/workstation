@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 3"
+ date="2015-11-26T14:39:31Z"
+ content="""
+I was hoping your deep knowledge of Apt would be able to help with this!
+
+Before I proceed, how would you feel about catching the output of apt and only printing it if apt did make changes?  Although that would make the output weirdly appear all at once when the build deps are actually installed, on the other hand it would mean no output if they're not, when we detect no changes to /var/lib/dpkg/status.
+"""]]

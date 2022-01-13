@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-06-14T17:11:09Z"
+ content="""
+We already have /usr/local/bin/propellor executable, so the cron job or
+whatever could be made to run it with a parameter that runs the turtle IO
+action. (Or generally, any IO action.. Being able to run arbitrary haskell
+IO code as a cron job would be great!)
+
+This would need some way to get a `UniqueId` for an IO action, that is
+stable across runs of propellor, and a way to build up a` Map UniqueId (IO ())` of such
+actions. The Info interface could be used to build up that Map.
+
+----
+
+Some of the places I'd like to use shell-monad though are where propellor
+is bootstrapping itself on a host and all it can easily run at that point
+is shell script.
+"""]]

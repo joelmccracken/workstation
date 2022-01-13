@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2016-06-20T17:53:24Z"
+ content="""
+I generally try to fix up after bugs in the implementation of properties,
+because otherwise maintaining my hosts gets problimatic.
+
+In this case, the sbuild support is pretty new and probably not much
+used, so I guess it's up to you. chmod -R is rather expensive. If there's
+a cheap way to detect when that's needed and only run it then, that
+would be ideal..
+"""]]

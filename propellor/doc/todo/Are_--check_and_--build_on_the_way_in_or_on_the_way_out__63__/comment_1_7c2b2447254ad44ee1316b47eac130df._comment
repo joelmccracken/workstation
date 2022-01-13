@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-12-26T15:55:36Z"
+ content="""
+--check does just what it's supposed to do. This is used during bootstrap
+to notice if the propellor binary has gotten broken by changes to eg system
+libraries.
+
+--build seems to have been added without being implemented.  But it does
+seem  useful to have a way to simply build propellor so implemented it now.
+"""]]

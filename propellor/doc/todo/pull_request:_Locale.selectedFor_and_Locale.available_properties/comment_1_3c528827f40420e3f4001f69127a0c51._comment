@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-11-25T15:24:10Z"
+ content="""
+The types here don't tell me much about what values it expects.
+
+`selectedFor :: String -> [String] -> Property NoInfo`
+
+Function needs either some examples in its haddock, or better types.
+
+Also, the `available` property incorrectly succeeds if the locale passed to
+it is not listed in locale.gen.
+
+(It would be nice for these properties to be revertable but that's just a
+thought.)
+"""]]

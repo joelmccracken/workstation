@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 1"
+ date="2016-07-24T23:40:45Z"
+ content="""
+Thanks for looking at this, though looking as master you haven't actually merged my branch.
+
+I'm reluctant to build in a lot of shell scripting logic to do better than `sleep 10`.  Do you think it would be worth writing a property that ensures that a process with a given pid file has been killed?  Or just an action in the propellor monad?
+"""]]

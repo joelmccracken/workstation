@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-12-29T19:49:02Z"
+ content="""
+I've added some hints to the README, of course it's been a while since I
+ran it and I only ran it a couple times. The content of the config.hs is
+really more important than the gory details of how to run it, in my opinion.
+"""]]

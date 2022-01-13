@@ -1,0 +1,127 @@
+[[!meta title="Propellor configuration for the Haskell newbie"]]
+
+Propellor's config file is written in Haskell, and
+[Haskell](http://www.haskell.org/) is invaluable to extend Propellor with
+your own custom properties. But you don't need to know about monads to
+configure Propellor!
+
+Let's take a quick tour of the `config.hs` file..
+
+[[!format haskell """
+-- This is the main configuration file for Propellor, and is used to build
+-- the propellor program.
+"""]]
+
+So, `-- ` starts a comment in this file.
+
+[[!format haskell """
+import Propellor
+import qualified Propellor.Property.File as File
+import qualified Propellor.Property.Apt as Apt
+import qualified Propellor.Property.User as User
+import qualified Propellor.Property.Cron as Cron
+"""]]
+
+This loads up Propellor's modules. You'll almost certainly want these;
+many more can be found in the [API documentation](http://hackage.haskell.org/package/propellor).
+
+[[!format haskell """
+main :: IO ()
+main = defaultMain hosts
+"""]]
+
+This config file *is* the Propellor program, and so it needs a little
+stub to go run itself. No need to ever change this part.
+`hosts` is the list of hosts that you configure, and it comes next:
+
+[[!format haskell """
+-- The hosts propellor knows about.
+hosts :: [Host]
+hosts =
+	[ mylaptop
+	, myserver
+	]
+"""]]
+
+Finally, you need to define the configuration for each host in the list:
+
+[[!format haskell """
+mylaptop :: Host
+mylaptop = host "mylaptop.example.com" $ props
+	& osDebian Unstable X86_64
+	& Apt.stdSourcesList
+
+myserver :: Host
+myserver = host "server.example.com" $ props
+	& osDebian (Stable "stretch") X86_64
+	& Apt.stdSourcesList
+	& Apt.installed ["ssh"]
+"""]]
+
+The configuration for the mylaptop host first tells propellor what
+OS it's running. Then the `stdSourcesList` line tells propellor to
+configure its `/etc/apt/sources.list`, using its OS.
+(Of course you might want to change that `Unstable` to `Stable`.)
+
+Each property of the host is prefixed with an "&" operator. This just makes
+a list of properties.
+
+Some other properties you may find in your config.hs, or want to add:
+
+[[!format haskell """
+        & Apt.unattendedUpgrades
+        & User.hasSomePassword (User "root")
+        & "/etc/default/foodaemon" `File.containsLine` "ENABLED=yes"
+        & Cron.runPropellor (Cron.Times "30 * * * *")
+"""]]
+
+Some of these properties can be reverted -- this makes Propellor undo whatever
+effects they might have. For example, unattended upgrades can be scary, so
+maybe you turned that on, but want to disable it now. To do so, just change
+the "&" to a "!"
+
+[[!format haskell """
+        ! Apt.unattendedUpgrades
+"""]]
+
+Some properties cannot be reverted. Yet. It takes coding to implement
+revertability. If you try to revert a property that does not support
+reversion, propellor will **fail to compile**! This is a good thing..
+it avoids you getting confused or bad things happening.
+
+The error message when this happens might look a little scary. But if
+you read through it, it's remarkably precise about what and where the problem
+is.
+
+<pre>
+config.hs:30:19:
+    Couldn't match expected type `RevertableProperty'
+                with actual type `Property DebianLike'
+    In the return type of a call of `Apt.installed'
+    In the second argument of `(!)', namely `Apt.installed ["ssh"]'
+    In the first argument of `(&)', namely
+      `host "mylaptop.example.com" & Apt.stdSourcesList Unstable
+       & Apt.unattendedUpgrades
+       ! Apt.installed ["ssh"]'
+</pre>
+
+Similarly, if you make a typo in the config file, you'll probably get a long
+but informative error message.
+
+<pre>
+config.hs:27:19:
+    Not in scope: `Apt.standardSourcesList'
+    Perhaps you meant one of these:
+      `Apt.stdSourcesList' (imported from Propellor.Property.Apt)
+...
+</pre>
+
+That's really all there is to configuring Propellor. Once you
+have a `config.hs` ready to try out, you can run `propellor --spin $host`
+on one of the hosts configured in it.
+
+See the [[README]] for a further quick start and [[Writing Properties]]
+for guidance on extending propellor with your own custom properties.
+
+(If you'd like to learn a little Haskell after all, check out
+[Learn You a Haskell for Great Good](http://learnyouahaskell.com/).)

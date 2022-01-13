@@ -1,0 +1,13 @@
+Propellor currently needs a central git server. And it has a special-cased
+protocol during bootstrap that transfers the git repo over to a new host,
+using the ssh connection that will be used to run propellor.
+
+This could be improved by making a git push be done whenever
+`propellor spin $host` runs. The remote propellor runs `git receive-pack`;
+the local one runs `git send-pack`.
+
+Then there would be no need for a central git repo. Although still very
+useful if you have multiple propellor driven hosts and you want to just git
+commit and let cron sort them out.
+
+> [[done]]! --[[Joey]]

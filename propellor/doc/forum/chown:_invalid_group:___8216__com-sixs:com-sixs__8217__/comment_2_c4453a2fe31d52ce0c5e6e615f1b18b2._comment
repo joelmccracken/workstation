@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2019-02-13T21:48:30Z"
+ content="""
+Make that into a git patch and I will merge it.
+
+However.. If you `git grep userGroup` you will find all the other places
+that propellor assumes a user-group system. Seems it would be worth fixing
+those too, especially the other ones in Ssh.
+
+Seems like another approach to it could be to make
+`userGroup`'s behavior configurable based on another Property
+of the Host that sets Info containing say, a function from `User -> Group`.
+Looks to me that would be doable, if a little bit annoying since userGroup
+would need to change from a pure function to a Propellor action in order to
+use `askInfo`.
+"""]]

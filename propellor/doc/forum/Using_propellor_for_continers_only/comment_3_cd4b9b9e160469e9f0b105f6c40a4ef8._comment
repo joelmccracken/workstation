@@ -1,0 +1,54 @@
+[[!comment format=mdwn
+ username="bardur.arantsson"
+ avatar="http://cdn.libravatar.org/avatar/a0be0039b44d33262b7ae650a0803ad5"
+ subject="comment 3"
+ date="2017-05-12T06:50:49Z"
+ content="""
+Ok, so I've tried to use this to build a Chroot (a reasonable starting point for building containers), using the following program:
+
+    module Main
+      ( main
+      ) where
+
+    import Propellor
+    import Propellor.Engine
+    import Propellor.Property.DiskImage
+    import qualified Propellor.Property.Apt as Apt
+    import qualified Propellor.Property.User as User
+    import Propellor.Property.Chroot
+
+    main :: IO ()
+    main = mainProperties $ host \"whatever\" $ props
+            & provisioned (mychroot \"out\")
+      where
+        mychroot d = debootstrapped mempty d $ props
+            & osDebian Unstable X86_64
+            & Apt.installed [\"linux-image-amd64\"]
+            & User.hasPassword (User \"root\")
+            & User.accountFor (User \"demo\")
+            & User.hasPassword (User \"demo\")
+
+It seems that \"debootstrap\" finishes:
+
+    I: Configuring apt-transport-https...
+    I: Configuring tasksel...
+    I: Configuring tasksel-data...
+    I: Configuring libc-bin...
+    I: Configuring systemd...
+    I: Configuring ca-certificates...
+    I: Base system installed successfully.
+
+But fails immediately afterwards:
+
+    ldd: /usr/local/propellor/propellor: No such file or directory
+    ** warning: user error (ldd [\"/usr/local/propellor/propellor\"] exited 1)
+    whatever chroot out exists ... failed
+    whatever overall ... failed
+
+(I should probably have used a different hostname than \"whatever\", but... whatever :).)
+
+So it seems that the chroot support still expects propellor to be installed on the host system?
+
+I should mention that I've done an extremely small patch to Propellor locally, just to the ChrootBootstrapper instance for ArchLinux to allow it to call debootstrap on Arch Linux -- it seems to exist as a package these days, not sure if it did when that Propellor code was written. Anyway...
+
+"""]]

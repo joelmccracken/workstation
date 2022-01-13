@@ -1,0 +1,56 @@
+Currently, properties don't indicate what OS, or OS's, they work with.
+
+Using `withOS` means throwing a runtime error on an unsupported OS. Yuck.
+
+Could the OS of a property be lifted to the type level?
+
+If we had `Property i '[OS]` then combining properties would need to update
+the type-level OS list. 
+
+For example, `Property i '[Debian, FreeBSD]` combined with `Property i '[Debian, Buntish]` 
+yields a `Property i '[Debian]` -- the intersection of the OS's supported by
+the combined properties.
+
+And, combining two properties that demand different OS's would need to be a
+type error.
+
+Another kind of property combination would be to glue two properties that
+support different OS's together, yielding a property that supports both,
+and so has both in its '[OS] type list, and that choses which to run using
+withOS.
+
+The `os` property would need to yield a `Property (os:[])`, where the type
+level list contains a type-level eqivilant of the value passed to the
+property. Is that possible to do?
+Or, alternatively, could have less polymorphic `osDebian` etc
+properties replace the `os` property.
+
+If a Host's list of properties, when all combined together,
+contains more than one element in its '[OS], that could be a type error,
+the OS of the Host is indeterminite. Which would be fixed by using the `os`
+property to specify.
+
+On the other hand, if a Host's list of properties yields a single OS 
+the type needs to be just `Host`.
+After all, propellor operates on a `[Host]`; if we had `Host OS`,
+the list couldn't contain host's with different OS's. 
+
+One way to do this would be to make a Host not contain a Property, but a
+Propellor Result. The list of Properties could be combined together, and
+the Propellor Result extracted from the resulting single property.
+
+----
+
+This is somewhat similar to [[type_level_port_conflict_detection]].
+
+----
+
+Note that propellor needs to remain buildable with Debian stable's
+ghc 7.6.3. I was able to get the type level OS implementation backported to
+work with that version, with some added ugliness.
+
+--[[Joey]]
+
+[[!tag user/joey]]
+
+> [[done]]!! --[[Joey]] 

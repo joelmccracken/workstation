@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2017-10-04T17:12:59Z"
+ content="""
+Not sure why unpropelling blocks this. IIRC we discussed using a regular
+propellor chroot to set up the sbuild chroot. And I pointed out that when
+propellor runs inside a chroot, it does it without installing any
+dependencies into the chroot; everything propellor needs to run is
+bind mounted into /usr/local/propellor in the chroot.
+
+So, the most an "unpropell" property would need to do in a chroot is to
+unmount below /usr/local/propellor and remove that directory, which should
+then be empty. This might be desirable to be sure that the sbuild
+environment is 100% clean, in the unlikely chance that something
+builds differently when /usr/local/propellor exists.
+"""]]

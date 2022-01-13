@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 6"
+ date="2015-12-02T04:57:57Z"
+ content="""
+Seems I blanked on your `changesFile` combinator when I sat down to write mine.  Taking a look now, my approach is much more direct for cases like `Apt.buildDep` when the problem is registering a change when there should be NoChange, whereas I think the intention of your changesFile is the opposite case.  Though it might be nice to combine them.  Let me know what you think.
+"""]]

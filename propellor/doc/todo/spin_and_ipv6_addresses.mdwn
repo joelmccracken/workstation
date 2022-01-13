@@ -1,0 +1,9 @@
+Currently, --spin uses Network.BSD to look up IPv4 addresses of hostnames.
+Not Ipv6.
+
+This doesn't prevent using propellor with IPv6 only hosts. But it prevents
+using short names for such hosts with --spin. And, propellor only looks at
+configured ipv4 properties of a host when deciding if the DNS hostname is
+out of date, and falling back to contacting the host by IPv6 address.
+
+> [[fixed|done]] --[[Joey]]

@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 4"
+ date="2017-02-03T04:07:58Z"
+ content="""
+> Yes please add a new type alias for String (or an ADT) if Package is not appropriate.
+
+Propellor won't be parsing any of the regexp or globs, so I've added a new type alias rather than an ADT.
+
+> Nice surprise that tightenTargets works on RevertableProperty at all. Since it does, you should be able to tighten one side, revert, tighten the other side, and re-revert. Or, deconstruct the RevertableProperty, tighten both sides individually, and reconstruct it.
+
+I don't understand what you're getting at with the first of these suggestions.
+
+In any case, now that I'm not using `File.containsBlock`, it's easy to just apply `tightenTargets` to each side.
+
+> I've added a Propellor.Property.File.configFileName that should be suitable for your purposes, and others..
+
+Very nice :)  I've updated my branch to use this.  I haven't removed `File.containsBlock`, since it might be useful in the future, but you could of course revert the relevant commit.
+"""]]

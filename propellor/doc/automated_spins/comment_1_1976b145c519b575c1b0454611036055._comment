@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="arnaud@30aba4d9f1742050874551d3ddc55ca8694809f8"
+ nickname="arnaud"
+ subject="Spinning hosts in parallel"
+ date="2016-03-19T17:52:04Z"
+ content="""
+I just noticed the existence of this conductor property, which seems really interesting. I was trying to understand if and how it would be possible to spinning hosts in parallel. This could be done either as part of a conductor's run, e.g. by traversing the graph in parallel, or from command-line. It seems to me I could use directly `spin` or `spin'` functions to do that from forked threads or processes, with the master process doing the spin commit, but I may be overlooking some potential issues...
+"""]]

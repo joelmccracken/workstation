@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-12-01T21:39:14Z"
+ content="""
+One way is to enable Propellor.Property.Service.noServices
+during the install and revert it afterwards, but that does prevent any
+services being started while it's enabled.
+
+I don't know of a very good way to do this on a Debian system. If you can
+find one, I'm sure propellor can use it.
+
+It might be possible, when systemd is used, to first apply
+Propellor.Property.Systemd.disabled on the service that has not been
+installed yet. I have not checked if that works.
+"""]]

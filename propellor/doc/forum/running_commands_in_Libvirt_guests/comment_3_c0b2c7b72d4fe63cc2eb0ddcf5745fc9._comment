@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 3"
+ date="2019-08-18T15:25:10Z"
+ content="""
+Unfortunately, there isn't enough information in your report for me to be able to think about what's going on.
+
+Perhaps you could look inside Libvirt.hs and try to determine why it is failing the first time but then succeeding.
+"""]]

@@ -1,0 +1,49 @@
+[[!comment format=mdwn
+ username="s@aa9ff9ce06b08acfd2a93ebd342ce6879430fbdd"
+ nickname="s"
+ avatar="http://cdn.libravatar.org/avatar/81bf27f8b35011d1846711fa37a5588f"
+ subject="comment 4"
+ date="2019-06-04T00:38:58Z"
+ content="""
+[@spwhitton](spwhittonhttps://propellor.branchable.com/user/spwhitton/), Sorry I should've mentioned it before. I've already tried merging upstream changes using `git merge`, I'm unable to merge it due to different commit histories:
+
+```
+cygnus$ git remote -v           
+s       g@git.rs:~/c/propellor.git (fetch)
+s       g@git.rs:~/c/propellor.git (push)
+u       git://propellor.branchable.com/propellor (fetch)
+u       git://propellor.branchable.com/propellor (push)
+
+
+cygnus$ git tag -l | grep 5.8.0
+5.8.0
+
+cygnus$ git merge 5.8.0
+fatal: refusing to merge unrelated histories
+cygnus$ git merge u/master
+fatal: refusing to merge unrelated histories
+```
+
+First commit in upstream repo:
+
+```
+cygnus$ git log --reverse u/master | head -n 5
+commit d9af8bac5eb7836a3c90e37e870fd73d30b841fd
+Author: Joey Hess <joey@kitenet.net>
+Date:   Sat Mar 29 23:10:52 2014 -0400
+
+    initial check-in
+```
+
+First commit in my repo:
+
+```
+cygnus$ git log --reverse s/master | head -n 5 
+commit ff6173d6cd45e383da0f315bc80b52d486306cbc
+Author: build <build@buildhost>
+Date:   Tue Nov 22 14:16:29 2016 -0700
+
+    distributed version of propellor
+
+```
+"""]]

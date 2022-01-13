@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2020-06-17T22:01:21Z"
+ content="""
+Simplest yes, but also kicking the can down the road as they'll
+presumably remove 1- at some point.
+
+I've implemented new-build support in
+[[!commit 745784f61bdd678e20b1b18743f18d458836a802]].
+Have not actually tested it on bootstrapping a new host yet, but I assume
+it will work barring some dumb typo.
+"""]]

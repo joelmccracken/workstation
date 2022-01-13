@@ -1,0 +1,5 @@
+Is there a way to enable gnupg2 support?
+
+I now use gnupg2 on my laptop, and gpg 1.4 cannot connect to gnupg-agent 2.1... As a result, I have to enter my password several times when running propellor, while gpg-agent is actually available to gpg 2.1, available as command gpg2.
+
+    gpg: gpg-agent is not available in this session

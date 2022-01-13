@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-12-31T16:03:40Z"
+ content="""
+You'd update it by git merge with propellor upstream, since your ~/.propellor
+in this case is forked from propellor's git repository, rather than the other
+option of being a separate git repository that uses propellor as a library.
+
+I think there should be more to the message than what you showed,
+explaining what you'd to do merge.
+
+        warningMessage ("** Your ~/.propellor/ is out of date..")
+        let also s = hPutStrLn stderr ("   " ++ s)
+        also ("A newer upstream version is available in " ++ distrepo)
+        if havebranch
+                then also ("To merge it, run: git merge " ++ upstreambranch)
+                else also ("To merge it, find the most recent commit in your repository's history that corresponds to an upstream release of propellor, and set refs/remotes/" ++ upstreambranch ++ " to it. Then run propellor again.")
+"""]]

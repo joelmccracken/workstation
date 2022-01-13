@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-06-23T18:42:32Z"
+ content="""
+It seems that the limit is 255 characters, and this
+limit applies to any string in a bind zone file,
+rather than being a maximim line length. A single line can contain multiple
+such strings, although there's probably a maximum line length somewhere 
+too, so using parens to extend across multiple lines is wise.
+
+The values inside the parens are concacenated together, no newline is added
+to the string that bind builds up from them AFAICS.
+
+So it seems your code is stripping out the newlines from the TXT value.
+Which probably doesn't matter for DKIM public key material,
+and I don't think that bind zone files support multiline strings anyway.
+But a single line could be too long and splitting on newlines would not
+help then.
+
+So, I think the thing to do would be to make `rValue` break TXT
+strings into substrings no longer than 255 characters. Then you don't
+need a new constructor, and long SSHFP etc records could also be handled
+that way.
+"""]]

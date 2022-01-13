@@ -1,0 +1,34 @@
+Hello, I hope this is the right place to ask for help.
+
+I am new to Haskell and Propellor; just want to give it a try. I have been using ansible but now looking for an alternative.
+
+I did the following steps:
+
+* install propellor on control machine with: `stack install propellor`
+
+* `propellor --init`
+
+* create a minimal config.hs file, which does nothing:
+
+        abc :: Host
+        abc = host "abc" $ props
+            & osDebian (Stable "stretch") X86_64
+
+
+when I run `propellor --spin abc`, it ended with the following message:
+
+    .
+    .
+    Installed propellor-5.3.4
+    Resolving dependencies...
+    Configuring config-0...
+    Preprocessing executable 'propellor-config' for config-0...
+    cabal: can't find source for config in .
+    sh: 1: ./propellor: not found
+    propellor: user error (ssh <long text>
+
+Can someone give me a hint how to process further?
+
+Regards,
+Tony
+

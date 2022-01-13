@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2020-08-14T16:31:36Z"
+ content="""
+I'm curious why you needed to make clean. AFAIK the new cabal will ignore
+any cruft left by the old version and should just do a from scratch build
+on its own.
+
+Indeed, one of my hosts managed by propellor has both
+/usr/local/propellor/dist and dist-newstyle, and is building successfully
+in the latter directory.
+"""]]

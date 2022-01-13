@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-09-25T13:37:34Z"
+ content="""
+I'm generally happy to accept new modules into propellor. However, this one
+is problimatic since it adds several new dependencies. I want to keep
+propellor's dependencies minimal.
+
+It could be integrated behind a flag in propellor.cabal, but then I'd need
+to worry about testing it (or not testing it) for integration when there
+are changes.
+
+So, maybe this works better as an addon module? A propellor user could then
+add it to their config.hs. Only problem I see is, it currently depends on
+propellor, so a user can't modify their propellor.cabal to depend on it.
+So you'd have to use propellor as a library.
+"""]]

@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="weinzwang"
+ subject="Same problem with ssh.knownHost"
+ date="2016-07-24T15:47:25Z"
+ content="""
+Making a host key known to a brand new user `requires` the
+owner of a nonexistent file to be set, if I understand the
+code correctly. Removing the \"requires\"-lines from the function
+modKnownHost makes the problem go away, but that's probably not
+the correct solution.
+"""]]

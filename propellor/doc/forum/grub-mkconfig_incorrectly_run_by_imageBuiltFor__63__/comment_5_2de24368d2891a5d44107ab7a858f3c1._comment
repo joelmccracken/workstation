@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 5"
+ date="2017-12-20T18:19:49Z"
+ content="""
+Are you preparing a patch to pass BIOS to Grub.bootsMounted and Grub.boots or do you want me to do so?
+"""]]

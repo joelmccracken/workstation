@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 8"""
+ date="2014-12-15T15:56:45Z"
+ content="""
+@Philipp, indeed: It's important to realize that all data entered into
+the privdata with `propellor --set` is deployed in cleartext to the
+machines that use it. Kept in a directory only root can read, but still,
+important to bear in mind.
+
+I've added the ability to use `CryptPassword` instead of `Password`
+to `User.hasPassword` and `User.hasSomePassword`.
+"""]]

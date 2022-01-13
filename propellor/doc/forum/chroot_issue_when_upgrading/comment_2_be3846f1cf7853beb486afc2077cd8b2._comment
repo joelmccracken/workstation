@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 2"
+ date="2016-03-29T16:58:05Z"
+ content="""
+Hello, joey now that I installed 2.17.1 I can test the fix but...
+
+    [2016-03-29 16:50:06 UTC] call: apt-get [\"update\"]
+    [2016-03-29 16:50:06 UTC] fgProcess (\"apt-get\",[\"update\"])
+    E: dpkg was interrupted, you must manually run 'dpkg --configure -a' to correct the problem. 
+    [2016-03-29 16:50:07 UTC] fgProcess done (\"apt-get\",[\"update\"])
+    [2016-03-29 16:50:07 UTC] process done ExitFailure 100
+
+my property is
+
+    chroot = Chroot.debootstrapped Debootstrap.BuilddD chrootdir
+             & os system
+             & case proxy of
+                  (Just p) -> \"/etc/apt/apt.conf.d/01proxy\" `File.hasContent` [\"Acquire::http::Proxy \\"\" ++ p ++ \"\\";\"]
+                  Nothing -> doNothing
+             & Apt.installed [\"apt-transport-https\"]
+             & Apt.stdSourcesList
+             & Apt.update `onChange` Apt.upgrade
+             & Apt.cacheCleaned
+
+so it failes in the Apt.update and do not reach Apt.upgrade
+so it seems that update should be fixed also :)
+
+"""]]

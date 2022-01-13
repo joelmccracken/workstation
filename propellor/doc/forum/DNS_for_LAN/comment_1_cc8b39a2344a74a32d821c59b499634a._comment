@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="mDNS is ok"
+ date="2020-06-10T23:53:36Z"
+ content="""
+I ended up (finally) enabling mDNS in network-manager and systemd-resolved and it seems work pretty well for my goal of ssh-ing to machines on my LAN.  avahi is the other main mDNS server as far as I know.
+"""]]

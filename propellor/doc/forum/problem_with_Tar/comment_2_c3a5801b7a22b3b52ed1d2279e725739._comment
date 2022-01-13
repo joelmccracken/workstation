@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-10-27T16:54:23Z"
+ content="""
+This module has not been submitted or merged into mainline propellor, 
+at least not yet, so I guess you can solve build problems with it however
+you like. ;-)
+"""]]

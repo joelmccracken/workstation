@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-05-29T18:50:07Z"
+ content="""
+`stack install propellor` is already supported, and when `propellor --init`
+detects it was installed that way, it will set up the user's propellor 
+config to also be built using stack locally (via `git config
+propellor.buildsystem stack`).
+
+Supporting using stack to build propellor on the Host too is
+the missing part, and something I'd take a patch for.
+
+Your patch as it stands discards the cabal support. 
+But, I personally want to continue building propellor with cabal on my
+Hosts, at least until stack is available in Debian stable, and
+probably longer. (I use Debian's ghc and haskell packages for other things
+on my hosts, so using stack would waste disk space.)
+
+I feel there needs to be a way to configure this. It would probably be fine to
+use stack on the remote host if the local propellor repository has
+`git config propellor.buildsystem stack` set. Or perhaps it should be
+configured in the config.hs.
+"""]]

@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2018-06-23T19:13:59Z"
+ content="""
+Well, cabal files can have flags that enable additional dependencies, but
+using them complicates testing the program since you have to try building
+it with different combinations of flags. And deploying propellor with the
+desired flags turned on would be an additional complication.
+
+I feel that additional libraries that depend on propellor and the sql
+library and provide properties is a better approach. The user can easily
+add the dependency to their ~/.propellor/config.cabal, and the necessary
+dependencies will be automatically installed when propellor is deploying
+itself to a new host.
+"""]]

@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-03-08T21:19:01Z"
+ content="""
+Ok, got intersectSupportedOS fixed.
+
+	*Propellor.Types.OS.TypeLevel> :t (intersectSupportedOS (combineSupportedOS freeBSD debian) debian) 
+	(intersectSupportedOS (combineSupportedOS freeBSD debian) debian)  :: OSList '['OSDebian]
+
+So, the type level OS lists are ready, on to the next step ... eventually ...
+"""]]

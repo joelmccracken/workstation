@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="jerryjacobs1989@d19093c366dfb2959c549ed1aff6175ddc7a7a5b"
+ nickname="jerryjacobs1989"
+ subject="Thank you"
+ date="2015-11-29T13:04:56Z"
+ content="""
+I was bitten also by this weird error message and have submitted it upstream:
+https://github.com/systemd/systemd/issues/2060
+"""]]

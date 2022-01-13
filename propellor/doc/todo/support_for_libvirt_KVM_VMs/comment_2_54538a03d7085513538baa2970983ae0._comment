@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2018-10-14T00:36:55Z"
+ content="""
+@david, but you'd not then want to change the backing raw image, I assume,
+or does qcow somehow deal with that?
+"""]]

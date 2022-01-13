@@ -1,0 +1,10 @@
+Hello,
+
+Maybe this should not create the directory as the given path is absolute,
+but unless my understanding is wrong, `Ssh.userKeys` does not create the
+directory either.
+
+Could there be a `Ssh.userKeyNamed` for example which would prepend
+`$HOME/.ssh` to the given name? 
+
+> [[done]] --[[Joey]]

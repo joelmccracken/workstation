@@ -1,0 +1,5 @@
+Attempting to build a Buntish chroot using Debootstrap.built on a Debian host fails until the user installs the ubuntu-archive-keyring package.
+
+Debootstrap.built should ensure that the relevant *-archive-keyring package is installed before invoking debootstrap(1).
+
+--spwhitton

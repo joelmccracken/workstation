@@ -1,0 +1,7 @@
+Please consider merging branch `defaultbranch` of repo `https://git.spwhitton.name/propellor`.
+
+This branch adds a new property `Git.bareRepoDefaultBranch` which sets the default branch of a bare repository.  This is useful when hosting git repositories that don't have a master branch, so that something gets checked out when someone clones them.
+
+I limited this property to bare repositories since the notion of a default branch for a non-bare repository doesn't really make sense.
+
+> [[merged|done]] --[[Joey]]

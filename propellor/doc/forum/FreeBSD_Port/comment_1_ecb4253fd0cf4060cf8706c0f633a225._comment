@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-03-08T02:01:27Z"
+ content="""
+This has now been merged into propellor master, after quite a lot more
+improvements. See the [[FreeBSD]] page.
+"""]]

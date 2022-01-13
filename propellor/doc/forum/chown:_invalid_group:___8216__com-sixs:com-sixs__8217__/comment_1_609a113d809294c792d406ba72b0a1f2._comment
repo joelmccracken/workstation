@@ -1,0 +1,36 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 1"
+ date="2019-02-13T11:33:20Z"
+ content="""
+something like this
+
+    -- | Ensures that a user's authorized_keys contains a line.
+    -- Any other lines in the file are preserved as-is.
+    authorizedKey' :: User -> Group -> String -> RevertableProperty UnixLike UnixLike
+    authorizedKey' user@(User u) grp l = add <!> remove
+      where
+    	add = property' (u ++ \" has authorized_keys\") $ \w -> do
+    		f <- liftIO $ dotFile \"authorized_keys\" user
+    		ensureProperty w $ modAuthorizedKey' f user grp $
+    			f `File.containsLine` l
+    				`requires` File.dirExists (takeDirectory f)
+    	remove = property' (u ++ \" lacks authorized_keys\") $ \w -> do
+    		f <- liftIO $ dotFile \"authorized_keys\" user
+    		ifM (liftIO $ doesFileExist f)
+    			( ensureProperty w $ modAuthorizedKey' f user grp $
+    				f `File.lacksLine` l
+    			, return NoChange
+    			)
+    
+    modAuthorizedKey' :: FilePath -> User -> Group -> Property UnixLike -> Property UnixLike
+    modAuthorizedKey' f user grp p = p
+    	`before` File.mode f (combineModes [ownerWriteMode, ownerReadMode])
+    	`before` File.ownerGroup f user grp
+    	`before` File.ownerGroup (takeDirectory f) user grp
+
+then it is trivial to rewrite the previous properties :)
+
+but I do no know if this is the right path to follow.
+"""]]

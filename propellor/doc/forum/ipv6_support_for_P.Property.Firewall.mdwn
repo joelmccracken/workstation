@@ -1,0 +1,1 @@
+would it make sense for Firewall.rule to call ip6tables as well as iptables? Or is a lower level interface with e.g. rule6 invoking ip6tables. To be honest I haven't tested ip6tables on machines without ipv6 support, so I don't know how gracefully it fails.

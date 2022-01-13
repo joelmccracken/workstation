@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 3"
+ date="2015-12-06T23:58:51Z"
+ content="""
+I've implemented these in the `safetychecks` branch of `https://git.spwhitton.name/propellor`.
+
+A nice side effect of my implementation is that the spin only errors out after there's been an attempt to compile Propellor.  So you can run `propellor --spin` in order to have GHC typecheck your code on a feature branch.
+"""]]

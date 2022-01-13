@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2017-04-06T23:51:08Z"
+ content="""
+Merged. Have not tested it either.
+
+On my Debian system, the swapon command does not support the
+`--no-headings` that you used. It's `--noheadings` here. Is that a typo in
+your patch?
+
+I've simply removed that option for now, since it probably won't
+hurt if it treats the heading like another device that's swapped on.
+"""]]

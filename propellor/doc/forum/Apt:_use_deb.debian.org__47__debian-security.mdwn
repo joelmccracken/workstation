@@ -1,0 +1,1 @@
+Maybe we could use deb.debian.org/debian-security instead of security.debian.org in Apt properties. What do you think about this?

@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://joeyh.name/"
+ ip="209.250.56.214"
+ subject="comment 1"
+ date="2014-04-21T13:31:13Z"
+ content="""
+Running propellor that way would probably need ssh to allocate a tty in order for sudo's password prompt to work. And it adds complexity. Does it add security? I don't think so, PermitRootLogin=without-password or PasswordAuthentication=no is not going to let anyone brute force the root account.
+
+PermitRootLogin=forced-commands-only might be worth making easy to set up, so the only command that can be run with some special propellor-specific ssh key is propellor.
+"""]]

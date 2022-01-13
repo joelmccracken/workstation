@@ -1,0 +1,87 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="giving up on Firewall persistence"
+ date="2019-08-11T11:29:07Z"
+ content="""
+I ran out of time/motivation to do this \"right\", so I just hardcoded all the things, and made a new module called IPTables
+
+[[!format haskell \"\"\"
+module Propellor.Property.SiteSpecific.Tethera.IPTables (
+  systemdUnits
+  , rules
+  ) where
+
+import Propellor.Base
+import qualified Propellor.Property.File as File
+
+
+systemdUnits :: Property UnixLike  
+systemdUnits = combineProperties \"systemd units for iptables\" $ props
+                & unitFile \"iptables\"
+                & unitFile \"ip6tables\"                
+  where
+    unitDir = \"/etc/systemd/system\"
+    unitFile baseName = combineProperties (\"systemd units for \" ++ baseName) $ props
+                & File.hasContent (unitDir ++ \"/\"++baseName++\".service\")
+                [
+                  \"[Unit]\"
+                , \"Description=Packet Filtering Framework\"
+                , \"DefaultDependencies=no\"
+                , \"After=systemd-sysctl.service\"
+                , \"Before=sysinit.target\"
+                , \"[Service]\"
+                , \"Type=oneshot\"
+                , \"ExecStart=/sbin/\"++baseName++\"-restore -n /etc/iptables/\"++baseName++\".rules\"
+                , \"ExecReload=/sbin/\"++baseName++\"-restore -n /etc/iptables/\"++baseName++\".rules\"
+                , \"ExecStop=/usr/local/bin/flush-\"++baseName++\".sh\"
+                , \"RemainAfterExit=yes\"
+                , \"[Install]\"
+                , \"WantedBy=multi-user.target\"
+                ]
+                & File.hasContent fipSh
+                [
+                  \"#!/bin/sh\"
+                , baseName ++ \" -F INPUT\"
+                , baseName ++ \" -F FORWARD\"
+                , baseName ++ \" -F OUTPUT\"
+                , baseName ++ \" -P INPUT ACCEPT\"
+                , baseName ++ \" -P FORWARD ACCEPT\"
+                , baseName ++ \" -P OUTPUT ACCEPT\"
+                ]
+                & File.mode fipSh 0o0755
+      where
+            fipSh = \"/usr/local/bin/flush-\"++baseName++\".sh\"
+
+
+-- this currently makes the possibly bad assumption that the same rule
+-- file will work for both v4 and v6
+rules :: Property UnixLike
+rules  = combineProperties \"systemd units for iptables\" $ props
+         & ruleFile \"iptables\"
+         & ruleFile \"ip6tables\"                
+  where
+    ruleDir = \"/etc/iptables\"
+    ruleFile baseName = combineProperties (baseName ++ \" rules\") $ props
+                        & File.hasContent (ruleDir ++ \"/\"++baseName++\".rules\")
+
+                        [ \"*filter\"
+                        , \":INPUT ACCEPT [0:0]\"
+                        , \":FORWARD ACCEPT [0:0]\"
+                        , \":OUTPUT ACCEPT [0:0]\"
+                        , \"-A INPUT -m conntrack --ctstate INVALID -j DROP\"
+                        , \"-A INPUT -i lo -j ACCEPT\"
+                        , \"-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\"
+                        , \"-A INPUT -p icmp -j ACCEPT\"
+                        , \"-6 -A INPUT -p ipv6-icmp -j ACCEPT\"
+                        , \"-6 -A INPUT -m state --state NEW -m udp -p udp -s fe80::/10 --dport 546 -j ACCEPT\"
+                        , \"-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT\"
+                        , \"-A INPUT -j DROP\"
+                        , \"-A FORWARD -j DROP\"
+                        , \"-A OUTPUT -o lo -j ACCEPT\"
+                        , \"-A OUTPUT -j ACCEPT\"
+                        , \"COMMIT\"
+                        ]
+                        `requires` File.dirExists ruleDir
+\"\"\"]]
+"""]]

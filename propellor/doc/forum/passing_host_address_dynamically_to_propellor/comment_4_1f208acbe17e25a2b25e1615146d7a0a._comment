@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="arnaud.oqube@c9b8c7ea33f1dea0b7a5485b86825c5bfa9efbf7"
+ nickname="arnaud.oqube"
+ subject="comment 4"
+ date="2015-05-31T20:18:30Z"
+ content="""
+That makes sense. Indeed, that's the direction I was heading to, because currently our VM deployment scripts are in shell and I wanted to port them to Haskell and integrate in the provisioning process. 
+Thanks for the idea, I will see where it goes.
+"""]]

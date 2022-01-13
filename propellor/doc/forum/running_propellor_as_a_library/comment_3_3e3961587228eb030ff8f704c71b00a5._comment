@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="arnaud.oqube@c9b8c7ea33f1dea0b7a5485b86825c5bfa9efbf7"
+ nickname="arnaud.oqube"
+ subject="Thanks"
+ date="2015-05-27T19:05:19Z"
+ content="""
+... a lot for your reactivity! Actually that's fine because we use mostly `boolSystem` from `Utility.SafeCommand`. We also use `transcript` to retrieve output of a process. So you say it is better to use directly `System.Process` ?
+"""]]

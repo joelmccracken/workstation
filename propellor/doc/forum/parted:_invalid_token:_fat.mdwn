@@ -1,0 +1,37 @@
+I'm trying to add a fat32 partition for /boot/efi to my router image. Here is the relevant config:
+
+    router = host hn $ props
+    	& hasPartitionTableType GPT
+    	& hasPartition
+    		( partition FAT
+    			`mountedAt` "/boot/efi"
+    			`partLocation` Beginning
+    			`setSize` MegaBytes 10
+    			`setFlag` BootFlag
+    		)
+    	& hasPartition
+    		( partition EXT2
+    			`mountedAt` "/boot"
+    			`partLocation` Beginning
+    			`setSize` MegaBytes 150
+    		)
+    	& hasPartition
+    		( partition EXT4
+    			`mountedAt` "/"
+    			`addFreeSpace` MegaBytes 500
+    		)
+    	& standardSystem (Stable "stretch") X86_64
+    		[ dom ++ " home router" ]
+
+
+But parted does not seem to support "fat" as a file system type.
+
+    parted: invalid token: fat
+    Error: Expecting a file system type.
+
+It should probably use "fat32" instead, but replacing "fat" by "fat32" in the PartedVal instance of Partition.Fs fails, too:
+
+    mount: /tmp/mnteepFPo: wrong fs type, bad option, bad superblock on /dev/mapper/loop0p1, missing codepage or helper program, or other error.
+    umount: /tmp/mnteepFPo: not mounted.
+    ** fatal error: failed unmounting /tmp/mnteepFPo
+    propellor: StopPropellorException "Cannot continue!"

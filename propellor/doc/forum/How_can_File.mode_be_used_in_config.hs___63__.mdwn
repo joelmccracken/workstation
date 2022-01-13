@@ -1,0 +1,7 @@
+Hello,
+
+if I try to use `File.mode` in my `config.hs`, I do not have access to modes
+defined in `Utility.FileMode` and `System.Posix.Files`. Is that intended? Is
+there a way to do it appart from changing `propellor.cabal`?
+
+Thanks!

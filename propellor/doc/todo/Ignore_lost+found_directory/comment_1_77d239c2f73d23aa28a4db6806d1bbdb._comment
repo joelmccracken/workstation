@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-10-15T16:52:44Z"
+ content="""
+I feel that modifying `dirCruft` to include "lost+found" is a layering
+violation, because it could change the behavior of a lot of things besides
+checking if a directory is empty "enough". Consider code that recurses
+through a directory and sets permissions or owner.
+
+This calls for a new function, or a modification to a more specific
+function, to handle the "lost+found" case.
+`Propellor.Property.Chroot.Util.unpopulated` seems like a good place to
+handle it.
+
+There are also some backup/restore properties, for Borg and Restic etc, that
+only do a restore if a directory is empty or missing, and it seems to make
+sense for them to also special-case handling of "lost+found". So it would
+make sense to move `unpopulated` to a module that's not chroot-specific
+and make those things also use it.
+"""]]

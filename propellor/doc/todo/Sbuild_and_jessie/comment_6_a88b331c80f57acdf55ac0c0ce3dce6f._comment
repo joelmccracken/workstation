@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2017-12-16T15:46:09Z"
+ content="""
+Either is fine by me. The property could also be made to fail when run
+on an unsupported version of Debian.
+"""]]

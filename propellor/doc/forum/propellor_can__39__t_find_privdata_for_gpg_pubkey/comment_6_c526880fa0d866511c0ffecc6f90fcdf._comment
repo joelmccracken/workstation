@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="comment 6"
+ date="2020-08-23T02:22:06Z"
+ content="""
+I confirmed that privdata is being transmitted, but that my test file is not. The resulting `/usr/local/propellor/privdata/local` file is not obviously corrupted, but does not contain the string \"/root/foo\". The file \"/root/foo\" also does not show as used anywhere in the output of `propellor --list-fields`. I'm not sure if that is surprising or not.
+"""]]

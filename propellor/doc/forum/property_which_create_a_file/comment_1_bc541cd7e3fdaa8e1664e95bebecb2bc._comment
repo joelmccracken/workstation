@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-09-30T14:53:02Z"
+ content="""
+My suggestion in the specific case of the sbuild property would be to
+generate the file whenever the property that generates the chroot has to
+make a change. The `onChange` combinator accomplishes that.
+
+But if you really want to only run the property if the file doesn't exist,
+you can do that by using the `check` combinator. For example:
+
+	check (not <$> doesFileExist f) (createtarball f)
+"""]]

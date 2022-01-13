@@ -1,0 +1,25 @@
+openbsd requires specifying the path for the [`find`][0] command. So this:
+
+    find -name \*.o
+    find: unknown option -- n
+    usage: find [-dHhLXx] [-f path] path ... [expression]
+
+
+fails.
+
+This works:
+
+
+    find . -name \*.o
+    ./dist/build/Utility/Applicative.o
+    ./dist/build/Utility/PosixFiles.o
+    ./dist/build/Utility/Split.o
+    ...
+
+
+as expected.
+
+Here's a patch for it: [0001-Makefile-Update-clean.patch][1].
+
+[0]: https://man.openbsd.org/find
+[1]: https://ricketyspace.net/patch/0001-Makefile-Update-clean.patch

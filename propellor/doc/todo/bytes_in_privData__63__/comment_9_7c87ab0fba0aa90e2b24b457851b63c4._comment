@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 9"""
+ date="2016-06-17T01:33:05Z"
+ content="""
+Thank you, Andrew!
+
+Before I merge this, I want to clear up something that confuses me;
+you characterized this as a bug that has bit you. How did the
+pre-bytestring File.hasContentProtected exhibit buggy behavior?
+
+AFAICS, it already supported binary privdata, just in a suboptimal
+way.
+
+(Also fileProperty and bytesProperty should indeed be deduped;
+a second patch that merges them, even with an API change, would be ok.)
+"""]]

@@ -1,0 +1,11 @@
+Hello,
+
+Here is again a change for Borg to allow to give the --umask option on each borg invocation.
+
+Please fetch branch `borg-umask` at `http://git.ni.fr.eu.org/nicolas/propellor.git`.
+
+As a side change, I use `{now}` instead of a call to `$(date …)`, I think it's more idiomatic for borg usage.
+
+Tested with stretch and buster.
+
+> [[merged|done]] thanks for the contribution. --[[Joey]]

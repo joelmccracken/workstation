@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 5"
+ date="2015-12-02T04:46:14Z"
+ content="""
+I've made a property combinator `noChangeIfUnchanged` and applied it to Apt.buildDep in my `builddepfix` branch.  Please take a look.
+
+In my testing of this, Propellor hides the output if the build deps are already installed i.e. if the property returns NoChange.  So it looks like you've already implemented your awesome at some point :)
+"""]]

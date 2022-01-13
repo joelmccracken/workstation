@@ -1,0 +1,65 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="stack extra dep  threepenny-gui-0.8.2.0   compile error"
+ date="2017-12-29T09:22:34Z"
+ content="""
+With having
+
+	extra-deps:
+	- propellor-5.1.0
+	- threepenny-gui-0.8.2.0
+
+in `stack.yaml` gives me this compile error:
+
+	Preprocessing executable 'propellor-config' for secret-project-0.0...
+	[ 7 of 10] Compiling Installer.UI     ( Installer/UI.hs, .stack-work/dist/x86_64-linux-nopie/Cabal-1.24.2.0/build/propellor-config/propellor-config-tmp/Installer/UI.o )
+	             
+	/home/stappers/src/secret-project/Installer/UI.hs:282:32: error:
+	    • Couldn't match type ‘(t1, (Int, Int))’ with ‘[Char]’
+	      Expected type: UI.DragData
+	        Actual type: (t1, (Int, Int))
+	    • In the pattern: (_d, (x, y))
+	      In the second argument of ‘($)’, namely
+	        ‘\ (_d, (x, y))
+	           -> void
+	              $ do { now <- getTime clock;
+	                     liftIO $ writeIORef draginfo (x, y, now);
+	                     .... }’
+	      In a stmt of a 'do' block:
+	        on UI.dragStart elt
+	        $ \ (_d, (x, y))
+	            -> void
+	               $ do { now <- getTime clock;
+	                      liftIO $ writeIORef draginfo (x, y, now);
+	                      .... }
+	             
+	/home/stappers/src/secret-project/Installer/UI.hs:487:27: error:
+	    • Couldn't match type ‘(t0 a0, (Int, Int))’ with ‘[Char]’
+	      Expected type: UI.DragData
+	        Actual type: (t0 a0, (Int, Int))
+	    • In the pattern: (d, (x, y))
+	      In the second argument of ‘($)’, namely
+	        ‘\ (d, (x, y))
+	           -> when (not (null d))
+	              $ liftIO $ writeIORef dropSuccess (True, (x, y))’
+	      In a stmt of a 'do' block:
+	        on UI.drop elt
+	        $ \ (d, (x, y))
+	            -> when (not (null d))
+	               $ liftIO $ writeIORef dropSuccess (True, (x, y))
+	             
+	--  While building custom Setup.hs for package secret-project-0.0 using:
+	      /root/.stack/setup-exe-cache/x86_64-linux-nopie/Cabal-simple_mPHDZzAJ_1.24.2.0_ghc-8.0.2 --builddir=.stack-work/dist/x86_64-linux-nopie/Cabal-1.24.2.0 build exe:propellor-config --ghc-options \" -ddump-hi -ddump-to-file\"
+	    Process exited with code: ExitFailure 1
+	
+I hope it is reproduceable and that it can be fixed.
+
+Thank you
+
+Groeten
+
+Geert Stappers
+
+"""]]

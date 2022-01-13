@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 2"
+ date="2015-08-05T21:29:04Z"
+ content="""
+Thanks for the input!
+
+I agree that generalising to lines under sections is a good idea, but I don't think it can be as simple as a property taking the full section header and the full settings line.  That's because there is a need to update the values of keys under sections: in the example LightDM case, the line `autologin-user=someone` must *replace* any `autologin-user=someone_else`.  So the function needs to know the key, not just the whole line.
+
+So to generalise containsConfPair, it might take a section header, key, value and a specification of what kind of config file it is.  That specification would be a type containing the comment character, the formatting of section headers and the use of spaces, colons or equals signs between keys and values.  What do you think to this?
+"""]]

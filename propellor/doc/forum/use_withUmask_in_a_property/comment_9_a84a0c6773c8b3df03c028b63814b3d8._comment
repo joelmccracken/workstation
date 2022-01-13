@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 9"""
+ date="2016-07-05T20:44:14Z"
+ content="""
+Yeah, it's a general problem with base that it's not sufficiently
+generalized. I suppose it's best not to add exported functions to propellor
+to work around that general problem.
+"""]]

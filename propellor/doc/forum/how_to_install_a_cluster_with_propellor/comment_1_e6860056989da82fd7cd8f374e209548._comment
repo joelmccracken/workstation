@@ -1,0 +1,73 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-08-31T20:55:38Z"
+ content="""
+Don't know that I have an answer to this question. I've never done that. :)
+
+I think it breaks down into several independant questions,
+although due to lack of experience I could be missing some.
+
+## Initial installation
+
+I'm working on getting propellor to be able to
+generate bootable disk images. <http://joeyh.name/blog/entry/then_and_now/>
+Once that works, it might provide a way to generate images to install
+machines in a cluster. But, any method for installing the base system
+and propellor could work too, and there are probably many cluster-specific
+OS installation tools.
+
+## Expressing the cluster in a propellor config file
+
+Propellor's config is a list of hosts, and `defaultMain` looks at the hostname
+to determine which host it is provisioning. A cluster might have many hosts
+that are very similar or identical, and you probably want it to be easy to
+add more.
+
+So, you'll probably want a way to generate a Host from a HostName with the
+desired Properties you want nodes in the cluster to have:
+
+	clusterNode :: HostName -> Host
+	clusterNode hn = host hn
+		& foo
+		& bar
+
+Then you could feed a list of hostnames to defaultMain to finish the
+config file:
+
+	main :: IO ()
+	main = defaultMain (map clusterNode hostnames)
+	  where
+		hostnames = 
+			[ "node1"
+			, "node2"
+			-- etc
+			]
+		-- alternatively...
+		-- hostnames = map (\n -> "node" ++ show n) [1..100]
+
+Or, you could even look up the current hostname, and feed defaultMain 
+a Host containing that hostname; so this single propellor configuration
+could be used on any number of hosts:
+
+	main = IO ()
+	main = do
+		hn <- takeWhile (/= '\n') <$> readProcess "hostname" ["-f"]
+		defaultMain [ clusterNode hn ]
+
+## Triggering propellor on nodes
+
+When you change your propellor config.hs, you need a way to trigger the
+nodes to update. Propellor has a couple of different ways to do this;
+you could just use Propellor.Property.Cron.runPropellor to run it periodically
+from cron on all the nodes. (With a central git repository holding the
+propellor configuration, naturally.)
+
+Or you could run propellor --spin against all the hosts in the
+cluster to push out a change. (It would be a nice enhancement to make
+propellor be able to --spin multiple hosts concurrently; there's nothing
+really preventing it but the output would be a mess.)
+
+There's certianly room for improvement here. Also you'll probably want some
+monitoring, which propellor doesn't provide in itself, etc.
+"""]]

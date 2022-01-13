@@ -1,0 +1,15 @@
+Running "sudo ./propellor" is documented as a way to provision the local
+host. However, properties involving chroots and docker hard code localdir,
+so run /usr/local/propellor/propellor inside the chroot. When running
+propellor this way, that may not exist, or may be from some other propellor
+configuration and not know how to privision the chroot correctly.
+
+Should this stuff look at the path to the propellor executable that's
+really being run and use it? There's also the shimdir, which is under
+/usr/local/propellor and gets bind mounted into the chroot, so using
+something close to the executable run by "sudo ./propellor" may be
+surprising. And, exposeTrueLocaldir also uses the localdir.
+
+It may make more sense to detect when propellor is run this way and refuse
+to provision chroots. Or to eliminate this little-used way of running
+propellor entirely.. --[[Joey]]

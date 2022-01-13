@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2018-08-26T14:34:18Z"
+ content="""
+@david, you might need to edit your config.cabal and specify a newer
+propellor version, although cabal usually picks the most recent version of
+a dependency. Propellor got the patch from this page in version 5.3.4.
+
+Anyway, I don't think the version of propellor matters, the error message
+you quote is related to
+<https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=844724>.
+I think that the apt key you're using has been generated on a newer system
+and won't work with older gpg.
+"""]]

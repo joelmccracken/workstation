@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2018-12-30T18:38:51Z"
+ content="""
+I've made the necessary changes to support ghc 8.6.3.
+"""]]

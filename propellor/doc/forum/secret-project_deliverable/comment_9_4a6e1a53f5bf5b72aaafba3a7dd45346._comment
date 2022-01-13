@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 9"""
+ date="2018-01-02T17:14:23Z"
+ content="""
+Since propellor 5.2.0 certianly *does* include the Propellor.Property.Installer.Types
+module, I guess you either have a somehow lost file on your local system
+there, or perhaps you installed a unreleased version of propellor 5.2.0
+from git before that file was added to it.
+"""]]

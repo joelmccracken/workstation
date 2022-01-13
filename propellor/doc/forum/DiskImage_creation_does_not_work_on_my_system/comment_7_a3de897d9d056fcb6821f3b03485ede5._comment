@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2017-08-23T21:07:41Z"
+ content="""
+The vmdk text file is so small that I did think about just having propellor
+generate it by itself. I don't know how stable/documented it is however.
+
+I suppose that if you're distributing a vmdk image to others, you would not
+want to use the text file format, since that hard-codes the path to the
+.img file. So, perhaps there should be separate properties for vmdk text
+files that point at disk images and self-contained vmdk images.
+"""]]

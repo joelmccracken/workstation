@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-12-14T02:03:40Z"
+ content="""
+The place the privdata file gets saved is Spin.hs, when `update` 
+calls "writeFileProtected privfile"
+"""]]

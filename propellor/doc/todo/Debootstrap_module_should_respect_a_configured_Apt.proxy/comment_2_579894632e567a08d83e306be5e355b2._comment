@@ -1,0 +1,84 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 2"
+ date="2017-08-23T13:26:31Z"
+ content="""
+Hello, so I try to restart from scratch and ask for a stretch Sbuild
+
+everything went fine until the update
+
+
+    I: schroot chroot configuration written to /etc/schroot/chroot.d/stretch-amd64-propellor-VYWULd.
+    +------------------------------------------------------------------------
+    |[stretch-amd64-propellor]
+    |description=Debian stretch/amd64 autobuilder
+    |groups=root,sbuild
+    |root-groups=root,sbuild
+    |profile=sbuild
+    |type=directory
+    |directory=/srv/chroot/stretch-amd64
+    |union-type=overlay
+    +------------------------------------------------------------------------
+    I: Please rename and modify this file as required.
+    W: Not creating symlink /srv/chroot/stretch-amd64 to /etc/sbuild/chroot/stretch-amd64-propellor: file already exists
+    perl: warning: Setting locale failed.
+    perl: warning: Please check that your locale settings:
+            LANGUAGE = (unset),
+            LC_ALL = (unset),
+            LANG = \"en_GB.UTF-8\"
+        are supported and installed on your system.
+    perl: warning: Falling back to the standard locale (\"C\").
+    I: Setting reference package list.
+    I: Updating chroot.
+
+
+On my network, I need a proxy so I setup the host with 
+
+    ...
+    & Apt.proxy myproxy
+    & Sbuild.builtFor stretch Sbuild.UseCcache
+
+If I understand correctly the Apt.proxy should propagate the Apt.proxy into the Sbuild
+but when I look inside the chroot, I can not find the 
+
+    /etc/apt/apt.conf.d/20proxy
+
+file which is on the host
+
+And Indeed after a certain amount of time, the network gives a timeout
+
+    Err:1 http://deb.debian.org/debian stretch InRelease
+      Cannot initiate the connection to deb.debian.org:80 (2001:41c8:1000:21::21:4). - connect (101: Network is unreachable) [IP: 2001:41c8:1000:21::21:4 80]
+    Reading package lists...
+    W: Failed to fetch http://deb.debian.org/debian/dists/stretch/InRelease  Cannot initiate the connection to deb.debian.org:80 (2001:41c8:1000:21::21:4). - connect (101: Network is unreachable) [IP: 2001:41c8:1000:21::21:4 80]
+    W: Some index files failed to download. They have been ignored, or old ones used instead.
+    Reading package lists...
+    Building dependency tree...
+    Calculating upgrade...
+    0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+    I: Successfully set up stretch chroot.
+    I: Run \"sbuild-adduser\" to add new sbuild users.
+    sixs7.exp.synchrotron-soleil.fr sbuild schroot for System (Debian Linux (Stable \"stretch\")) X86_64 ... done
+
+the good news is that now the schroot file contain the right informations
+
+    [stretch-amd64-sbuild]
+    description=Debian stretch/amd64 autobuilder
+    groups=root,sbuild
+    root-groups=root,sbuild
+    profile=sbuild
+    type=directory
+    directory=/srv/chroot/stretch-amd64
+    union-type=overlay
+    command-prefix=/var/cache/ccache-sbuild/sbuild-setup,eatmydata
+
+
+So to summarize, I think that the Apt.proxy propagation does not work.
+
+This propagation should be optional because sometime we prepare images which are not meant to be used behind a proxy (where they were prepare)
+
+thanks for your attention :)
+
+
+"""]]

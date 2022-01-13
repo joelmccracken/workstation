@@ -1,0 +1,3 @@
+I recently lost the security key I store my primary SSH key on, and had to remove that key from all authorized_keys files I had access to. It would be great if Ssh.authorizedKey was revertable, so that this could be done simply by adding a ! before existing Ssh.authorizedKey lines.
+
+> [[done]] --[[Joey]]

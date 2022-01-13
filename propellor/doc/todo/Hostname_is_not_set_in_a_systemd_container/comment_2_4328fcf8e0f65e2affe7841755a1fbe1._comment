@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="Tested Hostname in a systemd container"
+ date="2019-04-11T18:33:40Z"
+ content="""
+I just tested it, it works, thanks!
+"""]]

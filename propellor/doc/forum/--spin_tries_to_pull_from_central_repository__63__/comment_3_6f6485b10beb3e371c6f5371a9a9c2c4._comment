@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="david@1439a1cab13195a56248b6a8fd98a62028bcba8a"
+ nickname="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="Still biting me"
+ date="2018-08-23T20:32:18Z"
+ content="""
+I have a similar problem with inaccessible central repo. This crash is still biting me when spinning from a Debian stable (stretch) host to itself.
+I could potentially make the central repo accessible via adding a key, but I think the pull is too early in the process for that work out. Any other ideas? Can I just turn off this pull for some hosts?
+"""]]

@@ -1,0 +1,32 @@
+<https://downloads.haskell.org/~ghc/8.0.1/docs/html/users_guide/glasgow_exts.html#custom-errors>
+
+This could be used in propellor to improve compile time errors.
+
+For example, a RevertableProperty is sometimes used where only a regular
+Property is accepted. In this case, the error could suggest that the user
+apply `setupRevertableProperty` to extract the setup side of the RevertableProperty.
+
+> I tried this, it didn't seem worth the complication however. --[[Joey]]
+
+And, when a Property HasInfo is provided to ensureProperty, propellor could
+explain, in the compile error, why it can't let the user do that.
+
+> Done this and also used custom errors when properties' types don't let
+> them be combined. --[[Joey]]
+
+The new type-errors library builds a lot of stuff on top of this.
+Its ability to detect "stuckness" seems like it may be able to catch
+the very long type errors that we sometimes see when using propellor, and
+whittle them down to a more useful error. --[[Joey]]
+
+> > Actually I think the stuckness would not help with that, though it
+> > could help with other mistakes. In particular, forgetting to provide
+> > a parameter to a property constructor can lead to a massive
+> > error message that leaks type family stuff from MetaTypes, due to
+> > the type checker getting stuck. Detecting that and replacing it with
+> > a simpler error would be a big improvement. Such large error messages
+> > can make ghc use an excessive amount of memory. --[[Joey]]
+
+now [[done]]! --[[Joey]]
+
+[[!tag user/joey]]

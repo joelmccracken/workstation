@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="Quasiquoter"
+ date="2016-02-22T04:25:24Z"
+ content="""
+You could also use something like [raw-strings-qq](http://hackage.haskell.org/package/raw-strings-qq) to embed the files as-is without having to quote/escape a ton of stuff.
+"""]]

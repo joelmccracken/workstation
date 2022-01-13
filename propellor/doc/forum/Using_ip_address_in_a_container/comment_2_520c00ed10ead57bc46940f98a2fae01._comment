@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="systemd-nspawn with its own network in the container"
+ date="2017-10-05T20:10:10Z"
+ content="""
+If you use networkd, things are quite simple, you can use
+`--network-zone=something` and it will create a bridge, add the host interface
+to it and add an interface in the container. Default networkd configuration
+will choose an IP network for the zone (it use the interface name to recognize
+what must be done), use DHCP in the container, handle DHCP request on host and
+route packets to the external interface. The bridge is automatically removed
+when all containers are shut down.
+
+Without networkd, you can create a bridge on the host in
+`/etc/network/interface`:
+
+    auto br0
+    iface br0 inet static
+        address 10.42.0.1
+	netmask 255.255.0.0
+	pre-up brctl addbr br0
+	post-down brctl delbr br0
+	bridge_fd 0
+
+Then use the `--network-bridge=br0` option. It will add the host interface
+automatically to the bridge and you need a way to configure the containers
+interface, either using networkd or the traditional ifupdown.
+
+"""]]

@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 11"
+ date="2015-12-03T23:29:57Z"
+ content="""
+Thank you for your feedback.  I'll think about how I might rewrite `changeIfChanges` to avoid that problem with `trivial`, and I'll try to pin down the hiding of apt's output.
+"""]]

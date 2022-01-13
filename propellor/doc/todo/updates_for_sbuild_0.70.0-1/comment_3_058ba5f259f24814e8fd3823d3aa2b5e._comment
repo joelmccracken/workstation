@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 3"
+ date="2016-08-26T02:27:15Z"
+ content="""
+Please consider merging my `sbuild-0.71.0` branch.
+
+The only functional change is that `Sbuild.keygen{Insecurely,}Generated` are now optional.
+
+The rest of the changes are documentation.  They explain precisely when you need `Sbuild.keygenGenerated`, how to deal with the gpg->gpg2 issues that have arisen recently (not this module's fault) and make clearer some situations the module was never able to deal with (e.g. building for squeeze).
+"""]]

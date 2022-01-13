@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-04-01T15:49:26Z"
+ content="""
+Yes, you'll need to add a dependency on `unix` to get access to that.
+
+This does seem like an oversight, so I made Propellor.Utilities re-export
+it. But, I think I'd personally choose the dependency on `unix` instead
+of relying on that module, which does not guarantee any API stability.
+"""]]

@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-07-30T15:32:50Z"
+ content="""
+What's happening here is propellor is running: git pull --progress
+--upload-pack command, where command is "./propellor --gitpush".
+
+Apparently git's --upload-pack option parsing has changed in a way that
+breaks this. 
+
+I think this is a straight-up git bug. I have reported the bug to the
+git mailing list.
+
+May have to work around the bug by just passing "./propellor" to
+--upload-pack, and using environment variables to tell it what to do.
+
+Erm.. AFAIKS, git pull is no longer running --upload-pack specified 
+command at all. So it seems git has completely defeated how propellor --spin
+sends a git push over its ssh channel. I don't have any prospect of a fix
+right now.
+"""]]

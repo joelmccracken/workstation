@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-08-20T19:03:47Z"
+ content="""
+I think it would be fine to drop wheezy support. 
+
+After all, propellor doesn't support installing on wheezy systems generally
+since over a year ago. (Though these kinds of chroots used for building
+stuff might have good reasons to want such an old version.)
+
+But it's really up to you.
+"""]]

@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-08-31T22:26:42Z"
+ content="""
+`withOS` or `getOS` is often used to deal with such differences,
+varying behavior depending on the Host's defined OS. For example, 
+Propellor.Property.Borg.installed does one thing on Debian jessie
+and another thing on other versions of Debian. And
+Propellor.Property.Apt.getMirror generates different urls for Debian and
+Ubuntu.
+"""]]

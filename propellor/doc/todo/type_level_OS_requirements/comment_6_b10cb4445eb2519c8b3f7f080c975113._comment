@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2016-03-09T15:01:05Z"
+ content="""
+I've added a prototype of `ensureProperty` that enforces at the type level
+that the property it runs will work on an OS that's passed to it.
+
+It was easier than I thought; I didn't turn out to need reification. Just
+pass in the outer OS:
+
+    ensureProperty
+        :: (CannotCombineOS outeros inneros (IntersectOSList outeros inneros) ~ CanCombineOS)
+        => OSList outeros
+        -> Property (OSList inneros)
+        -> IO ()
+    ensureProperty outeros (Property inneros a) = a
+
+At this point, I'm confident this can be rolled out into propellor;
+there should be no big bumps in the road ahead.
+"""]]

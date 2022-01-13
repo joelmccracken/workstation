@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-10-23T15:34:56Z"
+ content="""
+Thanks for the patch. I've applied it. I suspect it would be sufficient to
+use -p?<Down>
+
+If you're going to be posting a bunch of openbsd porting patches,
+which I hope you are, please use [[todo]] so they don't flood the forum
+and so it's obvious which have been applied and which not.
+
+Also, see [[contributing]] for some other useful things to do.
+"""]]

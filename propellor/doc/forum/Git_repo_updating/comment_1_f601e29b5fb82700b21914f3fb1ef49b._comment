@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-03-04T16:25:55Z"
+ content="""
+You could certianly write a property that did a git pull every time. It
+would do some unnessesary work and still not keep the checkout always
+immediately up-to-date.
+
+Better to have some kind of hook that causes the checkout to update when
+changes are pushed into its parent repository. How such a hook works
+depends on where the parent repository is hosted. Propellor properties
+could be written to set up whatever's needed for such a hook on the system
+where the repository is checked out. If you're hosting your own git
+server as well, propellor properties could set up the post-update hook in
+the origin repo too.
+"""]]

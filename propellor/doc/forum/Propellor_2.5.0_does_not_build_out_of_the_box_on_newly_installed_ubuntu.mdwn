@@ -1,0 +1,37 @@
+I am trying to upgrade my propellor config to latest Propellor, using it as a library. I run into the following compilation error when doing `propellor X.Y.Z.T` on my machine:
+
+```
+[17 of 65] Compiling Propellor.Property.Chroot.Util ( src/Propellor/Property/Chroot/Util.hs, dist/build/propellor-config/propellor-config-tmp/Propellor/Property/Chroot/Util.o )
+[18 of 65] Compiling Utility.UserInfo ( src/Utility/UserInfo.hs, dist/build/propellor-config/propellor-config-tmp/Utility/UserInfo.o )
+[19 of 65] Compiling Utility.Monad    ( src/Utility/Monad.hs, dist/build/propellor-config/propellor-config-tmp/Utility/Monad.o )
+[20 of 65] Compiling Utility.Exception ( src/Utility/Exception.hs, dist/build/propellor-config/propellor-config-tmp/Utility/Exception.o )
+
+src/Utility/Exception.hs:65:15:
+    Not in scope: type constructor or class `MonadMask'
+Failed to install propellor-2.5.0
+Downloading MonadCatchIO-transformers-0.3.1.3...
+Configuring MonadCatchIO-transformers-0.3.1.3...
+Building MonadCatchIO-transformers-0.3.1.3...
+Preprocessing library MonadCatchIO-transformers-0.3.1.3...
+[1 of 2] Compiling Control.Monad.CatchIO ( src/Control/Monad/CatchIO.hs, dist/build/Control/Monad/CatchIO.o )
+
+src/Control/Monad/CatchIO.hs:29:1: Warning:
+    Module `Prelude' does not export `catch'
+[2 of 2] Compiling Control.Monad.CatchIO.Try ( src/Control/Monad/CatchIO/Try.hs, dist/build/Control/Monad/CatchIO/Try.o )
+caIn-place regisbaterinl:g Mon adCatchIO-transformers-0.3.1.3...
+Installing libErrorary in
+r/ro:ot/.cabal/lib/MonadCatchIO-transformers-0.3.1.3/ghc-7.6.3
+Registering MonadCatchIO-transformers-0.3.1.3...
+Installed MonadCatchIO-transformers-0.3.1.3
+ some packages failed to install:
+propellor-2.5.0 failed during the building phase. The exception was:
+ExitFailure 1
+caResolving depenbaldencies...
+Configuring prod-0.0.1..: .
+At least the following dependencies are missing:
+propellor ==2.5.0
+sh: 1: ./propellor: not found
+propellor: user error (ssh ["-o","ControlPath=/Users/arnaud/.ssh/propellor/X.Y.Z.T.sock","-o","ControlMaster=auto","-o","ControlPersist=yes","root@X.Y.Z.T","sh -c 'if [ ! -d /usr/local/propellor/.git ] ; then (if ! git --version >/dev/null; then apt-get update && apt-get --no-install-recommends --no-upgrade -y install git; fi && echo STATUSNeedGitClone) || echo STATUSNeedPrecompiled ; else cd /usr/local/propellor && if ! cabal configure >/dev/null 2>&1; then ( apt-get update ; apt-get --no-upgrade --no-install-recommends -y install gnupg ; apt-get --no-upgrade --no-install-recommends -y install ghc ; apt-get --no-upgrade --no-install-recommends -y install cabal-install ; apt-get --no-upgrade --no-install-recommends -y install libghc-async-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-missingh-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-hslogger-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-unix-compat-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-ansi-terminal-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-ifelse-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-network-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-quickcheck2-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-mtl-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-transformers-dev ; apt-get --no-upgrade --no-install-recommends -y install libghc-exceptions-dev ; cabal update ; cabal install --only-dependencies ) || true; fi&& if ! test -x ./propellor; then cabal configure && cabal build && ln -sf dist/build/propellor-config/propellor-config propellor; fi;if test -x ./propellor && ! ./propellor --check 2>/dev/null; then cabal clean && cabal configure && cabal build && ln -sf dist/build/propellor-config/propellor-config propellor; fi && ./propellor --boot X.Y.Z.T ; fi'"] exited 127)
+```
+
+Am I missing something? 

@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2016-06-14T04:04:50Z"
+ content="""
+It might also be worth making the Sbuild properties know 
+whether overlays are desired. Then they could make sure to set up the
+config file with the needed lines, even if the wrong kernel is running.
+
+I assume schroot fails to work in that configuration, so the properties
+for it would fail and then the user would notice they need to add a
+property to get a new enough kernel version..
+
+It could be specified with another parameter to the Sbuild properties.
+Or, you could add a pure Info property `useOverlays` and have the
+Sbuild properties check if the Info has that set. This would also
+let Schroot.overlaysInTmpfs require useOverlays and auto-enable them.
+
+Most of the implementation of that:
+
+	useOverlays :: Property (HasInfo + UnixLike)
+	useOverlays = pureInfoProperty "use schroot overlays" (InfoVal UseOverlays)
+	
+	data UseOverlays = UseOverlays
+
+	useOverlays :: Propellor Bool
+	useOverlays = isJust . fromInfoVal
+		<$> (askInfo :: Propellor (InfoVal UseOverlays))
+"""]]

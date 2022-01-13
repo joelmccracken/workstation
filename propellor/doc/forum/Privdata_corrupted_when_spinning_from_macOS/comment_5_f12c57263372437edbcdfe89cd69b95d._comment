@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2018-08-16T15:12:58Z"
+ content="""
+Ah, good debugging!
+
+The code that runs on the remote side is Propellor.Spin.update,
+and it uses Propellor.Protocol.req which reads from stdin. So,
+I think that putting `hSetEncoding stdin utf8` in the update function
+may fix it for you.
+
+If so, the real fix will involve making propellor force utf8 on both sides
+of its protocol, because the spin might be run in some other locale too.
+(Or chainging to a binary protocol that doesn't suffer 
+from encoding mismatch problems, if someone is ambitious!)
+"""]]

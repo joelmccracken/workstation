@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 7"
+ date="2016-06-24T10:24:16Z"
+ content="""
+Hopefully we will have MonadIO is base (and functions generalized) one day :)
+https://mail.haskell.org/pipermail/libraries/2015-July/026008.html
+"""]]

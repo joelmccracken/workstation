@@ -1,0 +1,12 @@
+Hello,
+
+I am trying propellor on Debian Jessie (haskell is fantastic for this sort or things) to setup one of my computer.
+
+On my network, the system administrator set proxies for http and https.
+These information are available via a http://proxy/proxy.pac URL.
+
+So I would like to know what should be done to extract this information and set it for all users on the system ?
+
+Cheers
+
+Frederic

@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-10-08T16:06:37Z"
+ content="""
+It seems it would be safe to always run the mountnow property, since
+it does check if something is already mounted.
+
+Also, it would probably make sense for properties that set up mounts to
+automatically make the mount point.
+
+Patches welcome!
+"""]]

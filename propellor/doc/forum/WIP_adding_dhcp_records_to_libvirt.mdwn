@@ -1,0 +1,31 @@
+I'm working on adding static (predictable) dhcp records to libvirt guests (code at the end). It seems like I might need to either do the equivalent of
+[[!format bash """
+virsh net-update default delete ip-dhcp-host "<host mac='52:54:00:f0:62:01'/>"  --config --live || /bin/true
+virsh net-update default add ip-dhcp-host "<host mac='52:54:00:f0:62:01' ip='192.168.122.32'/>" --config --live
+"""]]
+or parse the xml output of "virsh net-dumpxml". Is there some simple lightweight xml parsing option? Last time I tried something like this was a decade ago using HXT.Arrow, which didn't really end well.
+
+[[!format haskell """
+staticDHCP :: Host -> IPAddr -> Maybe Network.Gateway -> Property UnixLike
+staticDHCP h ip gw = property "assign ip to host via dhcp" $ do
+                mac <- liftIO $ macAddress
+                case mac of
+                  Nothing -> errorMessage "no interface"
+                  Just addr -> makeChange $ unlessM (updateIt addr) $
+                                errorMessage "failed to update network"
+  where
+    updateIt mac = boolSystem "virsh" [ Param "net-update"
+                                  , Param "default"
+                                  , Param "add-last"
+                                  , Param "ip-dhcp-host"
+                                  , Param $ "<host mac=\""++mac++"\" ip=\""++(ifaceToString ip)++"\"/>"
+                                  , Param "--config"
+                                  , Param "--live"]
+    ifaceToString (IPv6 ipstr) = ipstr
+    ifaceToString (IPv4 ipstr) = ipstr
+    macAddress = do
+      ifaces <- virshGetColumns ["domiflist", hostName h]
+      case ifaces of
+        [] -> return Nothing
+        (i:_) -> return $ Just $ Propellor.Base.last i
+"""]]

@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2018-05-03T16:30:15Z"
+ content="""
+I don't think you need to use a different name for your config file, unless
+it somehow makes things easier for you.
+
+It's fine to use `Utility.*` like that, but do note that there's no guaranteed 
+API stability for those. OTOH, if you might later contribute some
+properties built using `Utility.*` back to propellor, it certianly makes
+sense to use those.
+"""]]

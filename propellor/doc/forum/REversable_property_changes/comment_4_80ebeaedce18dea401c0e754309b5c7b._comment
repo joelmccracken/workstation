@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 4"
+ date="2015-11-12T19:35:45Z"
+ content="""
+ok, But I rellay want a Revertable Property.
+
+should I just make a revertable property of the installed Property in order to have
+
+RevertableProperty HasInfo `required` (installed <!> doNothing)
+"""]]

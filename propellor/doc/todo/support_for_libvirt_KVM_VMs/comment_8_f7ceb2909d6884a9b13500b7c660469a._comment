@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 8"""
+ date="2018-11-05T16:40:57Z"
+ content="""
+Seems that kvmRunning would need a warning that changes to the propellor
+configuration of the VM's Host won't affect the VM. Because it's unusual for
+propellor to only be able to set something up and not change it afterwards.
+
+But kvmRunning is certianly a useful low level property, and combining with
+other properties like that is good.
+
+Hmm, it's actually possible to mount a qcow2 image using libguestfs-tools.
+<http://ask.xmodulo.com/mount-qcow2-disk-image-linux.html>
+So, propellor could temporarily take down the VM and run inside the qcow2
+to update it! Although doing that every time propellor is run seems
+suboptimal. It could keep the chroot around and only update the qcow2 image
+if the chroot needed to be updated. I am not sure how I feel about that
+idea.
+
+We could also make conducting easier to set up, perhaps not needing `main`
+to be modified to use it.
+"""]]

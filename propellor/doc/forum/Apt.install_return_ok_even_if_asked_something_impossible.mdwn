@@ -1,0 +1,14 @@
+Hello joey
+
+here the result of the Apt.installed [ "dgit", "pypi2dsc" ]
+
+    apt installed dgit pypi2dsc ... ok
+
+
+BUT
+
+pypi2dsc does not exist (it is pypi2deb)
+
+So there is something wrong with the installed property :)
+
+Cheers

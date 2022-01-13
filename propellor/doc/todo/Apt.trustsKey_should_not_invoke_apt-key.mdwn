@@ -1,0 +1,9 @@
+[Over at the Debian BTS](https://bugs.debian.org/907290), David Bremner points out that the apt-key manpage, on Debian stable, says
+
+> Instead of using this [add] [sub]command a keyring should be placed
+> directly in the /etc/apt/trusted.gpg.d/ directory with a
+> descriptive name and either "gpg" or "asc" as file extension.
+
+So ISTM that `Apt.trustsKey` should be implemented simply with `File.hasContents`, i.e., the property should delete any old `.gpg` file and then create a `.asc` file with the text  string content of the `AptKey`.
+
+--spwhitton

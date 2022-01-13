@@ -1,0 +1,14 @@
+To support multiple gpg keys added with --add-key, propellor should
+
+* When it encrypts the privdata after a change, encrypt it to all keys
+  listed in `privdata/keyring.gpg`. See [this
+  post](http://laurent.bachelier.name/2013/03/gpg-encryption-to-multiple-recipients/)
+  explaining why and how encryption with multiple recipients work. 
+* When --add-key adds a new key, it should re-encrypt the privdata,
+  so that this new key can access it.
+* When --add-key on behalf of another user, do not modify the signing key for
+  local git. This entails either splitting this command in two, `--add-key` and
+  `--set-signing-key`, or adding another command `--add-foreign-key`,
+  or perhaps determining if the key being added has a known secret key.
+
+[[done]]

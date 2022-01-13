@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 8"
+ date="2015-09-24T08:41:50Z"
+ content="""
+Good
+root@xxxx:/usr/local/propellor.good/dist/build/propellor-config# ls -l
+-rwxr-xr-x 1 root root 6359256 sept. 23 09:34 propellor-config
+drwxr-xr-x 4 root root    4096 sept. 23 09:34 propellor-config-tmp
+
+Bad
+root@xxxx:/usr/local/propellor.bad/dist/build/propellor-config# ls -l
+total 4
+-rwxr-xr-x 1 root root    0 sept. 14 14:05 propellor-config
+drwxr-xr-x 4 root root 4096 sept. 14 14:05 propellor-config-tmp
+
+ok so it seems that propellor-config is empty ??? for the bad version.
+
+Now I understand better why nothing happened :)
+So maybe the power outrage was done during the compilation of the propellor-config executable.
+Maybe something can be done in order to avoid producing this empty file.
+Maybe just keep the old version of propellor-config until the new propellor-config is ready to replace it.
+
+
+
+"""]]

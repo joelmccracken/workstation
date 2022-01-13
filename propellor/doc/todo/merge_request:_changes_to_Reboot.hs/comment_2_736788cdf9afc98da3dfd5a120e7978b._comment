@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2016-06-13T23:13:28Z"
+ content="""
+readVersionMaybe was buggy; for "4.1.2" it yielded
+`Just (Version {versionBranch = [4], versionTags = []})`
+which is lacking anything but the major.
+
+I fixed it by taking the maximum of the list of all possible parses.
+"""]]

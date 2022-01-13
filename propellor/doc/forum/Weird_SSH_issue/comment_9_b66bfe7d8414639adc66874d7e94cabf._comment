@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="comment 9"
+ date="2016-03-07T20:13:25Z"
+ content="""
+I didn't quite find a way to reliably reproduce the issue, but I can confirm that as expected, I haven't run into it again after merging your fix.
+"""]]

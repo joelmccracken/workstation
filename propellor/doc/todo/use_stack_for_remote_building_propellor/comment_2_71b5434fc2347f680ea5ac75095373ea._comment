@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 2"
+ date="2016-05-30T04:17:16Z"
+ content="""
+It would be nice to be able to build remotely with stack when one is using cabal locally, so something in config.hs would be more flexible.
+"""]]

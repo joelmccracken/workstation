@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-05-21T17:06:37Z"
+ content="""
+There's a patch implementing this now, in:
+
+	https://git.gueux.org/propellor.git precompiled
+
+I have not found the increased memory too onerous, it's still working
+down to 500 mb cheap VMs. So I'm looking for details about cases where
+it causes ghc to use too much memory.
+<http://propellor.branchable.com/forum/recent_propellor_snapshots_cause_ghc_OOMs/>
+"""]]

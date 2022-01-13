@@ -1,0 +1,25 @@
+Hello, I am trying to build the propellor package using sbuild
+
+but I got this error message during the build.
+
+Source tarball created: dist/propellor-2.5.0.tar.gz
+cat dist/propellor-*.tar.gz | (cd dist/gittmp && tar zx --strip-components=1)
+# cabal sdist does not preserve symlinks, so copy over file
+cd dist/gittmp && for f in $(find -type f); do rm -f $f; cp -a ../../$f $f; done
+cd dist/gittmp && git init && \
+        git add . \
+        && git commit -q -m "distributed version of propellor" \
+        && git bundle create /«PKGBUILDDIR»/debian/propellor/usr/src/propellor/propellor.git master HEAD \
+        && git show-ref master --hash > /«PKGBUILDDIR»/debian/propellor/usr/src/propellor/head
+Initialized empty Git repository in /«PKGBUILDDIR»/dist/gittmp/.git/
+*** Please tell me who you are.
+Run
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'root@mordor.(none)')
+make[1]: *** [install] Error 128
+Makefile:13: recipe for target 'install' failed

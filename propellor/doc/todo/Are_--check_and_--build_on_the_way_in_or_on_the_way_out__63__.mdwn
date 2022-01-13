@@ -1,0 +1,3 @@
+I've managed to do a few useful things with propellor, but it feels a bit rough around the edges to me. It looked at first like the --check and --build options would be useful for checking that my configs would at least compile, but it turns out that --build doesn't even exist and --check just returns without doing anything. Should they just be removed, or do they need more work to finish them?
+
+[[done]]

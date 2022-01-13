@@ -1,0 +1,35 @@
+I wanted to start using propellor in the most simple way and the requirement to have a GPG key, signed commits, propellor updating itself, and so on was way too much to start with.
+
+So I wrote this Haskell file:
+
+
+    module Main where
+    
+    import           Propellor
+    import           Propellor.Engine
+    import qualified Propellor.Property.Apt as Apt
+    
+    main :: IO ()
+    main = mainProperties myHost
+    
+    myHost :: Host
+    myHost = host "local" $ props
+      & Apt.installed [
+          "etckeeper"
+        , "git"
+        , "rsync"
+        , "tmux"
+        , "tree"
+        , "unattended-upgrades"
+        , "zsh"
+      ]
+
+And then used the Debian package *entr* to scp the executable to a test server and have it executed there:
+
+    echo mytest-exe | entr scp /_ mytesthost:
+
+and on the test host:
+
+    echo mytest-exe | entr sudo ./mytest-exe
+
+Maybe somebody finds this useful as a starting point to learn propellor.

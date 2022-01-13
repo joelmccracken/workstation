@@ -1,0 +1,1 @@
+Properties for systemd unit files and support for dropping new units (e.g., a custom `.timer` unit) in should be supported. Support for `systemd-networkd` setup would be nice as well.

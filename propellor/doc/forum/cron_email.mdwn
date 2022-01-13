@@ -1,0 +1,27 @@
+Hello,
+
+In my institut, I want to manage a few of my computers with propellor (the cluster will come ;)
+So I would like to add a MAILTO to cron.
+
+The best would be to configure exim4 to redirect all root email to my personnal mbox but for now I just want to do it for cron
+
+So I created a property for this.
+
+-- redirect all root email to an email
+redirectCronEmail :: String -> Property NoInfo
+redirectCronEmail email = "/etc/default/cron" `File.containsLine` ("MAILTO=" ++ email)
+                    `requires` Apt.serviceInstalledRunning "cron"
+                    `onChange` Service.restarted "cron"
+
+
+Would you be so kind to add an equivalent into Cron. (PS I do not know if my property is properly written)
+
+something like
+
+Cron.mailTO "toto@titi.org"
+
+or maybe this is not the right way to solve my problem.
+
+Cheers
+
+Frederic

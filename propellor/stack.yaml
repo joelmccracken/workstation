@@ -1,0 +1,7 @@
+# When updating the resolver here, also update stackResolver in Propellor.DotDir
+resolver: lts-9.21
+packages:
+- '.'
+extra-deps:
+- type-errors-0.1.0.0
+- first-class-families-0.5.0.0

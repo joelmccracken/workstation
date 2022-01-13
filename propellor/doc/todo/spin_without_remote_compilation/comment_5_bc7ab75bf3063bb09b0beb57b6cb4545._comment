@@ -1,0 +1,68 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2016-11-04T16:25:13Z"
+ content="""
+Felix did a lot of work on his precompiled branch. But it's been stalled
+on getting merged since June.
+
+The blocker has to do with switching a host between precompiled and not,
+and vice-versa. The two ways to deploy propellor need different contents in
+the `localdir`. Pasting in a couple of my last emails about it:
+
+----
+
+I fear a rm -rf localdir because propellor writes/reads some files
+inside it to store states between runs etc. In retrospect, it would have
+been smart to limit all such stuff to a subdirectory of localdir. Moving
+things now would be the best approach, but probably tricky to implement.
+
+Maybe you could get away with only deleting localdir/.git though.
+
+----
+
+> In sendGitClone, we still need to "rm -rf localdir", to prevent "git
+> clone" from failing, right?
+
+It seems wrong to do that for the same reason.
+
+I kind of have the feeling that making the local-build/no-local-build
+decision check for .git was the wrong choice to make, because it's led
+to all this complexity around deleting parts of /usr/local/propellor.
+
+If we had a better way to make that decision, then sendPrecompiled could
+just overwrite any existing propellor binary, so conversion from
+local-compilation to precompilation would be easy.
+
+(Conversion the other way would still be a little problimatic since git
+clone would fail; it would need to clone to a temporary directory and
+move everything into place, I suppose.)
+
+So, what would be a better way for propellor to decide if it needs to
+rebuild itself when run? Could it get away with checking if the local
+host is configured with precompiled?
+
+These are the cases:
+
+1. Propellor is run via a cron job or manually, on a precompiled host.
+   It looks at the info for the host, sees it is precompiled, and doesn't
+   rebuild, which is right.
+2. Propellor is switching from not precompiled to precompiled;
+   the user is running propellor --spin $host
+   So, a propellor binary gets sent over, and it can see that the host
+   it's running on has the precompiled Info and not rebuild.
+3. Propellor is switching from precompiled to not precompiled;
+   the user is running propellor --spin $host
+   Propellor sees that $host is not precompiled and does not send the
+   precompiled binary, but tries to do a git push to $host.
+   Which will probably fail (unless $host has the .git directory left
+   over from a previous configuration).
+   If it gets past the git push, it will run the old precompiled
+   propellor binary, which thinks it's still configured that way, and so
+   won't build.
+
+So, seems that case 3 needs to somehow detect that the remote host
+has a precompiled binary on it, and delete that, as well as arranging
+for the git push to succeed even when localdir already exists and
+localdir/.git does not.
+"""]]

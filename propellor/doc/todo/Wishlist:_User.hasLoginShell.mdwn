@@ -1,0 +1,9 @@
+As far as I can tell there is no easy way to set a user's
+login shell. A Property User.hasLoginShell, which ensures
+that a user has a specified login shell and that said shell
+is in /etc/shells would be really helpful. Sadly, I lack the
+skills to put this together myself :(
+
+-- weinzwang
+
+> patched in and so [[done]] --[[Joey]]

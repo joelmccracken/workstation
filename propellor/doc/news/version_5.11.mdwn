@@ -1,0 +1,13 @@
+propellor 5.11 released with [[!toggle text="these changes"]]
+[[!toggleable text="""
+   * Fix display of concurrent output from processes when using
+     Propellor.Property.Conductor.
+     (Reversion introduced in version 5.5.0.)
+   * Support bootstrapping to hosts using cabal 3.x, with new-dist directory.
+   * Makefile: Fix build with cabal 3.x.
+   * Borg.restored: Fix restoration, which has apparently never worked,
+     at least back to borg 1.0.9.
+     Thanks, Nicolas Schodet.
+   * Borg.init: Added the now required encryption type parameter.
+     Thanks, Nicolas Schodet.
+     (API change)"""]]

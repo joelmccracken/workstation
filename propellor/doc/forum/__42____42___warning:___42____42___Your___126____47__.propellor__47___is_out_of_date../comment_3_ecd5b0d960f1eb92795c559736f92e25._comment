@@ -1,0 +1,34 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="twice the warning"
+ date="2018-01-01T15:57:05Z"
+ content="""
+The warning is printed twice.
+
+One at the very beginning:
+
+	stappers@paddy:~
+	$ propellor paddy.gpm.stappers.nl
+	   A newer upstream version is available in /usr/src/propellor/propellor.git
+	   To merge it, run: git merge upstream/master
+	   
+	[2018-01-01 16:42:54 CET] command line:  Run \"paddy.gpm.stappers.nl\"
+
+
+The other at the end of executing:
+
+	loop deleted : /dev/loop0
+	paddy.gpm.stappers.nl built disk image /srv/image/lime.img ... done
+	paddy.gpm.stappers.nl overall ... done
+	Shared connection to paddy.gpm.stappers.nl closed.
+	** warning: ** Your ~/.propellor/ is out of date..
+	stappers@paddy:~
+	$ 
+
+It was the last one that made me report this.
+The one that is color highlighted,
+the one that doesn't have the `git merge` advice.
+
+"""]]

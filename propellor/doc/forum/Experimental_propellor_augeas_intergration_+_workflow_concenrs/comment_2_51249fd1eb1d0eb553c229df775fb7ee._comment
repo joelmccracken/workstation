@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 2"
+ date="2015-09-25T13:27:54Z"
+ content="""
+Do we know if this augeas module could be integrated into Propellor ?
+"""]]

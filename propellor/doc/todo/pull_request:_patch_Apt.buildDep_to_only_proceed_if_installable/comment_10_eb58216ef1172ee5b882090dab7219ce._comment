@@ -1,0 +1,32 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 10"""
+ date="2015-12-03T15:05:21Z"
+ content="""
+
+	trivial (trivial p `changesFile` f) `changesFile` f'
+
+The parenthesized property here is all marked trivial, so a change to f
+won't result in MadeChange, though a change to f' will.
+
+The only way propellor might intercept the output of a program is if you're
+using the new Concurrent module. In that case it should buffer program output
+and display it all at once. There could potentially be a bug there that
+hid program output. I certianly can't reproduce changesFile hiding the output
+of a program:
+
+	*Propellor.Property.Apt> runPropellor (Host "localhost" [] mempty) $ ensureProperty $ trivial (buildDep ["git-annex"]) `changesFile` "/var/lib/dpkg/status"
+	Reading package lists... Done
+	Building dependency tree       
+	Reading state information... Done
+	0 upgraded, 0 newly installed, 0 to remove and 707 not upgraded.
+	NoChange
+
+	*Propellor.Property.Apt Propellor.Property.Concurrent> withConcurrentOutput $ runPropellor (Host "localhost" [] mempty) $ ensureProperty $ (trivial (buildDep ["git-annex"]) `changesFile` "/var/lib/dpkg/status") `concurrently` cmdProperty "echo" ["hi"]
+	hi
+	Reading package lists...
+	Building dependency tree...
+	Reading state information...
+	0 upgraded, 0 newly installed, 0 to remove and 707 not upgraded.
+	MadeChange
+"""]]

@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-06-29T20:40:33Z"
+ content="""
+I've added a --unset option now.
+"""]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="fix / workaround"
+ date="2020-08-14T16:57:22Z"
+ content="""
+based on a suggestion by joeyh, I reverted 162e1d4e82e24f0fe3e2bd3114e4366ddb1062c0 and this seems to have made the problem go away.
+"""]]

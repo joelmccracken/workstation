@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-10-10T03:03:42Z"
+ content="""
+Well, 8 is the general default, I don't know why markdown defaults to 4.
+Following this coding style should result in code that looks good at most
+tab sizes.
+
+Adjusted the .dir-locals.el to use 8 for consistency.
+"""]]

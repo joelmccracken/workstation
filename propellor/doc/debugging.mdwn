@@ -1,0 +1,7 @@
+Set `PROPELLOR_DEBUG=1` in the environment, or `git config propellor.debug 1`
+to make propellor print out all the commands it runs and any other debug
+messages that Properties choose to emit.
+
+Another handy debugging tip is to load up your config.hs in ghci, and look
+at `hosts`. This will show the Properties of a Host, as well as the Info
+associated with it, etc.

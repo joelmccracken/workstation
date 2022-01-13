@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="david@1439a1cab13195a56248b6a8fd98a62028bcba8a"
+ nickname="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="first attempt"
+ date="2018-08-23T13:36:52Z"
+ content="""
+Here's my first attempt, so you can snicker at my clumsy Haskell.
+
+<pre>
+gitoliteKeys :: User -> Property UnixLike
+gitoliteKeys user@(User username) = property' (\"set up gitolite keys for \" ++ username) $ \w -> do
+      home <- liftIO (User.homedir user)
+      ensureProperty w $ go home
+  where
+    go :: FilePath -> Property UnixLike
+    go home = File.hasContent (home </> \".gitolite/keydir/zzz/propellor\" </> \"bremner@propellor.pub\")
+                        [ Tethera.Keys.bremner_ssh ]
+              `before`
+              (Cmd.userScriptProperty user [ \"gitolite compile\", \"gitolite trigger POST_COMPILE\" ]
+                           `changesFile` (home </> \"gitolite/.ssh/authorized_keys\"))
+</pre>
+
+
+I think the next step is something like 
+<pre>
+Directory.hasContent :: FilePath -> [ (FilePath, [Line]) ] -> Property UnixLike
+</pre>
+"""]]

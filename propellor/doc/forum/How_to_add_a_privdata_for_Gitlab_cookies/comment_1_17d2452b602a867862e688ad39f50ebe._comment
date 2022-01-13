@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-11-22T19:14:32Z"
+ content="""
+Privdata uses the combination of the Context and the PrivDataField
+to identify the piece of private data to use. So, you don't
+need to add a new constructor to PrivDataField as long as you can
+find a context that is sufficiently specific for your needs.
+The gitlab url (without the password) would make a fine context.
+
+So, I'd suggest something like `withPrivData (Password "thegitlaburl") (Context "thegitlaburl")`
+
+See the example in the haddock for withPrivData to for how to use that.
+
+(The only possible problem with that is you're claiming it's a password
+when it's really an API key. Propellor won't care, but it you wanted
+to store the actual gitlab password too, then you'd need to use a different
+username. It may make sense to add a new constructor to PrivDataField for
+an API key or something like that.)
+"""]]

@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 1"
+ date="2017-12-19T21:45:08Z"
+ content="""
+I tried to swap update-grub and grub-install in Grub.bootsMounted, I get:
+
+    ...
+         17,512,735  69%  185.22MB/s    0:00:00 (xfr#1, to-chk=0/5)
+                129   0%    0.15kB/s    0:00:00 (xfr#3, to-chk=0/33524)   
+    update-initramfs: Generating /boot/initrd.img-4.9.0-4-amd64
+    grub-install: error: /usr/lib/grub/i386-pc/modinfo.sh doesn't exist. Please specify --target or --directory.
+    loop deleted : /dev/loop0
+    laptop built disk image /srv/router.img ... failed
+    laptop overall ... failed
+
+Which is weird, as grub-install should try to use /usr/lib/grub/i386-coreboot/...
+
+"""]]

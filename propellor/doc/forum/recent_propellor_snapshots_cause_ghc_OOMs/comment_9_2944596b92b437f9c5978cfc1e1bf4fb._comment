@@ -1,0 +1,71 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 9"""
+ date="2016-06-02T21:07:10Z"
+ content="""
+@craige I do get an OOM with your config.hs. 
+
+So, the first thing I tried was to delete several of the 
+big blocks of `&` properties to simplify it.
+
+That led to some error messages, which didn't OOM ghc this time,
+but were still several pages long each.
+
+The main problem is that standardDesktop etc functions have not finished
+being ported to propellor 3.0. A minimalized example derived from your config
+is as follows:
+
+	standardDesktop :: HostName -> DebianSuite -> Architecture -> Host
+	standardDesktop hn suite arch motd = host hn
+	        & osDebian suite arch
+        	& Apt.unattendedUpgrades
+	        & Apt.cacheCleaned
+	        & Apt.installed ["etckeeper"]
+		-- adding more properties here yields exponentially longer
+		-- type inference errors 
+
+That would have worked before propellor 3.0, but I had to remove support
+for adding additional properties into an existing Host using `&` like this.
+Also, in propellor 3.0, you have to use `props` when building a list
+of properties to assign to a host. See [[upgrading_to_propellor_3.0]].
+
+The way I dealt with it in joeyconfig.hs is to make my standardSystem not
+be a function to generate a Host, but just a Property that combines
+together other properties and can be added to a Host like any other
+Property. I suggest you make similar changes to your config.hs to get it
+to compile. The fixed version of the above example becomes:
+
+	standardDesktop :: DebianSuite -> Architecture -> Property (HasInfo + Debian)
+	standardDesktop suite arch = propertyList "standard desktop" $ props
+		& osDebian suite arch
+		& Apt.unattendedUpgrades
+		& Apt.cacheCleaned
+		& Apt.installed ["etckeeper"]
+
+So in summary, in this case, the ghc OOM is due to a type inference 
+error message, proabably quite an enourmous one as ghc chews on
+a bunch of properties that are being combined together, and tries to say
+that their type should be Property (HasInfo + Debian) and not Host, but
+says it in the most verbose way imaginable.
+
+(I don't think the type checker is blowing up, because ghc is able to get
+to the point of saying "Couldn't match expected" before it blows up .. 
+the type checker has found a problem and the error message is being lazily
+generated.)
+
+It may be that the super-long error message could be improved by 
+[[todo/use_ghc_8.0_custom_compile_errors]], although I believe that
+ ghc still displays the full type error message after the custom error
+message.
+
+ghc is printing out each application of the Propellor.Types.MetaTypes.Intersect
+type-level function, along with all its inputs. I wonder if there's a
+way to "force" application of a type-level function so the error message
+only shows its value?
+
+(It certianly seems a bug that ghc can eat all memory to display totally
+enormous type errror messages.)
+
+(Also @craige, you need to submit some of those modules to include in propellor.
+How can propellor be complete w/o MineCraft support?)
+"""]]

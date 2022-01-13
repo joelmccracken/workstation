@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="craige@a46118dff5bc0fad85259759970d8b4b9fc377d7"
+ nickname="craige"
+ subject="Thanks!"
+ date="2016-06-03T00:40:32Z"
+ content="""
+That all makes sense. Thanks joey.
+
+The update to Propellor 3.x caught me by surprise and this all resulted from that. Clearly I need to watch Propellor blog posts more more carefully :-)
+
+I'll take your example, read the upgrading doco and get things going from there, now the I understand the problem.
+
+I'll pass on those modules when the move beyond \"embarrassingly incomplete\" and become something that I think other people can use :-D
+"""]]

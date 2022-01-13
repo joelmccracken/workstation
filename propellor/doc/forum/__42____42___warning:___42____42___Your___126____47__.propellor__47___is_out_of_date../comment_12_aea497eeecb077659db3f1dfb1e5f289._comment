@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 12"""
+ date="2018-02-19T15:48:21Z"
+ content="""
+What propellor --init sets up, when you select the clone option
+and the Debian package is installed, is no remote
+defined, but a remotes/upsteam/master tracking branch.
+
+So not normally this:
+
+    upstream        /usr/src/propellor/propellor.git (fetch)
+
+Aha! The very first revision of propellor --init
+*did* set up an upstream remote pointing at the distrepo. At some point
+that changed to the above described behavior. You're bitten by being an
+early adopter.
+
+I've adjusted the logic to handle that case.
+"""]]

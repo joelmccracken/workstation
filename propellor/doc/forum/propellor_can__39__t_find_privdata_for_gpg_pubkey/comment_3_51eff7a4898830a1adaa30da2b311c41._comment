@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="comment 3"
+ date="2020-08-22T15:08:16Z"
+ content="""
+In this special case I don't really need privData, I worked around it by running `gpg`.
+I'm not sure if my usecase is common enough to warrant extending `Propellor.Property.Gpg`
+
+[[!format haskell \"\"\"
+  & Cmd.cmdProperty \"gpg\" [ \"--output\"
+                          , debugMeKeyFile
+                          , \"--batch\"
+                          , \"--yes\"
+                          , \"--export\"
+                          , \"7A18807F100A4570C59684207E4E65C8720B706B\"
+                          ]
+  `changesFile` debugMeKeyFile
+  `requires` rootGpg
+
+\"\"\"]]
+
+"""]]

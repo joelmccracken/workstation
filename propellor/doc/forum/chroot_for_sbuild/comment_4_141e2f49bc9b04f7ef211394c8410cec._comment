@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 4"
+ date="2015-09-30T13:06:46Z"
+ content="""
+In fact the real error meassage is this one.
+
+    src/config.hs:166:17:
+        Couldn't match expected type `RevertableProperty'
+                    with actual type `m0 a0'
+        In the expression:
+          withTmpDir \"sbuild\" $ \ tmpdir -> sbuild' system tmpdir
+        In an equation for `sbuild':
+            sbuild system
+              = withTmpDir \"sbuild\" $ \ tmpdir -> sbuild' system tmpdir
+
+    src/config.hs:166:50:
+        Couldn't match expected type `m0 a0'
+                    with actual type `RevertableProperty'
+        In the return type of a call of sbuild'
+        In the expression: sbuild' system tmpdir
+        In the second argument of `($)', namely
+          `\ tmpdir -> sbuild' system tmpdir'
+
+"""]]

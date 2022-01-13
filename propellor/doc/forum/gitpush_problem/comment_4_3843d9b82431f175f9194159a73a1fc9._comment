@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2015-07-30T16:07:14Z"
+ content="""
+I have found a workaround -- Since git pull is broken, it can instead do a
+git fetch followed by a git merge. I've put that fix in place.
+
+Unfortunately, --spin can't be used to deploy a fix that breaks the --spin
+transport! So, hosts that are suffering from this problem will need to have
+their propellor git repos updated in some other way, like pulling from a
+central git repo.
+"""]]

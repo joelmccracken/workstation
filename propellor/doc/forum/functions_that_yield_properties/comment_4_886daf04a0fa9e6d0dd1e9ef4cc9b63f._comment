@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-06-06T20:58:37Z"
+ content="""
+`Maybe a` is a Monoid, so something along that line was what I was
+thinking.
+
+----
+
+	withMyAcc
+		:: (SingI outer, Cannot_ensureProperty_WithInfo inner ~ 'True,
+		    NotSuperset (Targets inner) (Targets outer) ~ 'CanCombine)
+		=> Desc
+		-> (User -> Property (MetaTypes inner))
+		-> Property (MetaTypes outer)
+
+The complicated constraints there are inherited from the use of `ensureProperty`.
+
+A less general form of that is:
+
+	withMyAcc :: Desc -> (User -> Property DebianLike) -> Property DebianLike
+"""]]

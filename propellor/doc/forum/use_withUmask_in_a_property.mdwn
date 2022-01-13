@@ -1,0 +1,12 @@
+I'm trying to combine the following two properties:
+
+	propertyList "generate new key file" $ props
+		& cmdProperty "openssl"
+			[ "genrsa"
+			, "4096"
+			, "> " ++ key
+			]
+			`assume` MadeChange
+		& key `File.mode` combineModes [ownerReadMode, ownerWriteMode]
+
+I've tried to use withUmask, without success. Is there a way to do that?

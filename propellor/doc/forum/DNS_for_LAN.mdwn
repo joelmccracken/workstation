@@ -1,0 +1,1 @@
+I'd like to setup DNS for hosts on my LAN (mainly for running propellor). I already have dnsmasq installed to support libvirt. Should I just use dnsmasq, or is there some other thing nicely integrated with propellor?

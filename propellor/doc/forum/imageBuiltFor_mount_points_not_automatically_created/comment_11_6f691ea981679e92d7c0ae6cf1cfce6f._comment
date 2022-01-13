@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 11"
+ date="2017-12-22T12:10:37Z"
+ content="""
+So, I rebooted, but I still had the /dev/mapper/loop problem. I was able to \"dmsetup remove\" these, though...
+
+I deleted router.img and router.img.parttable...
+
+    creating /srv/router.img of size 1.66 gigabytes
+    loop deleted : /dev/loop0
+    mkfs.fat 4.1 (2017-01-24)
+    loop deleted : /dev/loop0
+         26,456,191 100%   29.82MB/s    0:00:00 (xfr#5, to-chk=0/7)
+        770,763,841  99%    2.16MB/s    0:05:40 (xfr#26256, to-chk=0/33583)   
+    update-initramfs: Generating /boot/initrd.img-4.9.0-4-amd64
+    Generating grub configuration file ...
+    Found linux image: /boot/vmlinuz-4.9.0-4-amd64
+    Found initrd image: /boot/initrd.img-4.9.0-4-amd64
+    done
+    grub-install: error: /usr/lib/grub/i386-efi/modinfo.sh doesn't exist. Please specify --target or --directory.
+    loop deleted : /dev/loop0
+    laptop built disk image /srv/router.img ... failed
+    laptop overall ... failed
+
+
+...and I'm back to the grub-install/grub-update problem, which seems to apply to grub-efi-amd64. It's weird, because it's the version I have on my laptop, and I did not notice this issue (but I installed debian on it a long time ago, so, the bug may have appeared since then).
+"""]]

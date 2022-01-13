@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="eugen"
+ avatar="http://cdn.libravatar.org/avatar/7e7e5700d7017735fd00c2dfcd3f91e4"
+ subject="comment 3"
+ date="2019-11-21T20:29:20Z"
+ content="""
+Indeed, I can see how etckeeper provides a very easy way to check exactly what has changed to /etc (also) after a propellor spin. When I'm manually editing an /etc file I know what the changes are, but not so when a tool does it for me. So, it's important to verify, for example, that propellor did indeed what I *thought* I told it to do (not sure if propellor has an option to report the /etc changes it did).
+
+By using both etckeeper and propellor, which one do you consider to have the authoritative status (power?) over /etc? Do you still manually edit /etc files?
+"""]]

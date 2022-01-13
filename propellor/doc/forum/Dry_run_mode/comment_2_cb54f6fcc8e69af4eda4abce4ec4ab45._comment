@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://www.joachim-breitner.de/"
+ nickname="nomeata"
+ subject="Dry run mode"
+ date="2015-10-20T21:57:34Z"
+ content="""
+What I would do (or rather, what I was just attempting to do) is to attach all your properties to a container (Docker or Systemd) and inspect the container. If you like what has happened, then you can try it on the real hosts.
+
+Not as nices as a real dry-run mode, but it’s a start.
+"""]]

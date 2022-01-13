@@ -1,0 +1,35 @@
+Hello, with the new 5.3.5 version,I have these errors now.
+
+At least for the two first I know that I need to add the dependencies to the executable.
+but for the last one, I do not know how to proceed properly.
+
+Cheers
+
+
+    Building executable 'propellor-config' for propellor-5.3.5..
+    [1 of 1] Compiling Main             ( executables/propellor-config.hs, dist/build/propellor-config/propellor-config-tmp/Main.o )
+
+    executables/propellor-config.hs:14:1-25: error:
+        Could not find module ‘System.Posix.Files’
+        Perhaps you meant System.Posix.Types (from base-4.10.1.0)
+        Use -v to see a list of the files searched for.
+       |
+    14 | import System.Posix.Files
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    executables/propellor-config.hs:15:1-66: error:
+        Could not find module ‘System.FilePath.Posix’
+        Use -v to see a list of the files searched for.
+       |
+    15 | import System.FilePath.Posix ((</>), dropExtension, takeDirectory)
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    executables/propellor-config.hs:28:1-23: error:
+        Could not find module ‘Utility.FileMode’
+        it is a hidden module in the package ‘propellor-5.3.5’
+        Use -v to see a list of the files searched for.
+       |
+    28 | import Utility.FileMode
+       | ^^^^^^^^^^^^^^^^^^^^^^^
+
+    HsCompilation exited abnormally with code 1 at Sun Apr 29 09:35:08

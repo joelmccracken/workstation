@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 5"
+ date="2018-08-26T17:14:20Z"
+ content="""
+It's these lines:
+
+	-- make my SSH key available to gitolite
+	& File.hasContent \"/srv/git/.gitolite/keydir/spwhitton.pub\"
+		[SPW.mySSHKey]
+	`onChange` (userScriptProperty (User \"git\")
+		[\"gitolite compile\", \"gitolite trigger POST_COMPILE\"]
+		`assume` MadeChange)
+"""]]

@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="qcow and raw imgs"
+ date="2018-10-13T23:48:46Z"
+ content="""
+Maybe this is obvious, but it's cheap to generate a qcow image \"backed\" by an existing raw image
+
+To quote from a script I have lying around to let a non-root user boot a root owned, read-only image
+[[!format txt \"\"\"
+qemu-img create -b /srv/vm/$vm.img -f qcow2 $img
+\"\"\"]]
+
+"""]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="comment 7"
+ date="2016-06-02T20:26:40Z"
+ content="""
+I ran into a similar problem, only I had a lot more memory to go through before OOMing (GHC went up to 20 GB). After commenting out part of my configuration, I got a ton of type errors (due to mixing up Property types in a bunch of places, as well as having a missing `props`). Once I fixed the type errors and then uncommenting everything, complication proceeded as normal. So I think there is some pathological case here that causes some blowup in compilation when the types don't line up properly, possible due to some exponential complexity somewhere.
+"""]]

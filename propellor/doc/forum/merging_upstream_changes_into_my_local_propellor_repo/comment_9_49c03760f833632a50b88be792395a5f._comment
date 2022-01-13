@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="s@aa9ff9ce06b08acfd2a93ebd342ce6879430fbdd"
+ nickname="s"
+ avatar="http://cdn.libravatar.org/avatar/81bf27f8b35011d1846711fa37a5588f"
+ subject="comment 9"
+ date="2019-06-15T16:04:22Z"
+ content="""
+Thanks again [@spwhitton](https://propellor.branchable.com/user/spwhitton/). I've verified the tag with Joey's GPG keys.
+
+Documenting here:
+
+Get Joey's [GPG keys](https://joeyh.name/contact/)
+
+```
+gpg2 --recv-keys  'E85A 5F63 B31D 24C1 EBF0 D81C C910 D922 2512 E3C7'
+```
+
+Verify the release tag before merging it into your local repo:
+
+```
+cd ~/.propellor
+git verify-tag X.Y.Z
+```
+
+"""]]

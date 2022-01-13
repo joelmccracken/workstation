@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="unused parameter gw"
+ date="2019-08-03T15:48:10Z"
+ content="""
+For specifying an optional gateway. I never got that far in implimenting it.
+"""]]

@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 8"""
+ date="2017-12-20T22:21:35Z"
+ content="""
+The debian grub-pc package creates /boot/grub in its postinst.
+
+It seems that grub-coreboot does not. I don't know why.
+Seems like it could be considered a bug to me; installing the package
+and then running grub-mkconfig ought to just work.  I'm going to file a bug
+report.
+
+Anyway, I suppose propellor ought to work around the bug by making sure
+/boot/grub exists.
+"""]]

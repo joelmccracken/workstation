@@ -1,0 +1,73 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="two git repos and one /usr/local/propellor"
+ date="2018-01-02T20:43:54Z"
+ content="""
+Perhaps I don't understand the secret-project and its special buid with stack.
+
+
+I have a git repo in `~/.propellor` and I have a git repo in `~/src/secret-project`.
+
+
+In the ~/secret-project directory
+
+	$ propellor
+	Pull from central git repository ... done
+	Copying from /home/stappers/src/secret-project/.stack-work/install/x86_64-linux-nopie/lts-8.12/8.0.2/bin/propellor-config to /home/stappers/src/secret-project/.built/propellor-config
+	
+	Copied executables to /home/stappers/src/secret-project/.built:
+	- propellor-config
+	
+	Warning: Installation path /home/stappers/src/secret-project/.built
+	         not found on the PATH environment variable.
+	Propellor build ... done
+	[master fb46460] propellor spin
+	Git commit ... done
+	error: Cannot access URL https://git.joeyh.name/git/secret-project.git/, return code 22
+	fatal: git-http-push failed
+	error: failed to push some refs to 'https://git.joeyh.name/git/secret-project.git'
+	Push to central git repository ... failed
+	Pull from central git repository ... done
+	** warning: git branch origin/master is not signed with a trusted gpg key; refusing to deploy it! (Running with previous configuration instead.)
+	Sending privdata (11 bytes) to paddy.gpm.stappers.nl ... done
+	remote: Counting objects: 6, done.        
+	remote: Compressing objects: 100% (6/6), done.        
+	remote: Total 6 (delta 4), reused 0 (delta 0)        
+	Sending git update to paddy.gpm.stappers.nl ... done
+	From .
+	 * branch            HEAD       -> FETCH_HEAD
+	fatal: refusing to merge unrelated histories
+	** error: git merge from client failed
+	propellor: Cannot continue!
+	CallStack (from HasCallStack):
+	  error, called at src/Propellor/Message.hs:143:9 in main:Propellor.Message
+	propellor: user error (ssh [\"-o\",\"ControlPath=/home/stappers/.ssh/propellor/paddy.gpm.stappers.nl.sock\",
+		\"-o\",\"ControlMaster=auto\",
+		\"-o\",\"ControlPersist=yes\",
+		\"root@paddy.gpm.stappers.nl\",
+		\"sh -c 'if [ ! -d /usr/local/propellor/.git ] ;
+			 then (if ! git --version >/dev/null 2>&1;
+			 then apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qq --no-install-recommends --no-upgrade -y install git;
+			 fi && echo STATUSNeedGitClone) || echo STATUSNeedPrecompiled ;
+			 else cd /usr/local/propellor && if ! stack build --dry-run >/dev/null 2>&1;
+			 then ( apt-get update ;
+			 DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install gnupg ;
+			 DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install haskell-stack ;
+			 stack setup ;
+			 stack build --only-dependencies :propellor-config) || true;
+			 fi&& if ! test -x ./propellor;
+			 then stack build :propellor-config && ln -sf $(stack path --dist-dir)/build/propellor-config/propellor-config propellor;
+			 fi;
+			if test -x ./propellor && ! ./propellor --check;
+			 then stack clean && stack build :propellor-config && ln -sf $(stack path --dist-dir)/build/propellor-config/propellor-config propellor;
+			 fi && ./propellor --boot paddy.gpm.stappers.nl ;
+			 fi'\"] exited 1)
+	stappers@paddy:~/src/secret-project
+	$
+
+
+The `/usr/local/propellor/` has already a  .git directory from  ~/.propellor ...
+
+"""]]

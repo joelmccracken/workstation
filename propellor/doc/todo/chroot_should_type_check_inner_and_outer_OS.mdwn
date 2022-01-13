@@ -1,0 +1,9 @@
+Currently chroot properties containing any OS can be added to any host. Of
+course, some won't work. It would be nice to type check that the
+combination of inner and outer OS are compatable (ie, some linux on some
+linux).
+
+I have a partially done patch for that, but it failed at the last hurdle.
+See commit message 0b0ea182ab3301ade8b87b1be1cdecc3464cd1da 
+
+[[!tag users/joey]]

@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="Naming and other hard problems"
+ date="2018-10-13T23:16:07Z"
+ content="""
+I'm not too attached to the terminology, \"direct booting\" just what an unscientific survey of sysadmin types came up with. QemuBoot is more descriptive, although I do wonder if it's really specific to Qemu.  As far as I understand (which is just from reading the Xen wiki), Xen dom0 can also (and originally could only) boot this way.  In fact I think the last Xen VPS I had worked like this, which was a pain as a guest admin. Maybe the connecting thread is that the boot is controlled by the host rather than the guest VM.  HostBoot would be one option, although NoBootloader is also fine with me. I think things like QemuBootloader or whatever would likely be layered on top.
+
+I'm less sure about copying kernel and initrd than when I first wrote that. If it's reasonable to depend on the existence of the foo.img.chroot,  then it's quite convenient to boot from the already conveniently present kernel and initramfs.
+
+I'll have to see how hard it is to get basic networking with just qemu. It might make sense to use libvirt to run the VMs, especially since that's what the production deployment uses.  I saw [[spwhitton]] had some ideas about libvirt.
+
+
+
+"""]]

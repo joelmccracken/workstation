@@ -1,0 +1,20 @@
+Hello,
+
+To settup a control system for a RAID interface, I have to install a binary from downloading on internet.
+I am using the function downlaod that I copied over from deboostrap (src/Propellor/Property/Debootstrap.hs):
+
+    download :: Url -> FilePath -> IO Bool
+    download url dest = anyM id
+                    [ boolSystem "curl" [Param "-o", File dest, Param url]
+                    , boolSystem "wget" [Param "-O", File dest, Param url]
+                    ]
+
+As I read it, it should try to download using first `curl`, then `wget`. On this system, `curl` is not installed (but `wget` is). When the property is run I get the following warning :
+
+    ** warning: curl: createProcess: runInteractiveProcess: exec: does not exist (No such file or directory)
+
+Clearly indicating that it does not manage to download using `curl (expected), but then, instead of trying with `wget` it fails with message :
+
+    download ... ... failed
+
+I understand that the `anyM` is interupted before running the second element of the command list. I suspexct that `boolSystem` is not returning `false` when `curl` does not exist, but rather throwing some kind of exception (interupting the anyM tentatives).

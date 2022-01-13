@@ -1,0 +1,9 @@
+While investigating my rm property problem I ran propellor with
+
+    PROPELLOR_DEBUG=1 propellor
+
+At the beginning I have the debug informations but not once the ssh connection was initiated on the host.
+
+So I had to log into the host in order to run locally propellor in debug mode.
+
+It seems to me that the PROPELLOR_DEBUG=1 env should be propagate to the host, chroot etc...

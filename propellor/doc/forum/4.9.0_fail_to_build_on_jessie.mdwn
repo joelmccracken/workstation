@@ -1,0 +1,26 @@
+Hello while trying to build propellor on jessie, I got this error message
+
+
+    picca@irdrx1:~/.propellor$ propellor
+    Preprocessing executable 'propellor-config' for propellor-4.9.0...
+    [105 of 120] Compiling Propellor.Property.PropellorRepo ( src/Propellor/Property/PropellorRepo.hs, dist/build/propellor-config/propellor-config-tmp/Propellor/Property/PropellorRepo.o )
+
+    src/Propellor/Property/PropellorRepo.hs:17:37:
+    No instance for (Typeable OriginUrl) arising from a use of `toInfo'
+    Possible fix: add an instance declaration for (Typeable OriginUrl)
+    In the second argument of `setInfoProperty', namely
+      `(toInfo (InfoVal (OriginUrl u)))'
+    In the expression:
+      setInfoProperty p (toInfo (InfoVal (OriginUrl u)))
+    In an equation for `hasOriginUrl':
+        hasOriginUrl u
+          = setInfoProperty p (toInfo (InfoVal (OriginUrl u)))
+          where
+              p :: Property UnixLike
+              p = property ("propellor repo url " ++ u)
+                  $ do { curru <- liftIO getRepoUrl;
+                         .... }
+Resolving dependencies...
+
+
+Cheers

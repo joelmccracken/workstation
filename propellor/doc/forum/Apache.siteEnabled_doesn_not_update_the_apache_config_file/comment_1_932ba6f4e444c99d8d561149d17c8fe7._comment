@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="first run"
+ date="2014-12-08T09:31:46Z"
+ content="""
+root@mordor:~/propellor/src# PROPELLOR_DEBUG=1 runhaskell config.hs                                                                                                    
+[2014-12-08 10:27:10 CET] read: hostname [\"-f\"]
+[2014-12-08 10:27:10 CET] command line:  Run \"mordor\"
+[2014-12-08 10:27:10 CET] read: git [\"remote\"]
+[2014-12-08 10:27:10 CET] read: git [\"symbolic-ref\",\"--short\",\"HEAD\"]
+[2014-12-08 10:27:10 CET] call: git [\"fetch\"]
+Pull from central git repository ... done
+[2014-12-08 10:27:12 CET] read: git [\"show-ref\",\"--hash\",\"master\"]
+[2014-12-08 10:27:12 CET] read: git [\"show-ref\",\"--hash\",\"master\"]
+mordor has Operating System (Debian Unstable) \"i386\" ... ok
+[2014-12-08 10:27:12 CET] read: apt-cache [\"policy\",\"etckeeper\"]
+mordor apt installed etckeeper ... ok
+[2014-12-08 10:27:13 CET] read: apt-cache [\"policy\",\"ssh\"]
+mordor apt installed ssh ... ok
+[2014-12-08 10:27:13 CET] read: passwd [\"-S\",\"root\"]
+mordor root has password ... ok
+[2014-12-08 10:27:13 CET] call: a2query [\"-q\",\"-s\",\"reprepro\"]
+[2014-12-08 10:27:14 CET] read: apt-cache [\"policy\",\"apache2\"]
+[2014-12-08 10:27:14 CET] call: a2ensite [\"--quiet\",\"reprepro\"]
+Enabling site reprepro.
+[2014-12-08 10:27:15 CET] call: sh [\"-c\",\"set -e ; service 'apache2' reload >/dev/null 2>&1 || true\"]
+mordor create reprepro ... done
+mordor overall ... done
+
+"""]]

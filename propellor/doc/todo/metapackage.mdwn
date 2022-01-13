@@ -1,0 +1,5 @@
+* Should be possible to generate a metapackage of all packages that
+  properties direct apt to install. Then any other packages can be
+  auto-removed. This would just be a matter of storing the apt-installed
+  packages in to Info or somewhere. Although not removing essential and base packages
+  could be problimatic.

@@ -1,0 +1,1 @@
+I would like to use Propellor for work hosts as well as configuring my personal hosts, but having these in the same repository is somewhat impractical. How do I use a Propellor repository that isn't at ~/.propellor?

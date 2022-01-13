@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-12-04T18:58:48Z"
+ content="""
+Bootstrap's package installation ignores errors, so if the package is not
+available, it will at worst display an error message and continue.
+
+However, I went ahead and made it check with apt-cache if the package is
+available, to avoid the user seeing an apt error here.
+
+I suppose users of Arch and FreeBSD may want to make similar changes, if
+their package managers also display errors; I don't know if they do or even
+if this change is going to affect those distributions.
+Probably better to let those users deal with it if similar changes are made
+to those distributions, so I'm going to close this.
+"""]]

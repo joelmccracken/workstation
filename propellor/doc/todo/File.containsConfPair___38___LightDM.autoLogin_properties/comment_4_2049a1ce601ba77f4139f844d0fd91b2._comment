@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 4"
+ date="2015-08-17T00:57:54Z"
+ content="""
+Thanks for the ideas.  I've implemented them as a new commit to my confpairs branch.  Please take a look.
+
+Two points:
+
+1. I dropped the SectionEnd helper function.  My implementation of adjustSection didn't need it and I couldn't think up a case where it would be needed.
+
+2. I'm using a tuple `(section, key, value)` as the second argument to `ConfFile.containsIniPair`, rather than just using four arguments as you suggested.  If `ConfFile.containsIniPair` takes four arguments, then it cannot be used infix when attached to other properties with the `&` operator, without using extra brackets.
+"""]]

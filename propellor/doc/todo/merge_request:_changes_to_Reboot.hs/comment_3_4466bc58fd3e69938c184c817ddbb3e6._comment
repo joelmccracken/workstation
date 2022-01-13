@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 3"
+ date="2016-06-14T03:16:18Z"
+ content="""
+Thanks for taking a look at my branch, and especially for fixing my inadequately-tested `readVersionMaybe`.
+
+`Sbuild.built` does not *require* a particular version of the kernel.  It is just that the file that it generates in `/etc/schroot/chroot.d` can vary depending on the kernel version running at the time that `Sbuild.built` is first ensured.  In particular, if the running kernel does not support overlayfs (as jessie's kernel doesn't), the line `union-type=overlay` will be omitted from the file in `/etc/schroot/chroot.d`.  This renders `Schroot.overlaysInTmpfs` useless.
+
+I think it should be up to the user to apply a property like
+
+    & Sbuild.built foo `requires` Reboot.toKernelNewerThan bar
+
+to individual hosts, because it depends on whether they actually care about using an overlay chroot.  Perhaps on an old machine they don't intend to use overlays.  In my config, I do something like this:
+
+    & osDebian Testing \"i386\"
+    & Apt.stdSourcesList `onChange` (Apt.upgraded `before` Apt.cacheCleaned `before` Reboot.toKernelNewerThan \"4\")
+    & Sbuilt.builtFor ...
+
+The idea is that if I reinstall my machine from a jessie installation CD, propellor will upgrade to testing and boot to the new kernel before it builds the chroot, so I get the `union-type=overlay` line in my config.
+
+I could prepare a patch to add this information to the haddock of Sbuild.hs?
+"""]]

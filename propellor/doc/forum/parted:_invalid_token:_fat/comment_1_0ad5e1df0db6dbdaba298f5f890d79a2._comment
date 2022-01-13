@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-12-20T16:52:30Z"
+ content="""
+Your change seems right. I think the mount error is unrelated;
+it comes from DiskImage which mounts the loopback device with
+-t auto, so the parted name for fat shouldn't impact that.
+
+There might be something in dmesg about why the mount failed.
+"""]]

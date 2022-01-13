@@ -1,0 +1,1 @@
+How can I modify the configuration of a managed host (which seems to be stored in /usr/local/propellor/.git/config) from the host on which I run propellor?

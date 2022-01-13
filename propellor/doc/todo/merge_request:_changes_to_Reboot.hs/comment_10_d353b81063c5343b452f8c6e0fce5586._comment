@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="reboot branch merges cleanly"
+ date="2016-06-21T09:20:40Z"
+ content="""
+Ah, very nice :)
+
+I reverted my GHC 6 commits and the merge with your master branch is now clean.
+
+Some changelog text you can use:
+
+- New info property Schroot.useOverlays to indicate whether you want schroots set up by propellor to use the Linux kernel's OverlayFS.
+- Schroot.overlaysInTmpfs sets Schroot.useOverlays info property.
+- If you have indicated that you want schroots to use OverlayFS and the current kernel does not support it, Sbuild.built will attempt to reboot into a kernel that does, or fail if it can't find one.
+- Sbuild.built will no longer add duplicate `aliases=UNRELEASED,sid...` lines to more than one schroot config.  It will not remove any such lines that the previous version of propellor added, though.
+- Sbuild.keypairGenerated works around Debian bug #792100 by creating the directory /root/.gnupg in advance.
+- Improved Sbuild module haddock.
+- Ccache.hasCache now sets the setgid bit on the cache directory, as ccache requires.
+"""]]

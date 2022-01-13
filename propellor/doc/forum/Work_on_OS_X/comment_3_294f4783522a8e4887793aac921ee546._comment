@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2017-04-18T00:08:13Z"
+ content="""
+Yes, this is the place. Or you can email me directly, but I prefer to keep
+discussions public.
+
+`propellor --spin` needs a way to run commands as root on the remote host.
+If ssh as root on OSX is not allowed, it would need a way to get to a user
+who can get root, and it would be very annoying if a password needed to be
+entered since each `propellor --spin` actually makes several ssh connections to
+the remote host. Anything that works within these constraints would be ok.
+"""]]

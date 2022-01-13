@@ -1,0 +1,6 @@
+The `-a` option is unfortunately [not available in openbsd's version][1] of the `cp` command.
+
+Here's a patch for it [0001-src-Update-Propellor.Bootstrap.cabalBuild.patch][2].
+
+[1]: https://man.openbsd.org/cp
+[2]: https://ricketyspace.net/patch/0001-src-Update-Propellor.Bootstrap.cabalBuild.patch

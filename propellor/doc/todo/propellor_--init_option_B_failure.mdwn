@@ -1,0 +1,41 @@
+[[!tag user/spwhitton]]
+
+With 3.0.1, 3.0.2 or 3.0.3:
+
+    artemis ~ % propellor --init
+    
+    
+                                     _         ______`|                     ,-.__
+     .---------------------------  /   \___-=O`/|O`/__|                    (____.'
+      - Welcome to              -- \          / | /    )        _.-'-._
+      -            Propellor!   --  `/-==__ _/__|/__=-|        (       \_
+     `---------------------------   *             \ | |         '--------'
+                                                (o)  `
+    
+    
+    Propellor's configuration file is ~/.propellor/config.hs
+    
+    Let's get you started with a simple config that you can adapt
+    to your needs. You can start with:
+       A: A clone of propellor's git repository    (most flexible)
+       B: The bare minimum files to use propellor  (most simple)
+    Which would you prefer? [A|B] B
+    Initialized empty Git repository in /home/swhitton/.propellor/.git/
+    Creating minimal config ... done
+    
+    ------------------------------------------------------------------------------
+    
+    Let's try building the propellor configuration, to make sure it will work...
+    
+    Writing a default package environment file to
+    /home/swhitton/.propellor/cabal.sandbox.config
+    Creating a new sandbox at /home/swhitton/.propellor/.cabal-sandbox
+    Resolving dependencies...
+    Configuring config-0...
+    cabal: At least the following dependencies are missing:
+    propellor >=3.0
+    propellor: failed to make dist/setup-config
+
+(propellor installed from Debian)
+
+: This is in the NEW queue.  [[done]]  --spwhitton

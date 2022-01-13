@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="first attempt"
+ date="2020-05-16T23:44:41Z"
+ content="""
+This isn't very general, but it seems to work
+
+[[!format haskell \"\"\"
+bareMirror :: String -> String -> Property  DebianLike
+bareMirror dir url = propertyList (\"bare mirror of \" ++ url ++ \" in \" ++ dir ) $ props
+  & Git.installed
+  & Git.bareRepo dir (User \"root\") Git.SharedAll
+  & Git.repoConfigured dir (\"remote.origin.url\", url)
+  & Git.repoConfigured dir (\"remote.origin.mirror\", \"true\")
+  & Git.repoConfigured dir (\"remote.origin.fetch\", \"+refs/*:refs/*\")
+  & Cmd.cmdProperty \"git\" [\"-C\", dir, \"fetch\", \"origin\" ] `changesFileContent` (dir </> \"HEAD\")
+\"\"\"]]
+"""]]

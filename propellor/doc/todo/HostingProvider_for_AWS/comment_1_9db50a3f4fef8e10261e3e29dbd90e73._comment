@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-05-14T16:19:00Z"
+ content="""
+So there's something here that propellor doesn't yet have a concept of,
+and that's spinning up a VM. Propellor can deploy itself to an existing VM
+pretty well, but getting the VM running isn't something it tries to do.
+
+I imagine that --spin could be extended to support this though.
+Make a Property like `vm AWS`, which tells propellor that the host
+is a VM, and that the VM is hosted on AWS. Then when you run propellor
+--spin, it could set up the VM if it doesn't exist yet.
+
+I don't use AWS currently, so don't have plans to work on this myself,
+although I think it would be a great direction to move in. Happy to help
+with advice, code review, etc.
+
+<http://hackage.haskell.org/package/aws>
+or <http://hackage.haskell.org/package/amazonka>
+are good haskell libraries for working with AWS.
+"""]]

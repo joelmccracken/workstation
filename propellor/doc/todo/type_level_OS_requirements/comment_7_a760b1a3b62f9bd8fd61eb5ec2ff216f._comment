@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="evan@0e4cded17eab71af967a38b123fbc211cf215421"
+ nickname="evan"
+ subject="Buntish Releases"
+ date="2016-03-17T03:31:57Z"
+ content="""
+I just came across another issue where the Buntish release string made a difference. I'll open a PR tomorrow sometime to show what I did (hardcoded) and maybe we can think of something cleverer using the typesystem, too.
+
+Thanks!
+"""]]

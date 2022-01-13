@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-10-20T16:06:52Z"
+ content="""
+I've introduced a ChrootBootstrapper type class, of which Debootstrapped
+is just one member. Everything that bootstraps chroots uses this
+type class, so you can write a separate module that uses buildroot, or
+whatever. And you're welcome to contribute such a module to propellor.
+
+As far as having propellor generate a tarball of a chroot, the way to do
+that is something like:
+
+	chroot dir `onChange` mktarball dir
+
+Ie, compose the chroot creation property with one that tars it up.
+"""]]

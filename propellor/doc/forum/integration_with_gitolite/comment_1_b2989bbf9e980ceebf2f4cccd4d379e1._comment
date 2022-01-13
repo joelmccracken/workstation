@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="david@1439a1cab13195a56248b6a8fd98a62028bcba8a"
+ nickname="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="&quot;For people who use puppet and similar systems&quot;"
+ date="2018-08-23T01:46:30Z"
+ content="""
+Probably the sane way is to [not use the gitolite-admin repo](http://gitolite.com/gitolite/odds-and-ends/#administering-gitolite-directly-on-the-server). Aside from being unfamiliar, that means I have to deal with a bunch small config files (say 50 - 100) in propellor. So far I'm not loving the idea of converting them all to Haskell, even with a script. But maybe I'll come around to it.
+
+
+"""]]

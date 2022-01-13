@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2016-06-20T18:36:07Z"
+ content="""
+Here's another, perhaps simpler way to do it. The `adjustPropertySatisfy`
+function takes an existing Property and applies a function to the Propellor
+action inside it.
+
+	adjustPropertySatisfy :: Property metatypes -> (Propellor Result -> Propellor Result) -> Property metatypes
+
+So, given the `genrsa` Property from my example above, you could
+modify its action to use withUmask:
+
+	adjustPropertySatisfy genrsa (withUmask filemode)
+
+This is simpler, but less flexible since it causes the entire
+Propellor action to be run with the specified umask, not just part of the
+action. But it works well for your purpose I think.
+"""]]

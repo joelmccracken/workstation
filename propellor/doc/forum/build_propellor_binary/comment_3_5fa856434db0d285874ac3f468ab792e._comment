@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="desired.mta@88576fa3c90538abed47d3f0aa48d00bcc903b23"
+ nickname="desired.mta"
+ avatar="http://cdn.libravatar.org/avatar/d93af7ba58088a39d04c7da13fc176ee"
+ subject="comment 3"
+ date="2019-04-20T09:10:52Z"
+ content="""
+Thanks for your responses! I wasn't aware there was prior work done on this.
+
+`origin/precompiled` did not build for me. But when I merged master into it, and patching around a trivial merge conflict, I got this:
+
+```
+[ 58 of 182] Compiling Propellor.Property ( src/Propellor/Property.hs, dist/build/Propellor/Property.o )
+
+src/Propellor/Property.hs:364:13: error:
+    * Could not deduce (Monoid (Property (MetaTypes t)))
+        arising from a use of `mempty'
+      from the context: SingI t
+        bound by the type signature for:
+                   doNothing :: forall k (t :: k). SingI t => Property (MetaTypes t)
+        at src/Propellor/Property.hs:363:1-46
+    * In the expression: mempty
+      In an equation for `doNothing': doNothing = mempty
+    |
+364 | doNothing = mempty
+    |             ^^^^^^
+```
+
+Unfortunately, I am not versed enough in Haskell to understand the error.
+
+
+```
+$ ghc --version
+The Glorious Glasgow Haskell Compilation System, version 8.4.4
+```
+
+Here is my merged fork (based on 38b4da93 and origin/precompiled at 7d550c75): if you can `make` it: [github.com/motiejus/propellor](https://github.com/motiejus/propellor), and tell me how to fix the above error, I would try to test it functionally further.
+"""]]

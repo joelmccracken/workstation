@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2015-08-06T16:14:04Z"
+ content="""
+Hmm, not sure that's going on there, perhaps you've found a way to break
+the propellor debian package, which has not been much used AFAIK.
+
+Seems to me it would be easier to pull the fix into your propellor
+repository from eg, propellor's public git repository.
+"""]]

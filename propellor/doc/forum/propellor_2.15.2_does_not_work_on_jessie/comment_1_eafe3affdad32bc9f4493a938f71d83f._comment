@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-01-12T16:39:26Z"
+ content="""
+Yes, unfortuntely by importing Control.Applicative by default, newer
+versions of ghc make it rather harder to produce code that will build on
+older versions too. I've added these imports.
+"""]]

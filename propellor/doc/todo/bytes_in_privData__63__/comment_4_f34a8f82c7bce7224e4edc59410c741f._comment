@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 4"
+ date="2015-04-23T09:21:07Z"
+ content="""
+I tried to do the conversion, but then it started a kind of chain reaction... (PrivData=ByteString to writeFileProtected to Line=ByteString to ... to readProcess to ...) Should I use FilePath=String? ... To be honest, the patch became a lot bigger that what I am comfortable with. :-)
+
+I guess you should have a look at it...
+
+At least, I think there is a type bug in Propellor.Property.File:
+
+    hasPrivContent' :: (IsContext c, IsPrivDataSource s) => (String -> FilePath -> IO ()) -> s -> FilePath -> c -> Property HasInfo
+
+but it should be
+
+    hasPrivContent' :: (IsContext c, IsPrivDataSource s) => (FilePath -> String -> IO ()) -> s -> FilePath -> c -> Property HasInfo
+
+(it is hidden by FilePath = String)
+"""]]

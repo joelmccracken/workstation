@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2018-08-16T15:37:48Z"
+ content="""
+Since `update` receives the changes to propellor's source code,
+it would have been running the old code at that point. You
+probably need to spin a second time to test your changes to that function.
+"""]]

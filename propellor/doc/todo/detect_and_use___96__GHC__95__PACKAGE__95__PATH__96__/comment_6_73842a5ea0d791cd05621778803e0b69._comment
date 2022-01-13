@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="mithrandi@311efa1b2b5c4999c2edae7da06fb825899e8a82"
+ nickname="mithrandi"
+ subject="comment 6"
+ date="2016-03-08T21:16:30Z"
+ content="""
+That sounds reasonable to me. One question, though; would this mean that if you commit stack.yaml to your repo (which I currently don't do), you have to have Propellor available on all the hosts you deploy to?
+"""]]

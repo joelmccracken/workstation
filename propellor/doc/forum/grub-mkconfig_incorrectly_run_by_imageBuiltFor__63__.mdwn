@@ -1,0 +1,131 @@
+I'm trying to create an image to boot a PC Engines' APU2, which uses coreboot. The debugging is particularly funny as I don't have a usb to serial converter to see what's going on -_-. I've used the following properties:
+
+    laptop :: Host
+    laptop = host "laptop" $ props
+        & osDebian Unstable X86_64
+        ...
+        & imageBuiltFor router
+            (RawDiskImage "/srv/router.img")
+            (Chroot.Debootstrapped mempty)
+
+    router :: Host
+    router = host "router" $ props
+        & hasPartitionTableType GPT
+        & hasPartition
+            ( partition EXT2
+                `mountedAt` "/boot"
+                `partLocation` Beginning
+                `setSize` MegaBytes 150
+            )
+        & hasPartition
+            ( partition EXT4
+                `mountedAt` "/"
+                `addFreeSpace` MegaBytes 500
+            )
+        & osDebian (Stable "stretch") X86_64
+        & Apt.installed ["linux-image-amd64"]
+        & serialGrub
+        ...
+      where
+        serialGrub :: Property (HasInfo + DebianLike)
+        serialGrub = "/etc/default/grub" `File.containsLines`
+                [ "GRUB_CMDLINE_LINUX=\"console=ttyS0,115200n8 biosdevname=0\""
+                , "GRUB_SERIAL_COMMAND=\"serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1\""
+                , "GRUB_TERMINAL=serial"
+                ]
+                -- `onChange` Grub.mkConfig
+                `requires` Grub.installed Grub.Coreboot
+                `describe` "GRUB configured for PC Engines' APU2 serial console"
+
+This returns:
+    
+    $ propellor --spin laptop
+    ...
+    router no services started ... ok
+    router has partition table type GPT ... ok
+    router has has /boot partition ... ok
+    router has has / partition ... ok
+    router has Operating System (Debian Linux (Stable "stretch")) X86_64 ... ok
+    ...
+    router apt installed linux-image-amd64 ... ok
+    Reading package lists...
+    Building dependency tree...
+    Reading state information...
+    The following additional packages will be installed:
+      gettext-base grub-common grub-coreboot-bin grub2-common libfreetype6
+      libfuse2 libpng16-16 os-prober
+    Suggested packages:
+      multiboot-doc grub-emu xorriso desktop-base console-setup fuse
+    The following NEW packages will be installed:
+      gettext-base grub-common grub-coreboot grub-coreboot-bin grub2-common
+      libfreetype6 libfuse2 libpng16-16 os-prober
+    0 upgraded, 9 newly installed, 0 to remove and 0 not upgraded.
+    Need to get 4354 kB of archives.
+    After this operation, 20.9 MB of additional disk space will be used.
+    Get:1 http://deb.debian.org/debian stretch/main amd64 libpng16-16 amd64 1.6.28-1 [280 kB]
+    Get:2 http://deb.debian.org/debian stretch/main amd64 libfreetype6 amd64 2.6.3-3.2 [438 kB]
+    Get:3 http://deb.debian.org/debian stretch/main amd64 libfuse2 amd64 2.9.7-1 [125 kB]
+    Get:4 http://deb.debian.org/debian stretch/main amd64 gettext-base amd64 0.19.8.1-2 [121 kB]
+    Get:5 http://deb.debian.org/debian stretch/main amd64 grub-common amd64 2.02~beta3-5 [2174 kB]
+    Get:6 http://deb.debian.org/debian stretch/main amd64 grub2-common amd64 2.02~beta3-5 [526 kB]
+    Get:7 http://deb.debian.org/debian stretch/main amd64 grub-coreboot-bin amd64 2.02~beta3-5 [587 kB]
+    Get:8 http://deb.debian.org/debian stretch/main amd64 grub-coreboot amd64 2.02~beta3-5 [73.0 kB]
+    Get:9 http://deb.debian.org/debian stretch/main amd64 os-prober amd64 1.76~deb9u1 [30.0 kB]
+    Preconfiguring packages ...
+    E: Can not write log (Is /dev/pts mounted?) - posix_openpt (19: No such device)
+    Fetched 4354 kB in 1s (2803 kB/s)
+    Selecting previously unselected package libpng16-16:amd64.
+    (Reading database ... 26264 files and directories currently installed.)
+    Preparing to unpack .../0-libpng16-16_1.6.28-1_amd64.deb ...
+    Unpacking libpng16-16:amd64 (1.6.28-1) ...
+    Selecting previously unselected package libfreetype6:amd64.
+    Preparing to unpack .../1-libfreetype6_2.6.3-3.2_amd64.deb ...
+    Unpacking libfreetype6:amd64 (2.6.3-3.2) ...
+    Selecting previously unselected package libfuse2:amd64.
+    Preparing to unpack .../2-libfuse2_2.9.7-1_amd64.deb ...
+    Unpacking libfuse2:amd64 (2.9.7-1) ...
+    Selecting previously unselected package gettext-base.
+    Preparing to unpack .../3-gettext-base_0.19.8.1-2_amd64.deb ...
+    Unpacking gettext-base (0.19.8.1-2) ...
+    Selecting previously unselected package grub-common.
+    Preparing to unpack .../4-grub-common_2.02~beta3-5_amd64.deb ...
+    Unpacking grub-common (2.02~beta3-5) ...
+    Selecting previously unselected package grub2-common.
+    Preparing to unpack .../5-grub2-common_2.02~beta3-5_amd64.deb ...
+    Unpacking grub2-common (2.02~beta3-5) ...
+    Selecting previously unselected package grub-coreboot-bin.
+    Preparing to unpack .../6-grub-coreboot-bin_2.02~beta3-5_amd64.deb ...
+    Unpacking grub-coreboot-bin (2.02~beta3-5) ...
+    Selecting previously unselected package grub-coreboot.
+    Preparing to unpack .../7-grub-coreboot_2.02~beta3-5_amd64.deb ...
+    Unpacking grub-coreboot (2.02~beta3-5) ...
+    Selecting previously unselected package os-prober.
+    Preparing to unpack .../8-os-prober_1.76~deb9u1_amd64.deb ...
+    Unpacking os-prober (1.76~deb9u1) ...
+    Setting up libpng16-16:amd64 (1.6.28-1) ...
+    Setting up libfuse2:amd64 (2.9.7-1) ...
+    Setting up gettext-base (0.19.8.1-2) ...
+    Setting up libfreetype6:amd64 (2.6.3-3.2) ...
+    Processing triggers for libc-bin (2.24-11+deb9u1) ...
+    Setting up grub-common (2.02~beta3-5) ...
+    Setting up grub2-common (2.02~beta3-5) ...
+    Setting up os-prober (1.76~deb9u1) ...
+    Setting up grub-coreboot-bin (2.02~beta3-5) ...
+    
+    Creating config file /etc/default/grub with new version
+    Setting up grub-coreboot (2.02~beta3-5) ...
+    router GRUB configured for PC Engines' APU2 serial console ... ok
+    loop deleted : /dev/loop0
+         25,091,167 100%  194.29MB/s    0:00:00 (xfr#4, to-chk=0/5)
+        769,633,861  99%   26.74MB/s    0:00:27 (xfr#26204, to-chk=0/33524)   
+    update-initramfs: Generating /boot/initrd.img-4.9.0-4-amd64
+    /usr/sbin/grub-mkconfig: 253: /usr/sbin/grub-mkconfig: cannot create /boot/grub/grub.cfg.new: Directory nonexistent
+    loop deleted : /dev/loop0
+    laptop built disk image /srv/router.img ... failed
+    laptop overall ... failed
+
+So, grub-mkconfig seems to be run without /boot/grub existing, which I can confirm by looking into /srv/router.img.chroot/boot/:
+
+    $ ls /srv/router.img.chroot/boot/
+    config-4.9.0-4-amd64      initrd.img-4.9.0-4-amd64  System.map-4.9.0-4-amd64  vmlinuz-4.9.0-4-amd64
+

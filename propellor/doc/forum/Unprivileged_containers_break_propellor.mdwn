@@ -1,0 +1,53 @@
+When trying to set up an unprivileged nspawn container, e.g., like shown below, propellor breaks, as it bind-mounts the `/usr/local/propellor` directory from the host, which leads to broken UIDs when seen from inside the container. I'm assuming `propellChroot` in `src/Propellor/Property/Chroot.hs` is the code that's responsible. Unfortunately, I'm not very firm in Haskell, so I'm not sure I can solve this in reasonable time, but I'll give it a shot.
+
+
+Example config:
+
+```
+rec0 :: Systemd.Container
+rec0 =  Systemd.debContainer "rec0" $ props
+        & Systemd.containerCfg "--network-veth"
+        & Systemd.containerCfg "-U"
+        & osDebian (Stable "buster") X86_64
+        & Apt.stdSourcesList
+        & Apt.installed ["pdns-recursor"] `requires` Systemd.running Systemd.networkd
+```
+
+This is the relevant output from a spin that includes the above container definition:
+
+```
+rec0 has container configuration --network-veth ... ok
+rec0 has container configuration -U ... ok
+rec0 has Operating System (Debian Linux (Stable "buster")) X86_64 ... ok
+rec0 standard sources.list ... ok
+Failed to connect to bus: Operation not permitted
+rec0 apt removed cron ifupdown rsyslog iptables isc-dhcp-client ... ok
+rec0 apt installed pdns-recursor ... failed
+propy nspawned rec0 ... failed
+propy overall ... failed
+```
+
+I figured out the (likely) cause like this:
+
+```
+$ findmnt /var/lib/container/rec0/usr/local/propellor
+TARGET                                      SOURCE                                     FSTYPE OPTIONS
+/var/lib/container/rec0/usr/local/propellor /dev/mapper/sys-root[/usr/local/propellor] ext4   rw,relatime,errors=remount-ro
+$ ls -l /var/lib/container/rec0/usr/local/propellor/dist/build/propellor-config/
+total 12272
+drwxr-xr-x 2 vu-rec0-0 vg-rec0-0    4096 Sep 24 01:19 autogen
+-rwxr-xr-x 1 root      root      6279024 Sep 24 03:16 propellor-config
+-rwxr-xr-x 1 root      root      6279024 Sep 24 03:16 propellor-config.built
+drwxr-xr-x 2 vu-rec0-0 vg-rec0-0    4096 Sep 24 03:16 propellor-config-tmp
+```
+
+I have `libnss-mymachines` setup, so the high UID/GID allocated by systemd show up with symbolic names. From inside the container, the root-owned files will show up as `nobody`:
+
+```
+# ls -l /usr/local/propellor/dist/build/propellor-config/
+total 12272
+drwxr-xr-x 2 root   root       4096 Sep 24 01:19 autogen
+-rwxr-xr-x 1 nobody nogroup 6279024 Sep 24 03:16 propellor-config
+drwxr-xr-x 2 root   root       4096 Sep 24 03:16 propellor-config-tmp
+-rwxr-xr-x 1 nobody nogroup 6279024 Sep 24 03:16 propellor-config.built
+```

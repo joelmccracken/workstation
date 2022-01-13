@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2017-12-31T15:07:40Z"
+ content="""
+Oh yeah, I forgot that needs first:
+
+	git config propellor.buildsystem stack
+"""]]

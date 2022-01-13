@@ -1,0 +1,26 @@
+I've got a server defined in config.hs as follows:
+
+    myserver :: Host
+    myserver = host "myserver.mydomain" $ props
+        & standardSystem (Stable "jessie") X86_64 [ "Welcome to myserver!" ]
+
+I'm writing a module (to deploy Matrix, FWIW) which has a section like this:
+
+    sources :: Property Debian
+    sources = File.hasContent "/etc/apt/sources.list.d/matrix.list"
+                [ "# Deployed by Propellor"
+                , ""
+                , "deb http://matrix.org/packages/debian/ jessie main"
+                ] `onChange` Apt.update
+
+What I would like to be able to do, for example, is pull "jessie" from the standardSystem line into the sources function.
+
+The host name is another I'd like to be able to pull in, so that I can abstract as much as possible and wind up with a line that looks not unlike this:
+
+    & Matrix.server 
+
+Instead of
+
+    & Matrix.server hostname jessie
+
+Am I barking up the wrong tree and should I just embrace the latter?

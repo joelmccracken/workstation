@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2018-08-26T15:14:50Z"
+ content="""
+One approach would be to have a property like spwhitton suggests,
+and use it with the `Apt.robustly` combinator. That way, when you update
+the config to specify a new package version, and apt fails to install it,
+propellor will run apt update and then retry the install.
+"""]]

@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2018-10-14T00:39:51Z"
+ content="""
+Ah right, [[todo/support_for_libvirt_KVM_VMs]];
+your patch is kind of a prerequisite for that. Pulling the kernel and
+initrd out of the chroot is a good idea!
+
+"Host" is slightly ambiguous around disk image building because
+a disk image can be built for a Host by `imageBuiltFor`. I've gone ahead
+and merged it in with the NoBootloader name.
+"""]]

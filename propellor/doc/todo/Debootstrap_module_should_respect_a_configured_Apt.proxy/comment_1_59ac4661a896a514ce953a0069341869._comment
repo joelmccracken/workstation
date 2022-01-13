@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 1"
+ date="2017-08-23T13:00:13Z"
+ content="""
+this is strange because the stretch-amd64-sbuild file is wrong.
+
+here the content
+
+    [stretch-amd64-sbuild]
+    command-prefix=/var/cache/ccache-sbuild/sbuild-setup,eatmydata
+
+to compare with my previous jessie-amd64-sbuild
+
+    [jessie-amd64-sbuild]
+    type=directory
+    description=Debian jessie/amd64 autobuilder
+    directory=/srv/chroot/jessie-amd64
+    groups=root,sbuild
+    root-groups=root,sbuild
+    profile=sbuild
+    command-prefix=/var/cache/ccache-sbuild/sbuild-setup,eatmydata
+"""]]

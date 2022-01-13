@@ -1,0 +1,46 @@
+Bootstrapping Propellor with Cabal is currently failing for me on Archlinux, for several reasons.
+
+## Dynamic linking
+
+The `ghc` package in Archlinux [uses dynamic linking](https://wiki.archlinux.org/index.php/Haskell#Problems_with_linking) for the GHC boot libraries. This means that the `cabal install` and `cabal build` steps in src/Propellor/Bootstrap.hs need the `--ghc-options=-dynamic` option added. I don't know if it's safe to do that for all OSes, or if this is something that Bootstrap.hs will need to do only on Arch.
+
+## GHC 8.8
+
+Archlinux, being a rolling-release distro, has version 8.8.1 of GHC available. This means that once I add the `--ghc-options=-dynamic` option to the `cabal install` and `cabal build` steps, Propellor now fails to build on my Archlinux system with the GHC compiler complaining about src/Propellor/Property/Installer/Target.hs. Specifically, the `UserInput i` line in the definition of `targetInstalled` produces an "Illegal polymorphic type" error:
+
+```
+src/Propellor/Property/Installer/Target.hs:137:12: error:
+    • Illegal polymorphic type:
+        forall metatypes.
+        (Combines
+           (RevertableProperty metatypes metatypes)
+           (RevertableProperty metatypes metatypes),
+         CombinedType
+           (RevertableProperty metatypes metatypes)
+           (RevertableProperty metatypes metatypes)
+         ~ RevertableProperty metatypes metatypes) =>
+        Propellor.Property.Versioned.VerSpec v metatypes
+        -> RevertableProperty metatypes metatypes
+      Perhaps you intended to use RankNTypes
+    • In the expansion of type synonym ‘Propellor.Property.Versioned.VersionedBy’
+      In the expansion of type synonym ‘Versioned’
+      In the type signature:
+        targetInstalled :: UserInput i =>
+                           Versioned v Host
+                           -> v
+                              -> i
+                                 -> TargetPartTable
+                                    -> RevertableProperty (HasInfo + DebianLike) (HasInfo
+                                                                                  + DebianLike)
+    |
+137 |         :: UserInput i 
+    |            ^^^^^^^^^^^^...
+```
+
+This appears to be  due to [stricter type synonym validity-checking in GHC 8.8](https://gitlab.haskell.org/ghc/ghc/wikis/migration/8.8#stricter-type-synonym-validity-checking). I had to add the `RankNTypes`, `TypeFamilies`, and `FlexibleContexts` extensions to Target.hs in order to make GHC 8.8 happy. (That's a minimal set: removing any one of those three produced one of three different compiler errors, which I won't reproduce here for brevity's safe). This appears to be safe on all OSes, since Propellor compiled happily on my laptop, which is running a Buntish variant called Linux Mint (where GHC 8.0.2 is what Apt gave me). (Though do note that I only tested that on Arch and Mint, and didn't do any testing on Debian to see whether GHC 7.x or earlier is still happy with those extensions being present in the source file).
+
+## New-style cabal
+
+Once I added the `--ghc-options=-dynamic` option to Cabal, and added those three extensions to the first line of Target.hs, I was then faced with another error: the `ln -sf` step failed because `dist/build/propellor-config/propellor-config` didn't exist. The version of Cabal that comes with Archlinux has apparently switched to [Nix-style local builds](https://cabal.readthedocs.io/en/latest/nix-local-build-overview.html) as the default action when you run `cabal build`, and the `propellor-config` binary ended up in `/usr/local/propellor/dist-newstyle/build/x86_64-linux/ghc-8.8.1/propellor-5.10.1/x/propellor-config/build/propellor-config/propellor-config`.
+
+This is the point where, not being a Haskell programmer myself, my ability to Google the problem was exhausted. I'm sure there's a way to get Cabal to tell you where it will put the files it's about to build (similar to `stack path --dist-dir`), but at this point, I needed to get back to working on other things. So I punted and just added `& bootstrapWith (Robustly Stack)` to the properties of my Archlinux host. :-) Bootstrapping with Stack was successful, BTW.

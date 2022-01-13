@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-10-14T16:28:46Z"
+ content="""
+Indeed, that's the kind of improvement I will gladly
+accept any time, and should be very easy to add. So don't hesitate to add
+properties like that and send patches.
+
+(In this case I had 5 minutes so I implemented it already.)
+"""]]

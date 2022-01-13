@@ -1,0 +1,90 @@
+I've been hitting a problem when importing APT keys on a debian stretch VM. I'm using a property like
+
+    mybox :: Host
+    mybox = host "henry1.home" $ props
+      & osDebian (Stable "stretch") X86_64
+      & Apt.stdSourcesList
+      & Apt.unattendedUpgrades
+      & installKubernetes
+
+
+    installKubernetes :: Property DebianLike
+    installKubernetes = Apt.installed ["kubelet", "kubeadm", "kubectl"]
+      `requires` Apt.setSourcesListD ["deb http://apt.kubernetes.io/ kubernetes-xenial main"] "google-cloud"
+      `requires` Apt.trustsKey googleKey
+
+    googleKey :: Apt.AptKey
+    googleKey =
+      Apt.AptKey "google-key" $ unlines
+      [ "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+      , ""
+      , "mQENBFUd6rIBCAD6mhKRHDn3UrCeLDp7U5IE7AhhrOCPpqGF7mfTemZYHf/5Jdjx"
+      , "cOxoSFlK7zwmFr3lVqJ+tJ9L1wd1K6P7RrtaNwCiZyeNPf/Y86AJ5NJwBe0VD0xH"
+      , "TXzPNTqRSByVYtdN94NoltXUYFAAPZYQls0x0nUD1hLMlOlC2HdTPrD1PMCnYq/N"
+      , "uL/Vk8sWrcUt4DIS+0RDQ8tKKe5PSV0+PnmaJvdF5CKawhh0qGTklS2MXTyKFoqj"
+      , "XgYDfY2EodI9ogT/LGr9Lm/+u4OFPvmN9VN6UG+s0DgJjWvpbmuHL/ZIRwMEn/tp"
+      , "uneaLTO7h1dCrXC849PiJ8wSkGzBnuJQUbXnABEBAAG0QEdvb2dsZSBDbG91ZCBQ"
+      , "YWNrYWdlcyBBdXRvbWF0aWMgU2lnbmluZyBLZXkgPGdjLXRlYW1AZ29vZ2xlLmNv"
+      , "bT6JAT4EEwECACgFAlUd6rICGy8FCQWjmoAGCwkIBwMCBhUIAgkKCwQWAgMBAh4B"
+      , "AheAAAoJEDdGwginMXsPcLcIAKi2yNhJMbu4zWQ2tM/rJFovazcY28MF2rDWGOnc"
+      , "9giHXOH0/BoMBcd8rw0lgjmOosBdM2JT0HWZIxC/Gdt7NSRA0WOlJe04u82/o3OH"
+      , "WDgTdm9MS42noSP0mvNzNALBbQnlZHU0kvt3sV1YsnrxljoIuvxKWLLwren/GVsh"
+      , "FLPwONjw3f9Fan6GWxJyn/dkX3OSUGaduzcygw51vksBQiUZLCD2Tlxyr9NvkZYT"
+      , "qiaWW78L6regvATsLc9L/dQUiSMQZIK6NglmHE+cuSaoK0H4ruNKeTiQUw/EGFaL"
+      , "ecay6Qy/s3Hk7K0QLd+gl0hZ1w1VzIeXLo2BRlqnjOYFX4A="
+      , "=HVTm"
+      , "-----END PGP PUBLIC KEY BLOCK-----"
+      ]
+
+
+the import works fine, but the packages fail to install because the key isn't valid, i can list the key
+
+    root@henry1:~# apt-key list | grep -A 6 google-key
+    Warning: apt-key output should not be parsed (stdout is not a terminal)
+    /etc/apt/trusted.gpg.d/google-key.gpg
+    -------------------------------------
+    pub   rsa2048 2015-04-03 [SCEA] [expires: 2018-04-02]
+          D0BC 747F D8CA F711 7500  D6FA 3746 C208 A731 7B0F
+    uid           [ unknown] Google Cloud Packages Automatic Signing Key <gc-team@google.com>
+
+
+but i can't export it. I've tried the gpg command listed in the Apt.trustsKey function and running it locally (on the vm) with a local file doesn't work either.
+
+    root@henry1:~# apt-key export D6FA3746A7317B0F
+    gpg: [don't know]: invalid packet (ctb=00)
+    gpg: WARNING: nothing exported
+    gpg: key export failed: Invalid packet
+
+
+Gpg version info
+
+    root@henry1:~# gpg --version
+    gpg (GnuPG) 2.1.18
+    libgcrypt 1.7.6-beta
+    Copyright (C) 2017 Free Software Foundation, Inc.
+    License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
+    This is free software: you are free to change and redistribute it.
+    There is NO WARRANTY, to the extent permitted by law.
+    
+    Home: /root/.gnupg
+    Supported algorithms:
+    Pubkey: RSA, ELG, DSA, ECDH, ECDSA, EDDSA
+    Cipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,
+            CAMELLIA128, CAMELLIA192, CAMELLIA256
+    Hash: SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
+    Compression: Uncompressed, ZIP, ZLIB, BZIP2
+
+I ended up changing the Apt.trustsKey command to a version which uses apt-key and everything works now
+
+    trustsKey' :: AptKey -> Property DebianLike
+    trustsKey' k = check (not <$> doesFileExist f) $ property desc $ makeChange $ do
+    	withHandle StdinHandle createProcessSuccess
+    		(proc "apt-key" ["--keyring", f, "add", "-"]) $ \h -> do
+    			hPutStr h (pubkey k)
+    			hClose h
+    	nukeFile $ f ++ "~" -- gpg dropping
+      where
+    	desc = "apt trusts key " ++ keyname k
+    	f = aptKeyFile k
+
+Any thoughts as to why this wouldn't be working?  Would it be reasonable to change this command upstream?

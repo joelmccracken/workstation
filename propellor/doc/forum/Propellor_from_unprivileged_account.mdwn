@@ -1,0 +1,4 @@
+I have a need to configure the properties of some machines for which I am not the primary administrator (in particular, this is at a university where the central IT group does the administration, but delegates some tasks to department via sudo or by reading specific files). I imagine that I would have write my own properties. Is there a special way to call propellor, or code changes that need to be made to have propellor do the git clone and build in a user's home directory?
+
+Best,
+Jack

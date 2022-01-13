@@ -1,0 +1,43 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2018-08-26T14:50:22Z"
+ content="""
+As far as I know, this was fixed in a series of commits,
+[[!commit 01fc1375cece096ab2dec480b843ecdbc4f0d94e]]
+[[!commit 1555c6f88a0446d3e29149eff8315817696731e1]]
+[[!commit 53fe5ffaac4a243bb9fd3cf0e757128150a6a199]]
+
+The problem was intermittent for me, I think based on network timing and
+different buffering behavior with different timings,
+which made it hard to debug, but I've not seen it since and I was seeing it
+frequently enough to be fairly sure I fixed it.
+
+So I wonder if you might have some sort of version skew issue on the host
+being spun (eg, it could have an old version of propellor installed and be
+failing before spin can update it to the fixed version). The easy way to
+verify you have the fixed version is to run `git config propellor.debug 1`
+in /usr/local/propellor/ on the host being spun, and look for
+"--upload-pack ./propellor --gitpush" in a debug message.
+
+If you're confident the remote propellor has the above commits in it,
+you're going to need to do some debugging.
+Setting `GIT_TRACE_PACKET=1` on the remote system was very helpful in
+understanding the problem, and should probably be your first step.
+Setting that environment inside Propellor.Spin.gitPullFromUpdateServer
+should work, of course you'll have to get the remote host to build
+propellor with that change somehow despite --spin to it not working.
+
+	diff --git a/src/Propellor/Spin.hs b/src/Propellor/Spin.hs
+	index 4a945e82..aa73e3b7 100644
+	--- a/src/Propellor/Spin.hs
+	+++ b/src/Propellor/Spin.hs
+	@@ -359,6 +359,7 @@ spinCommitMessage = "propellor spin"
+	 -- to receive the data.
+	 gitPullFromUpdateServer :: IO ()
+	 gitPullFromUpdateServer = req NeedGitPush gitPushMarker $ \_ -> do
+	+	setEnv "GIT_TRACE_PACKET" "1" True
+	 	-- IO involving stdin can cause data to be buffered in the Handle
+ 		-- (even when it's set NoBuffering), but we need to pass a FD to
+	 	-- git fetch containing all of stdin after the gitPushMarker,
+"""]]

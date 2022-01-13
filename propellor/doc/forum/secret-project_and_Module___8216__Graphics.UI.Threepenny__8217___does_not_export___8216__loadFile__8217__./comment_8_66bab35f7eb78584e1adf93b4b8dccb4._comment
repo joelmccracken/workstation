@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="Clean build"
+ date="2017-12-29T17:41:02Z"
+ content="""
+Yes, with the updated  `stack.yaml` I do get a clean build upon `stack build`.
+
+Yeah
+
+"""]]

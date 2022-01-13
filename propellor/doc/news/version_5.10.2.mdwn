@@ -1,0 +1,10 @@
+propellor 5.10.2 released with [[!toggle text="these changes"]]
+[[!toggleable text="""
+   * Fix build with ghc 8.6.3.
+     Thanks, Robin Munn
+   * Bootstrap: Fix typo in Arch Linux dependencies.
+     Thanks, Robin Munn
+   * Bootstrap: Add haskell-type-errors package on Arch Linux.
+     Thanks, Robin Munn
+   * Apt.buildDepIn: Run build-dep command in a temporary directory,
+     since it may sometimes not clean up all the files it creates."""]]

@@ -1,0 +1,4 @@
+Would adding a way to call $EDITOR to edit privdata be possible?
+It would make sense for editing data like logcheck files.
+
+> [[done]]

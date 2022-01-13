@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 9"""
+ date="2016-06-20T17:56:25Z"
+ content="""
+Félix sent some patches today fixing compiling Propellor.Exception on old
+ghc, which overlap with part of your patch. You addressed the same problem
+in different ways. Since I already merged his (more extensive I think)
+fixes for that, your branch will need to be updated.
+
+The only thing I caught during review is that the documentation for
+useOverlays says that the property has to be added before
+Sbuild.builtFor, but actually info-setting properties
+set info before any properties run, so can safely appear after properties
+that use the info they set!
+
+(I'm not sure if overlaysInTmpfs can safely come after 
+Sbuild.builtFor, but if it cannot it's not due to setting useOverlays.)
+
+Also, it would be good to have some lines to add to the changelog
+about the sbuild changes.
+"""]]

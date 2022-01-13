@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-10-02T14:49:19Z"
+ content="""
+Wildcard expansion is done by the shell, and cmdProperty does not run a
+shell. So, you've told rm to delete a
+file with a literal '*' in its name, which it's happy to report success
+with, since no such file exists..
+
+Using scriptProperty would be one way to do this.
+"""]]

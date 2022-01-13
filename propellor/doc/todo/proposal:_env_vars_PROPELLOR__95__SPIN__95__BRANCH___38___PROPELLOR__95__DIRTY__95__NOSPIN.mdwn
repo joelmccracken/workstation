@@ -1,0 +1,17 @@
+I'd like to patch the `/usr/bin/propellor` wrapper to check for two environment variables.  I'm posting my proposal here to see whether Joey would be willing to merge such a patch before starting to write it.
+
+# Proposal
+
+- if the branch currently checked out in the `~/.propellor` repository does not match `PROPELLOR_SPIN_BRANCH`, Propellor would refuse to spin
+
+- if the `PROPELLOR_DIRTY_NOSPIN` variable is set, Propellor would refuse to spin if the `~/.propellor` repository contains uncommitted changes
+
+# Rationale
+
+`PROPELLOR_SPIN_BRANCH` is to prevent foot-shooting.  When working on a feature branch one might forget to check out one's usual config branch before spinning.  If the host that is spun is configured with `Cron.runPropellor`, it will be set to pull from the feature branch.  If the user doesn't realise that this has happened, they might make further commits to their usual config branch and expect them to have propagated to the host by means of its `Cron.runPropellor` cronjob, but they won't reach the host until the next manual spin from the correct branch.  Of course there are other possible foot-shootings available in this area that this environment variable would prevent.
+
+`PROPELLOR_DIRTY_NOSPIN` is to prevent configuration changes ending up in commits made with the undescriptive commit message "propellor spin".  I understand that it doesn't bother Joey, but I want all configuration changes to be recorded with a descriptive commit message because it makes using `git revert` and `git cherry-pick` easier.  So for users like me this environment variable is a useful check.
+
+--[[spwhitton|https://spwhitton.name]]
+
+> nice work! [[merged|done]] --[[Joey]]

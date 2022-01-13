@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 3"
+ date="2016-06-05T06:13:05Z"
+ content="""
+> The type of this will be somewhat more complex than the one you gave, but it should work.
+
+GHC's inferred type is not something I can understand, and I suspect that it is far more general than it needs to be.  In this sort of situation, are their strategies one can employ to write a sensible type signature?  I think that the only thing I need to restrict is avoiding trying to ensure properties with info.
+
+> You might be able to finesse this by using a monoidial value and get the description of mkp mempty.
+
+Could you expand a little on this suggestion, please?  I want to be able to use unmodified core properties like `User.accountFor`, and that takes a non-monoidal `User`.
+
+> Or, you could do something like this to tie the knot. I don't know if this is a good idea (it might even <<loop>>), but it illustrates the core problem nicely; to get at the Info, we need a Host, but to get a Host, we need to already know its properties.
+
+This seems to work!
+"""]]

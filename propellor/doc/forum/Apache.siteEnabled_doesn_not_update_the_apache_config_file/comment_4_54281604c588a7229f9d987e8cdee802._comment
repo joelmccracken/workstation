@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2014-12-09T04:35:12Z"
+ content="""
+Pretty obvious why if you look at the code:
+
+	enable = check (not <$> isenabled) $
+		cmdProperty "a2ensite" ["--quiet", hn]
+			`describe` ("apache site enabled " ++ hn)
+			`requires` siteAvailable hn cf
+
+So that property was skipped entirely if the site was already enabled and never looked at the config file.
+
+I've put in a fix.
+"""]]

@@ -1,0 +1,15 @@
+Please consider merging branch `sbuild-fixes` of repo `https://git.spwhitton.name/propellor`.
+
+User-visible changes, excerpted from changelog:
+
+    * Using ccache with Sbuild.built & Sbuild.builtFor is now toggleable: these
+      properties now take a parameter of type Sbuild.UseCcache.  (API Change)
+    * Sbuild.piupartsConf: no longer takes an Apt.Url. (API Change)
+    * Sbuild.piupartsConf & Sbuild.piupartsConfFor: does nothing if corresponding
+      schroot not built.
+      Previously, these properties built the schroot if it was missing.
+    * Sbuild.built & Sbuild.piupartsConf: add an additional alias to sid chroots.
+      This is for compatibility with `dgit sbuild`.
+    * Further improvements to Sbuild.hs haddock.
+
+> [[done]] --[[Joey]]

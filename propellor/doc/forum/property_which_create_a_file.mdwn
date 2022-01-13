@@ -1,0 +1,15 @@
+Hello, I promize you another question related to my sbuild property :)
+
+So this property generate at the end a chroot in a file
+
+    /var/lib/sbuild/jessie-i386.tar.gz
+
+Since this process take a lot's of time, I do not want to run this process each time.
+I would like to process this property only if the file does not exists.
+
+
+I found the flagFile property but I do not think that it is the right answer to my problem.
+
+I just want to express that a file is the result of a property and no need to re-run the proerty if this file exists.
+
+Cheers 

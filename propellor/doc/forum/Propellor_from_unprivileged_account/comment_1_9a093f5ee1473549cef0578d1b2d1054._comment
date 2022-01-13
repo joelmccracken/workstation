@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-06-09T20:06:05Z"
+ content="""
+Well propellor is normally built in the user's home directory and then
+deploys updates to the hosts and is built and run as root on them.
+
+If you're wanting to only run propellor as a user, to manage some
+user-specific properties, see the Propellor.Location module to change
+the path where propellor depploys itself to on a host. 
+
+And in Propellor.Spin it has several `"root@"` that you'd need to change to
+make it ssh into the host as a different user.
+
+And, in Propellor.CmdLine, there's a check of `getRealUserID` to see if it's
+running as root. 
+
+I think that's everything that assumes root (aside from a great many
+properties of course!), but can't swear to it.
+"""]]

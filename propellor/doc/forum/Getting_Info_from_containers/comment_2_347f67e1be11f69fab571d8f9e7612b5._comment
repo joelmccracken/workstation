@@ -1,0 +1,28 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="containerToHost?"
+ date="2019-04-16T17:23:16Z"
+ content="""
+Would it be possible to add a `containerToHost` wrapper that takes a container
+and returns a host?
+
+It would be something like this:
+
+	hosts :: [Host]
+	hosts =
+		[ myHost
+		, myContainerHost
+		]
+
+	myHost = host \"myhost.mydomain\" $ props
+		& ...
+		& myContainerSpawn myContainer
+
+	myContainer :: Systemd.Container
+	myContainer = Systemd.debContainer \"mycontainer\" $ props
+		& ...
+
+	myContainerHost = containerToHost \"mycontainer.mydomain\" myContainer
+
+"""]]

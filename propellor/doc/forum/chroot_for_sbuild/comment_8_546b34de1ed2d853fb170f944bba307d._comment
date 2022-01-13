@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 8"
+ date="2015-10-02T16:09:38Z"
+ content="""
+This could the plan, but I am not very confident that my code is generic enought.
+
+In this case I do not like the way I give the chroot to the sbuild method.
+In fact I do not find the interface of this command generic enought.
+
+There is assumtions in the code:
+ - the initial configuration of sbuild was done
+ - the chrootdir is hardcoded into /var/lib/sbuild and I do not know if this is the right way to do things.
+
+If you would have some advices about interface, because it seems to me thaht you are great for this :)
+
+"""]]

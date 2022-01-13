@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="http://joeyh.name/"
+ ip="209.250.56.244"
+ subject="comment 1"
+ date="2014-08-17T23:43:03Z"
+ content="""
+Looks like the gpg key you configured it to use does not have its secret key available on the computer where you're editing/signing the repository. `git commit` would then fail the same way.
+"""]]

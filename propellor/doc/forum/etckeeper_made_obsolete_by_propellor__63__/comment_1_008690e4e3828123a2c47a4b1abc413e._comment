@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-11-21T14:57:57Z"
+ content="""
+I use both. To be fully described by the propellor configuration, it would
+need to pin the system to a specific version of every package installed on
+it, and that's generally not practical because there are new security
+updates all the time. It's useful to have etckeeper keeping track of
+changes made to configuration during upgrades.
+
+I do find etckeeper generally less useful on those type of systems, but it
+still more than pays for itself.
+"""]]

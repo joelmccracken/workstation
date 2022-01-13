@@ -1,0 +1,31 @@
+I just tried Systemd.container. The process seemed to work well, and I can log to the container with
+
+    $ machinectl --shell root@mycontainer
+
+but machinectl can't clone the image
+
+    $ machinectl clone mycontainer testclone
+    Could not clone image: Operation not supported
+
+I can export and import the image:
+
+    $ machinectl export-tar mycontainer /var/tmp/testclone.tar.gz
+    $ machinectl import-tar /var/tmp/testclone.tar.gz test-container
+
+list-images gives does not give the same information for both images:
+
+    $ machinectl list-images
+    NAME            TYPE      RO  USAGE  CREATED                      MODIFIED
+    mycontainer     directory no  n/a    n/a                          n/a     
+    testclone       subvolume no  60M    Thu 2015-09-24 22:41:39 CEST n/a     
+
+but I can clone my newly imported image:
+
+    $ machinectl clone testclone testclone2
+    $ machinectl list-images
+    NAME            TYPE      RO  USAGE  CREATED                      MODIFIED
+    mycontainer     directory no  n/a    n/a                          n/a     
+    testclone       subvolume no  60M    Thu 2015-09-24 22:41:39 CEST n/a     
+    testclone2      subvolume no  60M    Thu 2015-09-24 22:48:39 CEST n/a     
+
+I guess "machinectl clone" does a little more than just copying the images...

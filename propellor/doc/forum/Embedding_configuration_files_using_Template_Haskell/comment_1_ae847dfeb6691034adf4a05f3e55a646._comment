@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-10-06T18:58:23Z"
+ content="""
+I think this is fine if you want to do it that way, and it's nice how
+short and simple the code is!
+
+If you wanted to add this as a patch in mainline propellor, I'd need to
+think about whether it makes sense to require working TH support to build
+propellor. I guess all the systems I personally run propellor on now,
+including the arm ones, have working TH, but there are certianly linux
+architectures that don't support TH yet.
+
+A build flag might be an option. Or, keep it in your local configuration,
+since it is quite short-n-sweet.
+"""]]

@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 17"
+ date="2018-01-05T17:57:40Z"
+ content="""
+As the config with Grub.EFI64 didn't boot, I'd like to be sure that Grub.MSDOS does not boot either. But GPT tables seem to need a BIOS Boot partition:
+
+    creating /srv/router.img of size 1.67 gigabytes
+    mkfs.fat 4.1 (2017-01-24)
+    loop deleted : /dev/loop0
+         26,473,509 100%  206.69MB/s    0:00:00 (xfr#5, to-chk=0/7)
+        772,611,350  99%   60.26MB/s    0:00:12 (xfr#26272, to-chk=0/33603)   
+    update-initramfs: Generating /boot/initrd.img-4.9.0-5-amd64
+    Generating grub configuration file ...
+    Found linux image: /boot/vmlinuz-4.9.0-5-amd64
+    Found initrd image: /boot/initrd.img-4.9.0-5-amd64
+    done
+    Installing for i386-pc platform.
+    grub-install: warning: this GPT partition label contains no BIOS Boot Partition; embedding won't be possible.
+    grub-install: warning: Embedding is not possible.  GRUB can only be installed in this setup by using blocklists.  However, blocklists are UNRELIABLE and their use is discouraged..
+    grub-install: error: will not proceed with blocklists.
+
+"""]]

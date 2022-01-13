@@ -1,0 +1,59 @@
+qemu-system-s390x has the apparent quirk that it can only boot via something like
+
+ `qemu-system-s390x -kernel kernel.debian -initrd initrd.debian -m 512 -nographic --drive file=rootimage.img,format=raw,if=none,id=c1`
+
+This means I think what I want to do is something like the following
+
+[[!format haskell """
+  & imageBuilt (RawDiskImage "/srv/vm/bricklin.img") bricklinChroot
+          MSDOS
+          [ partition EXT4 `mountedAt` "/"
+			`addFreeSpace` MegaBytes 100
+			`mountOpt` errorReadonly
+	  , swapPartition (MegaBytes 256)
+	]
+  where
+    bricklinChroot d = debootstrapped mempty d $ props
+      & osDebian (Stable "stretch") S390X
+      & Apt.installed [ "linux-image-s390x" ]
+"""]]
+
+This seems to build the image OK (see end of post), but propellor fails because the image is not bootable (the image contents might need adjustment as well, but first things first).
+I'm not sure what this style of booting is called, but I see people providing "cloud images" meant to be used this way, with separate initrd and and kernel.  Is it sensible to customize imageBuilt for this purpose, or would it be better write my own `nonBootableImageBuilt` or something like that?
+
+
+[[!format text """
+/srv/vm/bricklin.img.chroot apt installed linux-image-s390x ... done
+/srv/vm/bricklin.img.chroot cache cleaned ... ok
+creating /srv/vm/bricklin.img of size 1.02 gigabytes
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages were automatically installed and are no longer required:
+[snip]
+Use 'apt autoremove' to remove them.
+The following NEW packages will be installed:
+  kpartx
+0 upgraded, 1 newly installed, 0 to remove and 5 not upgraded.
+Need to get 33.8 kB of archives.
+After this operation, 76.8 kB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian stretch/main amd64 kpartx amd64 0.6.4-5 [33.8 kB]
+Fetched 33.8 kB in 0s (118 kB/s)
+                                Selecting previously unselected package kpartx.
+(Reading database ... 238863 files and directories currently installed.)
+Preparing to unpack .../kpartx_0.6.4-5_amd64.deb ...
+Unpacking kpartx (0.6.4-5) ...
+Setting up kpartx (0.6.4-5) ...
+Processing triggers for man-db (2.7.6.1-2) ...
+Setting up swapspace version 1, size = 248 MiB (260042752 bytes)
+no label, UUID=65c5b131-98bf-4b8c-afad-9c75405c6391
+loop deleted : /dev/loop0
+    433,093,140  99%  220.62MB/s    0:00:01 (xfr#11289, to-chk=0/14615)   
+** warning: image is not bootable: no bootloader is installed
+loop deleted : /dev/loop0
+concave.cs.unb.ca built disk image /srv/vm/bricklin.img ... failed
+concave.cs.unb.ca s390x server image (bricklin) ... failed
+concave.cs.unb.ca overall ... failed
+"""]]
+
+

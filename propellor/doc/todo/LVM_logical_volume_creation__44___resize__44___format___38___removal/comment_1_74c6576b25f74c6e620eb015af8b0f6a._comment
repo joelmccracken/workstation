@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-08-31T22:40:34Z"
+ content="""
+That's a pretty nice job for your first haskell code! And an impressive
+module.
+
+Most of my review comments have to do with improving types.. Which is
+always a nice way to improve already good code. :)
+
+* VolumeGroup and LogicalVolume seem like easy things to mix up.
+  Also, there's never a LogicalVolume without an associated VolumeGroup.
+  So, suggest `newtype VolumeGroup = VolumeGroup String` and
+  `data LogicalVolume = LogicalVolume String VolumeGroup` -- then
+  the user would write something like 
+  `LogicalVolume "test" (VolumeGroup "vg0")`
+* Why not make `LvState` contain a `Maybe Partition.Fs` rather than
+  the string value. (This also would move the parsing of filesystem names
+  from `fsMatch` to `lvState` or perhaps to another function it uses.)
+* It seems a bit wrong for `parseSize` to include the rounding
+  to the next extent, which is not really related to parsing.
+  Would be better to split those two things into separate functions.
+
+I feel that this module is fairly close to mergeable.
+"""]]

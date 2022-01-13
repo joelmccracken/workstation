@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2020-06-17T21:33:14Z"
+ content="""
+	cabal install --install-method=symlink --installdir=. exe:propellor --overwrite-policy=always
+
+But, this seems to do a lot of extra work, including generating a tarball
+of all the source code, and possibly building the package again
+unncessarily. And only works with a new enough cabal version.
+
+Ok, I've implemented it using `find`.
+"""]]

@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="comment 4"
+ date="2020-08-22T17:02:41Z"
+ content="""
+OK, I belatedly see what you mean. It's not relevant if the remote privdata.gpg blob matches or not, since iiuc, only the local one is used by --spin.
+
+I'm having a similar issue with `Property.Gpg.keyImported`.
+
+[[!format text \"\"\"
+** warning: Missing privdata GpgKey (for 815B63982A79F8E7C72786C4762B57BB784206AD)
+Fix this by running:
+  propellor --set 'GpgKey' '815B63982A79F8E7C72786C4762B57BB784206AD' \
+    < (Either a gpg public key, exported with gpg --export -a, or a gpg private key, exported with gpg --export-secret-key -a)
+
+cs2613 root has gpg key \"815B63982A79F8E7C72786C4762B57BB784206AD\" ... failed
+** warning: Missing privdata GpgKey (for 7A18807F100A4570C59684207E4E65C8720B706B)
+Fix this by running:
+  propellor --set 'GpgKey' '7A18807F100A4570C59684207E4E65C8720B706B' \
+    < (Either a gpg public key, exported with gpg --export -a, or a gpg private key, exported with gpg --export-secret-key -a)
+\"\"\"]]
+
+Of course I did what propellor suggests, but it doesn't seem to make a difference.  Is it possible gpg armoured text is being treated specially as privdata?
+
+"""]]

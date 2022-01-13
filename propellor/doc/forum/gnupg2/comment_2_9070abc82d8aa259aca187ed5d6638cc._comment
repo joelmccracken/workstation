@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-12-30T19:02:30Z"
+ content="""
+I've merged a patch that adds a GNUPGBIN environment variable.
+
+It might make sense for propellor to look at git's gpg.program
+configuration and use it if set. Probably a propellor user wants to use the
+same gpg program for both signing and verifying their git commit and for
+propellor's privdata.
+"""]]

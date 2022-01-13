@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-09-15T15:38:13Z"
+ content="""
+Propellor uses a shared ssh connection to the remote host to avoid
+the overhead of multiple ssh connections. ssh will sometimes say "shared
+connection ... closed" when taking down such a connection. 
+
+Propellor only reuses such a shared connection for up to 10 minutes; it it
+finds an old one (perhaps from a previous run of propellor), it will ask
+ssh to close the old connection.
+
+I don't think it's anything to worry about unless propellor is failing to
+work for some reason.
+"""]]

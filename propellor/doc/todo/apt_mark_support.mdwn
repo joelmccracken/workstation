@@ -1,0 +1,27 @@
+I'd like a property that removes all packages that were not installed by
+the current set of propellor properties. For systems that are fully
+specified by propellor, this would keep the cruft from piling up.
+
+This could be done using apt-mark. Before propellor installs anything with
+apt, go through the apt-mark list and set all packages to auto. When apt is
+run to install a package, it will mark it as manually installed. Since
+Apt.installed skips running apt when packages are already installed, it
+would need to either be changed to run apt anyway, or to run apt-mark
+manual. And then after all other properties, run apt-get autoremove.
+
+Running the autoremove at the end is supported by the propellor monad,
+but there's currently no way to run something before all properties.
+The first Apt.install to run could handle the apt-mark-list-to-auto part,
+although there's also not currently any state for the property to keep
+track of if it's run before.
+
+It would also be possible to not do the apt-mark at the beginning. Instead,
+make the Propellor monad a Writer (polymorphized somehow perhaps like Info
+is) and have Apt.install track the packages that are installed. (Or it
+could be changed to a HasInfo property, and then the list of packages would
+accumulate in Info, but there are likely things that use Apt.installed
+inside ensureProperty which that would cause problems for.) 
+
+Either way, an action run at the end can then update the apt-mark data to
+reflect the gathered list of packages, and run apt-get autoremove.
+--[[Joey]]

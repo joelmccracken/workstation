@@ -1,0 +1,17 @@
+Hello,
+
+I am using propellor mostly with Systemd containers. I have a problem when
+trying to use `Ssh.knownHost`, as the host to be known is not a host, but a
+container.
+
+Is this supposed to work? Are containers accessible like the other hosts with
+the info system?
+
+Also, I used short names for my containers, like:
+
+    vzWeb2 :: Systemd.Container
+    vzWeb2 = Systemd.debContainer "vz-web2" $ props
+
+but now I realize that I should have used a fqdn so that properties like
+`Hostname.sane` could find the domain name. But changing this implies that the
+container will be rebuilt, right?

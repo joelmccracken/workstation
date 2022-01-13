@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""yay!"""
+ date="2014-11-19T01:31:14Z"
+ content="""
+propellor now supports this mode by default, just use `propellor --spin
+hostname` and the changes in the local repo will be pushed and deployed to
+the host, w/o needing a centralized git repo.
+"""]]

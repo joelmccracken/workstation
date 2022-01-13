@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2015-10-02T15:20:30Z"
+ content="""
+Factoring out a generic Propellor.Property.Sbuild would make this more
+perfect... ;)
+"""]]

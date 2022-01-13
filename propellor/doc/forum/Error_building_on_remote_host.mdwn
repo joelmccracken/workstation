@@ -1,0 +1,31 @@
+I recently updated to the latest Propellor and now I'm getting an error building on a remote host:
+
+    [86 of 94] Compiling Propellor.Bootstrap ( src/Propellor/Bootstrap.hs, dist/build/propellor-config/propellor-config-tmp/Propellor/Bootstrap.o )
+    
+        src/Propellor/Bootstrap.hs:237:22:
+        No instance for (Typeable Bootstrapper)
+          arising from a use of `fromInfo'
+        Possible fix:
+          add an instance declaration for (Typeable Bootstrapper)
+        In the expression: fromInfo (maybe mempty hostInfo mh)
+        In a stmt of a 'do' block:
+          case fromInfo (maybe mempty hostInfo mh) of {
+            NoInfoVal
+              -> do { bs <- getGitConfigValue "propellor.buildsystem";
+                      case bs of {
+                        Just "stack" -> ...
+                        _ -> ... } }
+            InfoVal bs
+              -> case getBuilder bs of {
+                   Cabal -> cabalBuild msys
+                   Stack -> stackBuild msys } }
+        In the second argument of `($)', namely
+          `do { case fromInfo (maybe mempty hostInfo mh) of {
+                  NoInfoVal -> do { ... }
+                  InfoVal bs
+                    -> case getBuilder bs of {
+                         Cabal -> ...
+                         Stack -> ... } } }'
+    propellor: cabal build failed
+
+I guess I'm missing something, but not sure what?

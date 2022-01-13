@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-12-27T23:42:50Z"
+ content="""
+You need to build secret-project using stack, to get the right version
+of propellor and also a UI patch to threepenny-gui.
+"""]]

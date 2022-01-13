@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-04-09T20:49:04Z"
+ content="""
+Well, seems that `unshare` does not work in a chroot. Hmm.
+"""]]

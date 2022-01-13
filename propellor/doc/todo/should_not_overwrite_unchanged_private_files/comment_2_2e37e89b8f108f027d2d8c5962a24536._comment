@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 2"
+ date="2015-12-13T20:44:20Z"
+ content="""
+The integrity checker should shout everytime it finds a new version of a file (and if a new version of the file is legitimately received, I can then run \"samhain -t update -m none --interactive\"). As the private files are very often sensitive information, the integrity should shout on them too. To me, it sounds like it should be the default (it may also be useful for backup systems that check when a file was last modified?), but I dont see exactly what should be changed to enable that. What do you think?
+
+Having privdata uploaded only if it is updated would certainly be cool for slow internet connections.
+"""]]

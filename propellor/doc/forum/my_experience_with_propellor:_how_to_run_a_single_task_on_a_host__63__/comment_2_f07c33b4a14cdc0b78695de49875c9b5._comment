@@ -1,0 +1,52 @@
+[[!comment format=mdwn
+ username="https://www.google.com/accounts/o8/id?id=AItOawm-czsfuWENKQ0GI8l0gnGTeF1JEli1mA0"
+ nickname="Andreas"
+ subject="comment 2"
+ date="2015-04-14T19:24:46Z"
+ content="""
+using the command line: well yes, that's right.
+Still: I can configure a lot of details in haskell (ansible playbooks):
+
+my emacs task eg. is not only ensuring that emacs is installed
+(as in the example above), but I also set some links to my
+elisp config files, ensure that cask installed etc.
+
+another task for me is installing X windows:
+again lots of details: not only the xorg packages,
+but some links to .xsession files, window manager config
+files etc.
+
+and yes: I am happy, that I can spell out the details
+of these tasks in propellor/haskell.
+
+I just don't see the point of ensuring them again and again
+with every spin of propellor, and I would want
+to be able to run just this one task on the command line.
+
+
+concerning 
+```
+  Apt.update `period` Daily
+```
+thanks, will have a look.
+but I guess this is cron job (will see),
+in general I think I will want to stick to my habit, that I want
+to see what's going on (what is upgraded), thus prefer
+to not run any cron jobs for apt upgrades
+
+My overall message / concern is: I don't want to completly change my
+habits, just because I am using propellor
+
+I had the habit of installing my computers task by task
+
+I had the habit of logging in to one of my systems, and 
+doing apt-get update && apt-get upgrade
+
+I want my config tool to help me achieve things in my
+way that I am used to.
+
+
+
+   
+
+"""]]

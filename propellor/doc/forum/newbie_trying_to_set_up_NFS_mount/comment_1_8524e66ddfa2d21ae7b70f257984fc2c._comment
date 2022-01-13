@@ -1,0 +1,30 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-04-05T14:53:53Z"
+ content="""
+The easy way to translate your command to a property is:
+
+	cmdProperty "mount" ["-t", "nfs", "192.168.1.100:/mnt/usb1", "/mnt/nfs"]
+		`assume` MadeChange
+
+This has the benefit of working with any command you might want,
+and the drawback of not preventing eg, re-mounting an already
+mounted device.
+
+`mounted` takes a `MountOpts` which is a specialized data type.
+You can construct one with eg, `(MountOpts ["defaults"])`.
+
+But, since `MountOpts` is a `Monoid`, and "defaults" is the default of an
+empty `MountOpts`, you can more simply use `mempty` to get the default one:
+
+	Mount.mounted "nfs" "192.168.1.100:/mnt/usb1" "/mnt/nfs" mempty
+
+Propellor.Property.Mount was mostly written for use by some other
+properties, and so doesn't really target the end user as much. And, I
+notice, its `mounted` property doesn't check if the device is already
+mounted and so will try to re-mount unnecessarily.
+
+I'm not sure if manually driving the mount command makes the most sense;
+wouldn't it be better to have a property that updates /etc/fstab?
+"""]]

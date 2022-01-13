@@ -1,0 +1,1 @@
+I would find it useful if there was a function similar to Ssh.knownHost that updated /etc/ssh/ssh_known_hosts.  I suppose it just requires parameterizing knownHost in terms of what file to operate on, but I'm still pretty clueless about IO in Haskell.

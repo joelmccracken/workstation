@@ -1,0 +1,4 @@
+* Need a way to run an action when a property changes, but only
+  run it once for the whole. For example, may want to restart apache,
+  but only once despite many config changes being made to satisfy
+  properties. onChange is a poor substitute.

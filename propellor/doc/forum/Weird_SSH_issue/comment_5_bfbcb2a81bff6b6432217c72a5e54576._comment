@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2016-03-06T19:57:03Z"
+ content="""
+Managed to reproduce the hang once, and the ssh was indeed being run as
+bgProcess. However, I didn't manage to see what foreground process, if any,
+was running when that happened. And had no luck reproducing it again.
+
+I added some more `PROPELLOR_DEBUG` output around this, so it'll tell
+when a process is being run by fgProcess or bgProcess.
+"""]]

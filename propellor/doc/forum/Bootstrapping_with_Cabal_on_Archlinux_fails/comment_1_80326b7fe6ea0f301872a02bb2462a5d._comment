@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="rmunn@24f62461074e9165181dd6ec6ac66473353a24e9"
+ nickname="rmunn"
+ avatar="http://cdn.libravatar.org/avatar/5fb7a86e278e5b3b427f3b9a3cda71e1"
+ subject="One more thing"
+ date="2020-02-18T04:50:58Z"
+ content="""
+I haven't yet prepared a patch for this, but in src/Propellor/Bootstrap.hs, the `archlinuxdeps Cabal` list of should have `\"haskell-type-errors\"` added to it. That's the name of the Archlinux package for [https://hackage.haskell.org/package/type-errors](https://hackage.haskell.org/package/type-errors). Without that package, Cabal has to download type-errors and its dependencies before building Propellor, but with that package added, Archlinux's package manager can manage that package (and keep it up-to-date) instead.
+
+With that one change, the `archlinuxdeps Cabal` list is complete (at least as of yesterday when I tested it).
+
+I'll prepare a patch for this and submit it to propellor@joeyh.name soon.
+"""]]

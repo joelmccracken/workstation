@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joelmccracken"
+ avatar="http://cdn.libravatar.org/avatar/45175015b9eb3dd3f6c740b3fe920fed"
+ subject="comment 2"
+ date="2017-04-17T17:47:30Z"
+ content="""
+Sounds good. I contacted the person you linked to, have not heard back yet. 
+
+
+
+The first issue I ran into is that propellor wants to connect to \"root@<hostname>\", and it doesn't look like this is configurable.
+Would you accept a patch to make this configurable?
+
+Additionally, is this the best place to ask questions about what you would/would not accept?
+
+Thank you!!!
+"""]]

@@ -1,0 +1,12 @@
+Hello,
+
+I use propellor to deploy systemd containers. I have a problem with
+`Hostname.setTo`, it sets the hostname in `/etc/hostname`, but the container
+hostname is not set until I restart the container.
+
+Note: I use `Systemd.containerCfg "network-bridge=br0"`, so the container has
+a different network stack.
+
+I suppose that the `check (not <$> inChroot)` might be the problem here.
+
+> [[fixed|done]]

@@ -1,0 +1,19 @@
+I am checking out propellor to determine if it can make it easier to maintain a few personal machines. With no prior knowledge of Haskell, that may be a futile attempt.
+
+I am trying to understand [the Propellor.Property.Mount documentation](http://hackage.haskell.org/package/propellor-2.17.2/docs/Propellor-Property-Mount.html) and particularly how I would need to write the equivalent of 
+
+    mount -t nfs 192.168.1.100:/mnt/usb1 /mnt/nfs
+
+I tried putting 
+
+    & Mount.mounted
+              "nfs" "192.168.1.100:/mnt/usb1" "/mnt/nfs" ["defaults"]
+
+in config.hs, but that results in 
+
+    Couldn't match expected type ‘Mount.MountOpts’
+                    with actual type ‘\[[Char]]’
+        In the fourth argument of ‘Mount.mounted’, namely ‘["defaults"]’
+        In the second argument of ‘(&)’, namely
+          ‘Mount.mounted
+             "nfs" "192.168.1.100:/mnt/usb1" "/mnt/nfs" ["defaults"]’

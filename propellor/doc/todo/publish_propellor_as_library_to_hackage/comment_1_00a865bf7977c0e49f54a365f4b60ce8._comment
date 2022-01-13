@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-02-28T15:01:24Z"
+ content="""
+Unusual as it is for propellor's configuration git repo to include the full
+source code to propellor, I like this approach. It lets users change any
+existing property that is not generic enough, or makes assumptions they
+don't like, or needs porting to their OS of choice.
+
+But still, propellor is
+[on hackage](http://hackage.haskell.org/package/propellor), as
+a library. It can be used that way if you want to.
+
+I don't think that any of propellor's code cares how it's distributed,
+except for src/wrapper.hs (which cabal will install as
+~/.cabal/bin/propellor), which sets up the ~/.propellor/ repository. You
+can bypass using that wrapper if you like, and cabal install propellor and
+create your own ~/.propellor/ repository containing only your own
+config.hs, and build and use propellor that way.
+
+Where that approach becomes a problem is that propellor --spin currently
+relies on propellor's Makefile being in the repository, when bootstrapping
+propellor on a remote host. So you'll need to include a copy of that in
+your repo for --spin to work. I'd like to get rid of the need for the
+Makefile. (Only the build and deps targets are used by --spin.)
+"""]]

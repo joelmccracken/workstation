@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 2"
+ date="2014-11-25T17:55:25Z"
+ content="""
+In my case I need to wget the proxy.pac file and parse it to find the right proxy.
+
+what worried me is that these proxy.pac things are dynamical depending on the ip of the sender AND the receive.
+It work nicely with web browser, but not with the unix http_proxy and HTTPS_PROXY env.
+
+nevertheless, I can create something to parse my local setup and extract the right http_proxy.
+
+Is there something available in Propellor to set a global environment variable in /etc/environment (the right place for this ?)
+
+cheers
+
+Frederic
+
+"""]]

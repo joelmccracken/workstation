@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-05-27T16:40:29Z"
+ content="""
+Ok, I've made Propellor.Property.Cmd export most of Utility.SafeCommand.
+"""]]

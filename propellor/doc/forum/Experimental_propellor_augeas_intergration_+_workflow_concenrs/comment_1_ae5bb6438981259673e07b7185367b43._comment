@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-06-29T20:43:24Z"
+ content="""
+This seems like it would be a useful addition to propellor.
+
+As to commits made by propellor --spin during development, those typically
+involve changes to my own configuration, or minor changes, but sometimes
+other changes slip into one of those commits during the press of sysadmin
+events. I doh't see how those would prevent you from sending patches though.
+"""]]

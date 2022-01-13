@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-11-26T11:14:37Z"
+ content="""
+Looks like Build-Depends-Index is not handled, nor are 'a | b' build deps,
+or arch-specific build deps. Since versions are skipped, if a build dep
+needed a newer version, the property also wouldn't try to upgrade to it
+after this change.
+
+I feel that parsing build deps is too complex for propellor.
+
+It might work to somehow detect if apt has made any changes.
+"""]]

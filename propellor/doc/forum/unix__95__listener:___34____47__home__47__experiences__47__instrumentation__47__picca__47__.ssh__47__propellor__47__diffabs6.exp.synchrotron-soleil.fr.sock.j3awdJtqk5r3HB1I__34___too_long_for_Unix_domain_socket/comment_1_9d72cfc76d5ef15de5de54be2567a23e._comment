@@ -1,0 +1,33 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-03-25T20:39:29Z"
+ content="""
+What's going on here is propellor has asked ssh to use that as a socket,
+but unix has a hoary old limit on the length of filenames to unix domain
+sockets -- something around 100 characters max depending on the OS (108 on
+linux I believe).
+
+40 characters of that budget is used up by the somewhat long HOME path, 17
+characters are tacked on by ssh (for no really good reason given the
+limited budget). This leaves propellor 57 characters to make a unique
+socket name that's not too ugly, but it decided to put the whole hostname
+in there, which blows past the budget in this case.
+
+So, I have changed the code to try to respect the budget while still coming
+up with the best filename it can.
+
+So in your case the new path will be something like 
+"/home/experiences/instrumentation/picca/.ssh/propellor/diffabs6.e-44ecb7d0.j3awdJtqk5r3HB1I"
+-- 91 bytes, so under the limit.
+
+If someone has HOME set to something longer than ~60 characters,
+propellor will still break. Since the socket file has to be at a
+stable location, and so more or less needs to live under HOME, it's hard to
+avoid the problem entirely.
+
+I did consider moving the sockets to /tmp to avoid HOME length causing a
+problem, but then other users on the system could DOS propellor by creating
+the directory in /tmp, which would at best make it fall back to not using
+the ssh socket and so asking repeatedly for passwords.
+"""]]

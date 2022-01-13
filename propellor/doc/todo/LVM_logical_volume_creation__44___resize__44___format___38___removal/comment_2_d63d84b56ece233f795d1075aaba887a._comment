@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 2"
+ date="2017-09-01T21:38:16Z"
+ content="""
+Thanks for your comments.
+
+I also have a problem when running vgs/lvs, they complain about leaked file descriptors. Is it something I can fix?
+
+    File descriptor 10 (/usr/local/propellor/.lock) leaked on vgs invocation. Parent PID 31216: ./dist/build/propellor-config/p
+    File descriptor 11 (pipe:[282601]) leaked on vgs invocation. Parent PID 31216: ./dist/build/propellor-config/p
+    File descriptor 12 (pipe:[282601]) leaked on vgs invocation. Parent PID 31216: ./dist/build/propellor-config/p
+    File descriptor 13 (pipe:[282602]) leaked on vgs invocation. Parent PID 31216: ./dist/build/propellor-config/p
+    File descriptor 14 (pipe:[282602]) leaked on vgs invocation. Parent PID 31216: ./dist/build/propellor-config/p
+
+I have pushed a new version with the suggested fixes.
+"""]]

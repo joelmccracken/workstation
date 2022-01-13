@@ -1,0 +1,31 @@
+It looks like ghc in Debian unstable is defaulting to new style cabal builds which bypasses `Bootstrap.bootstrapWith Bootstrap.OSOnly`:
+
+    ...
+    git branch origin/spw3conf gpg signature verified; merging
+    Already up to date.
+    Build profile: -w ghc-8.8.3 -O1
+    In order, the following will be built (use -v for more details):
+     - IfElse-0.85 (lib:IfElse) (requires build)
+     - first-class-families-0.8.0.0 (lib) (requires build)
+     - hsc2hs-0.68.7 (exe:hsc2hs) (requires download & build)
+     - old-locale-1.0.0.7 (lib) (requires build)
+     - syb-0.7.1 (lib) (requires build)
+     - th-abstraction-0.3.2.0 (lib) (requires build)
+     - network-bsd-2.8.1.0 (lib) (requires build)
+     - type-errors-0.2.0.0 (lib) (requires build)
+     - hslogger-1.3.1.0 (lib) (requires build)
+     - propellor-5.10.1 (lib) (first run)
+     - propellor-5.10.1 (exe:propellor-config) (first run)
+    Downloading  hsc2hs-0.68.7
+    Configuring IfElse-0.85...
+    Preprocessing library for IfElse-0.85..
+    Building library for IfElse-0.85..
+    [1 of 1] Compiling Control.Monad.IfElse ( Control/Monad/IfElse.hs, dist/build/Control/Monad/IfElse.o )
+    Downloaded   hsc2hs-0.68.7
+    ...
+
+I think the simplest fix is to replace `cabal build` with `cabal v1-build` in `Propellor.Bootstrap.buildCommand`?
+
+--spwhitton
+
+> [[done]] --[[Joey]]

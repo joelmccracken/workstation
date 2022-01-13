@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 1"
+ date="2015-10-27T11:04:52Z"
+ content="""
+Adding only
+
+import Control.Monad.IO.Class (liftIO)
+import Control.Applicative ((<$>))
+
+solve the problem, but I do not know how you want to solve this problem :)
+"""]]

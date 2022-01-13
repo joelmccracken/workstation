@@ -1,0 +1,19 @@
+bind9 has a limit on the number of characters in a single line TXT record. I was unable to provision the DKIM TXT record using propellor due to this limit.
+
+I added a new MTXT record type to `Propellor.Types.DNS.Record` ([patch][1]).
+
+MTXT creates a multiline TXT record. It splits the record's text (say
+"long string...\n...xyz") at `'\n'` and creates a TXT record of the
+form:
+
+
+    domain IN      TXT     ( "long string..."
+            "...xyz" )
+
+
+I'm [currently using this recipe][2] to provision the DKIM TXT record.
+
+I want to know if there is a better way to do this without having to add the MTXT record type?
+
+[1]: https://ricketyspace.net/file/0001-add-MTXT-record-type-to-Propellor.Types.DNS.Record.patch
+[2]: https://git.ricketyspace.net/propellor/tree/config.hs?id=67f47e5a23e8c7814014ea58f2dbc9f7c58ede3a#n722

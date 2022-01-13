@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 4"
+ date="2016-06-21T08:57:02Z"
+ content="""
+I found a way to do it and committed it to the branch we're discussing [[elsewhere|todo/merge_request:_changes_to_Reboot.hs/]].
+"""]]

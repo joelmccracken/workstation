@@ -1,0 +1,9 @@
+I want to run "virsh update-device guest-name snippet.xml", for the moment from Cmd.cmdProperty. snippet.xml should contain the actual configuration information.  I'm wondering what the best approach is.
+
+1. create a persistent copy of this file using File.hasContent or similar
+2. generate a temporary file when running the property.
+3. Use a file from the propellor repo
+
+(1) is slightly gross because the persistent copy is used only when running propellor.
+(2) I don't really know how to do in propellor; I guess it has to do with monads.
+(3) I don't know if this will work or is frowned upon for some reason.

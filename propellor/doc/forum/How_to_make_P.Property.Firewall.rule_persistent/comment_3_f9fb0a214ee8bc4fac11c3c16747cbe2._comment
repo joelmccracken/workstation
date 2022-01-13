@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="Firewall.flush needed?"
+ date="2019-08-03T15:38:21Z"
+ content="""
+A simple(-minded) solution to the problem with ip-tables-save is to provide a way to invoke \"iptables -F\". It seems like this is needed in general, just to have a known starting point. At least most examples of setting up a firewall with iptables start by flushing the existing rules.
+"""]]

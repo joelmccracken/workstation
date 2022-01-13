@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2019-04-16T18:26:11Z"
+ content="""
+Yeah, if someone wants to check out origin/precompiled and test if it
+works, it may well be in a mergeable state. However, it doesn't deal with
+cross compilation to arm or anything like that.
+
+Anyway, once you've built a propellor binary, all it takes to run it on
+some remote host is "sudo ./propellor" (perhaps passing the hostname
+to run for if the current hostname is not one that propellor recognises). 
+
+But it expects to be run in a clone of the git repository, I don't know
+what will fail if it's run without that clone. Probably best to clone the
+git repo to /usr/local/propellor and run it in there.
+
+And if any of your properties rely on private data
+it won't be able to access that and they'll fail.
+"""]]

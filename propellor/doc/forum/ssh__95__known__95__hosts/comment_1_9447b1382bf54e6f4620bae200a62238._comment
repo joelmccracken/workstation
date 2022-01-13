@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="prototype"
+ date="2020-06-11T01:23:28Z"
+ content="""
+This seems to work for me.  Obviously less hardcoding and code duplication would be nicer.
+
+[[!format haskell \"\"\"
+-- | Puts some host's ssh public key(s), as set using `hostPubKey`
+-- or `hostKey` into /etc/ssh/ssh_known_hosts
+sshKnownHost :: [Host] -> HostName -> Property UnixLike
+sshKnownHost hosts hn  = property' desc $ \w ->
+	go w =<< knownHostLines hosts hn
+  where
+	desc = \" globally known  ssh key for \" ++ hn
+
+	go _ [] = do
+		warningMessage $ \"no configured ssh host keys for \" ++ hn
+		return FailedChange
+	go w ls = do
+		f <- return \"/etc/ssh/ssh_known_hosts\"
+		ensureProperty w $ 
+			f `File.containsLines` ls
+				`requires` File.dirExists (takeDirectory f)
+\"\"\"]]
+"""]]

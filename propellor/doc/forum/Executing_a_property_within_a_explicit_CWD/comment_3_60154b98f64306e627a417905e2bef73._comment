@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2018-01-08T22:52:51Z"
+ content="""
+That is what I was suggesting yes.
+
+Another way to do it is using `cmdProperty'`, for example:
+
+	import Utility.Process
+	import Propellor.Property.Cmd
+
+	foo = cmdProperty' "apt-get" ["-y", "install", "gitlab"]
+		(\p -> p { cwd = Just "/tmp" })
+		`assume` MadeChange
+"""]]

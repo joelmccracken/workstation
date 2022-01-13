@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-05-29T14:05:10Z"
+ content="""
+What's the use case here?
+
+I think maybe you're trying to deploy basically the same set of properties
+to multiple hosts. And perhaps don't want to have the list of hosts in the
+config.hs file. If that's the goal, it seems you could accomplish it by
+writing a function like:
+
+	stdHost :: IPAddr -> Host
+
+Or more generally,
+
+	stdHost :: Property HasInfo -> Host
+
+And then you can map over the set of IP addresses to generate the the
+[Host] list for propellor. Or could even read a data file (that would need
+to be checked into the git repo) and use it to constuct the [Host] list at
+runtime.
+
+But maybe I misunderstood the use case..
+"""]]

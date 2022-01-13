@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 4"
+ date="2017-12-13T15:44:13Z"
+ content="""
+Here the version, I installed
+
+ii  autopkgtest                               4.4~bpo8+1                           all          automatic as-installed testing for Debian packages
+"""]]

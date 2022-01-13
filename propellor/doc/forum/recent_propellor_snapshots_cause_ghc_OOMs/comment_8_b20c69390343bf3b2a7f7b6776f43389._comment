@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 8"""
+ date="2016-06-02T21:04:33Z"
+ content="""
+@mithrandi there are ways to make ghc type error messages arbitrarily long,
+and IIRC that causes the memory to blow up.
+
+I'm mostly interested in memory blowups when building a valid
+configuration, since those cause problems to the hosts propellor is
+deployed to, rather than just to the system where it's developed.
+"""]]

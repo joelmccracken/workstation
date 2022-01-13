@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="network-manager snippet"
+ date="2020-06-11T10:25:10Z"
+ content="""
+[[!format haskell \"\"\"
+File.hasContent \"/etc/NetworkManager/conf.d/mDNS.conf\"  [ \"[connection]\"
+                                                                    , \"connection.mdns=2\"
+                                                                    ]
+          `requires` File.dirExists \"/etc/NetworkManager/conf.d\"
+\"\"\"]]
+
+The `=2` is important if you want the host to actually tell other hosts what it's IP is, and not just query,
+"""]]

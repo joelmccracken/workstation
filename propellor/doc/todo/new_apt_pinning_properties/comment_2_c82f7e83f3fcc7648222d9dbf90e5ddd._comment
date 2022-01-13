@@ -1,0 +1,66 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="reply to review"
+ date="2017-02-02T17:40:11Z"
+ content="""
+Thank you for your feedback, Joey.
+
+> I wonder if it would be better to separate `suiteAvailablePinned`
+> into `suiteAvailable` and `suitePinned`? The latter could require
+> the former.
+
+I see how this could be useful, in particular if you want to make a
+suite like Debian experimental available, which won't cause any packages
+to be automatically upgraded.
+
+However, it makes it less convenient, and perhaps dangerous, to revert a
+pinned suite.  For example, suppose on my Debian testing system I have
+`Apt.suitePinned Unstable 100`.  If I revert this property, it will
+remove the pin but not remove the source.  Then my system might get
+mass-upgraded to sid if I'm not careful.
+
+We couldn't have the revert of `Apt.suitePinned` remove the source
+because then if I have both `& Apt.suiteAvailable Unstable` and `!
+Apt.suitePinned Unstable 100`, the second property would cancel out the
+first, which doesn't make sense.
+
+On balance, I think it's best to keep the current property.  A property
+adding sources to apt.sources.d should probably force the user to pick a
+pin value, to avoid any unexpected upgrades.
+
+> `pinnedTo` should probably be DebianLike not UnixLike.
+
+This was my 'TODO'.  (Since the property takes a `DebianSuite`, I think
+it should be `Debian` not `DebianLike`.)
+
+I tried applying `tightenTargets` to `pinnedTo`, but that only seems to
+affect one half of the revertable property.  Do I need to implement a
+new tightening function?
+
+> And its `[String]` parameter ought to be `[Package]`.
+
+I don't think so.  The parameter to `pinnedTo` can be a wildcard
+expression or a regex (per `apt_preferences(5)`).  Neither of these are
+accepted by other existing properties that take `[Package]`, such as
+`Apt.installed`.  I could add a new type alias, if you prefer.
+
+> Is `File.containsBlock` necessary? Seems that if you care about
+> ordering of blocks in the file, you generally should use
+> `File.hasContent` to specify the full content. Rather than using
+> /etc/apt/preferences.d/10propellor.pref for multiple properties,
+> you could use a separate file for each `pinnedTo'` with the parameters
+> encoded in the filename.
+
+This was what I tried on my first attempt, but it gets very complicated
+if the user passes a wildcard expression or a regex instead of a package
+name.  I would need to convert that wildcard expression or regex to a
+cross-platform filename, and the conversion would need to be isomorphic
+to avoid any clashes.  The `File.containsBlock` seems more sane than
+that.
+
+> As to the TODO, I tried adding this: [...]
+
+I don't understand how `robustly` is relevant to my TODO -- please see
+above.
+"""]]

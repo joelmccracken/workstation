@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2016-02-10T16:09:08Z"
+ content="""
+Would probably be better to use `before`, since `combineProperties`
+needs a description of the combined properties.
+
+Using `doNothing` is kind of a hack, it would make propellor say it was
+running "noop property". Perhaps better to use a SemiGroup than a Monoid.
+"""]]

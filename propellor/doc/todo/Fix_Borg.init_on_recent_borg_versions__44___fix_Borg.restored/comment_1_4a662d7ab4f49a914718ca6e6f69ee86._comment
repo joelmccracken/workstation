@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2020-07-31T15:11:20Z"
+ content="""
+pull failed
+
+	joey@darkstar:~/src/propellor>git fetch http://git.ni.fr.eu.org/nicolas/propellor.git
+	fatal: Couldn't find remote ref HEAD
+
+I wonder if perhaps you forgot to run `git update-server-info`?
+Or possibly this is just not an url that actually points to the raw git
+repo, it looks like a gitweb installation and gitweb does not serve git
+repos IIRC.
+
+Hardcoding `BORG_PASSPHRASE` into a propellor configuration does not seem
+good. It could use `withPrivData` to get the passphrase.
+
+If `latestArchive` didn't work, it should probably display a
+`warningMessage` rather than just failing with no indication why.
+
+There is the small problem that borg 1.0.9 is in debian oldstable and if
+someone were using propellor with it, which is supported, the changes
+to extraction would break that. Not as bad as extraction currently being
+broken for everyone with a current version of borg though! But,
+it would be easy to at least detect the old version and refuse to use it to
+restore. Either by borg --version or by using withOS and to match against
+the debian version, like Propellor.Property.Systemd.machined does.
+"""]]

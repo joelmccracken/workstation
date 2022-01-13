@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-04-02T01:14:06Z"
+ content="""
+I think I saw this once myself (have no servers older than jessie left
+now).
+
+I believe the problem can be worked around by running make clean
+in /usr/local/propellor on the server.
+
+I'm not clear yet on a good way for --spin to detect that propellor
+has failed due to this, rather than some other problem, and try
+a clean and rebuild.
+
+Hmm, xmonad should have a similar problem, since it builds a haskell
+program locally. I wonder how the debian package deals with it there.
+
+Note there's a libffi6, so this will presumably happen again..
+"""]]

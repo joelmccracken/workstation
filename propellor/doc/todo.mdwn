@@ -1,0 +1,13 @@
+This is propellor's todo list.
+
+Unclaimed items are probably not being worked on. But anyone can
+[[contribute|contributing]]!  
+To claim an item you plan to work on, edit it and add: \[[!tag user/yourname]]
+
+Link items to [[todo/done]] when done.
+
+See also: [Debian BTS](http://bugs.debian.org/propellor).
+
+[[!inline pages="./todo/* and !./todo/done and !link(done)
+and !*/Discussion" actions=yes postform=yes show=0 archive=yes
+template=todolist]]

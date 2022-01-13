@@ -1,0 +1,17 @@
+Hello,
+
+I would like to add support for MySQL/MariaDB and I have some questions about it.
+
+I suppose the nicest way to do it would be to use some haskell binding and to
+connect directly to the server from propellor.  However, this would add a
+dependency to build it.  Is it acceptable?
+
+Another solution is to use a command line client and parse its output, but the
+SQL syntax is so strange that I fear this will be painful.
+
+Another question is about password generation as I will need many passwords, I
+would like to generate them using a crypto hash of a secret combined with a
+public part in the propellor config.  Do you have a suggestion to compute this
+hash?  I think a dependency on a hash library is easier to accept.
+
+Thanks.

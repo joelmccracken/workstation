@@ -1,0 +1,19 @@
+It seems like I can't set the content of a PrivFile to arbitrary bytes.
+
+    $ propellor --set 'PrivFile "mysecret.key"' 'mycontext' < ~/mysecret.key
+    find . | grep -v /.git/ | grep -v /tmp/ | grep -v /dist/ | grep -v /doc/ | egrep '\.hs$' | xargs hothasktags | perl -ne 'print; s/Propellor\.Property\.//; print' | sort > tags  2>/dev/null || true
+    cabal build
+    Building propellor-2.2.1...
+    Preprocessing library propellor-2.2.1...
+    In-place registering propellor-2.2.1...
+    Preprocessing executable 'propellor' for propellor-2.2.1...
+    Preprocessing executable 'propellor-config' for propellor-2.2.1...
+    [70 of 70] Compiling Main             ( src/config.hs, dist/build/propellor-config/propellor-config-tmp/Main.o )
+    Linking dist/build/propellor-config/propellor-config ...
+    ln -sf dist/build/propellor-config/propellor-config propellor
+    
+    
+    Enter private data on stdin; ctrl-D when done:
+    propellor: <stdin>: hGetContents: invalid argument (invalid byte sequence)
+
+> [[done]]! --[[Joey]]

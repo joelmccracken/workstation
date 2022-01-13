@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="still in 5.4.1, but only on one machine"
+ date="2018-08-24T10:11:16Z"
+ content="""
+I updated to 5.4.1, and I still consistenly see this trying to spin my office computer from home. Weirdly a VM running Debian stretch on the same network does not repropduce. I'll have to try from a different machine on the office network to see if that makes a difference.
+"""]]

@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2016-06-08T17:07:09Z"
+ content="""
+This could be probed at runtime, I'd be willing to consider a patch
+checking cabal --version if you want to develop one.
+
+(Propellor supports Debian stable, but Ubuntu 14.04 is older than that.)
+"""]]

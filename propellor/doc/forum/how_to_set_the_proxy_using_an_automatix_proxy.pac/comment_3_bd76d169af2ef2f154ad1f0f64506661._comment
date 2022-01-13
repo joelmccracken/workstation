@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2014-11-25T19:37:46Z"
+ content="""
+There's no Property that handles setting global environment currently, but
+it's a reasonable one to add.
+
+I think that /etc/environment is read by `pam_env` logins, but maybe not
+other things, so dunno.
+"""]]

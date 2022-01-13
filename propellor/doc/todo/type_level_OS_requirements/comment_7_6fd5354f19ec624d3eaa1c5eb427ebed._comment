@@ -1,0 +1,39 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2016-03-17T17:30:44Z"
+ content="""
+This looks to be adding a new type parameter:
+
+`Property NoInfo DebianOnly`
+
+So does [[type_level_resource_conflict_detection|type_level_port_conflict_detection]].
+
+Would it make sense to include both targeted OS's and used resources in the
+same list of types? Otherwise, we end up with 4 type parameters, which is
+increasingly a mouthful to write:
+
+`Property NoInfo DebianOnly '[]`
+
+Since most properties use no ports or other resources, combining the
+resources lets type alises like DebianOnly be all that needs to be
+specified:
+
+`Property NoInfo DebianOnly`
+
+When there is a resource, can use `':` to add it to the list:
+
+`Property NoInfo (Port 80 ': Port 443 ': DebianOnly)`
+
+Seems reasonable. The implementation of combining such type lists may get
+complicated, because there will be different rules for target OS's vs
+resources.
+
+----
+
+Could also move the NoInfo|HasInfo into the type list. A list without
+HasInfo would be used instead of an explicit NoInfo, so:
+
+`Property (HasInfo ': DebianOnly)`
+
+"""]]

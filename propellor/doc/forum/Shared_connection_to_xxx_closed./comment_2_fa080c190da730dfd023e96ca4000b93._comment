@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 2"
+ date="2015-09-15T15:51:15Z"
+ content="""
+Ok I understand but in my case, the connection was closed when propellor should have connect as root to the host and execute the spin action.
+
+So it only push to the central repository (ok) but did not proceed to the host installation.
+"""]]

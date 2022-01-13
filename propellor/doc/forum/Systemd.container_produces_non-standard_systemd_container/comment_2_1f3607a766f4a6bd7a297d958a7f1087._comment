@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-09-26T12:33:57Z"
+ content="""
+The FilePath parameter to Chroot.debootstrapped is the directory to put the
+chroot in.
+
+If you have a property foo that takes such a chroot directory and generates
+the tarball you need, you can compose it thus:
+
+	Chroot.debootstrapped system chrootdir
+		`onChange` foo chrootdir tarball
+"""]]

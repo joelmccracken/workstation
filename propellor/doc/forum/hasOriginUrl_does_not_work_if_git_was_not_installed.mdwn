@@ -1,0 +1,14 @@
+Hello,
+
+I am creating virtual machines and set the url of propellor with 
+
+    & PropellorRepo.hasOriginUrl "https://salsa.debian.org/picca/propellor.git"
+
+I give the old name since I use the 5.6.0 version available in Debian stable.
+
+It systematically fail each time I provision the machine.
+I discovered that it failed due to a missing git.
+
+so it seems to me that this property should install git  before running :)
+
+cheers

@@ -1,0 +1,8 @@
+A quick demo of propellor.
+
+<video controls src="http://downloads.kitenet.net/talks/propellor_demo/propellor_demo.webm"></video>
+
+[video](http://downloads.kitenet.net/talks/propellor_demo/propellor_demo.webm)
+
+(Audio quality is clipped/fast in places, unfortunately this was a problem
+with the source recording.)

@@ -1,0 +1,1 @@
+"propellor --list-fields", "propellor --edit field context" and "propellor --set field context" are great, but is there a way to delete a field?

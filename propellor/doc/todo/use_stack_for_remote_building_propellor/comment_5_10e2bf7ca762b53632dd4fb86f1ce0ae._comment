@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2016-05-31T16:25:09Z"
+ content="""
+Following spwhitton's idea, this would involve adding a new property which 
+configures the host it's attached to to build propellor using stack.
+
+This can be accomplished by having the property set some Info which can
+be looked at when propellor is deploying itself to the host, 
+as shown in the precompiled branch.
+
+I guess most people who want to build
+propellor with stack would want to do that on all hosts. You could have a
+`[Host] -> [Host]` function that added the stack property to a list of
+hosts I suppose.
+"""]]

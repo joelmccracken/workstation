@@ -1,0 +1,11 @@
+Recent versions of Borg require the `--encryption` option to initialize a repository.
+
+Also, `borg extract` needs an archive name and it extracts the backup in the current directory.
+
+I have made a fix for this, please pull the `borg-fixes` branch at `http://git.ni.fr.eu.org/nicolas/propellor.git`.
+
+Tested with borg version 1.1.9.
+
+My haskell level is still not that great, I would love to get comments on my code.
+
+Thanks.

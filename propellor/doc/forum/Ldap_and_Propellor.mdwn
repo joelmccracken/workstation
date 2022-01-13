@@ -1,0 +1,12 @@
+Hello,
+
+First, thank you for your program and your work, it's very interesting. I'm trying to use it and I have two questions :
+
+
+1) Is there already some propellor code to deal with Ldap or should I write my own code ? (I didn't see anything in the API doc)
+
+2) Is it possible to use propellor with another folder than ~/.propellor/ ? (for exemple to deal with several "domains")
+
+Thank you,
+
+TobiasBora.

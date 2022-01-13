@@ -1,0 +1,7 @@
+Currently, building an Image for a Host requires a partition table to be
+specified separately. However, Propellor.Property.Machine often knows
+things about the partition table (eg that there needs to be a separate EXT2
+/boot partition). So, why not let properties put something in Info and
+let the partition table be derived from that. --[[Joey]]
+
+> [[done]] --[[Joey]]

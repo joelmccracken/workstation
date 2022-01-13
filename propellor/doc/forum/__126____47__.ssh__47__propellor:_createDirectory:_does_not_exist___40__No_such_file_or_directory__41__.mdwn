@@ -1,0 +1,21 @@
+Hello,
+
+while  running propellor on a brand new  installed machine.
+I got this error message
+
+
+    [master 4c06fcd] propellor spin
+     1 file changed, 2 insertions(+), 2 deletions(-)
+    Git commit ... done
+    Password for 'https://picca@salsa.debian.org': 
+    To https://salsa.debian.org/picca/propellor.git
+       d8cfab0..4c06fcd  master -> master
+    Push to central git repository ... done
+    propellor: /home/picca/.ssh/propellor: createDirectory: does not exist (No such file or directory)
+
+
+so it seems that propellor does not create the .ssh directory if it does not exists.
+
+cheers
+
+Frederic

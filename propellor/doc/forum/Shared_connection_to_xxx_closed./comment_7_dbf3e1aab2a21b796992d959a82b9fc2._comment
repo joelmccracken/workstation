@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2015-09-23T16:52:12Z"
+ content="""
+Ah, that makes much more sense; rather than a strange ssh problem,
+propellor is apparently exiting 0 w/o doing anything when run 
+with `./propellor --continue 'SimpleRun "xxx"'` or something close to that.
+
+So, this might have to do with the old propellor not supporting SimpleRun,
+which was added back in 0.4.0.
+
+Or, more likely, it's broken in some way that makes it not do anything when
+asked to so a SimpleRun for a particular host.
+
+You can probably try running the old propellor with that SimpleRun parameter and
+the command line and get a better feel for what it's doing, and if desired,
+bisect or otherwise instrument the program to see why it behaved this way.
+"""]]

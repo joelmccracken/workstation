@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-09-09T22:25:55Z"
+ content="""
+Propellor needs to build itself from source on the host it's
+provisioning, and so it needs to install its haskell library dependencies.
+
+It first does this by trying to apt-get install all the relevant packages.
+However, that might fail for some reason, including perhaps that new enough
+versions of some library is not available to apt-get. So, it then also
+asks cabal to install any missing dependencies. This is where the `cabal
+update` comes in. I'd rather only do that if apt didn't install all
+necessary deps, but I don't currently know how to check that, so it does it
+always.
+
+It looks like cabal may be allocating too much memory to work on your arm
+router. This could be because of a problem in depenedency resolution, which
+sometimes runs cabal out of memory even on big boxes, or it could just be
+too memory hungry to be practical there.
+
+The smallest system I've successfully run git-annex on had 500 mb of
+memory. IIRC, most memory is used when ghc is compiling propellor.
+"""]]

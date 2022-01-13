@@ -1,0 +1,15 @@
+Hi, I'm trying to understand a part of the `changesFile` equation, specifically `oldstat`.
+
+```
+changesFile :: Checkable p i => p i -> FilePath -> Property i
+changesFile p f = checkResult getstat comparestat p
+  where
+	getstat = catchMaybeIO $ getSymbolicLinkStatus f
+	comparestat oldstat = do
+		newstat <- getstat
+		return $ if samestat oldstat newstat then NoChange else MadeChange
+```
+
+As we see, we catch `getstat` given `f`, but what I don't understand or see, is how is `oldstat` been passed/generated?
+
+Thanks for the help.

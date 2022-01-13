@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="needs update-initramfs"
+ date="2018-10-14T21:03:28Z"
+ content="""
+I guess that's a more productive line of thinking, I wouldn't expect these vm's to have more than one network interface. One gotcha that took a bit to figure out is that the masking needs update-initramfs to be seen at boot. The following seems to be working for me:
+
+[[!format haskell \"\"\"
+& File.hasContent \"/etc/systemd/network/99-default.link\" []
+        `onChange` ( Cmd.cmdProperty \"update-initramfs\" [\"-u\"] `changesFile` \"/initrd.img\" )
+\"\"\"]]
+"""]]

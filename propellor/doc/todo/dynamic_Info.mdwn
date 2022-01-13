@@ -1,0 +1,4 @@
+nomeata suggested using Data.Dynamic for Info, so there doesn't need to be
+a big record centralizing all sorts of info. --[[Joey]]
+
+[[done]] --[[Joey]]

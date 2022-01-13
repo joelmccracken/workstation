@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2019-02-17T18:07:39Z"
+ content="""
+Thinking more about a hypothetical property like
+`userGroupFunction (\User u -> Group (u ++ "-group"))`
+the idea seems problimatic because all the properties that install a
+package with a dedicated user and group would seem to need to be changed
+to support putting the user in the group configured by the property.
+
+I suppose it could be documented to be limited to non-system users and
+groups, so only User.accountFor would need to support when making users and
+groups, and Ssh.userKeyAt etc would use it to tell what group to use for a
+non-system user. 
+
+Although, is Ssh.userKeyAt etc really limited to being
+used with non-system users? Perhaps User should have an additional
+SystemUser constructor to encode the distinction. Or perhaps this idea of
+mine is going in the wrong direction.
+"""]]

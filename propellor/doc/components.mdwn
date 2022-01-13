@@ -1,0 +1,36 @@
+Propellor is a single system, but it's made up of some logically separate
+components.
+
+* Propellor is a Haskell library. The library can be installed
+  [from hackage](http://hackage.haskell.org/package/propellor)
+  in the usual ways. It complies with the
+  [[Haskell Package Version Policy|interface_stability]].
+* `~/.propellor/` is a git repository, which contains at least your
+  `config.hs` file and a cabal file. This gets deployed to each machine
+  you manage with propellor, where it's installed as `/usr/local/propellor/`
+* There can also be a propellor command in your PATH. If you `apt-get
+  install propellor`, you'll get one installed, or `cabal install propellor`
+  will put the command in `~/.cabal/bin/propellor`. This propellor command
+  is just a wrapper; it builds and runs what you have set up in `~/.propellor/`
+
+## full .propellor repository
+
+Typically, the `~/.propellor/` git repository is set up by running the
+propellor command, or by [[cloning propellor|install]]. That makes
+the repository contain the full source code to propellor, including
+the Haskell library.
+
+So if you want to, you can edit any part of Propellor's source code.
+Don't like how a property works, or need to make it more general? Just edit
+then copy in `~/.propellor/src/Propellor/` and it will be used. See
+[[contributing]] if you want to send your improvements back.
+
+## minimal .propellor repository
+
+All that really needs to be in `~/.propellor/` though, is a `config.hs`
+file, and a cabal file. Running propellor when `~/.propellor/` doesn't exist
+will ask you if you want a minimal config, and create those files.
+
+In this configuration, when propellor is deploying itself to a new host,
+it will automatically install the version of the propellor library
+specified in the cabal file.

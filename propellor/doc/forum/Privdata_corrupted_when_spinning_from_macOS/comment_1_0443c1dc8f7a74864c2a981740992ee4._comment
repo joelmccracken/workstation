@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-08-14T21:33:55Z"
+ content="""
+Sounds like a problem with sendPrivData, which writes it to a Handle that's 
+connected to propellor on the host being spun.
+
+Handles have an associated encoding, which comes from the locale settings.
+The char8 TextEncoding sounds like what you describe (code point modulo
+256). hSetEncoding can change it.
+
+Here's a patch you could try that prints out the encoding in use and tries
+to force utf8.
+
+	--- a/src/Propellor/Spin.hs
+	+++ b/src/Propellor/Spin.hs
+	@@ -252,6 +252,8 @@ sendRepoUrl hst toh = sendMarked toh repoUrlMarker =<< geturl
+	
+	 sendPrivData :: HostName -> Handle -> PrivMap -> IO ()
+	 sendPrivData hn toh privdata = void $ actionMessage msg $ do
+	+	hPutStrLn stderr . show =<< hGetEncoding toh
+	+	hSetEncoding toh utf8
+ 		sendMarked toh privDataMarker d
+	 	return True
+	   where
+"""]]

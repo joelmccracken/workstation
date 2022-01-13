@@ -1,0 +1,7 @@
+Everything is in the title : is there a property to ensure that the 'alternative' is set in a given way ?
+
+I guess the simplest otherwise would be to use a `Cmd` to do it (through usage of `update-alternative`), but I am wondering if there is already a property to do that…
+
+Thanks in advance,
+
+Serge

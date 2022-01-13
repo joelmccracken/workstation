@@ -1,0 +1,52 @@
+Hello
+
+I have this kind of property
+
+    myProperty :: Conf -> RevertableProperty NoInfo
+
+
+now I have a [Conf] and I want to create also a RevertableProperty NoInfo which apply myProperty for each Conf
+
+I tried to find an equivalent of mapM for properties but I found nothing which works as expected.
+
+I tried with combineProperties but it failed also with a "cryptic message"
+mpoints is the [Conf]
+
+
+    src/config.hs:250:17:
+    Couldn't match type `CInfo
+                           (PropertyListType (Property [NoInfo]))
+                           (PropertyListType (Property [NoInfo]))'
+                  with `NoInfo'
+    Expected type: RevertableProperty NoInfo
+      Actual type: RevertableProperty
+                     (CInfo
+                        (PropertyListType (Property [NoInfo]))
+                        (PropertyListType (Property [NoInfo])))
+    In the expression: mount <!> umount
+    In an equation for `mountExp':
+        mountExp b
+          = mount <!> umount
+          where
+              mount
+                = combineProperties
+                    "mount nfs files" (mapM mount'' mpoints)
+              umount
+                = combineProperties
+                    "umount nfs files" (mapM umount'' mpoints)
+              mpoints
+                = [MountConf
+                     "nfs"
+                     ("ruche-"
+                      ++
+                        beamline ++ ".mydomain.org:/" ++ beamline ++ "-users")
+                     ("/nfs/ruche-" ++ beamline ++ "/" ++ beamline ++ "-users"),
+                   ....]
+              beamline = show b
+
+What is the right way to create a RevertableProperty from a list of RevertableProperty
+
+thanks
+
+Frederic
+

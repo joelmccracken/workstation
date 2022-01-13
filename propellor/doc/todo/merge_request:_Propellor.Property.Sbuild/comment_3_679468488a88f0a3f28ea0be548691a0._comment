@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-05-22T17:53:42Z"
+ content="""
+Would it make sense to move the ~/.sbuildrc example into the documentation
+for the property that uses it?
+"""]]

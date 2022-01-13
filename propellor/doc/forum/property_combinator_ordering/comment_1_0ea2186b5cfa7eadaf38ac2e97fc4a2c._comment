@@ -1,0 +1,31 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2014-12-01T15:53:11Z"
+ content="""
+I think that should behave intuitively, but of course if you're unsure
+of this kind of thing, adding parens is a good way to disambiguate the
+code.
+
+	(f `File.hasContent` cfg `onChange` update)
+	        `requires` File.dirExists confDir
+
+Written that way, it's explicit that the parenthesized part runs
+together as one action.
+
+Or, we can do a quick test in ghci:
+
+	joey@darkstar:~/src/propellor/src#joeyconfig>ghci Propellor.hs  Propellor/Property.hs
+	*Propellor> let f1 = property "hasContent" (liftIO (print "f1") >> return MadeChange)
+	*Propellor> let f2 = property "update" (liftIO (print "f2") >> return MadeChange)
+	*Propellor> let f3 = property "dirExists" (liftIO (print "f3") >> return MadeChange)
+	*Propellor> runPropellor (Host "foo" [] mempty) $ ensureProperty $ f1 `onChange` f2 `requires` f3
+	"dirExists"
+	"hasContent"
+	"update"
+	MadeChange
+
+So, yes, it's behaving as it should, first ensuring that the `requires`
+property is met, and then running the main property, and since it made a
+change, following up by running the `onChange` property.
+"""]]

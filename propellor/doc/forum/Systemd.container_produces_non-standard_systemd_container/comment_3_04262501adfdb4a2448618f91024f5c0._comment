@@ -1,0 +1,15 @@
+[[!comment format=mdwn
+ username="https://mathstuf.id.fedoraproject.org/"
+ nickname="mathstuf"
+ subject="comment 3"
+ date="2015-10-20T01:01:54Z"
+ content="""
+You can see the difference here:
+
+```
+mycontainer     directory no  n/a    n/a                          n/a     
+testclone       subvolume no  60M    Thu 2015-09-24 22:41:39 CEST n/a     
+```
+
+Your container is a directory while the clone is a subvolume (of btrfs). Cloning the machine involves doing some btrfs magic I would assume (with no `cp -a` backup). The error message could be more descriptive…
+"""]]

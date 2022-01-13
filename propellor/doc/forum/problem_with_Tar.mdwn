@@ -1,0 +1,12 @@
+Hello, I am trying to use the Tar property but I get this message
+
+    Preprocessing executable 'propellor-config' for propellor-2.12.0...
+    [66 of 68] Compiling Propellor.Property.Tar ( src/Propellor/Property/Tar.hs, dist/build/propellor-config/propellor-config-tmp/Propellor/Property/Tar.o ) [Propellor   changed]
+
+    src/Propellor/Property/Tar.hs:12:7: Not in scope: `liftIO'
+
+    src/Propellor/Property/Tar.hs:12:25:
+        Not in scope: `<$>'
+        Perhaps you meant one of these:
+          `<!>' (imported from Propellor), `<>' (imported from Propellor)
+    propellor: cabal build failed

@@ -1,0 +1,3 @@
+How would one create a Property that installs a package without starting the corresponding service?
+
+I'm asking because sometimes the default config is broken, so you need to fix it before starting the service.

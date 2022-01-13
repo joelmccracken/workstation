@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2016-03-29T21:09:25Z"
+ content="""
+       clone NAME NAME
+           Clones a container or VM image. The arguments specify the
+           name of the image to clone and the name of the newly
+           cloned image. Note that plain directory container images
+           are cloned into subvolume images with this command.
+
+That seems to say that the directory that Systemd.container sets up
+should be clonable too. Perhaps this is a systemd bug?
+
+If systemd needs a container to be loaded from a tarball in order to be
+clonable this way, I guess I would not mind if Systemd.container did that
+as part of its initial bootstrapping. But it is extra work so I'd like to
+make sure that it's really intended to need to do that.
+
+(Myself, I don't care if I can't clone a container; I can delete any of them
+and propellor can rebuild them, or even move the line to a different host
+in config.hs to relocate the container.)
+"""]]

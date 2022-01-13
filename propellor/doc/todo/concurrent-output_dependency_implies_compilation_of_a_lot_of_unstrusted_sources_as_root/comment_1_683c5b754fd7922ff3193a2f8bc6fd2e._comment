@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-04-05T17:19:50Z"
+ content="""
+Yes, cabal is not secure from MITM.
+
+I've rethought adding that dependency so soon. I'll change back to bundling
+concurrent-output in 3.0.1. 
+
+I can force ghc to build the concurrent-output
+module with -O2 as needed to get good memory use, and still let the rest of
+propellor build with -O0, which was the main motivation for unbundling it.
+"""]]

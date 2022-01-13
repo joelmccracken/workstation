@@ -1,0 +1,37 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="Enough for this year   ;-)"
+ date="2017-12-31T08:51:02Z"
+ content="""
+	stappers@paddy:~/src/secret-project
+	$ propellor --spin paddy.gpm.stappers.nl
+	Resolving dependencies...
+	Warning: solver failed to find a solution:
+	Could not resolve dependencies:
+	trying: secret-project-0.0 (user goal)
+	next goal: random-shuffle (dependency of secret-project-0.0)
+	Dependency tree exhaustively searched.
+	Trying configure anyway.
+	Configuring secret-project-0.0...
+	cabal: Encountered missing dependencies:
+	propellor ==5.2.0,
+	random >=1.1,
+	random-shuffle >=0.0.4,
+	threepenny-gui ==0.8.0.0
+	propellor: failed to make dist/setup-config
+	CallStack (from HasCallStack):
+	  error, called at src/Propellor/Bootstrap.hs:322:25 in main:Propellor.Bootstrap
+	stappers@paddy:~/src/secret-project
+	$ LANG=C dpkg -l propellor
+	Desired=Unknown/Install/Remove/Purge/Hold
+	| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+	|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+	||/ Name             Version       Architecture  Description
+	+++-================-=============-=============-=====================================
+	ii  propellor        5.2.0         amd64         property-based host configuration man
+	stappers@paddy:~/src/secret-project
+	$ 
+
+"""]]

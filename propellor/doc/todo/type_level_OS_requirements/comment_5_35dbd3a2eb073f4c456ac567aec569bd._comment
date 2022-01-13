@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 5"""
+ date="2016-03-08T21:56:26Z"
+ content="""
+I got it to throw a nice type error when intersection of two OS lists
+yields an empty list:
+
+        Couldn't match type ‘'CannotCombineOS’ with ‘'CanCombineOS’
+        Expected type: 'CanCombineOS
+          Actual type: CannotCombineOS '['OSDebian] '['OSFreeBSD] '[]
+        In the expression: intersectSupportedOS debian freeBSD
+
+I think the next step would be actually adding the OSList to Property
+and making combining properties combine their OS lists at the type level.
+"""]]

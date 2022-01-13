@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-03-24T18:14:14Z"
+ content="""
+There did not used to be a good way to do that, but since propellor 3.2.3,
+when you run eg "propellor --spin host", it first checks to see if there is
+a `./config.hs` file, and if so, uses it instead of the user-global
+`~/.propellor/config.hs`.
+
+So, just make different git repos for the different projects with propellor
+`config.hs` files in them, and `cd` into the one you want to run before running
+propellor.
+"""]]

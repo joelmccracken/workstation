@@ -1,0 +1,7 @@
+Hi there,
+
+I've been tasked with investigating propellor as an alternative to Ansible. I'm a little bit confused about how one might go about managing a *single* project's hosts with propellor, without infecting the global propellor config. It seems that everything is concerned with the ~/.propellor repository. However, I don't want project A's hosts to know about project B's and vice versa. I'm sure I'm overlooking something obvious!
+
+Thanks very much!
+
+Mitchell

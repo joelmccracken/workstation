@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="picca"
+ avatar="http://cdn.libravatar.org/avatar/7e61c80d28018b10d31f6db7dddb864c"
+ subject="comment 4"
+ date="2017-08-22T08:42:35Z"
+ content="""
+    vmdkBuiltFor :: FilePath -> RevertableProperty DebianLike UnixLike
+    vmdkBuiltFor diskimage = (setup <!> cleanup)
+	`describe` (vmdkfile ++ \" built\")
+      where
+	vmdkfile = diskimage ++ \".vmdk\"
+	setup = cmdProperty \"qemu-img\"
+		[ \"convert\"
+		, \"-O\", \"vmdk\"
+		, diskimage, vmdkfile
+		]
+		`changesFile` vmdkfile
+		`onChange` File.mode vmdkfile (combineModes (ownerWriteMode : readModes))
+		`requires` Apt.installed [\"qemu-utils\"]
+		`requires` File.notPresent vmdkfile
+	cleanup = File.notPresent vmdkfile
+
+seems to work :))
+"""]]

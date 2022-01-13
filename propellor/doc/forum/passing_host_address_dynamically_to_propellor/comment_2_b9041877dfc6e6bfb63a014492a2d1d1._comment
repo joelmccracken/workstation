@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="arnaud.oqube@c9b8c7ea33f1dea0b7a5485b86825c5bfa9efbf7"
+ nickname="arnaud.oqube"
+ subject="comment 2"
+ date="2015-05-29T15:09:24Z"
+ content="""
+We create/destroy dynamically hosts which have different purpose: CI, Dev boxes, Testing... IP of these hosts is unknown and assign by our provider (Digital Ocean) so what I would like to do is something like:
+
+```
+$ create-host
+...
+IP: 1.2.3.4
+$ ./propellor 1.2.3.4
+```
+
+But indeed the idea of having a local `hosts` file makes sense, or even a `hosts/` directory to which I output files containing IPs. 
+
+"""]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2018-01-02T16:36:32Z"
+ content="""
+Ah I see, it was mixing concurrent output with unbuffered output, which in
+this case caused the related messages to appear separated. Fixed that.
+"""]]

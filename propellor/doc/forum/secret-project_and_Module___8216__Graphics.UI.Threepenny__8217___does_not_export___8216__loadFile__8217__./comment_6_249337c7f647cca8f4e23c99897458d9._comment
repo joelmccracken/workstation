@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 6"""
+ date="2017-12-29T15:56:21Z"
+ content="""
+You need this for it to build with the newer stack:
+
+	--- a/stack.yaml
+	+++ b/stack.yaml
+	@@ -4,4 +4,5 @@ packages:
+	 resolver: lts-8.12
+	 extra-deps:
+	 - propellor-5.1.0
+	+- archive: http://github.com/joeyh/threepenny-gui/archive/59242cf93bdb8eaa805f5c2b0241e9a1cba9a70f.zip
+	 explicit-setup-deps:
+
+However, that won't work with the 
+[stack currently in debian](http://package.debian.org/haskell-stack)
+and since secret-project later installs that version of stack and runs
+it against the same stack.yaml file, I can't commit that change until 
+Debian gets around to [upgrading haskell-stack](http://bugs.debian.org/877256)
+"""]]

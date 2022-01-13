@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 1"
+ date="2019-06-02T00:34:48Z"
+ content="""
+The `upstream/master` thing is probably propellor's code looking in `/usr/src/propellor` for a new upstream version.
+
+Do you perhaps no longer have the Debian package of propellor installed?
+"""]]

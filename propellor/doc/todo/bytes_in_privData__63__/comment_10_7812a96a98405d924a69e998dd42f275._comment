@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="andrew"
+ subject="comment 10"
+ date="2016-06-17T05:25:08Z"
+ content="""
+I've recreated my propellor repository a few times and have had to write out .pfx files. Essentially a binary format of .pem and .key. I had no problem getting the pfx file into privData, but propellor bails when writing the binary data on the host. This patch tackles the writing on host bit (not the writing to privData). You've used `hPutStr` to write out data which errors on certain bytes (because `hPutStr` assumes a character encoding?). 0x00 is a likely candidate. I don't recall the exact error, but at least Haskell noticed this and gave an error rather than writing out a partial file.
+
+I'll see if I can get a deduping patch to tidy up fileProperty and byteProperty.
+"""]]

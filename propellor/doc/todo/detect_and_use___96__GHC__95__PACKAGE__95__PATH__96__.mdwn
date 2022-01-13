@@ -1,0 +1,15 @@
+Detecting and using `GHC_PACKAGE_PATH` would allow "stack exec" support. This way propellor would be able to be built with
+
+    stack build
+
+and run with 
+
+    stack exec -- propellor ...
+
+see [[https://github.com/yesodweb/yesod/issues/1018]] and [[https://github.com/yesodweb/yesod/commit/a7cccf2a7c5df8b26da9ea4fdcb6bac5ab3a3b75]]
+
+> I don't think `stack exec propellor` makes sense to use.
+> Instead, `stack install propellor` and then put that in PATH.
+> I've now made `propellor --init` know when it was built using stack,
+> and it will set up propellor to continue to build itself using stack.
+> [[done]] --[[Joey]]

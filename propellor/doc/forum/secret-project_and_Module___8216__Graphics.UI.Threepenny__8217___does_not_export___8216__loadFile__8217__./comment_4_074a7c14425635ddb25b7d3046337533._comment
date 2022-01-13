@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="threepenny-ui in cabal"
+ date="2017-12-29T08:46:19Z"
+ content="""
+Without a version for threepenny-ui in secret-project.cabal gets 0.7.0.1 installed by `stack build`.
+
+Where 0.7.0.1 comes from is unclear to me.
+Downloading and unzipping <https://github.com/joeyh/threepenny-gui/archive/59242cf93bdb8eaa805f5c2b0241e9a1cba9a70f.zip> didn't reveal any 0.7.0.1.
+
+Having `threepenny-gui (>= 0.8.0.0)` in secret-project.cabal gives this compile error:
+
+	
+	Error: While constructing the build plan, the following exceptions were encountered:
+	
+	In the dependencies for secret-project-0.0:
+	    threepenny-gui-0.7.0.1 from stack configuration does not match (>=0.8.0.0) (latest matching version
+	                           is 0.8.2.0)
+	needed since secret-project is a build target.
+	
+	Some potential ways to resolve this:
+	
+	  * Recommended action: try adding the following to your extra-deps
+	    in /home/stappers/src/secret-project/stack.yaml:
+	
+	- threepenny-gui-0.8.2.0
+	
+	  * Set 'allow-newer: true' to ignore all version constraints and build anyway.
+	
+	  * You may also want to try using the 'stack solver' command.
+	
+	Plan construction failed.
+
+
+
+"""]]

@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 3"
+ date="2017-09-02T02:47:01Z"
+ content="""
+Thank you for the detailed report.
+
+I think the problem is the proxy propagation happens after the sbuild-createchroot command has run, but if the sbuild-createchroot command needs the proxy, it will fail in the way you describe.
+
+After speaking to Joey at DebConf I think I can rework the sbuild module to bypass sbuild-createchroot and run debootstrap itself, without thereby polluting the chroot that is created.  That should make it much easier to fix this bug, so I'll do that first.
+"""]]

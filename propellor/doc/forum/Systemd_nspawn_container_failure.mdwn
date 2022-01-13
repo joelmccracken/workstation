@@ -1,0 +1,12 @@
+I'm trying to spin up a new host to replace an old one, and I'm getting these weird failures on some `Systemd.nspawned` properties:
+
+```
+mount: mount point /var/lib/container/nginx-primary/proc does not exist
+** warning: user error (chroot ["/var/lib/container/nginx-primary","/usr/local/propellor/chroot/_var_lib_container_nginx-primary.shim/propellor","--continue","ChrootChain \"onyx.fusionapp.com\" \"/var/lib/container/nginx-primary\" True True"] exited 127)
+onyx.fusionapp.com nspawned nginx-primary ... failed
+chroot: failed to run command â/usr/local/propellor/chroot/_var_lib_container_nginx-primary.shim/propellorâ: No such file or directory
+onyx.fusionapp.com nspawned apache-svn ... failed
+onyx.fusionapp.com nspawned mail-relay ... failed
+```
+
+There's some weird race condition since sometimes the message about `.../proc does not exist` shows up, and sometimes I get "failed" with no other error output. On further investigation, it turns out that `debootstrap` is not installed on the remote system. Inserting an `Apt.installed ["debootstrap"]` before the `nspawned` properties seems to have fixed it; but looking at the code, I don't fully understand why it isn't being installed by `Debootstrap.built`.

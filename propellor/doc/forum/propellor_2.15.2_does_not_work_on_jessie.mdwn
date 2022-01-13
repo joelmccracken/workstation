@@ -1,0 +1,20 @@
+Hello, I am trying to use propellor  2.15.2 on jessie.
+
+but when I do
+
+runhaskell config.hs, I get this error message
+
+
+    Propellor/Git.hs:10:9 Not in scope: `<$>'
+
+    Propellor/Git.hs:14:9 Not in scope: `<$>'
+
+    Propellor/Git.hs:18:9 Not in scope: `<$>'
+
+    Propellor/Git.hs:22:21 Not in scope: `<$>'
+
+maybe an import is missing with ghc 7.6.3
+
+Cheers
+
+Frederic

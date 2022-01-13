@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="pelle"
+ subject="comment 2"
+ date="2015-10-09T08:06:18Z"
+ content="""
+In that case, I will probably create a regular property for copying file contents. It seemed like a neat solution, but if it's not available everywhere I don't think it's worth it. I've also heard that there are problems with TH so it might be best to avoid it unless there is a compelling reason to use it.
+
+I'm also thinking about using Data.Text.Template to template configuration files. With TH, the templates could be compiled and error-checked during build-time, kind of like what Yesod does. But again, I don't think it's worth the trouble.
+"""]]

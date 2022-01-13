@@ -1,0 +1,24 @@
+[[!comment format=mdwn
+ username="craige@a46118dff5bc0fad85259759970d8b4b9fc377d7"
+ nickname="craige"
+ subject="-O0"
+ date="2016-05-30T04:41:08Z"
+ content="""
+I'm experiencing this quite badly. GHC will consume all 8G RAM before locking the machine up (if I don't catch it first).
+
+-O0 was already in propellor.cabal:
+
+GHC-Options: -threaded -Wall -fno-warn-tabs -O0  
+
+I have set PROPELLOR_DEBUG=1
+
+Strace isn't turning up anything that I can use.
+
+I'm not getting a anything useful to track down the source of this problem for me. 
+
+Any tips on what I can do to track this down?
+
+Thanks!
+
+Debian testing || Propeller 3.0.3 
+"""]]

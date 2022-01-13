@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2015-09-10T21:00:46Z"
+ content="""
+If you look at `setPrivDataTo`, it explicitly chomps all trailing newlines
+from the value. I think that I did that because it's easy to accidentially
+add a newline you don't want when eg, pasting in a password.
+
+So, one solution might be to make --set --from-file load
+a file into privdata as-is. But, that seems like complication;
+you'd need to remember when to use it.
+
+I think it's better for the ssh property (and any other affected
+properties) to be changed, to add a final newline to the value from
+privdata when one is missing. Does this problem only affect ed25519
+keys, or others too? Only private keys or also public?
+
+I am currently extremely busy, so a patch would be great.
+"""]]

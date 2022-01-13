@@ -1,0 +1,21 @@
+I have a bunch of properties that need to know what my login name is on a host.  I have a pure info property `SPW.myAccountIs` to set this as host info.  I have a function
+
+    getMyAcc :: Propellor User
+
+which looks up this info or returns the default value 'spwhitton' if I didn't set a username on a host.  It's easy to use `getMyAcc` in writing my own properties, but I want to use it with existing properties.  I'd like to write
+
+    withMyAcc :: IsProp p => (User -> p) -> p
+
+so that for example I could say
+
+    & (withMyAcc $ \u -> User.accountFor u)
+
+Even better, I'd like to be able to say
+
+    stdMachine = propertyListWithAcc "standard Debian setup" $ \u -> props
+            & User.accountFor u
+            & Sudo.enabledFor u
+
+It seems like this ought to be possible; a property is something that does some stuff in the `Propellor` monad and has a few other attributes, and those monadic actions can be conditional on some data not yet provided.  However, I can't figure out how to do this with propellor's type system.  If it's possible, I'd welcome hints.
+
+--spwhitton

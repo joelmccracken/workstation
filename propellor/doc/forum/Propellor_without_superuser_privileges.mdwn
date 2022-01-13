@@ -1,0 +1,3 @@
+Joey uses propellor to popular his /home/joey on hosts he controls.  I'd like to use it to populate my home directory on hosts where I don't have root.  If someone gives me a shell account on a Debian box, it would be great to just run `propellor --spin` to have apply properties such as having certain stuff downloaded and compiled in `~/local/bin`, putting cronjobs in place, and checking stuff out with `myrepos`.
+
+Does propellor assume root access at a deep enough level that writing properties to do this stuff would be impractical?

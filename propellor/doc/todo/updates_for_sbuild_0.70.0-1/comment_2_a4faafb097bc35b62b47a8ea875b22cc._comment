@@ -1,0 +1,7 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 2"
+ date="2016-08-25T04:35:50Z"
+ content="""
+Turns out that the code in Sbuild.hs fails to set up a squeeze chroot anyway.  Working on a branch -- need to do some testing to make sure the documentation correctly states minimum requirements.
+"""]]

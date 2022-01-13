@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 12"""
+ date="2016-06-19T17:53:17Z"
+ content="""
+I found a reasonable way to refactor it without the duplication, so have
+landed the patch.
+"""]]

@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-04-26T15:02:03Z"
+ content="""
+Well, `backportSuite` takes a `DebianSuite` data type, and `Stable`
+is a constructor for it. So, you don't quote the data constructor,
+but only quote the release name string passed to it:
+
+	(Stable "jessie")
+
+But, `backportSuite` is not a property, so you can't add it to a host
+with `&` anyway.
+
+If you're trying to set up a sources.list that can install backports, the
+way to do it is:
+
+	& osDebian (Stable "jessie") "amd64"
+	& Apt.stdSourcesList
+
+The standard sources.list configuration includes backports when
+the `DebianSuite` part of the host's OS is a stable release.
+
+There's also a property to install packages from backports:
+
+	& Apt.installedBackport ["somepackage"]
+"""]]

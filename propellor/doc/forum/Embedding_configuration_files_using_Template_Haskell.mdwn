@@ -1,0 +1,24 @@
+I want to replace configuration file contents using Propellor, but some configuration files are long so I want to keep them outside config.hs and without having to use quotation. I came up with this:
+
+```
+{-# LANGUAGE TemplateHaskell #-}
+module Utility.Embed where
+
+import Language.Haskell.TH
+import qualified Data.FileEmbed as FE
+
+sourceFile :: FilePath -> Q Exp
+sourceFile path = return . AppE (VarE 'lines) =<< FE.embedStringFile path
+```
+
+Which can be used like this:
+
+```
+standardSystem :: HostName -> Host
+standardSystem hn = host hn
+                    & Apt.installed ["heimdal-clients"]
+                    & "/etc/krb5.conf" `File.hasContent`
+                          $(sourceFile "files/etc/krb5.conf")
+```
+
+What do you think, is this the right approach or should I just read source files with the IO monad?

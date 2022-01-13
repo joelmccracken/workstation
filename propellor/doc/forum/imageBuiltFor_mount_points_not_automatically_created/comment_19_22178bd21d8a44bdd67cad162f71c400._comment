@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 19"
+ date="2018-01-29T17:55:43Z"
+ content="""
+I tried several configurations, without success. Without a serial console, that was not fun to debug... I finally tried to boot the image with qemu, and that worked! So I thought that maybe I should try to use a MSDOS partition table instead of a GPT one, just to be sure. And that finally produced a bootable image on that damn card! :) I'll report a bug to PCEngines. It's unfortunate I can't test the GPT code more, but it would probably work, as it booted in qemu.
+
+Thanks a lot Joey!
+
+"""]]

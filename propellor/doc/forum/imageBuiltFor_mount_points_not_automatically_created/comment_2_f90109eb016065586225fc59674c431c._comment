@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2017-12-20T21:36:36Z"
+ content="""
+AFAICS, DiskImage.imageFinalized creates any mount points that were not
+rsynced over from the chroot. But, I guess that partitionsPopulated is
+expecting the mount point to exist in order to rsync its content over,
+and if nothing created /boot/efi that would explain the rsync error.
+I've added a check to prevent that problem.
+
+As for the unmount problem, it's a problem with the order
+it traverses the mount points for unmounting. That is using
+"unmountBelow" with the directory where the disk image partitions
+are loop mounted. If that unmounts `boot` first, it will implicitly
+unmount `boot/efi` (due to --lazy) and then will fail when it
+tries to explicitly unmount it. Added sorting that should fix that.
+
+Let me know how that goes, I've not tested it with your config.
+"""]]

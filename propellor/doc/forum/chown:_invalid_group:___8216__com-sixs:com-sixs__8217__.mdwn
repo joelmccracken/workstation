@@ -1,0 +1,23 @@
+Hello Joey
+
+I try to use
+
+    Ssh.authorizedKey (User "com-sixs") sshKeyPubComSixs
+
+on a system where the account are available in a ldap.
+On this system the group is different from the user name
+name -> grp-name
+
+So I end up with this error message
+
+    chown: invalid group: ‘com-sixs:com-sixs’
+    sixs3.exp.synchrotron-soleil.fr com-sixs has authorized_keys ... failed
+
+so my questions are.
+
+- Is it mandatory to have a user and the identical group on a unix system ?
+- Can we add a Group parameter to the authorizedKey property ?
+
+thanks for your help
+
+Fred 

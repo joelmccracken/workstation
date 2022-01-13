@@ -1,0 +1,8 @@
+I try to remove a key from my propellor repository, but it fails:
+
+    % propellor --rm-key 41EED9A677C20D87
+    gpg: there is a secret key for public key "41EED9A677C20D87"!
+    gpg: use option "--delete-secret-keys" to delete it first.
+    removing key from propellor's keyring ... failed
+
+I believe gpg gets access to my secret keys using the agent now, it no longer use direct access.

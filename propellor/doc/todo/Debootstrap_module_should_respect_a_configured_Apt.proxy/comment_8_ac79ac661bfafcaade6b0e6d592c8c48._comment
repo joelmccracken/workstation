@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 8"""
+ date="2017-11-18T20:02:46Z"
+ content="""
+I agree that it would make sense for propellor's debootstrap properties
+to use the host's apt proxy setting.
+
+debootstrap does not have an option to use a proxy, but I think that
+setting `http_proxy` in the environment will probably make it work.
+"""]]

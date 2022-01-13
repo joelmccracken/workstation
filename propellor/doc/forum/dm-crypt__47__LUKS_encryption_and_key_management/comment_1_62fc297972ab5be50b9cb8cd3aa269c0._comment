@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-02-06T15:37:45Z"
+ content="""
+Not aware of anyone using propellor for that yet.
+
+Propellor's LVM module would probably be a decent starting point for
+implementing dm-crypt support.
+
+Key/passwords could certianly be managed with propellor's privdata
+interface. Whether it makes sense to do so for security is probably up to
+the individual user, since privdata can be decrypted with your gpg private
+key, which you might not want to equate to access to your encrypted volume.
+Also, privdata is stored on the host that uses it in unencrypted form
+protected only by file permissions.
+"""]]

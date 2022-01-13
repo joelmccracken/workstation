@@ -1,0 +1,18 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2018-08-16T15:23:09Z"
+ content="""
+I notice that the property is certianly wrong for domains such as
+"foo.org.uk". And I don't want to build in the list of exceptions needed to
+properly deal with those.
+
+How about we add a separate mailname property and make Hostname.sane not
+touch the mailname. mailname could take a Maybe and guess based on the
+hostname when Nothing is specified.
+
+Or, the mailname property could only set Info, and Hostname.sane
+use that info when set and guess when not. But, I suspect that would not
+have avoided your email-losing misconfiguration from happening in the first
+place.
+"""]]

@@ -1,0 +1,9 @@
+G'day Joey.
+
+In [Docker.hs, line 73](https://git.joeyh.name/index.cgi/propellor.git/tree/src/Propellor/Property/Docker.hs?h=5.4.0#n73), docker.io is listed as the package to be installed.
+
+Docker.installed currently fails for me on Stretch with:
+
+    E: Package 'docker.io' has no installation candidate
+
+Unless I'm mistaken, from Stretch this is now replaced by "docker-engine".

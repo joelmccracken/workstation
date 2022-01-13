@@ -1,0 +1,7 @@
+There is a bunch of output at the last stage of imageBuilt, which ends with
+
+>      5,548,912   0%   22.61MB/s    0:00:00 (xfr#3, to-chk=0/24715)   
+>      loop deleted : /dev/loop0
+
+This is fine interactively, but when a propellor job fails and I get email, it includes roughly 2500 similar lines, which is not so great.
+It would be nice if it could detect being interactive, or maybe just be quiet all the time.

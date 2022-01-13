@@ -1,0 +1,9 @@
+We discussed at DebConf the need for a property that removes propellor from a host.  It would run itself at the end of the spin.  It needs to nuke `/usr/local/propellor`.  To what extent can it remove propellor's build dependencies?  I can see two problems to be resolved before writing any code.
+
+1. There is no standard way to remove cabal and stack packages from `/root` without potentially nuking stuff the user wants to keep.  So maybe the property should remove only OS packages?  I.e. best used on `OSOnly` hosts/chroots.
+
+2. What if another property on the host installs some or all of those build dependencies?  This property would be cancelled out by the unpropellor property.  Maybe properties that install packages need to [[set info about the packages that are meant to remain installed|todo/metapackage]]?
+
+The unpropellor property could just nuke `/usr/local/propellor` and leave it at that.  But then the sbuild module would need to maintain a list of propellor's build deps to remove from the newly created chroot, which is a third copy of the list..
+
+--spwhitton

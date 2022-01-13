@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2016-03-29T20:49:32Z"
+ content="""
+Hmm, I don't ever remember seeing apt-get update need dpkg --configure -a.
+It's rather weird that it would; the files it updates are fully independent
+of the files dpkg does AIUI.
+"""]]

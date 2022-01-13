@@ -1,0 +1,19 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-04-20T01:04:26Z"
+ content="""
+I imagine that adding `fileEncoding stdin` to setPrivData will fix
+this crash, but I'd expect there are also other problems with encodings
+for privdata that haskell doesn't like. Similar fixes would probably
+be needed in several other places. 
+
+Probably cleaner and better to convert
+`PrivData` from a String to a ByteString, and so avoid encodings
+being applied to it. I think this could be done without changing the
+file format; the privdata file uses Read/Show for serialization,
+and happily ByteString uses the same Read/Show format as String does.
+
+So, changing the type and following the compile errors should get you
+there, I think!
+"""]]

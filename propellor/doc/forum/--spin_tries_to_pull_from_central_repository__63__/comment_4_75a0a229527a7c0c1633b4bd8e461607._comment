@@ -1,0 +1,27 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="pulling from a central repo via ssh"
+ date="2018-08-25T18:50:39Z"
+ content="""
+I ended up updating to a more recent propellor for other reasons, but here's my hack to have propellor fetch over ssh:
+[[!format haskell \"\"\"
+rootSsh :: Property (HasInfo + UnixLike)
+rootSsh = propertyList \"ssh setup for root\" $ props
+  & Ssh.userKeyAt (Just keypath) (User \"root\") (Context \"propellor\") (SshRsa, Tethera.Keys.propellor_deploy_ssh)
+  & Ssh.knownHost hosts \"gitolite.tethera.net\" (User \"root\")
+  & File.containsBlock configpath [ \"Host propellor-deploy\"
+                               , \"     Hostname gitolite.tethera.net\"
+                               , \"     User git\"
+                               , \"     IdentityFile ~/.ssh/propellor_deploy\"
+                               ]
+  where
+    keypath = \"/root/.ssh/propellor_deploy\"
+    configpath = \"/root/.ssh/config\"
+\"\"\"]]
+
+Propellor is used to initially deply a passwordless role key that can be used to pull from the central repo.
+One thing that surprised me a bit is that Ssh.userKeyAt expects an absolute path, or a path relative to /usr/local/propellor.
+
+
+"""]]

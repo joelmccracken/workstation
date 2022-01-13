@@ -1,0 +1,14 @@
+Hello, sorry to bother you once again :)
+
+I would like to use propellor in order to prepare a bunch of schroot for sbuild.
+This way all my machines could be used to prepare packages.
+
+so I tryed to created a Debootstrap property in order to generate the initial image
+
+    & Chroot.debootstrapped (System (Debian (Stable "jessie")) "i386") Debootstrap.BuilddD "/var/lib/sbuild/jessie-i386.tar.gz"
+
+But this does not work.
+
+So I would like to know what should be done in order to instanciante a sbuild schroot and also how to customize it in order to add the apt proxy informations.
+
+  

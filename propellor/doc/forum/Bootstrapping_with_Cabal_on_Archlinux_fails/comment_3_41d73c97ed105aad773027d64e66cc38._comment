@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2020-02-25T21:22:22Z"
+ content="""
+Ghc 8.8 is fixed thanks to your patch.
+
+I was curious how cabal build failed w/o -dynamic, and found
+this <https://bugs.archlinux.org/task/54563#comment158808>
+which includes a simple change that the archlinux maintainers
+could make if they didh't want this to be a self-inflicted wound
+on their users.
+"""]]

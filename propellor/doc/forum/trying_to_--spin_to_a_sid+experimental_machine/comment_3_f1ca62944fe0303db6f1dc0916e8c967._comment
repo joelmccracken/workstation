@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-03-30T23:26:38Z"
+ content="""
+As to a mixed unstable/experimental machine, such a machine has a Property
+of having somepackage installed from experimental. One way to represent
+that is by defining a property:
+
+installedFromExperimental :: [Package] -> Property NoInfo  
+installedFromExperimental = Apt.installed' ["-y", "-texperimental"]  
+
+"""]]

@@ -1,0 +1,22 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2018-02-04T16:09:17Z"
+ content="""
+Thank you for this excellent idea and post! I've added a link to it under
+the quick start on the front page.
+
+Propellor's deployment system
+is just what happened to meet my needs, but certianly not ideal for anyone,
+and what I really like about this is it shows how the core of propellor is
+not locked into that one system.
+
+I see that `entr` automatically re-transfers the file when it has changed,
+so am I right that you could use this in combination with eg 
+`stack build --file-watch` to immediately test each change to config.hs?
+
+Do note that your method doesn't transfer over any private data that
+propellor might use on the host. And, some container properties need
+the propellor binary in /usr/local/propellor/ in order to work. 
+But until you need such properties, it's a nice way to get your feet wet.
+"""]]

@@ -1,0 +1,13 @@
+The following property sets up my wacky outbound mail setup.
+<pre>
+smtpLeaf :: Property (HasInfo + DebianLike)
+smtpLeaf = propertyList "smtp leaf node" $ props
+         & Apt.installed["nullmailer", "bsd-mailx"]
+         & File.hasPrivContent "/etc/nullmailer/remotes" anyContext
+         & tetheraApt
+         & Apt.installed ["nullmailer-extras"] & Apt.update & Apt.upgrade
+         & Ssh.userKeys (User "mail") anyContext [ (SshRsa, Tethera.Keys.mail_ssh) ]
+         & Ssh.knownHost hosts "smtp.tethera.net" (User "mail")
+</pre>
+
+The "Apt.update & Apt.upgrade" is there because nullmailer-extras is kindof a work in progress and I need to make sure that when I add a new version to the private apt repo it's drawing from, that get's installed. It works but it seems a bit slow, and more importantly upgrading everything is kindof a heavy side effect (which might even break things), in order to update this one package. Is there a better way to do this? Don't assume I know anything, I started using propellor 2 days ago...

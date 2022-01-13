@@ -1,0 +1,52 @@
+I'm trying to build an image for my router, which (after all) seems to need Grub.EFI64...
+
+Here is my config:
+
+    caillette = host hn $ props
+        & hasPartitionTableType GPT
+        & hasPartition
+            ( partition VFAT
+                `mountedAt` "/boot/efi"
+                `partLocation` Beginning
+                `setSize` MegaBytes 10
+                `setFlag` EspFlag
+            )
+        & hasPartition
+            ( partition EXT2
+                `mountedAt` "/boot"
+                `setSize` MegaBytes 150
+            )
+        & hasPartition
+            ( partition EXT4
+                `mountedAt` "/"
+                `partLocation` End
+                `addFreeSpace` MegaBytes 500
+            )
+        & standardSystem (Stable "stretch") X86_64
+            [ "home router" ]
+        & Apt.installed ["linux-image-amd64"]
+        & serialGrub
+      where
+        serialGrub :: Property (HasInfo + DebianLike)
+        serialGrub = "/etc/default/grub" `File.containsLines`
+            [ "GRUB_CMDLINE_LINUX=\"console=ttyS0,115200n8 biosdevname=0\""
+            , "GRUB_SERIAL_COMMAND=\"serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1\""
+            , "GRUB_TERMINAL=serial"
+            ]
+            -- `onChange` Grub.mkConfig
+            `requires` Grub.installed Grub.EFI64
+            `describe` "GRUB configured for PC Engines' APU2 serial console"
+
+When running propellor it fails with:
+
+    ...
+    mkfs.fat 4.1 (2017-01-24)
+    loop deleted : /dev/loop0
+    rsync: change_dir "/srv/router.img.chroot/boot/efi" failed: No such file or directory (2)
+                  0 100%    0.00kB/s    0:00:00 (xfr#0, to-chk=0/0)rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1196) [sender=3.1.2]
+    
+    loop deleted : /dev/loop0
+    laptop built disk image /srv/router.img ... failed
+    laptop overall ... failed
+
+Shouldn't /boot/efi be automatically created?

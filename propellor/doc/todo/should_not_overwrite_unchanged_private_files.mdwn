@@ -1,0 +1,1 @@
+A private file is overwritten by propellor at each run. It is not optimal when the host runs an integrity checker (like samhain). It would be great to have a file modified only if necessary.

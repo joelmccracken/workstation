@@ -1,0 +1,30 @@
+Hi,
+
+Using the Debian stable package (which downloaded and built the most recent version), `propellor --init` offered to use an expired GPG key. Details are below.
+
+Thanks for another great piece of software, and thanks for using Haskell!
+
+Kind regards,
+Felix Lechner
+
+* * *
+
+    Propellor build ... done
+    
+    Great! Propellor is bootstrapped.
+    
+    ------------------------------------------------------------------------------
+    
+    Propellor can use gpg to encrypt private data about the systems it manages,
+    and to sign git commits.
+    
+    I see you have several gpg keys:
+    ...
+       5   Felix Lechner <felix.lechner@gmail.com>  (keyid 6C0CC7F6ED41E279)
+    Which of your gpg keys should propellor use? [1|2|3|4|5] 
+
+but also (please note the `revoked` indicators)
+
+    sec   dsa1024/0x6C0CC7F6ED41E279 2005-12-07 [SCA] [revoked: 2009-08-24]
+          Key fingerprint = FF3A 9F1A EF4D 24A0 56A8  1026 6C0C C7F6 ED41 E279
+    uid                   [ revoked] Felix Lechner <felix.lechner@gmail.com>

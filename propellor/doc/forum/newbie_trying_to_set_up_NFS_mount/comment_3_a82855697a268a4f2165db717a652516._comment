@@ -1,0 +1,28 @@
+[[!comment format=mdwn
+ username="frederik@ffbea6a549cb3f460d110386c0f634c1ddc6a68a"
+ nickname="frederik"
+ subject="comment 3"
+ date="2016-04-06T14:14:23Z"
+ content="""
+I tried adding
+
+    & File.dirExists \"/mnt/nfs\"
+    & \"/etc/fstab\" `File.containsLine` \"192.168.1.100:/mnt/usb1 /mnt/nfs nfs intr 0 0\"
+      `onChange` cmdProperty \"mount\" [\"-a\"]
+
+This mimicks the bitlbee example on /usr/local/propellor/config-joey.hs
+
+But that results:
+
+    src/config.hs:36:11:
+        No instance for (Combines
+                           (Property NoInfo) (UncheckedProperty NoInfo))
+          arising from a use of ‘onChange’
+        In the second argument of ‘(&)’, namely
+          ‘\"/etc/fstab\"
+           `File.containsLine` \"192.168.1.100:/mnt/usb1 /mnt/nfs nfs intr 0 0\"
+           `onChange` cmdProperty \"mount\" [\"-a\"]’
+
+
+
+"""]]

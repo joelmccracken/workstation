@@ -1,0 +1,94 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="A  first attempt"
+ date="2019-07-18T23:30:44Z"
+ content="""
+Here's what I came up with. I don't know if I'm missing some more obvious way. Thanks to Stefan Gronke on github for answering \"what's a simple way to make an iptables systemd service\"
+
+[[!format haskell \"\"\"
+module Propellor.Property.SiteSpecific.Tethera.Firewall (
+    iptablesRules
+  , iptablesUnits
+  , saved
+  ) where
+
+import Propellor.Base
+import Propellor.Property.Firewall
+-- import qualified Propellor.Property.Cmd as Cmd
+import qualified Propellor.Property.File as File
+
+iptablesRules :: [Port] -> [Port] -> Property DebianLike
+iptablesRules tcpPorts udpPorts = propertyList \"IPTables based firewall\" $ props
+  & installed
+  & rule INPUT Filter DROP (Ctstate [INVALID])
+  & rule INPUT Filter ACCEPT (InIFace \"lo\")
+  & rule OUTPUT Filter ACCEPT (OutIFace \"lo\")
+  & rule INPUT Filter ACCEPT (Ctstate [ESTABLISHED, RELATED])
+  & rule INPUT Filter ACCEPT (Proto ICMP)
+  & openPorts TCP tcpPorts
+  & openPorts UDP udpPorts
+  & rule OUTPUT Filter ACCEPT Everything
+  & rule INPUT Filter DROP Everything
+  & rule FORWARD Filter DROP Everything
+  where
+    openPorts proto lst = combineProperties \"open TCP ports\" $
+                   toProps (map
+                             (\p -> (rule INPUT Filter ACCEPT 
+                                     ((Proto proto) :- (DPort p)) ))
+                             lst)
+
+saved :: Property UnixLike
+saved = combineProperties \"iptables rules saved\" $ props
+  & cmdProperty \"iptables-save\" [\"-f\", rulesFile ]
+        `changesFile` rulesFile
+    `requires` File.dirExists rulesDir
+  & cmdProperty \"ip6tables-save\" [\"-f\", rules6File ]
+        `changesFile` rules6File
+    `requires` File.dirExists rulesDir
+  where
+    rulesDir = \"/etc/iptables\"
+    rulesFile = rulesDir ++ \"/iptables.rules\"
+    rules6File = rulesDir ++ \"/ip6tables.rules\"
+
+iptablesUnits :: Property UnixLike  
+iptablesUnits = combineProperties \"systemd units for iptables\" $ props
+                & unitFile \"iptables\"
+                & unitFile \"ip6tables\"                
+  where
+    unitDir = \"/etc/systemd/system\"
+    unitFile baseName = combineProperties (\"systemd units for \" ++ baseName) $ props
+                & File.hasContent (unitDir ++ \"/\"++baseName++\".service\")
+                [
+                  \"[Unit]\"
+                , \"Description=Packet Filtering Framework\"
+                , \"DefaultDependencies=no\"
+                , \"After=systemd-sysctl.service\"
+                , \"Before=sysinit.target\"
+                , \"[Service]\"
+                , \"Type=oneshot\"
+                , \"ExecStart=/sbin/\"++baseName++\"-restore /etc/iptables/\"++baseName++\".rules\"
+                , \"ExecReload=/sbin/\"++baseName++\"-restore /etc/iptables/\"++baseName++\".rules\"
+                , \"ExecStop=/usr/local/bin/flush-\"++baseName++\".sh\"
+                , \"RemainAfterExit=yes\"
+                , \"[Install]\"
+                , \"WantedBy=multi-user.target\"
+                ]
+                & File.hasContent fipSh
+                [
+                  \"#!/bin/sh\"
+                , \"iptables -F\"
+                , \"iptables -X\"
+                , \"iptables -t nat -F\"
+                , \"iptables -t nat -X\"
+                , \"iptables -t mangle -F\"
+                , \"iptables -t mangle -X\"
+                , \"iptables -P INPUT ACCEPT\"
+                , \"iptables -P FORWARD ACCEPT\"
+                , \"iptables -P OUTPUT ACCEPT\"
+                ]
+                & File.mode fipSh 0755
+      where
+            fipSh = \"/usr/local/bin/flush-\"++baseName++\".sh\"
+\"\"\"]]
+"""]]

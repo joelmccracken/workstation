@@ -1,0 +1,36 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 10"
+ date="2017-12-22T10:21:28Z"
+ content="""
+Ouch, that does not seem like it was easy to debug... Thanks for looking into this!
+
+    src/Propellor/Property/Parted.hs:114:27: warning: [-Wtype-defaults]
+        • Defaulting the following constraints to type ‘Double’
+            (Show a0)
+              arising from a use of ‘show’
+              at src/Propellor/Property/Parted.hs:114:27-57
+            (Fractional a0)
+              arising from a use of ‘/’
+              at src/Propellor/Property/Parted.hs:114:33-56
+            (Num a0)
+              arising from a use of ‘fromIntegral’
+              at src/Propellor/Property/Parted.hs:114:33-46
+        • In the first argument of ‘(++)’, namely
+            ‘show (fromIntegral n / 1000000)’
+          In the expression: show (fromIntegral n / 1000000) ++ \"MB\"
+          In an equation for ‘partposfuzzy’:
+              partposfuzzy n
+                | n > 0 = show (fromIntegral n / 1000000) ++ \"MB\"
+                | otherwise = \"1MB\"
+
+I now get:
+
+    mount: /tmp/mntzZ3vjF: wrong fs type, bad option, bad superblock on /dev/mapper/loop0p2, missing codepage or helper program, or other error.
+    umount: /tmp/mntzZ3vjF: not mounted.
+    ** fatal error: failed unmounting /tmp/mntzZ3vjF
+    propellor: StopPropellorException \"Cannot continue!\"
+
+:(. I'll try to reboot, I don't get how to remove/unmount this /dev/mapper/loop0p2 (I tried \"dmsetup remove\", \"losetup -d\" without success...)
+"""]]

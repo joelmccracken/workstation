@@ -1,0 +1,51 @@
+Source: propellor
+Section: admin
+Priority: optional
+Build-Depends: 
+	debhelper (>= 9),
+	git (>= 2.0),
+	ghc (>= 8.4.3),
+	cabal-install,
+	libghc-async-dev,
+	libghc-split-dev,
+	libghc-hslogger-dev,
+	libghc-unix-compat-dev,
+	libghc-ansi-terminal-dev,
+	libghc-ifelse-dev,
+	libghc-network-dev,
+	libghc-mtl-dev,
+	libghc-transformers-dev,
+	libghc-exceptions-dev (>= 0.6),
+	libghc-text-dev,
+	libghc-hashable-dev,
+	libghc-type-errors-dev,
+Maintainer: Joey Hess <id@joeyh.name>
+Standards-Version: 3.9.8
+Vcs-Git: git://git.joeyh.name/propellor
+Homepage: http://propellor.branchable.com/
+
+Package: propellor
+Architecture: any
+Section: admin
+Depends: ${misc:Depends}, ${shlibs:Depends},
+	ghc (>= 8.4.3),
+	cabal-install,
+	libghc-async-dev,
+	libghc-split-dev,
+	libghc-hslogger-dev,
+	libghc-unix-compat-dev,
+	libghc-ansi-terminal-dev,
+	libghc-ifelse-dev,
+	libghc-network-dev,
+	libghc-mtl-dev,
+	libghc-transformers-dev,
+	libghc-exceptions-dev (>= 0.6),
+	libghc-text-dev,
+	libghc-hashable-dev,
+	git (>= 2.0),
+Recommends: libghc-type-errors-dev,
+Description: property-based host configuration management in haskell
+ Propellor ensures that the system it's run in satisfies a list of
+ properties, taking action as necessary when a property is not yet met.
+ .
+ It is configured using haskell.

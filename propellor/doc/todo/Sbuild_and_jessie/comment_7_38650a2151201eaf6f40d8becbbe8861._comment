@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="Patch mailed to propellor@joeyh.name"
+ date="2017-12-22T18:11:07Z"
+ content="""
+I started preparing a patch so that `Sbuild.userConfig` would install the backport on Jessie, but realised that what is probably going on is that you have a backport of sbuild installed -- I assume that the sbuild that comes with jessie tries to invoke `adt-run` not `autopkgtest`.  So `Sbuild.userConfig` would have to check the installed version of sbuild before it could determine whether to install the backport of autopkgtest.
+
+I think it would be unwise to incorporate that complexity into Sbuild.hs for the sake of an old release of Debian, so I've mailed a patch to Joey simply documenting the issue.
+"""]]

@@ -1,0 +1,1 @@
+I'm not sure the current default behaviour of Propellor.Property.Hostname.sane is as sane as it claims :-). To me, "/etc/mailname" should be set to the current "basehost.domain" by default, not to "domain". Thoughts?

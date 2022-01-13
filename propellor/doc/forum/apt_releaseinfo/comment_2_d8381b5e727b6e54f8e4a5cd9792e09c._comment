@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 2"""
+ date="2019-07-16T15:09:57Z"
+ content="""
+That matches my intuition of it. And propellor's Unstable and Testing
+are indeed intended to explicitly request a rolling release.
+(I thought that "unstable" and "testing" were also intended to explicitly
+request that?)
+
+Anyway, I've made Apt.update add the new argument for Unstable and Testing.
+"""]]

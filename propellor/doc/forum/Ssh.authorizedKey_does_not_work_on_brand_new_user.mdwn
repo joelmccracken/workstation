@@ -1,0 +1,1 @@
+I couldn't quite figure out what is wrong with the code as written, but the properties in modAuthorizedKey relating to the file modes/ownership get applied before the properties to create the directory and file are applied, so if they don't already exist then you get an error.

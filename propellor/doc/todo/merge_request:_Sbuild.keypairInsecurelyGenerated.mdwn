@@ -1,0 +1,5 @@
+Please consider merging branch `insecure-sbuild-keygen` from repo `https://git.spwhitton.name/propellor`.
+
+- Adds `Sbuild.keyringInsecurelyGenerated` which is useful on throwaway build VMs
+
+> [[merged|done]] --[[Joey]]

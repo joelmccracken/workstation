@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""mostly done"""
+ date="2015-09-15T00:26:10Z"
+ content="""
+A recent change converted PrivData to a newtype.
+There are no longer any things that directly use PrivData; all use
+should be via accessor functions like privDataLines and privDataVal.
+Which helps with this.
+
+So, I've instead implemented a `privDataByteString :: PrivData -> ByteString`, 
+and I've adjusted the privdata serialization so it shouldn't crash
+on arbitrarily encoded data when eg, a binary file is fed into `propellor --set`.
+
+(Note that I was wrong earlier when I said it'd be safe to change the 
+serialization to use ByteString; it must use String. While `"foo"`
+can be Read as a ByteString same as a string, `"foo\1000"`,
+when Read as a ByteString, truncates the big unicode character to 
+a single byte. So, PrivData is still stored as Strings internally.)
+
+The final step would be to make `hasPrivContent` use `privDataByteString`
+instead of `privDataLines`. Which needs some more work to add Properties to
+ensure a file contains a ByteString. This should be pretty easy to do,
+but I lost steam..
+"""]]

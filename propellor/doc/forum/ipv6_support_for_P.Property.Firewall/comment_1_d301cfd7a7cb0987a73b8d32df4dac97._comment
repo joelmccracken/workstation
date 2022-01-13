@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="david"
+ avatar="http://cdn.libravatar.org/avatar/22c2d800db6a7699139df604a67cb221"
+ subject="probably low level is needed"
+ date="2019-07-19T12:38:30Z"
+ content="""
+A tiny amount of investigation reveals that there are protocols that make sense only for one of ip{6,}tables, e.g. icmpv6. So probably ip6tables needs to be invoked separately.
+"""]]

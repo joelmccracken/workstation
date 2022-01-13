@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="http://joeyh.name/"
+ ip="209.250.56.114"
+ subject="comment 2"
+ date="2014-04-24T23:31:09Z"
+ content="""
+propellor does not build docker containers, I think that's the point where a CMD is set.
+
+It would probably make sense to have a mode where docker run is not passed any explicit command to run, which  would let the predefined CMD be used. Although this would not let propellor run inside the container, so it could not perform any provisioning of it. In this mode, propellor would only be able to ensure that a container was installed and start it running with its default configuration.
+"""]]

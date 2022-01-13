@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-02-01T20:00:47Z"
+ content="""
+I wonder if it would be better to separate `suiteAvailablePinned`
+into `suiteAvailable` and `suitePinned`? The latter could require
+the former.
+
+`pinnedTo` should probably be DebianLike not UnixLike.
+And its `[String]` parameter ought to be `[Package]`.
+
+Is `File.containsBlock` necessary? Seems that if you care about
+ordering of blocks in the file, you generally should use
+`File.hasContent` to specify the full content. Rather than using
+/etc/apt/preferences.d/10propellor.pref for multiple properties,
+you could use a separate file for each `pinnedTo'` with the parameters
+encoded in the filename.
+
+As to the TODO, I tried adding this:
+
+	robustly' :: RevertableProperty DebianLike DebianLike -> RevertableProperty DebianLike DebianLike
+	robustly' p = p `fallback` (update `before` p)
+
+And the compiler tells me it's wrong because `update` is not revertable.
+But of course, there's no need to revert apt-get update, so this compiles:
+
+	robustly' :: RevertableProperty DebianLike DebianLike -> RevertableProperty DebianLike DebianLike
+	robustly' p = p `fallback` ((update <!> (doNothing :: Property DebianLike)) `before` p)
+
+Cleaning it up left an an exersise for the reader. Might be possible
+to combine `robustly` and `robustly'` into a single function, but I'm
+not able to see how immediately.
+
+However.. Seems to me that whatever you wanted to use `robustly` with to
+spur that TODO, you could just apply it to the first Property of the
+RevertableProperty, and not to the second one?
+"""]]

@@ -1,0 +1,38 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-06-20T18:04:27Z"
+ content="""
+	withUmask :: (MonadIO m, MonadMask m) => FileMode -> m a -> m a
+
+That needs a monad, and propellor Property is not a monad itself.
+But, a Property does contain an Propellor monad action, which is run to ensure
+that the property is met. You can use withUmask inside that action.
+
+The problem then becomes, how to run a Property like
+your `cmdProperty` inside the Propellor monad?
+
+The answer is, using `ensureProperty`.
+[Documentation](http://hackage.haskell.org/package/propellor/docs/Propellor-EnsureProperty.html)
+
+Something like this is what you're looking for:
+
+	foo = Property UnixLike
+	foo = property' "generate new key file" $ \w -> 
+		withUmask filemode $
+			ensureProperty w genrsa
+	  where
+		filemode = -- something
+
+	genrsa :: Property UnixLike
+	genrsa = cmdProperty "openssl"
+		[ "genrsa"
+		, "4096"
+		, "> " ++ key
+		]
+		`assume` MadeChange
+
+Incidentially, cmdProperty runs a command without exposing it to the
+shell, so I don't think the redirection in your example will work.
+You probably want to use scriptProperty instead.
+"""]]

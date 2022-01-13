@@ -1,0 +1,9 @@
+Please consider merging branch `timezone` of repo `https://git.spwhitton.name/propellor`.
+
+Adds `Timezone.configured`.
+
+I think that this works fine on stretch, but on Jessie there is some oddness.  For example, if you set the timezone of a host to `US/Arizona`, the apt reconfiguration will put `America/Phoenix` in /etc/timezone, resulting in the property reporting a change every time that it is run.  I think this is harmless.
+
+--spwhitton
+
+> [[merged|done]] --[[Joey]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2018-01-04T18:49:14Z"
+ content="""
+@spwhitton, ah but in that case you have a remote named "upstream", so
+it can assume you don't want it messing with upstream/master. Done!
+"""]]

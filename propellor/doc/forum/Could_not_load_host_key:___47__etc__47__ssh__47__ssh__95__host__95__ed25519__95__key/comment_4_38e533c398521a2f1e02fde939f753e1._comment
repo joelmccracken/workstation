@@ -1,0 +1,35 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2015-09-15T00:29:47Z"
+ content="""
+I've fixed this bug. I thought about adding a type based
+validation when privdata is being set, but in the end decided against it
+for a couple reasons:
+
+* Doesn't fix existing privdata files.
+* The privdata file could be edited by the user, etc and the validation
+  wouldn't be run.
+* A user could just as well paste in a file and omit pasting the trailing
+  newline, so the validation would need to check if there was a trailing
+  newline when it's significant.
+* If the validation is by what the type of privdata is used for, this
+  disconnects the validation from the property that consumes the privdata.
+  Seems better to centralize all handling of a particular peice of privdata
+  in once place.
+* I was having some difficulty implementing it..
+
+Instead, I settled on making PrivData a newtype,
+and adding some accessor functions for it:
+
+	privDataLines :: PrivData -> [String]
+	privDataVal :: PrivDara -> String -- returned string never contains newlines
+
+This helps document the issue, and like `lines "a"` is the same as `lines
+"a\n"`, using privDataLines will give the same result whether the trailing
+newline was chomped or not. So, propellor no longer removes trailing newlines
+when the user is inputting privdata.
+
+The ssh property is adjusted to use privDataLines and add a trailing
+newline when writing files, and problem solved.
+"""]]

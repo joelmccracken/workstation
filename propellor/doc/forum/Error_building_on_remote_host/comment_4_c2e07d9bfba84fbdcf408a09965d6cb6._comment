@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2017-07-26T00:52:20Z"
+ content="""
+Interesting that it works on newer ghc without an explict
+`Typeable Bootstrapper` instance. 
+
+I've added the missing instance.
+"""]]

@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="craige@a46118dff5bc0fad85259759970d8b4b9fc377d7"
+ nickname="craige"
+ avatar="http://cdn.libravatar.org/avatar/6d2207226de755da46aa2fdff9af70b2"
+ subject="comment 4"
+ date="2017-02-03T00:04:05Z"
+ content="""
+Ugh, sorry to ask again but I'm specifically stuck trying to extract the Debian suite only from this. Is this stored as a specific value I can draw on? I've been wading through the source and added in a swag of trial and error with no luck.
+
+I can see the suite listed in the output 
+
+    Just (System (Debian Linux (Stable \"jessie\"))
+
+but I was wondering if there was a method to pull out just the suite code name (ie: \"jessie\") that did not involve a regex looking for it amongst that output. 
+
+The goal is to query Info so that a suite name can be added to a sources list.
+
+If I have to regex, that's OK, I just didn't want to go down that path if there was a smarted way.
+
+Thanks Joey :-)
+"""]]

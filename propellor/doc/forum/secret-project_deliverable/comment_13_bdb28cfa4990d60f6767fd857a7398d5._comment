@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 13"""
+ date="2018-01-02T21:21:49Z"
+ content="""
+Yes, I also found it kind of annoying to need to move /usr/local/propellor
+out of the way when I was working on secret-project. This is why I'd like
+it to be usable without propellor --spin so that directory would not be
+used, but until the bug with that can be fixed, you can't work on
+secret-project with an unrelated other propellor config at the same time.
+"""]]

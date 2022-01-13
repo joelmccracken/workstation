@@ -1,0 +1,28 @@
+Did something changed recently concerning `--spin`? It seems like I can't use it without a central repo anymore...
+
+
+    $ ./propellor --spin server
+    Preprocessing executable 'propellor-config' for propellor-5.3.2...
+    Propellor build ... done
+    [master cabbc1b4e] propellor spin
+    Git commit ... done
+    Counting objects: 1, done.
+    Writing objects: 100% (1/1), 860 bytes | 860.00 KiB/s, done.
+    Total 1 (delta 0), reused 0 (delta 0)
+    To example.org:/var/lib/git/private/propellor.git
+       8c8c1b2f6..cabbc1b4e  master -> master
+    Push to central git repository ... done
+    gpg: encrypted with 4096-bit RSA key, ID EC0B9FA927E29C5C, created 2013-01-29
+          "FÃ©lix Sipma <felix.sipma@riseup.net>"
+    Host key verification failed.
+    fatal: Could not read from remote repository.
+    
+    Please make sure you have the correct access rights
+    and the repository exists.
+    Pull from central git repository ... failed
+    fatal: ambiguous argument 'origin/master': unknown revision or path not in the working tree.
+    Use '--' to separate paths from revisions, like this:
+    'git <command> [<revision>...] -- [<file>...]'
+    propellor: user error (git ["log","-n","1","--format=%G?","origin/master"] exited 128)
+    propellor: user error (ssh ["-o","ControlPath=/home/example/.ssh/propellor/server.example.org.sock","-o","ControlMaster=auto","-o","ControlPersist=yes","root@server.example.org","sh -c 'rm -rf /usr/local/propellor-precompiled ; if [ ! -d /usr/local/propellor/.git ] ; then (if ! git --version >/dev/null 2>&1; then apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qq --no-install-recommends --no-upgrade -y install git; fi && echo STATUSNeedGitClone) || echo STATUSNeedPrecompiled ; else cd /usr/local/propellor && if ! cabal configure >/dev/null 2>&1; then ( apt-get update ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install gnupg ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install ghc ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install cabal-install ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-async-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-split-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-hslogger-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-unix-compat-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-ansi-terminal-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-ifelse-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-network-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-mtl-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-transformers-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-exceptions-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-stm-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-text-dev ; DEBIAN_FRONTEND=noninteractive apt-get -qq --no-upgrade --no-install-recommends -y install libghc-hashable-dev) || true; fi&& if ! test -x ./propellor; then cabal configure && cabal build -j1 propellor-config && ln -sf dist/build/propellor-config/propellor-config propellor; fi;if test -x ./propellor && ! ./propellor --check; then cabal clean && cabal configure && cabal build -j1 propellor-config && ln -sf dist/build/propellor-config/propellor-config propellor; fi && ./propellor --boot server.example.org ; fi'"] exited 1)
+    

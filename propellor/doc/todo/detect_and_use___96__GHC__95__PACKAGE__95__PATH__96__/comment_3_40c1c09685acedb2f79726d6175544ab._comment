@@ -1,0 +1,25 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2016-03-08T05:42:59Z"
+ content="""
+Well, that's simple enough. Although there are a few other places that
+buildFirst and updateFirst are used, so the patch is not quite complete.
+
+I do want propellor to be able to be used with just cabal. For one thing,
+Debian stable doesn't even include stack yet! For another, all propellor's
+haskell dependencies are available in debian so it's overhead for stack to
+build them all.
+
+But, it'd be nice to support using stack too. If this were configurable
+in some way that propellor could see, then Propellor.Bootstrap.build
+could build with stack and update the symlink, and everything else would
+work as-is.
+
+So, what would be a good way to configure use of stack? It probably would
+make sense to have it be a property of the Host, which also allows the
+other bootstrap code to use stack to install dependencies. 
+
+And then too, it could look at `GHC_PACKAGE_PATH`, so if your ~/.propellor
+is built using stack once, it will keep on building itself using stack.
+"""]]

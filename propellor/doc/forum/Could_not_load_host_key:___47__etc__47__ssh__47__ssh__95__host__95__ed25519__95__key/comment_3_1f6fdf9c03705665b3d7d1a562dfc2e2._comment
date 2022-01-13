@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 3"
+ date="2015-09-12T14:41:33Z"
+ content="""
+I'm not sure for the other key types, it affects ed25519 private keys (but not public keys), and apparently not rsa keys... But I'm not sure what other properties (present or future) would be affected: that seems like an ugly hack :(. 
+
+Why not just removing the chomping stuff from setPrivDataTo? Pasting a password, pressing <enter>, and then <ctrl-D> is obviously different from pasting a password and pressing <ctrl-D>. Maybe another solution would be to print a warning with this information (\"do not press <enter>\" before <ctrl-D> unless you want to have a newline in your privdata\")?
+"""]]

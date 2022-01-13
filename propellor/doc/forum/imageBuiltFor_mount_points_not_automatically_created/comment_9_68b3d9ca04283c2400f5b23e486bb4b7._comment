@@ -1,0 +1,62 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2017-12-21T19:44:45Z"
+ content="""
+Reproduced it with that information.
+
+	ghci> calcPartedParamsSize guexPartTable
+	(["mklabel","gpt","mkpart","primary","fat32","4194304B","16777215B","set","1","esp","on","mkpart","primary","ext2","16777216B","167772159B","mkpart","primary","ext4","167772160B","1660944383B"],1660944384)
+	joey@darkstar:~>dd if=/dev/zero of=test bs=1M count=1584
+	joey@darkstar:~>parted test
+	(parted) p
+	Model:  (file)
+	Disk /home/joey/test: 1661MB
+	Sector size (logical/physical): 512B/512B
+	(parted) mklabel gpt
+	(parted) mkpart primary fat32 4194304B 16777215B
+	(parted) mkpart primary ext2 16777216B 167772159B
+	(parted) mkpart primary ext4 167772160B 1660944383B
+	Warning: You requested a partition from 168MB to 1661MB (sectors 327680..3244031).
+	The closest location we can manage is 168MB to 1661MB (sectors 327680..3243998).
+
+The problem only occurs with the gpt partition table. With "mklabel msdos",
+the mkpart command succeeds. 
+
+So, gpt must have an additional restriction
+of some kind. I don't know what. The highest end position that parted
+will accept for that partition is 1660927487B; slightly smaller partitions
+are accepted. It's not a requirement that the position or size be divisible
+by anything in particular. Perhaps gpt needs some amount of reserved space
+at the end of the disk or something.
+
+Before 4MiB alignment was added, here's what 
+propellor did for the same PartTable, which worked.
+
+	mkpart primary ext4 160MB 1649MB
+
+It would be good for propellor to not need to know about all the minutia of
+partition tables. Seems that the way it used to call parted gave it enough
+wiggle room that it avoided this kind of problem.
+	
+To make parititions well aligned, propellor needs to precisely control where
+they begin (since parted does not have a way to configure modern 
+alignment requirments). Perhaps propellor could precisely specify where a
+partition begins, but use the "MB" to leave wiggle room in where it ends
+so parted can pick a suitable end point.
+
+Let's see.. this works with the gpt example:
+
+	(parted) mkpart primary fat32 4194304B 16.777215MB
+	(parted) mkpart primary ext2 16777216B 167.772159MB
+	(parted) mkpart primary ext4 167772160B 1660.944383MB
+
+That lets parted end the last partition right at the ideal 1660927487B.
+The previous two partitions end right where propellor expects.
+(Hopefully parted never rounds a MB value *up*!)
+
+Ok, I've convinced myself to make propellor use this wacky technique
+of B for the start position and fractional MB for the end position!
+I've implemented it, hopefully my analysis above is good to make
+this work with all the different kinds of partition tables.
+"""]]

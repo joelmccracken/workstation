@@ -1,0 +1,6 @@
+When building a disk image with propellor bootstrapped in it, the decrypted
+privdata file is not written, so propellor can't be run on the booted
+system without first doing a propellor --spin from the dev laptop. Not a
+big problem but worth fixing some time. --[[Joey]]
+
+> [[fixed|done]] --[[Joey]]

@@ -1,0 +1,25 @@
+# `File.containsConfPair` property
+
+A property to set `key = value` pairs under particular `[sections]` in config files.  For example, in stock Debian Jessie `/etc/lightdm/lightdm.conf` contains the lines
+
+    [SeatDefaults]
+    #autologin-user=
+
+With the property
+
+    "/etc/lightdm/lightdm.conf" `File.containsConfPair` ("SeatDefaults", "autologin-user", "swhitton")
+
+this will get set to
+
+    [SeatDefaults]
+    autologin-user=swhitton
+
+# `LightDM.autoLogin` property
+
+An application of `File.containsConfPair` to edit `/etc/lightdm/lightdm.conf` to enable autologin for a specified user: a property encapsulating the above example.
+
+# Patches
+
+Please see the two commits in branch `confpairs` in the repo at `git@github.com:spwhitton/propellor.git`.
+
+> [[merged|done]] --[[Joey]]

@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="gueux"
+ avatar="http://cdn.libravatar.org/avatar/2982bac2c2cd94ab3860efb189deafc8"
+ subject="comment 2"
+ date="2018-02-23T13:16:09Z"
+ content="""
+I don't want my central repo to be accessible to anyone, but I still want to push there and use it for some of my hosts. Anyway, your fix works great, thanks!
+"""]]

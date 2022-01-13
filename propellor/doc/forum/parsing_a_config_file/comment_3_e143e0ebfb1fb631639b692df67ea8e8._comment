@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-08-25T18:55:55Z"
+ content="""
+The Tor hiddenservice property has been updated to use this config file
+parser, so multiple services can be defined.
+"""]]

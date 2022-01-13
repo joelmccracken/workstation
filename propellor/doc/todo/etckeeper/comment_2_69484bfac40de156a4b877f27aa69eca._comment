@@ -1,0 +1,14 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="why still on todo list"
+ date="2017-12-27T23:00:58Z"
+ content="""
+the 'all needed apt.installed[\"etckeeper\"]' seems to me that the etckeeper is available.
+
+Why is this still on the todo list?
+
+What kind of patches are wanted??
+
+"""]]

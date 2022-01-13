@@ -1,0 +1,42 @@
+I am starting to use propellor and ran into a couple of issues that seems related to GPG keys handling.
+I followed install procedure, added a GPG key, and signed commits. Here is the output from a propellor execution:
+
+    if ! cabal build; then cabal configure; cabal build; fi
+    Building propellor-0.8.1...
+    Preprocessing library propellor-0.8.1...
+    In-place registering propellor-0.8.1...
+    Preprocessing executable 'propellor' for propellor-0.8.1...
+    Preprocessing executable 'propellor-config' for propellor-0.8.1...
+    [46 of 46] Compiling Main             ( src/config.hs, dist/build/propellor-config/propellor-config-tmp/Main.o )
+    Linking dist/build/propellor-config/propellor-config ...
+    ln -sf dist/build/propellor-config/propellor-config propellor
+
+
+    if ! cabal build; then cabal configure; cabal build; fi
+    Building propellor-0.8.1...
+    Preprocessing library propellor-0.8.1...
+    In-place registering propellor-0.8.1...
+    Preprocessing executable 'propellor' for propellor-0.8.1...
+    Preprocessing executable 'propellor-config' for propellor-0.8.1...
+    ln -sf dist/build/propellor-config/propellor-config propellor
+    Propellor build ... done
+    gpg: skipped "Arnaud Bailly <abailly@foldlabs.com>": No secret key
+    gpg: signing failed: No secret key
+    error: gpg failed to sign the data
+    fatal: failed to write commit object
+    Everything up-to-date
+    From https://github.com/joeyh/propellor
+       9a31b95..8aabde7  joeyconfig -> origin/joeyconfig
+    Git fetch ... done
+    ** warning: git branch origin/master is not signed with a trusted gpg key; refusing to deploy it! (Running with previous configuration instead.)
+    propellor: Cannot continue!
+    ** error: Propellor does not know about host: 188.226.133.217
+    (Perhaps you should specify the real hostname on the command line?)
+    (Or, edit propellor's config.hs to configure this host)
+    Known hosts: mybox.example.com webserver.docker
+
+    ** error: protocol error (perhaps the remote propellor failed to run?)
+    propellor: user error (ssh ["-o","ControlPath=/Users/arnaud/.ssh/propellor/188.226.133.217.sock","-o","ControlMaster=auto","-o","ControlPersist=yes","root@188.226.133.217","sh -c 'if [ ! -d /usr/local/propellor ] ; then apt-get update && apt-get --no-install-recommends --no-upgrade -y install git make && echo STATUSNeedGitClone ; else cd /usr/local/propellor && if ! test -x ./propellor; then make deps build; fi && ./propellor --boot 188.226.133.217 ; fi'"] exited 1)
+
+
+I am puzzled...

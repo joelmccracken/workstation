@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 4"
+ date="2014-11-25T20:01:12Z"
+ content="""
+I saw that there is an haskell binding for augeas.
+
+Maybe this could be a nice uniform interface to deal with all the system configuration files.
+then no need to deal with the config file formats.
+
+"""]]

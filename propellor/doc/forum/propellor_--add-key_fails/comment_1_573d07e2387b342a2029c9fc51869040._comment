@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-10-04T17:51:15Z"
+ content="""
+Your workaround is ok. It tried to commit the privdata.gpg file
+even though you have not set any privdata yet. I've fixed this in git.
+"""]]

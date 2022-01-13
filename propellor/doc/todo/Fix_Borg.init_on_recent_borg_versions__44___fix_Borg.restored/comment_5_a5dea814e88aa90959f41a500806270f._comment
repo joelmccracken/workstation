@@ -1,0 +1,10 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="comment 5"
+ date="2020-08-14T21:11:56Z"
+ content="""
+Actually I have no idea how to implement the privdata for init, restored and backup in a sane way, so I will let this challenge for someone else :)
+
+Thanks for the merge.
+"""]]

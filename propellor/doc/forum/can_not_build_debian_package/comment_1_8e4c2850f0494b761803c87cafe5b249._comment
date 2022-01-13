@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-07-11T02:35:53Z"
+ content="""
+Fixed this to set all the environment variables to make git work.
+
+(Such a pity git is so non-robust about making commits..)
+"""]]

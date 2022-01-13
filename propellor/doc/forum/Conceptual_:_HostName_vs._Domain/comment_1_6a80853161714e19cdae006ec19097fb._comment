@@ -1,0 +1,21 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2019-11-11T17:26:24Z"
+ content="""
+I think LetsEncrypt's use of Domain is intentional; a certificate is for a
+domain and you can't get one for eg a bare IP address or an unqualified
+hostname.
+
+AFAICS, Domain is a FQDN.
+
+(Propellor.Property.Hostname has to deal with details of /etc/hosts,
+but it does not actually use the Domain type anywhere.)
+
+More generally, it's common for a propellor module to have some
+`type Foo = String` that's only used to make parameters more self-documenting
+and doesn't have any particular meaning beyond whatever string a Property might
+use. One shouldn't worry if two modules have data types that seem to
+overlap in content when that's all they're used for. Of course it's nicer to
+have less stringy data types, via ADTs or smart constructors, when possible.
+"""]]

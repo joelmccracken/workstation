@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 9"""
+ date="2017-12-21T03:32:59Z"
+ content="""
+I forgot -- Grub.installed already sets Info to say what BIOS
+it was installed for. So, bootsMounted can just get that Info and
+pass the appropriate --target.
+"""]]

@@ -1,0 +1,13 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 6"
+ date="2016-06-16T06:30:04Z"
+ content="""
+I like the idea of a `useOverlays` info property.  It is better, and more in the spirit of propellor, to have the choice explicit, rather than implicitly relying on the behaviour of certain shell commands in certain conditions (relying on sbuild-createchroot(1) to create the config file in /etc/schroot/chroot.d is the thing I like least about Sbuild.hs, though it's necessary for achieving the goal of having a totally standard Debian sbuild setup).
+
+Before I implement this, I have a couple of questions:
+
+1. In the case where `Reboot.toKernelNewerThan` finds a satisfactory kernel to reboot to, what do you think about the choice of rebooting immediately or at the end of the current propellor run?  If every property that needs the newer kernel `requires` it, it would mean that other properties that don't need the newer kernel get ensured sooner.  Not sure whether this is actually an advantage, but it might encourage using `requires` instead of relying on implicit ordering.
+
+2. You suggest relying on schroot(1) and sbuild-createchroot(1) failing if `union-type=overlay` is present in the config file but the kernel doesn't support overlays.  I'd prefer to go further and have the sbuild properties conditionally `requires` `Reboot.toKernelNewerThan` if the info property is set.  That way, we can be confident that we'll never get an inconsistent state out of the sbuild properties.  Does this sound sensible?
+"""]]

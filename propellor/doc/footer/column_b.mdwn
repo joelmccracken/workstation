@@ -1,0 +1,3 @@
+## [[posts]]
+
+[[!inline feeds=no template=bare pages=posts]]

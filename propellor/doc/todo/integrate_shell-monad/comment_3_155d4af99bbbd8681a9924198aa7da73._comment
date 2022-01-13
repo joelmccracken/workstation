@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="gueux"
+ subject="comment 3"
+ date="2016-06-14T10:56:04Z"
+ content="""
+I've posted a question on https://github.com/Gabriel439/Haskell-Turtle-Library/issues/157
+
+Probably Gabriel will have a good idea for this :-). Maybe another solution would be to generate executables instead of shell scripts?
+
+
+"""]]

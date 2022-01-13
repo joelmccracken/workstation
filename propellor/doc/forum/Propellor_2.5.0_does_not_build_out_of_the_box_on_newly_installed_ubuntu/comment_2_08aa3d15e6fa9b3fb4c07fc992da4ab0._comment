@@ -1,0 +1,8 @@
+[[!comment format=mdwn
+ username="arnaud@30aba4d9f1742050874551d3ddc55ca8694809f8"
+ nickname="arnaud"
+ subject="comment 2"
+ date="2015-07-01T07:31:03Z"
+ content="""
+I guess a workaround would be to force the version in my cabal file. I will try that.
+"""]]

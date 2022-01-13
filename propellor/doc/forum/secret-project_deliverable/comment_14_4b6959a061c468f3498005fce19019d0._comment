@@ -1,0 +1,82 @@
+[[!comment format=mdwn
+ username="stappers@eb96885816da287c29f6f699999434d532149234"
+ nickname="stappers"
+ avatar="http://cdn.libravatar.org/avatar/bf33450acf6fc2a17a8b4e6fc7749c65"
+ subject="central git repository git.joeyh.name"
+ date="2018-01-07T22:10:40Z"
+ content="""
+I got my copy of `secret-project` by
+
+	git clone https://git.joeyh.name/git/secret-project.git
+
+During build it tries to contact git.joeyh.name
+
+	$ propellor
+	Pull from central git repository ... done
+	Copying from /home/stappers/src/secret-project/.stack-work/install/x86_64-linux-nopie/lts-8.12/8.0.2/bin/propellor-config to /home/stappers/src/secret-project/.built/propellor-config
+	
+	Copied executables to /home/stappers/src/secret-project/.built:
+	- propellor-config
+	
+	Warning: Installation path /home/stappers/src/secret-project/.built
+	         not found on the PATH environment variable.
+	Propellor build ... done
+	[master 7d7bc07] propellor spin
+	Git commit ... done
+	error: Cannot access URL https://git.joeyh.name/git/secret-project.git/, return code 22
+	fatal: git-http-push failed
+	error: failed to push some refs to 'https://git.joeyh.name/git/secret-Push to central git repository ... failed
+	project.git'
+	Stop listening request sent.
+	Pull from central git repository ... done
+	Sending privdata (11 bytes) to paddy.gpm.stappers.nl ... done
+	remote: Counting objects: 1, done.        
+	remote: Total 1 (delta 0), reused 0 (delta 0)        
+	Sending git update to paddy.gpm.stappers.nl ... done
+	From .
+	 * branch            HEAD       -> FETCH_HEAD
+	Pull from central git repository ... done
+	Copying from /usr/local/propellor/.stack-work/install/x86_64-linux-nopie/lts-8.12/8.0.2/bin/propellor-config to /usr/local/propellor/.built/propellor-config
+	
+	Copied executables to /usr/local/propellor/.built:
+	- propellor-config
+	
+	Warning: Installation path /usr/local/propellor/.built not found on the PATH environment variable.
+	Propellor build ... done
+	Pull from central git repository ... done
+	paddy.gpm.stappers.nl has propellor bootstrapped with stack ... ok
+	paddy.gpm.stappers.nl has Operating System (Debian Linux Unstable) X86_64 ... ok
+	debian.local no services started ... ok
+	debian.local has Operating System (Debian Linux Unstable) X86_64 ... ok
+	debian.local sane hostname ... ok
+	debian.local standard sources.list ... ok
+	debian.local apt installed linux-image-amd64 ... ok
+	debian.local grub package installed ... ok
+	debian.local XFCE desktop installed ... ok
+	debian.local apt installed firefox ... ok
+	debian.local en_US.UTF-8 locale selected ... ok
+	fatal: unable to access 'https://git.joeyh.name/git/secret-project.git/': Could not resolve host: git.joeyh.name
+	debian.local has propellor bootstrapped with stack ... ok
+	debian.local Propellor bootstrapped ... failed
+	debian.local user installer in group audio ... ok
+	debian.local user installer in group cdrom ... ok
+	debian.local user installer in group dip ... ok
+	debian.local user installer in group floppy ... ok
+	debian.local user installer in group video ... ok
+	debian.local user installer in group plugdev ... ok
+	debian.local user installer in group netdev ... ok
+	debian.local user installer in group scanner ... ok
+	debian.local user installer in group lpadmin ... ok
+	debian.local has desktop user installer and not has desktop user user ... done
+	debian.local autostart installer UI ... ok
+	debian.local apt installed rsync ... ok
+	debian.local cache cleaned ... ok
+	paddy.gpm.stappers.nl built disk image /srv/installer.vmdk ... failed
+	paddy.gpm.stappers.nl overall ... failed
+	Shared connection to paddy.gpm.stappers.nl closed.
+	propellor: remote propellor failed
+	$ 
+
+How to avoid connecting to git.joeyh.name during build?
+
+"""]]

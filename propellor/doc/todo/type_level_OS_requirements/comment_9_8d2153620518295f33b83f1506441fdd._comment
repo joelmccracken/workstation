@@ -1,0 +1,23 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 9"""
+ date="2016-03-19T18:35:20Z"
+ content="""
+I'm currently using a simple sum type to describe the target OS:
+
+	data OS = OSDebian | OSBuntish | OSFreeBSD
+
+This could in theory specify much more information about the
+OS version and architecture.
+Even type-level strings could be used to include release names.
+
+But, the old version of ghc being targeted doesn't have the nice
+Data.Type.Equality stuff; I had to implement my own clumsily
+and it would quickly hit a combinatorial explosion with more data.
+
+(There may be a better way than the way I found which works back to ghc 7.6.3.)
+
+Of course, we can always add more detail later. Since type aliases are
+used, `Propety Debian` which only specifies `OSDebian` now, could easily
+be changed at some point to specify `OSDebian AnyVersion AnyArch`.
+"""]]

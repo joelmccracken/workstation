@@ -1,0 +1,16 @@
+[[!comment format=mdwn
+ username="Nicolas.Schodet"
+ avatar="http://cdn.libravatar.org/avatar/0d7ec808ec329d04ee9a93c0da3c0089"
+ subject="Branch updated"
+ date="2020-08-10T21:41:11Z"
+ content="""
+Hello, I updated my branch with:
+
+- a different commit message with a withPrivData example,
+- a fix for --glob-archive and --last not supported on borg 1.0.9,
+- a warning message if no archive is found.
+
+Not sure if it was clear: the restored function did not work either on borg 1.0.9 before my changes.
+
+Tested on buster and stretch.
+"""]]

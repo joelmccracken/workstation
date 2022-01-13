@@ -1,0 +1,11 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2015-10-06T19:01:13Z"
+ content="""
+This should be easy enough to implement; just implement a property that
+ensures the file lacks an authorized key (probably using `File.lacksLine`)
+and then combine the two properties with `<!>` to get a RevertableProperty.
+
+I'd accept a patch that does that.
+"""]]

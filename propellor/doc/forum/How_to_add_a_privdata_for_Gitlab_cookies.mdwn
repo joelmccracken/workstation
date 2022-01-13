@@ -1,0 +1,30 @@
+Hello joey,
+
+First let me thank you and other contributors for this great tool, it helps me a lot in my day to day work :))
+
+
+I need to checkout something from a private area of a gitlab instance.
+In order to authenticate, I setup a personnal access token [1].
+
+It seems to me that PrivData is the right type to use in order to store it and avoid to have the token in clear text in the config.hs file.
+
+I will use it in order to generate the url of the Git type.
+
+(Git "https://<user name>:<token>@gitlab.xxxx.yy/user name/blabla.git" Nothing "<project>")
+
+This is the first time I will try to use the privdata and I do not know how to proceed.
+
+I saw that only a certain amount of constructors are available for these privdata.
+Should I add a new one for my gitlab personnal access token ?.
+
+What is the context which can be attach to the privdata in order to have something as flexible as possible ?
+It seems to me that the contex should be the gitlab url and the user name, but maybe you could think about a better solution.
+
+Could you explain with a code snipset how to proceed, becasue it is not really clear to me.
+Or point to an available example.
+
+thanks for your help
+
+Frederic
+
+[1] https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html

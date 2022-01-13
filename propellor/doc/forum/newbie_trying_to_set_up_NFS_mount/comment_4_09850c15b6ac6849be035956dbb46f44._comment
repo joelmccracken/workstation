@@ -1,0 +1,17 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 4"""
+ date="2016-04-07T04:21:39Z"
+ content="""
+That's quite a nice elegant solution, Frederik!
+
+It'll work if you use
+
+	`onChange` (cmdProperty "mount" ["-a"] `assume` MadeChange)
+
+This is ncessary because propellor doesn't know if `cmdProperty`
+makes a change or not. In this case we can just assume it did.
+
+I've added a `Propellor.Property.Fstab.mounted` this evening
+that is essentially Frederik's solution.
+"""]]

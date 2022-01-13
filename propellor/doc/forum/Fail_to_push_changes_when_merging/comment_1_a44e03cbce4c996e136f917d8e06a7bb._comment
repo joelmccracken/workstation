@@ -1,0 +1,12 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ subject="comment 1"
+ date="2015-12-08T01:20:26Z"
+ content="""
+It looks like git is failing because it can't autodetect an e-mail address for root on the target machine.  This might be because the target machine does not have a FQDN, but I'm not sure.  Try logging into the target machine as root and running
+
+    git config --global user.email root@lending-test.local
+    git config --global user.name root
+
+as it suggests.
+"""]]

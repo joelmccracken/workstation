@@ -1,0 +1,33 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="try to use the fix"
+ date="2015-07-30T17:52:53Z"
+ content="""
+Hello I built the debian package of your git repository  with debuild and installed it.
+
+then I run propellor in order to upgrade my local repo
+
+:~/.propellor$ propellor
+** warning: ** Your /home/picca/.propellor is out of date..
+   A newer upstream version is available in /usr/src/propellor/propellor.git
+   To merge it, find the most recent commit in your repository's history that corresponds to an upstream release of propellor, and set refs/remotes/upstream/master to it. Then run propellor again.
+   
+So I followed the advices, found the most recent commit which was the one created when I run for the first time propellor cb7f1acc108609b345dbec26d8113513bf7b4ece
+
+But now when I run propellor,I get thir message
+
+:~/.propellor$ propellor
+** warning: ** Your /home/picca/.propellor is out of date..
+   A newer upstream version is available in /usr/src/propellor/propellor.git
+   To merge it, run: git merge upstream/master
+   
+
+But when I try the merge,
+
+~/.propellor$ git merge upstream/master
+Already up-to-date.
+
+
+so nothing happend
+
+"""]]

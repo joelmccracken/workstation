@@ -1,0 +1,9 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 7"""
+ date="2017-12-29T16:26:41Z"
+ content="""
+Asked the stack developers and found a stack.yaml that
+I think worked with both versions of stack. At least both can build with
+it, have not tried running secret-project again.
+"""]]

@@ -1,0 +1,41 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 3"""
+ date="2015-08-06T14:54:14Z"
+ content="""
+I'd suggest making it take some helper functions.
+
+Something like these:
+
+	type SectionStart = String -> Bool -- ^ find the line that is the start of the wanted section (eg, == "<Foo>")
+	type SectionEnd = String -> Bool -- ^ find a line that is within the section, but that indicates the end of the section (eg == "</Foo>")
+	type SectionPast = String -> Bool -- ^ find a line that indicates we are past the section (eg, a new section header)
+	type AdjustSection = [String] -> [String] -- ^ run on all lines in the section, including the SectionStart line and any SectionEnd line; can add/delete/modify lines, or even delete entire section
+	type InsertSection = [String] -> [String] -- ^ if SectionStart does not find the section in the file, this is used to insert the section somewhere within it
+	
+	adjustSection :: SectionStart -> SectionEnd -> AdjustSection -> InsertSection -> FilePath -> Property
+
+Which seems sufficiently generic; it can even be used to delete entire sections!
+
+Let's see..
+	
+	iniHeader header = '[':header++"]"
+
+	adjustIniSection :: String -> AdjustSection -> InsertSection -> Property
+	adjustIniSection header = adjustSection
+		(== iniHeader header)
+		(const False)
+		("[" `isPrefixOf`)
+
+	containsConfPair header key value = adjustIniSection header
+		go
+		(++ [confheader, confline]) -- add missing section at end
+	  where
+		confheader = iniHeader header
+		confline = key ++ "=" ++ value
+		go ls = undefined -- TODO find key= line and change it, or add confline
+
+	removeSection header = adjustIniSection header
+		(const []) -- remove all lines of section
+		id -- add no lines if section is missing
+"""]]

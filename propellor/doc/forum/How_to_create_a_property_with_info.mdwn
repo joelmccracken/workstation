@@ -1,0 +1,65 @@
+Hello Joey,
+
+I try to setup a debomatic service on one of my computer.
+So I created a data which will store on which host it was installed
+
+    data DebOMaticHostMirror = DebOMaticHostMirror Url
+	deriving (Eq, Show, Typeable)
+
+So now I try to create a property which get the hostname and set the info, 
+BUT I did not find the right way to do this. Here an attempt
+
+    debomaticHostMirror :: Property (HasInfo + UnixLike)
+    debomaticHostMirror = property' desc $ \w -> do
+      hostname <- asks hostName
+      ensureProperty $ pureInfoProperty desc (InfoVal (DebOMaticHostMirror hostname))
+        where
+          desc = "setup the Deb-O-Matic host name for other properties"
+
+but I get this error message
+
+    src/propellor-config.hs:935:3: error:
+    • Couldn't match expected type ‘Propellor Result’
+                  with actual type ‘Property
+                                      (Propellor.Types.MetaTypes.MetaTypes inner0)
+                                    -> Propellor Result’
+    • In a stmt of a 'do' block:
+        ensureProperty
+        $ pureInfoProperty desc (InfoVal (DebOMaticHostMirror hostname))
+      In the expression:
+        do { hostname <- asks hostName;
+             ensureProperty
+             $ pureInfoProperty desc (InfoVal (DebOMaticHostMirror hostname)) }
+      In the second argument of ‘($)’, namely
+        ‘\ w
+           -> do { hostname <- asks hostName;
+                   ensureProperty
+                   $ pureInfoProperty desc (InfoVal (DebOMaticHostMirror hostname)) }’
+
+    src/propellor-config.hs:935:20: error:
+    • Couldn't match expected type ‘OuterMetaTypesWitness outer0’
+                  with actual type ‘Property (HasInfo + UnixLike)’
+    • In the second argument of ‘($)’, namely
+        ‘pureInfoProperty desc (InfoVal (DebOMaticHostMirror hostname))’
+      In a stmt of a 'do' block:
+        ensureProperty
+        $ pureInfoProperty desc (InfoVal (DebOMaticHostMirror hostname))
+      In the expression:
+        do { hostname <- asks hostName;
+             ensureProperty
+             $ pureInfoProperty desc (InfoVal (DebOMaticHostMirror hostname)) }
+
+the Idea after is to create a property which will take the DeboMatic Info and generate the
+/etc/apt/sourses.list.d/debomatic.list on a bunch of hosts.
+
+Maybe we could have a
+
+    typeclass Mirror a where
+       toSourceListDLines :: a -> [Line]
+
+    instance Mirror DebOMaticHostMirror where
+       toSourceListDLines (DebOMaticHostMirror hostname) = ...
+
+then the stdSourceListD property should be change to use toSourceListDLines
+
+but this is another story :)

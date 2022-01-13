@@ -1,0 +1,28 @@
+[[!comment format=mdwn
+ username="picca"
+ subject="comment 1"
+ date="2016-06-17T07:50:41Z"
+ content="""
+here the manpage fo ccache
+
+    SHARING A CACHE
+       A group of developers can increase the cache hit rate by sharing a cache directory. To share a cache without unpleasant side effects, the following conditions should to be met:
+
+       ·   Use the same CCACHE_DIR environment variable setting.
+
+       ·   Unset the CCACHE_HARDLINK environment variable.
+
+       ·   Make sure everyone sets the CCACHE_UMASK environment variable to 002. This ensures that cached files are accessible to everyone in the group.
+
+       ·   Make sure that all users have write permission in the entire cache directory (and that you trust all users of the shared cache).
+
+       ·   Make sure that the setgid bit is set on all directories in the cache. This tells the filesystem to inherit group ownership for new directories. The command “find $CCACHE_DIR -type d | xargs chmod
+           g+s” might be useful for this.
+
+       The reason to avoid the hard link mode is that the hard links cause unwanted side effects, as all links to a cached file share the file’s modification timestamp. This results in false dependencies to
+       be triggered by timestamp-based build systems whenever another user links to an existing file. Typically, users will see that their libraries and binaries are relinked without reason.
+
+       You may also want to make sure that the developers have CCACHE_BASEDIR set appropriately, as discussed in the previous section
+
+it seems that a a setgid bit is required for all directory.
+"""]]

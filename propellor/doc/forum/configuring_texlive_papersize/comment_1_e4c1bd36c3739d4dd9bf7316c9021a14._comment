@@ -1,0 +1,20 @@
+[[!comment format=mdwn
+ username="spwhitton"
+ avatar="http://cdn.libravatar.org/avatar/9c3f08f80e67733fd506c353239569eb"
+ subject="comment 1"
+ date="2018-09-18T22:17:07Z"
+ content="""
+I have this (the laptop is otherwise en_GB):
+
+    -- iris is in the US
+    & \"en_US.UTF-8\" `Locale.selectedFor`
+    	[ \"LC_PAPER\"
+    	, \"LC_ADDRESS\"
+    	, \"LC_MONETARY\"
+    	, \"LC_TELEPHONE\"
+    	, \"LC_TIME\"
+    	]
+    & \"/etc/papersize\" `File.hasContent` [\"letter\"]
+    	`onChange` Apt.reConfigure \"libpaper1\" []
+
+"""]]

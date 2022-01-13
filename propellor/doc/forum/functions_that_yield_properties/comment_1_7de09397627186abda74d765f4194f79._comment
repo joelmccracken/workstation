@@ -1,0 +1,29 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2016-06-02T21:10:20Z"
+ content="""
+You can use `ensureProperty` to do this.
+
+	withMyAcc desc mkp = property' desc $ \w ->
+		u <- getMyAcc
+		ensureProperty w (mkp u)
+
+The type of this will be somewhat more complex than the one you gave,
+but it should work.
+
+Alas a description has to be provided to withMyAcc. It cannot reuse the
+description of `mkp` because to get a property that it can introspect for its
+description, a User has to be provided, and the User can only be determined by
+running Propellor (IO) action getMyAcc. You might be able to finesse this
+by using a monoidial value and get the description of `mkp mempty`.
+
+Or, you could do something like this to tie the knot. I don't know if this
+is a good idea (it might even `<<loop>>`), but it illustrates the core
+problem nicely; to get at the Info, we need a Host, but to get a Host, we
+need to already know its properties.
+
+	foo :: Host
+	foo = host "foo.example.com" $ props
+		& withMyAcc (hostInfo foo) User.accountFor
+"""]]

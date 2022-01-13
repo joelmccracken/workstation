@@ -1,0 +1,26 @@
+[[!comment format=mdwn
+ username="joey"
+ subject="""comment 1"""
+ date="2014-12-26T19:26:00Z"
+ content="""
+I think that the root assumptions are in basically 3 places:
+
+* Many Properties assume they're run as root, and will fail if they're not.
+  Probably not a problem in practice for most of them. It might be nice
+  to make a few, such as `User.hasSomePassword` work when run as a normal
+  user.
+
+* Propellor's self-deployment involves running apt-get to instal ghc,
+  etc. This could be modified to check if it's not root and do a local
+  user of ghc if necessary.
+
+* `localdir = "/usr/local" and this is used in various places by eg,
+  `--spin`. It is, however, entirely possible to run "./propellor" in
+  some other directory, which causes it to run in that directory
+  and ensure the properties of localhost. `--spin` could certianly be
+  taught to run in a user mode where it uses "~/.propellor/" instead of
+  `localdir`.
+
+I think that's all! I don't plan to try to add this feature myself, but
+will be happy to support anyone who wants to work on it.
+"""]]
