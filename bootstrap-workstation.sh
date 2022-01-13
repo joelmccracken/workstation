@@ -69,8 +69,9 @@ function mv_dir_dated_backup() {
     git clone 'https://github.com/joelmccracken/workstation.git'
 }
 
+# most of the stuff below this can be moved to the haskell stuff
+#
 is_mac && brew bundle
-
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
@@ -102,4 +103,7 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
   (source "$NIX_DAEMON_PATH") || exit 0;
 fi
 
-{ which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
+# { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
+cd  ~/workstation/propellor/
+nix-build
+result/bin/propellor-config
