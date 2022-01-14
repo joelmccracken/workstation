@@ -47,7 +47,7 @@ Library
     -- propellor needs to support the ghc shipped in Debian stable,
     -- and also only depends on packages in Debian stable.
     base >= 4.9, base < 5,
-    directory, filepath, IfElse, process, bytestring, hslogger, split,
+    directory, filepath, process, bytestring, hslogger, split,
     unix, unix-compat, ansi-terminal, containers (>= 0.5), network, async,
     time, mtl, transformers, exceptions (>= 0.6), stm, text, hashable,
     filepath

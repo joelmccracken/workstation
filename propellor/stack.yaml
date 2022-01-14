@@ -1,5 +1,5 @@
 # When updating the resolver here, also update stackResolver in Propellor.DotDir
-resolver: lts-9.21
+resolver: lts-14.27
 packages:
 - '.'
 extra-deps:
