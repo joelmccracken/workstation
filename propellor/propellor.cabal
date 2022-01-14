@@ -240,8 +240,7 @@ Library
 
 Executable propellor-config
   Default-Language: Haskell2010
-  Hs-Source-Dirs: executables
-  Main-Is: propellor-config.hs
+  Main-Is: config.hs
   GHC-Options: -threaded -Wall -fno-warn-tabs
   Default-Extensions: TypeOperators
   Build-Depends: propellor, base, filepath
