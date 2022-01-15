@@ -69,9 +69,24 @@ function mv_dir_dated_backup() {
     git clone 'https://github.com/joelmccracken/workstation.git'
 }
 
+echo installing nix
+
+{ which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install); }
+
+NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+
+if [[ -e "$NIX_DAEMON_PATH" ]]; then
+  (source "$NIX_DAEMON_PATH") || exit 0;
+fi
+
+# { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
+cd  ~/workstation/propellor/
+nix-build
+result/bin/propellor-config
+
 # most of the stuff below this can be moved to the haskell stuff
 #
-is_mac && brew bundle
+# is_mac && brew bundle
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
@@ -92,18 +107,3 @@ is_linux && {
     timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
-
-echo installing nix
-
-{ which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install); }
-
-NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-
-if [[ -e "$NIX_DAEMON_PATH" ]]; then
-  (source "$NIX_DAEMON_PATH") || exit 0;
-fi
-
-# { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
-cd  ~/workstation/propellor/
-nix-build
-result/bin/propellor-config
