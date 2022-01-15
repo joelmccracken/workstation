@@ -5,3 +5,7 @@ packages:
 extra-deps:
 - type-errors-0.1.0.0
 - first-class-families-0.5.0.0
+extra-deps:
+- git: https://github.com/keera-studios/IfElse
+  commit: c4f00bb455fbdc826d9da12cb44aefc7a4df2a4e
+  # nix-sha256: sha256-vP4hZ5EHtK6nfFlpvotbBHmwZ1FlevOrUKEb1r3Gwhw=

@@ -25,7 +25,7 @@ module Propellor.Property.DiskImage (
 import Propellor.Base
 import Propellor.Property.DiskImage.PartSpec
 import Propellor.Property.Chroot (Chroot)
-import Propellor.Property.Chroot.Util (removeChroot)
+import Propellor.Property.Chroot (removeChroot)
 import Propellor.Property.Mount
 import qualified Propellor.Property.Chroot as Chroot
 import qualified Propellor.Property.Service as Service

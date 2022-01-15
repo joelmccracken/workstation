@@ -17,6 +17,9 @@ module Propellor.Property.Chroot (
 	propellChroot,
 	chain,
 	chrootSystem,
+        removeChroot,
+        stdPATH,
+        standardPathEnv
 ) where
 
 import Propellor.Base
@@ -26,7 +29,6 @@ import Propellor.Types.Chroot
 import Propellor.Types.Container
 import Propellor.Types.Info
 import Propellor.Types.Core
-import Propellor.Property.Chroot.Util
 import qualified Propellor.Property.Apt as Apt
 import qualified Propellor.Property.Debootstrap as Debootstrap
 import qualified Propellor.Property.Systemd.Core as Systemd
@@ -34,6 +36,13 @@ import qualified Propellor.Property.File as File
 import qualified Propellor.Shim as Shim
 import Propellor.Property.Mount
 import Utility.Split
+import Propellor.Property.Mount
+
+import Utility.Env
+import Utility.Directory
+
+import Control.Applicative
+import Prelude
 
 import qualified Data.Map as M
 import System.Posix.Directory
@@ -348,3 +357,22 @@ useHostProxy h = property' "use host's apt proxy" $ \w ->
 		Nothing -> noChange
   where
 	getProxyInfo = fromInfoVal . fromInfo . hostInfo
+
+-- | When chrooting, it's useful to ensure that PATH has all the standard
+-- directories in it. This adds those directories to whatever PATH is
+-- already set.
+standardPathEnv :: IO [(String, String)]
+standardPathEnv = do
+	path <- getEnvDefault "PATH" "/bin"
+	addEntry "PATH" (path ++ stdPATH)
+		<$> getEnvironment
+
+stdPATH :: String
+stdPATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+-- | Removes the contents of a chroot. First, unmounts any filesystems
+-- mounted within it.
+removeChroot :: FilePath -> IO ()
+removeChroot c = do
+	unmountBelow c
+	removeDirectoryRecursive c

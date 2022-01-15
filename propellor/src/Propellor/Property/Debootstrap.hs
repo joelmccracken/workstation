@@ -12,7 +12,6 @@ module Propellor.Property.Debootstrap (
 
 import Propellor.Base
 import qualified Propellor.Property.Apt as Apt
-import Propellor.Property.Chroot.Util
 import Propellor.Property.Qemu
 import Utility.Path
 
@@ -21,6 +20,7 @@ import Data.Char
 import qualified Data.Semigroup as Sem
 import System.Posix.Directory
 import System.Posix.Files
+import Propellor.Property.Mount
 
 type Url = String
 
@@ -291,3 +291,23 @@ extractUrls base = collect [] . map toLower
 			then u
 			else base </> u
 		in collect (u':l) r
+
+
+stdPATH :: String
+stdPATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+-- | Removes the contents of a chroot. First, unmounts any filesystems
+-- mounted within it.
+removeChroot :: FilePath -> IO ()
+removeChroot c = do
+	unmountBelow c
+	removeDirectoryRecursive c
+
+-- | When chrooting, it's useful to ensure that PATH has all the standard
+-- directories in it. This adds those directories to whatever PATH is
+-- already set.
+standardPathEnv :: IO [(String, String)]
+standardPathEnv = do
+	path <- getEnvDefault "PATH" "/bin"
+	addEntry "PATH" (path ++ stdPATH)
+		<$> getEnvironment
