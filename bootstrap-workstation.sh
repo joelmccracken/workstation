@@ -79,6 +79,12 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
   (source "$NIX_DAEMON_PATH") || exit 0;
 fi
 
+# for flakes
+nix-env -iA nixpkgs.nixUnstable
+mkdir -p ~/.config/nix
+echo -e "\nexperimental-features = nix-command flakes\n"  >> ~/.config/nix/nix.conf
+cat ~/.config/nix/nix.conf
+
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
 nix build
