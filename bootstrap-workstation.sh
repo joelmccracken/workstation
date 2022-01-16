@@ -86,7 +86,11 @@ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
 fi
 # End Nix
 
-{ cd ~; git diff }
+{
+    cd ~;
+    git diff;
+}
+
 nix-shell -p nix-info --run "nix-info -m"
 
 nix -v
