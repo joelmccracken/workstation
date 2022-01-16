@@ -74,7 +74,7 @@ echo installing nix
 { which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-
+cat $NIX_DAEMON_PATH
 if [[ -e "$NIX_DAEMON_PATH" ]]; then
     echo "IT WILL BE DONE"
     set +e
