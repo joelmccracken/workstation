@@ -86,26 +86,19 @@ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
 fi
 # End Nix
 
-{
-    cd ~;
-    git diff;
-}
-
-nix-shell -p nix-info --run "nix-info -m"
-
-nix --version
-
-
 # for flakes
 nix-env -iA nixpkgs.nixUnstable
 mkdir -p ~/.config/nix
 echo -e "\nexperimental-features = nix-command flakes\n"  >> ~/.config/nix/nix.conf
-cat ~/.config/nix/nix.conf
+
+echo "POO POO FOR POO POO PUFFS"
 
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
 nix build
 result/bin/propellor-config
+
+
 
 # most of the stuff below this can be moved to the haskell stuff
 #
