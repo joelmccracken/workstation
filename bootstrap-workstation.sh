@@ -79,6 +79,12 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
   (source "$NIX_DAEMON_PATH") || exit 0;
 fi
 
+ls /home/runner/.nix-profile/bin
+
+nix -v
+nix --version
+
+
 # for flakes
 nix-env -iA nixpkgs.nixUnstable
 mkdir -p ~/.config/nix
