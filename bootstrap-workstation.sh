@@ -78,12 +78,13 @@ type -f check_nix_profiles
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 
 if [[ -e "$NIX_DAEMON_PATH" ]]; then
-    set +e
-    {  (source "$NIX_DAEMON_PATH"); }
-    set -e
-fi
+    set +e;
+    echo "IT WILL BE DONE"
+    {  source "$NIX_DAEMON_PATH" };
+    set -e;
+fi;
 
-
+echo "IT HAS BEEN DONE"
 
 # # Nix
 # if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
