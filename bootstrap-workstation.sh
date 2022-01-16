@@ -73,6 +73,8 @@ echo installing nix
 
 { which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
 
+type -f check_nix_profiles
+
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 
 if [[ -e "$NIX_DAEMON_PATH" ]]; then
@@ -80,6 +82,8 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
     {  (source "$NIX_DAEMON_PATH"); }
     set -e
 fi
+
+
 
 # # Nix
 # if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
