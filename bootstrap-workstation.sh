@@ -77,7 +77,9 @@ NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 
 if [[ -e "$NIX_DAEMON_PATH" ]]; then
     echo "IT WILL BE DONE"
+    set +e
     source "$NIX_DAEMON_PATH";
+    set -e
 fi;
 
 echo "IT HAS BEEN DONE"
