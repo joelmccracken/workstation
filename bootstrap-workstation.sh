@@ -76,15 +76,16 @@ echo installing nix
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 
 if [[ -e "$NIX_DAEMON_PATH" ]]; then
-  (source "$NIX_DAEMON_PATH") || exit 0;
+    set +e
+    {  (source "$NIX_DAEMON_PATH"); }
+    set -e
 fi
 
-
-# Nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-fi
-# End Nix
+# # Nix
+# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+#   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+# fi
+# # End Nix
 
 # for flakes
 nix-env -iA nixpkgs.nixUnstable
