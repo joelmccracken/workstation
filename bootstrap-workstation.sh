@@ -79,7 +79,15 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
   (source "$NIX_DAEMON_PATH") || exit 0;
 fi
 
-ls /home/runner/.nix-profile/bin
+
+# Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+# End Nix
+
+{ cd ~; git diff }
+nix-shell -p nix-info --run "nix-info -m"
 
 nix -v
 nix --version
