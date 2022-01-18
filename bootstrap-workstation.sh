@@ -93,7 +93,13 @@ echo "IT HAS BEEN DONE"
 # for flakes
 nix-env -iA nixpkgs.nixUnstable
 mkdir -p ~/.config/nix
-echo -e "\nexperimental-features = nix-command flakes\n"  >> ~/.config/nix/nix.conf
+# echo -e "\nexperimental-features = nix-command flakes\n"
+
+cat > ~/.config/nix/nix.conf <<-EOF
+substituters = https://cache.nixos.org https://miso-haskell.cachix.org https://hydra.iohk.io
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= miso-haskell.cachix.org-1:6N2DooyFlZOHUfJtAx1Q09H0P5XXYzoxxQYiwn6W1e8= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+experimental-features = nix-command flakes
+EOF
 
 echo "POO POO FOR POO POO PUFFS"
 
