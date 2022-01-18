@@ -101,6 +101,8 @@ trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDS
 experimental-features = nix-command flakes
 EOF
 
+cat ~/.config/nix/nix.conf
+
 echo "POO POO FOR POO POO PUFFS"
 
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
