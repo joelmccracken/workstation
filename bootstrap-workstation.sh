@@ -108,21 +108,14 @@ experimental-features = nix-command flakes
 trusted-users = root joel
 EOF
 
-
-
 ls /etc/nix
 cat /etc/nix/nix.conf
 
 cat ~/.config/nix/nix.conf
-
-echo "POO POO FOR POO POO PUFFS"
-
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
 nix build --verbose --debug
 result/bin/propellor-config
-
-
 
 # most of the stuff below this can be moved to the haskell stuff
 #
