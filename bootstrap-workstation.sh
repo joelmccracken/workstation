@@ -69,9 +69,25 @@ function mv_dir_dated_backup() {
     git clone 'https://github.com/joelmccracken/workstation.git'
 }
 
+
+
 echo installing nix
 
+
+( sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= miso-haskell.cachix.org-1:6N2DooyFlZOHUfJtAx1Q09H0P5XXYzoxxQYiwn6W1e8= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+substituters = https://cache.nixos.org https://miso-haskell.cachix.org https://hydra.iohk.io
+experimental-features = nix-command flakes
+trusted-users = root joel runner
+# END OF /etc/nix/nix.conf
+EOF
+
+
+
 { which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
+
+
+
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH
@@ -101,14 +117,6 @@ mkdir -p ~/.config/nix
 # experimental-features = nix-command flakes
 # trusted-users = root joel runner
 # EOF
-
-( sudo bash -c 'cat > /etc/nix/nix.conf') <<-EOF
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= miso-haskell.cachix.org-1:6N2DooyFlZOHUfJtAx1Q09H0P5XXYzoxxQYiwn6W1e8= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org https://miso-haskell.cachix.org https://hydra.iohk.io
-experimental-features = nix-command flakes
-trusted-users = root joel runner
-# END OF /etc/nix/nix.conf
-EOF
 
 ls /etc/nix
 cat /etc/nix/nix.conf
