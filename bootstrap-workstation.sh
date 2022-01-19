@@ -107,6 +107,7 @@ trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDS
 substituters = https://cache.nixos.org https://miso-haskell.cachix.org https://hydra.iohk.io
 experimental-features = nix-command flakes
 trusted-users = root joel runner
+# END OF /etc/nix/nix.conf
 EOF
 
 ls /etc/nix
