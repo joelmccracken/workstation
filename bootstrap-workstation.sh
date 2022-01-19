@@ -119,7 +119,7 @@ echo "POO POO FOR POO POO PUFFS"
 
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
-nix build
+nix build --verbose --debug
 result/bin/propellor-config
 
 
