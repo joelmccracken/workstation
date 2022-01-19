@@ -84,6 +84,7 @@ trusted-users = root joel runner
 EOF
 
 
+cat /etc/nix/nix.conf
 
 { which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
 
@@ -101,7 +102,13 @@ fi;
 
 echo "IT HAS BEEN DONE"
 
-systemctl
+systemctl --help
+
+set +u
+systemctl status
+echo $?
+set -u
+
 
 
 # # Nix
