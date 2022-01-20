@@ -89,7 +89,7 @@ EOF
 
 cat /etc/nix/nix.conf
 
-
+sudo systemctl restart nix-daemon.service
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH
