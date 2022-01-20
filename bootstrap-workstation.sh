@@ -87,7 +87,6 @@ build-users-group = nixbld
 # END OF /etc/nix/nix.conf
 EOF
 
-
 cat /etc/nix/nix.conf
 
 
@@ -103,12 +102,12 @@ fi;
 
 echo "IT HAS BEEN DONE"
 
-systemctl --help
+# systemctl --help
 
-set +u
-systemctl status
-echo $?
-set -u
+# set +u
+# systemctl status
+# echo $?
+# set -u
 
 
 
@@ -120,7 +119,7 @@ set -u
 
 # for flakes
 nix-env -iA nixpkgs.nixUnstable
-mkdir -p ~/.config/nix
+# mkdir -p ~/.config/nix
 # echo -e "\nexperimental-features = nix-command flakes\n"
 
 # cat > ~/.config/nix/nix.conf <<-EOF
@@ -130,10 +129,10 @@ mkdir -p ~/.config/nix
 # trusted-users = root joel runner
 # EOF
 
-ls /etc/nix
+# ls /etc/nix
 cat /etc/nix/nix.conf
 
-cat ~/.config/nix/nix.conf
+# cat ~/.config/nix/nix.conf
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
 nix build --verbose --debug
