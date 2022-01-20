@@ -73,6 +73,9 @@ function mv_dir_dated_backup() {
 
 echo installing nix
 
+{ which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
+
+
 export NIX_REMOTE=daemon
 
 ( sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
@@ -80,14 +83,12 @@ trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDS
 substituters = https://cache.nixos.org https://miso-haskell.cachix.org https://hydra.iohk.io
 experimental-features = nix-command flakes
 trusted-users = root joel runner
+build-users-group = nixbld
 # END OF /etc/nix/nix.conf
 EOF
 
 
 cat /etc/nix/nix.conf
-
-{ which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
-
 
 
 
