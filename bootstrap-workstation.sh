@@ -69,8 +69,6 @@ function mv_dir_dated_backup() {
     git clone 'https://github.com/joelmccracken/workstation.git'
 }
 
-
-
 echo installing nix
 
 { which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
@@ -89,7 +87,14 @@ EOF
 
 cat /etc/nix/nix.conf
 
-sudo systemctl restart nix-daemon.service
+is_linux && {
+    sudo systemctl restart nix-daemon.service;
+}
+
+is_mac && {
+    sudo launchctl stop -k system/org.nixos.nix-daemon
+    sudo launchctl start -k system/org.nixos.nix-daemon
+}
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH
@@ -100,46 +105,24 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
     set -u
 fi;
 
-echo "IT HAS BEEN DONE"
-
-# systemctl --help
-
-# set +u
-# systemctl status
-# echo $?
-# set -u
-
-
-
-# # Nix
-# if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-#   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-# fi
-# # End Nix
 
 # for flakes
 nix-env -iA nixpkgs.nixUnstable
-# mkdir -p ~/.config/nix
-# echo -e "\nexperimental-features = nix-command flakes\n"
-
-# cat > ~/.config/nix/nix.conf <<-EOF
-# trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= miso-haskell.cachix.org-1:6N2DooyFlZOHUfJtAx1Q09H0P5XXYzoxxQYiwn6W1e8= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-# substituters = https://cache.nixos.org https://miso-haskell.cachix.org https://hydra.iohk.io
-# experimental-features = nix-command flakes
-# trusted-users = root joel runner
-# EOF
 
 # ls /etc/nix
-cat /etc/nix/nix.conf
+# cat /etc/nix/nix.conf
 
 # cat ~/.config/nix/nix.conf
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
-nix build --verbose --debug
-result/bin/propellor-config
+is_mac && {
+    nix build --verbose --debug;
+    result/bin/propellor-config;
 
+
+}
 # most of the stuff below this can be moved to the haskell stuff
-#
+
 # is_mac && brew bundle
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
