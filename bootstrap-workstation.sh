@@ -3,10 +3,20 @@
 
 set -xeuo pipefail
 
+
 if [ -z "${1+x}" ]; then
+    echo hostname must be provided as first argument
+    exit 2
+else
+    WORKSTATION_HOSTNAME="$1"
+fi
+
+
+
+if [ -z "${2+x}" ]; then
     WORKSTATION_BOOTSTRAP_COMMIT=master
 else
-    WORKSTATION_BOOTSTRAP_COMMIT="$1"
+    WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
 
 WS_DIR="$HOME/workstation"
@@ -73,7 +83,6 @@ echo installing nix
 
 { which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
 
-
 export NIX_REMOTE=daemon
 
 ( sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
@@ -118,8 +127,6 @@ cd  ~/workstation/propellor/
 is_mac && {
     nix build --verbose --debug;
     result/bin/propellor-config;
-
-
 }
 # most of the stuff below this can be moved to the haskell stuff
 

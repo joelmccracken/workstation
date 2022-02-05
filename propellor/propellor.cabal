@@ -238,9 +238,9 @@ Library
     System.Process.Concurrent
     Paths_propellor
 
-Executable propellor-config
+Executable propellor-glamdring
   Default-Language: Haskell2010
-  Main-Is: config.hs
+  Main-Is: app/glamdring.hs
   GHC-Options: -threaded -Wall -fno-warn-tabs
   Default-Extensions: TypeOperators
   Build-Depends: propellor, base, filepath
