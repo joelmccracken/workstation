@@ -243,7 +243,7 @@ Executable propellor-config
   Main-Is: app/propellor-config.hs
   GHC-Options: -threaded -Wall -fno-warn-tabs
   Default-Extensions: TypeOperators
-  Build-Depends: propellor, base, filepath
+  Build-Depends: propellor, base, filepath, optparse-applicative, text
 
 source-repository head
   type: git
