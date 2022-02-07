@@ -1,3 +1,6 @@
+#+PROPERTY: header-args    :comments noweb
+#+OPTIONS: ^:nil ;; let an underscore be an underscore, disable sub-superscripting
+#+OPTIONS: timestamp:nil
 #+TITLE: Workstation
 * Introduction: A Repeatable Workstation Configuration
 This is my workstation configuration.
