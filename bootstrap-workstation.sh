@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
+# [[file:workstation.org::*Code][Code:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
-
 
 if [ -z "${1+x}" ]; then
     echo hostname must be provided as first argument
@@ -149,3 +149,4 @@ is_linux && {
     timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
+# Code:1 ends here

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# [[file:../workstation.org::*The environment setup script][The environment setup script:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
@@ -21,3 +22,4 @@ bash bootstrap-workstation.sh $WORKSTATION_BOOTSTRAP_COMMIT
 echo INSTALL PROCESS COMPLETE, TESTING
 
 bash ~/workstation/test/test.sh
+# The environment setup script:1 ends here

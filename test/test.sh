@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# [[file:../workstation.org::*test.sh][test.sh:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
 
@@ -31,3 +32,4 @@ emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri)
 emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-core-version) (terpri))' | assert_input "doom-core-version" '3.0.0-alpha'
 
 echo "TESTS COMPLETE"
+# test.sh:1 ends here
