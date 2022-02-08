@@ -11,8 +11,6 @@ else
     WORKSTATION_HOSTNAME="$1"
 fi
 
-
-
 if [ -z "${2+x}" ]; then
     WORKSTATION_BOOTSTRAP_COMMIT=master
 else
