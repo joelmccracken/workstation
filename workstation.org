@@ -145,7 +145,7 @@ process of  taking a literate program source and converting it to the target
 all: tangle bundle
 
 tangle:
-	emacs -q -l lib/emacs/tangle-file.el --batch --tangle
+	emacs -l ~/.emacs.d/init.el -l lib/emacs/tangle-file.el --batch --tangle
 
 bundle:
 	cd ~
@@ -171,6 +171,7 @@ And a little emacs lisp that goes with the tangle process:
 
 ;;; tangle-file.el ends here
 #+end_src
+** TODO move bin/tangle script into workstation.org
 * Bootstrap process
 Bootstrapping is tricky. What do you actually start with? What can you assume?
 You want to keep the amount of manual steps which need to occur to a minimum.
