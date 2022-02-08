@@ -5,6 +5,7 @@ tangle:
 	emacs -q -l lib/emacs/tangle-file.el --batch --tangle
 
 bundle:
+	cd ~
 	brew bundle
 
 .PHONY: tangle bundle
