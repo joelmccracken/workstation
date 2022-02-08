@@ -1,3 +1,4 @@
+# [[file:../../workstation.org::*Github Actions CI][Github Actions CI:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 name: CI
@@ -17,9 +18,9 @@ jobs:
         - ubuntu-latest
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
-
     steps:
     - uses: actions/checkout@v2
 
     - name: Run a one-line script
       run: ./test/ci.sh
+# Github Actions CI:1 ends here
