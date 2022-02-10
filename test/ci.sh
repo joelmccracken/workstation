@@ -18,7 +18,13 @@ curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BO
 
 echo BEGINNING INITIAL INSTALL
 
-bash bootstrap-workstation.sh $WORKSTATION_BOOTSTRAP_COMMIT
+
+if [ "$RUNNER_OS" == "macOS" ]; then
+    bash bootstrap-workstation.sh ci-macos $WORKSTATION_BOOTSTRAP_COMMIT
+else
+    bash bootstrap-workstation.sh ci-ubuntu $WORKSTATION_BOOTSTRAP_COMMIT
+fi
+
 echo INSTALL PROCESS COMPLETE, TESTING
 
 bash ~/workstation/test/test.sh
