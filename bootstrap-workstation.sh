@@ -4,6 +4,8 @@
 
 set -xeuo pipefail
 
+env
+
 if [ -z "${1+x}" ]; then
     echo hostname must be provided as first argument
     exit 2
@@ -124,7 +126,7 @@ nix-env -iA nixpkgs.nixUnstable
 cd  ~/workstation/propellor/
 is_mac && {
     nix build --verbose --debug;
-    result/bin/propellor-config;
+    result/bin/propellor-config "$MACHINENAME";
 }
 # most of the stuff below this can be moved to the haskell stuff
 

@@ -32,6 +32,7 @@ main = do
   let theHost
         = case machineName options of
             "glamdring" -> glamdring
+            "ci-macos" -> ciMacos
             _ -> error $ T.unpack ("unknown host name " <>  machineName options)
 
   mainProperties $ theHost
@@ -53,3 +54,6 @@ brewBundle = check (pure True :: IO Bool) $ theWork
 
 glamdring :: Host
 glamdring = host "glamdring" $ props & brewBundle
+
+ciMacos :: Host
+ciMacos = host "ci-macos" $ props & brewBundle
