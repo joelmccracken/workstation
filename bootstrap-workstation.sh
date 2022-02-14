@@ -126,7 +126,7 @@ nix-env -iA nixpkgs.nixUnstable
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
 is_mac && {
-    nix build --verbose --debug;
+    nix build --verbose --debug --show-trace;
     result/bin/propellor-config "$MACHINENAME";
 }
 # most of the stuff below this can be moved to the haskell stuff
