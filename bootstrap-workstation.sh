@@ -132,6 +132,7 @@ cd  ~/workstation/propellor/
 # nix-env -iA nixpkgs.niv
 
 # nix-build # --verbose --debug --show-trace;
+ls -lah
 nix-build -A propellor.components.exes.propellor-config
 
 is_mac && {
