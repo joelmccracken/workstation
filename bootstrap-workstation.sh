@@ -118,7 +118,7 @@ fi;
 
 
 # for flakes
-nix-env -iA nixpkgs.nixUnstable
+#nix-env -iA nixpkgs.nixUnstable
 
 nix-env --version
 
