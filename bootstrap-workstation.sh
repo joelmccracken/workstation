@@ -78,6 +78,7 @@ function mv_dir_dated_backup() {
 } || {
     mv_dir_dated_backup ~/workstation
     git clone 'https://github.com/joelmccracken/workstation.git'
+    cd ~/workstation/
     git checkout "$WORKSTATION_BOOTSTRAP_COMMIT"
 }
 
