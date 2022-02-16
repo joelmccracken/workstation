@@ -120,6 +120,8 @@ fi;
 # for flakes
 nix-env -iA nixpkgs.nixUnstable
 
+nix-env --version
+
 # ls /etc/nix
 # cat /etc/nix/nix.conf
 
