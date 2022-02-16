@@ -72,8 +72,9 @@ function mv_dir_dated_backup() {
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
 } || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 
-{ cd ~/worksation
-     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
+{
+    cd ~/worksation && \
+        [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
     mv_dir_dated_backup ~/workstation
     git clone 'https://github.com/joelmccracken/workstation.git'
