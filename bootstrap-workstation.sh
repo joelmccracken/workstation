@@ -81,7 +81,7 @@ function mv_dir_dated_backup() {
 
 echo installing nix
 
-{ which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
+{ which nix > /dev/null; } || { sh <(curl -L https://releases.nixos.org/nix/nix-2.5.1/install) --daemon; }
 
 export NIX_REMOTE=daemon
 
