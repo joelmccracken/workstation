@@ -101,12 +101,12 @@ is_linux && {
     sudo systemctl restart nix-daemon.service;
 }
 
-# is_mac && {
-#     sudo launchctl list
-#     sudo launchctl stop -k system/org.nixos.nix-daemon
-#     echo $?
-#     sudo launchctl start -k system/org.nixos.nix-daemon
-# }
+is_mac && {
+    sudo launchctl list
+    sudo launchctl stop -k system/org.nixos.nix-daemon
+    echo $?
+    sudo launchctl start -k system/org.nixos.nix-daemon
+}
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH
