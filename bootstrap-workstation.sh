@@ -154,7 +154,7 @@ is_linux && {
     # timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     # ~/.emacs.d/bin/doom -y env;
     # ~/.emacs.d/bin/doom -y install;
-    timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
 # Code:1 ends here
