@@ -129,7 +129,8 @@ nix-env --version
 # { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
 
-nix build # --verbose --debug --show-trace;
+# nix build # --verbose --debug --show-trace;
+nix build .#propellor:exe:propellor-config
 
 is_mac && {
     result/bin/propellor-config "$WORKSTATION_MACHINENAME";
