@@ -102,10 +102,9 @@ is_linux && {
 }
 
 is_mac && {
-    sudo launchctl list
     set +e
-    sudo launchctl stop -k system/org.nixos.nix-daemon
-    sudo launchctl start -k system/org.nixos.nix-daemon
+    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
     set -e
 }
 
