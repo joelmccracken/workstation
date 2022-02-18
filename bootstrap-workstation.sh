@@ -10,7 +10,7 @@ if [ -z "${1+x}" ]; then
     echo hostname must be provided as first argument
     exit 2
 else
-    WORKSTATION_HOSTNAME="$1"
+    WORKSTATION_MACHINENAME="$1"
 fi
 
 if [ -z "${2+x}" ]; then
@@ -132,7 +132,7 @@ cd  ~/workstation/propellor/
 nix build # --verbose --debug --show-trace;
 
 is_mac && {
-    result/bin/propellor-config "$MACHINENAME";
+    result/bin/propellor-config "$WORKSTATION_MACHINENAME";
 }
 # most of the stuff below this can be moved to the haskell stuff
 
