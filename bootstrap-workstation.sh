@@ -33,11 +33,11 @@ is_mac && {
     sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
     which brew > /dev/null || {
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        time /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # install git, necessary for next step
         # TODO this should be safe to run even if its been run before
-        brew install git
+        time brew install git
     }
 }
 
@@ -82,7 +82,9 @@ function mv_dir_dated_backup() {
 
 echo installing nix
 
-{ which nix > /dev/null; } || { sh <(curl -L https://releases.nixos.org/nix/nix-2.5.1/install) --daemon; }
+{ which nix > /dev/null; } || {
+    time sh <(curl -L https://releases.nixos.org/nix/nix-2.5.1/install) --daemon;
+}
 
 export NIX_REMOTE=daemon
 
@@ -116,24 +118,12 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
     set -u
 fi;
 
-
-# for flakes
-#nix-env -iA nixpkgs.nixUnstable
-
-nix-env --version
-
-# ls /etc/nix
-# cat /etc/nix/nix.conf
-
-# cat ~/.config/nix/nix.conf
-# { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
 
-# nix build # --verbose --debug --show-trace;
-nix build .#propellor:exe:propellor-config
+time nix build .#propellor:exe:propellor-config
 
 is_mac && {
-    result/bin/propellor-config "$WORKSTATION_MACHINENAME";
+    time result/bin/propellor-config "$WORKSTATION_MACHINENAME";
 }
 # most of the stuff below this can be moved to the haskell stuff
 
@@ -155,7 +145,7 @@ is_linux && {
     # timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     # ~/.emacs.d/bin/doom -y env;
     # ~/.emacs.d/bin/doom -y install;
-    timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    time timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
 # Code:1 ends here
