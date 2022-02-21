@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
-# [[file:workstation.org::*Code][Code:1]]
+# Bootstraping Script
+# This script is intended to be entrypoint to this project. It can be curled to a
+# new machine and then run, and will set things up on that machine as necessary.
+
+# [[file:workstation.org::*Bootstraping Script][Bootstraping Script:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
 
-env
-
 if [ -z "${1+x}" ]; then
-    echo hostname must be provided as first argument
+    echo WORKSTATION_NAME must be provided as first argument
     exit 2
 else
-    WORKSTATION_MACHINENAME="$1"
+    WORKSTATION_NAME="$1"
 fi
 
 if [ -z "${2+x}" ]; then
@@ -33,11 +35,11 @@ is_mac && {
     sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
     which brew > /dev/null || {
-        time /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # install git, necessary for next step
         # TODO this should be safe to run even if its been run before
-        time brew install git
+        brew install git
     }
 }
 
@@ -73,8 +75,8 @@ function mv_dir_dated_backup() {
 } || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 
 {
-    cd ~/worksation && \
-        [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
+    cd ~/worksation;
+    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
     mv_dir_dated_backup ~/workstation
     git clone 'https://github.com/joelmccracken/workstation.git'
@@ -82,15 +84,13 @@ function mv_dir_dated_backup() {
 
 echo installing nix
 
-{ which nix > /dev/null; } || {
-    time sh <(curl -L https://releases.nixos.org/nix/nix-2.5.1/install) --daemon;
-}
+{ which nix > /dev/null; } || { sh <(curl -L https://nixos.org/nix/install) --daemon; }
 
 export NIX_REMOTE=daemon
 
 ( sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
 trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org  https://hydra.iohk.io
+substituters = https://cache.nixos.org https://hydra.iohk.io
 experimental-features = nix-command flakes
 trusted-users = root joel runner
 build-users-group = nixbld
@@ -119,15 +119,11 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
 fi;
 
 cd  ~/workstation/propellor/
+nix build .#propellor:exe:propellor-config
+result/bin/propellor-config "$WORKSTATION_MACHINENAME";
 
-time nix build .#propellor:exe:propellor-config
+# most of the stuff below this can be moved to propellor
 
-is_mac && {
-    time result/bin/propellor-config "$WORKSTATION_MACHINENAME";
-}
-# most of the stuff below this can be moved to the haskell stuff
-
-# is_mac && brew bundle
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
@@ -141,11 +137,9 @@ is_linux && {
 } || {
     mv_dir_dated_backup ~/.emacs.d;
     git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
-    # If I ever have issues w/ this, I can use this form:
-    # timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    # ~/.emacs.d/bin/doom -y env;
+    # alternative: use this if encounter problems
     # ~/.emacs.d/bin/doom -y install;
-    time timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
-# Code:1 ends here
+# Bootstraping Script:1 ends here

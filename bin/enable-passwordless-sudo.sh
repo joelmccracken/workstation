@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Passwordless sudo
+# Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
+# to toggle passwordless sudo.
+
 # [[file:../workstation.org::*Passwordless sudo][Passwordless sudo:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -eo pipefail

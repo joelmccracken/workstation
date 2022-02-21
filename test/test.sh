@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+# test.sh
+# At this point in time, this test actually checks very little, but what it DOES check
+# is things that indicate that everything went right. Specifically, checking the doom version means
+# emacs, doom, and the whole doom setup process worked out.
+
+# I plan to move this to a Haskell project at some point, probably do it with hspec instead.
+# Or maybe that bats testing library. We'll see.
+
 # [[file:../workstation.org::*test.sh][test.sh:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail

@@ -1,3 +1,8 @@
+<!-- README -->
+<!-- Every project needs a README. -->
+<!-- This really just contains super simple instructions along with a link to this file, which -->
+<!-- contains all the important information. -->
+
 <!-- [[file:workstation.org::*README][README:1]] -->
 WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
 

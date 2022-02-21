@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# The environment setup script
+# To run CI, we have a script which, thankfully, basically mirrors the install instructions.
+
+# Importantly, this does a LOT of things, such as install nix, home-manager, etc, and eventually runs
+# the test script.
+
 # [[file:../workstation.org::*The environment setup script][The environment setup script:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
@@ -17,7 +23,6 @@ fi
 curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BOOTSTRAP_COMMIT/bootstrap-workstation.sh > bootstrap-workstation.sh
 
 echo BEGINNING INITIAL INSTALL
-
 
 if [ "$RUNNER_OS" == "macOS" ]; then
     bash bootstrap-workstation.sh ci-macos $WORKSTATION_BOOTSTRAP_COMMIT

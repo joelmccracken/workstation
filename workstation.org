@@ -1,4 +1,4 @@
-#+PROPERTY: header-args    :comments noweb
+#+PROPERTY: header-args    :comments both
 #+OPTIONS: ^:nil ;; let an underscore be an underscore, disable sub-superscripting
 #+OPTIONS: timestamp:nil
 #+TITLE: Workstation
@@ -98,7 +98,6 @@ omits all the headers.
 Every project needs a README.
 This really just contains super simple instructions along with a link to this file, which
 contains all the important information.
-
 #+begin_src md :tangle ./README.md  :noweb yes
 WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
 
@@ -136,26 +135,22 @@ mac settings
 - enable screen sharing, _not_ remote management
 - enable remote login
 * Makefile
-The first command is used to tangle ~workstation.org~. Tangling refers to the
-process of  taking a literate program source and converting it to the target
-"source" file for execution
+Used to tangle ~workstation.org~. Tangling refers to the
+process of taking a literate program source and converting it to the target
+"source" file for execution.
 
+Formerly had some other targets, but now they are OBE. It may make sense to
+delete this makefile if it becomes clearly unnecessary.
 #+begin_src makefile :tangle ./Makefile  :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-all: tangle bundle
+all: tangle
 
 tangle:
 	emacs -l ~/.emacs.d/init.el -l lib/emacs/tangle-file.el --batch --tangle
 
-bundle:
-	cd ~
-	brew bundle
-
-.PHONY: tangle bundle
+.PHONY: tangle
 #+end_src
-
 And a little emacs lisp that goes with the tangle process:
-
 #+begin_src emacs-lisp :tangle ./lib/emacs/tangle-file.el
 ;;; tangle-file.el --- description -*- lexical-binding: t; -*-
 
@@ -213,17 +208,19 @@ need to enter ~/secrets/bw_pass file
 initial bootstrap (checkout files, setup haskell, etc)
 pre-authentication (pre-bww sync)
 using haskell to do remaining setup
-** Code
+** Bootstraping Script
+This script is intended to be entrypoint to this project. It can be curled to a
+new machine and then run, and will set things up on that machine as necessary.
 #+begin_src bash :shebang "#!/usr/bin/env bash" :tangle ./bootstrap-workstation.sh :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
 
 if [ -z "${1+x}" ]; then
-    echo hostname must be provided as first argument
+    echo WORKSTATION_NAME must be provided as first argument
     exit 2
 else
-    WORKSTATION_HOSTNAME="$1"
+    WORKSTATION_NAME="$1"
 fi
 
 if [ -z "${2+x}" ]; then
@@ -285,8 +282,9 @@ function mv_dir_dated_backup() {
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
 } || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 
-{ cd ~/worksation
-     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
+{
+    cd ~/worksation;
+    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
     mv_dir_dated_backup ~/workstation
     git clone 'https://github.com/joelmccracken/workstation.git'
@@ -299,8 +297,8 @@ echo installing nix
 export NIX_REMOTE=daemon
 
 ( sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= miso-haskell.cachix.org-1:6N2DooyFlZOHUfJtAx1Q09H0P5XXYzoxxQYiwn6W1e8= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org https://miso-haskell.cachix.org https://hydra.iohk.io
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+substituters = https://cache.nixos.org https://hydra.iohk.io
 experimental-features = nix-command flakes
 trusted-users = root joel runner
 build-users-group = nixbld
@@ -314,36 +312,26 @@ is_linux && {
 }
 
 is_mac && {
-    sudo launchctl stop -k system/org.nixos.nix-daemon
-    sudo launchctl start -k system/org.nixos.nix-daemon
+    set +e
+    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    set -e
 }
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH
 if [[ -e "$NIX_DAEMON_PATH" ]]; then
-    echo "IT WILL BE DONE"
     set +u
     source "$NIX_DAEMON_PATH";
     set -u
 fi;
 
-
-# for flakes
-nix-env -iA nixpkgs.nixUnstable
-
-# ls /etc/nix
-# cat /etc/nix/nix.conf
-
-# cat ~/.config/nix/nix.conf
-# { which stack > /dev/null; } || { sh <(curl -sSL https://get.haskellstack.org/); }
 cd  ~/workstation/propellor/
-is_mac && {
-    nix build --verbose --debug;
-    result/bin/propellor-config;
-}
-# most of the stuff below this can be moved to the haskell stuff
+nix build .#propellor:exe:propellor-config
+result/bin/propellor-config "$WORKSTATION_MACHINENAME";
 
-# is_mac && brew bundle
+# most of the stuff below this can be moved to propellor
+
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
@@ -357,11 +345,9 @@ is_linux && {
 } || {
     mv_dir_dated_backup ~/.emacs.d;
     git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
-    # If I ever have issues w/ this, I can use this form:
-    # timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    # ~/.emacs.d/bin/doom -y env;
+    # alternative: use this if encounter problems
     # ~/.emacs.d/bin/doom -y install;
-    timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
 #+end_src
@@ -381,7 +367,6 @@ need to have a "check that system is OK"
 ** Passwordless sudo
 Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
 to toggle passwordless sudo.
-
 #+begin_src sh :tangle ./bin/enable-passwordless-sudo.sh :shebang "#!/usr/bin/env bash"
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -eo pipefail
@@ -470,12 +455,16 @@ emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-core-version) (te
 echo "TESTS COMPLETE"
 #+end_src
 ** Github Actions CI
-First, the CI config. Importantly, github CI support macos environments. Otherwise I
-would be on GitLab instead.
+Importantly, github CI support macos environments.
 
+Daily build to ensure that potential problems get caught (NB: I have had issues
+where a working setup no longer worked due to bit rot, which would have been
+caught with a regular build like this).
+
+I am running up close to maximum execution time, so very likely I will need to
+refactor/come up with some other way to do this.
 #+begin_src yaml :tangle ./.github/workflows/test.yml :noweb yes
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-
 name: CI
 
 on:
@@ -523,7 +512,12 @@ curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BO
 
 echo BEGINNING INITIAL INSTALL
 
-bash bootstrap-workstation.sh $WORKSTATION_BOOTSTRAP_COMMIT
+if [ "$RUNNER_OS" == "macOS" ]; then
+    bash bootstrap-workstation.sh ci-macos $WORKSTATION_BOOTSTRAP_COMMIT
+else
+    bash bootstrap-workstation.sh ci-ubuntu $WORKSTATION_BOOTSTRAP_COMMIT
+fi
+
 echo INSTALL PROCESS COMPLETE, TESTING
 
 bash ~/workstation/test/test.sh

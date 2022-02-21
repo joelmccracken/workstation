@@ -1,6 +1,15 @@
+# Github Actions CI
+# Importantly, github CI support macos environments.
+
+# Daily build to ensure that potential problems get caught (NB: I have had issues
+# where a working setup no longer worked due to bit rot, which would have been
+# caught with a regular build like this).
+
+# I am running up close to maximum execution time, so very likely I will need to
+# refactor/come up with some other way to do this.
+
 # [[file:../../workstation.org::*Github Actions CI][Github Actions CI:1]]
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-
 name: CI
 
 on:
