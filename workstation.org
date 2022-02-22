@@ -330,7 +330,7 @@ fi;
 
 cd  ~/workstation/propellor/
 nix build .#propellor:exe:propellor-config
-result/bin/propellor-config "$WORKSTATION_MACHINENAME";
+result/bin/propellor-config "$WORKSTATION_NAME";
 
 # most of the stuff below this can be moved to propellor
 
