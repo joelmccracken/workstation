@@ -33,6 +33,7 @@ main = do
         = case machineName options of
             "glamdring" -> glamdring
             "ci-macos" -> ciMacos
+            "ci-ubuntu" -> host "ci-ubuntu" $ props & (mempty :: Property UnixLike)
             _ -> error $ T.unpack ("unknown host name " <>  machineName options)
 
   mainProperties $ theHost
