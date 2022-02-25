@@ -7,6 +7,8 @@ import Propellor
 import Propellor.Engine
 import qualified Propellor.Property.File as File
 import qualified Propellor.Property.Cmd as Cmd
+import qualified Propellor.Property.Apt as Apt
+import qualified Propellor.Property.Apt.PPA as PPA
 import System.FilePath
 import Utility.UserInfo
 import Control.Monad.IO.Class
@@ -33,7 +35,7 @@ main = do
         = case machineName options of
             "glamdring" -> glamdring
             "ci-macos" -> ciMacos
-            "ci-ubuntu" -> host "ci-ubuntu" $ props & (mempty :: Property UnixLike)
+            "ci-ubuntu" -> ubuntu
             _ -> error $ T.unpack ("unknown host name " <>  machineName options)
 
   mainProperties $ theHost
@@ -41,6 +43,16 @@ main = do
 -- TODO move this to wshs
 -- TODO try use haskell.nix
 -- TODO only one config.hs file, move other stuff to examples
+
+-- this is the version that doom recommends using
+emacsPPA :: PPA.AptRepository
+emacsPPA = PPA.AptRepositoryPPA "ppa:kelleyk/emacs"
+
+ubuntu :: Host
+ubuntu = host "ci-ubuntu" $ props
+  & PPA.addRepository emacsPPA
+  & Apt.update
+  & Apt.installed ["emacs27"]
 
 brewBundle :: Property UnixLike
 brewBundle = check (pure True :: IO Bool) $ theWork

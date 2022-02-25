@@ -129,7 +129,7 @@ result/bin/propellor-config "$WORKSTATION_NAME";
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
-    sudo snap install emacs --classic
+    # sudo snap install emacs --classic
     sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
 }
 
