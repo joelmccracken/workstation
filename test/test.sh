@@ -35,7 +35,16 @@ else
   exit 1
 fi
 
-emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | assert_input "emacs version" '27.2'
+emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
+  read actual
+  if [[ "$actual" == "27.1" || "$actual" == "27.2" ]]; then
+    echo "emacs version is correct"
+  else
+    echo "emacs version is not correct, found '$actual', expected 27.1 or 27.2"
+    exit 1
+  fi
+}
+
 emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri))' | assert_input "doom-version" '21.12.0-alpha'
 emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-core-version) (terpri))' | assert_input "doom-core-version" '3.0.0-alpha'
 
