@@ -28,6 +28,7 @@ dependencies:
 - bytestring
 - aeson
 - shelly
+- optional-args
 
 library:
   source-dirs: src
