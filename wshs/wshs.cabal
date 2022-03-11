@@ -35,6 +35,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , directory
+    , optional-args
     , shelly
     , string-interpolate
     , text
@@ -51,6 +52,7 @@ executable bww
     , base >=4.7 && <5
     , bytestring
     , directory
+    , optional-args
     , shelly
     , string-interpolate
     , text
@@ -68,6 +70,7 @@ executable ws
     , base >=4.7 && <5
     , bytestring
     , directory
+    , optional-args
     , shelly
     , string-interpolate
     , text
@@ -88,6 +91,7 @@ test-suite wshs-test
     , base >=4.7 && <5
     , bytestring
     , directory
+    , optional-args
     , shelly
     , string-interpolate
     , text

@@ -120,9 +120,9 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
     set -u
 fi;
 
-cd  ~/workstation/propellor/
-nix build .#propellor:exe:propellor-config
-sudo result/bin/propellor-config "$WORKSTATION_NAME";
+cd  ~/workstation/wshs
+nix build -L
+./result/bin/ws install -m "$WORKSTATION_NAME";
 
 # most of the stuff below this can be moved to propellor
 

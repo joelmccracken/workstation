@@ -9,4 +9,11 @@ snapshots:
     sha256: 8699812d2b2c1f83d6ad1261de9cf628ed36a1cfc14f19d67188e005e7a3a39d
     url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/20.yaml
     size: 586106
-packages: []
+packages:
+- original:
+    hackage: optional-args-1.0.2
+  completed:
+    pantry-tree:
+      sha256: 90c3f1e9e8e7fa7f2e1aae1bdd91cbbcd42070ee8199ccea6f7aececdc1394f0
+      size: 217
+    hackage: optional-args-1.0.2@sha256:83f6a4c838bf011e85ea5573bfd4d7f8a8516d97c64d07135b1713526135aa39,878
