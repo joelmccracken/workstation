@@ -32,19 +32,19 @@ function is_linux() {
 }
 
 is_mac && {
-    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+    sudo time bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
     which brew > /dev/null || {
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        time /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # install git, necessary for next step
         # TODO this should be safe to run even if its been run before
-        brew install git
+        time brew install git
     }
 }
 
 is_linux && {
-    sudo bash -c 'apt-get update && apt-get install git'
+    time sudo bash -c 'apt-get update && apt-get install git'
 }
 
 polite-git-checkout () {
@@ -72,20 +72,20 @@ function mv_dir_dated_backup() {
 {
     cd ~;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+} || time polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 
 {
     cd ~/worksation;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
-    mv_dir_dated_backup ~/workstation
-    git clone 'https://github.com/joelmccracken/workstation.git'
+    time mv_dir_dated_backup ~/workstation
+    time git clone 'https://github.com/joelmccracken/workstation.git'
 }
 
 echo installing nix
 
 { which nix > /dev/null; } || {
-    sh <(curl -L https://releases.nixos.org/nix/nix-2.5.1/install) --daemon;
+    time sh <(curl -L https://releases.nixos.org/nix/nix-2.5.1/install) --daemon;
 }
 
 export NIX_REMOTE=daemon
@@ -102,13 +102,13 @@ EOF
 cat /etc/nix/nix.conf
 
 is_linux && {
-    sudo systemctl restart nix-daemon.service;
+    time sudo systemctl restart nix-daemon.service;
 }
 
 is_mac && {
     set +e
-    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    time sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    time sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
     set -e
 }
 
@@ -121,16 +121,16 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
 fi;
 
 cd  ~/workstation/wshs
-nix build -L
-./result/bin/ws install -m "$WORKSTATION_NAME";
+time nix build -L
+time ./result/bin/ws install -m "$WORKSTATION_NAME";
 
 # most of the stuff below this can be moved to propellor
 
 is_linux && {
-    sudo ~/workstation/bin/enable-passwordless-sudo.sh
-    sudo apt-get update
-    sudo snap install emacs --classic
-    sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
+    time sudo ~/workstation/bin/enable-passwordless-sudo.sh
+    time sudo apt-get update
+    time sudo snap install emacs --classic
+    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
 }
 
 {
@@ -138,10 +138,10 @@ is_linux && {
     [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
 } || {
     mv_dir_dated_backup ~/.emacs.d;
-    git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
+    time git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
     # alternative: use this if encounter problems
     # ~/.emacs.d/bin/doom -y install;
-    timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    time timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
 # Bootstraping Script:1 ends here
