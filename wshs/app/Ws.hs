@@ -1,6 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE GADTs #-}
 
 import Turtle
 import qualified Data.Text as T
@@ -57,11 +60,55 @@ filePathToText = T.pack . encodeString
 
 ciMacos :: IO ()
 ciMacos = do
-  h <- home
-  let brewfile = filePathToText (h </> "Brewfile")
-  void $ proc "brew" ["update"] mempty
-  void $ proc "brew" ["bundle", "--file", brewfile] mempty
+  satisfyProperties [brewBundled]
 
--- Local Variables: ***
--- mode:haskell ***
--- End: ***
+satisfyProperties :: [Property] -> IO ()
+satisfyProperties = void . traverse satisfyProperty
+
+satisfyProperty :: Property -> IO ()
+satisfyProperty (Property checker satisfier) = do
+  result <- checker
+  case result of
+    Satisfied -> return ()
+    Unsatisfied -> satisfier
+
+data Property =
+  Property
+  { checker :: IO PropertyCheckResults
+  , satisfier :: IO ()
+  }
+
+data PropertyCheckResults
+  = Satisfied
+  | Unsatisfied
+  deriving (Eq, Show)
+
+brewBundled :: Property
+brewBundled =
+  let
+    getBrewfile :: IO Turtle.FilePath
+    getBrewfile = do
+      h <- home
+      pure $ (h </> "Brewfile")
+
+    satisfier :: IO ()
+    satisfier = do
+      brewfile <- filePathToText <$> getBrewfile
+      let fileCommandArgs = ["--file", brewfile]
+      void $ proc "brew" ["update"] mempty
+      void $ proc "brew" (["bundle"] ++ fileCommandArgs) mempty
+
+    checker :: IO PropertyCheckResults
+    checker = do
+      brewfile <- filePathToText <$> getBrewfile
+      let fileCommandArgs = ["--file", brewfile]
+      void $ proc "brew" ["update"] mempty
+      exitCode <- proc "brew" (["bundle", "check"] ++ fileCommandArgs) mempty
+      pure $ isSatisfied (exitCode == ExitSuccess)
+  in
+    Property {..}
+
+isSatisfied :: Bool -> PropertyCheckResults
+isSatisfied = \case
+  True -> Satisfied
+  False -> Unsatisfied
