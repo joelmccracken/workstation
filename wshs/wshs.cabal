@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.34.6.
 --
 -- see: https://github.com/sol/hpack
 
@@ -26,10 +26,20 @@ source-repository head
 library
   exposed-modules:
       Lib
+      WSHS.Properties.Core
+      WSHS.Properties.MacOS
+      WSHS.Util
   other-modules:
       Paths_wshs
   hs-source-dirs:
       src
+  default-extensions:
+      OverloadedStrings
+      RecordWildCards
+      DuplicateRecordFields
+      LambdaCase
+      AllowAmbiguousTypes
+      GADTs
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -46,6 +56,13 @@ executable bww
   main-is: app/Bww.hs
   other-modules:
       Paths_wshs
+  default-extensions:
+      OverloadedStrings
+      RecordWildCards
+      DuplicateRecordFields
+      LambdaCase
+      AllowAmbiguousTypes
+      GADTs
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
       aeson
@@ -64,6 +81,13 @@ executable ws
   main-is: app/Ws.hs
   other-modules:
       Paths_wshs
+  default-extensions:
+      OverloadedStrings
+      RecordWildCards
+      DuplicateRecordFields
+      LambdaCase
+      AllowAmbiguousTypes
+      GADTs
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
       aeson
@@ -85,6 +109,13 @@ test-suite wshs-test
       Paths_wshs
   hs-source-dirs:
       test
+  default-extensions:
+      OverloadedStrings
+      RecordWildCards
+      DuplicateRecordFields
+      LambdaCase
+      AllowAmbiguousTypes
+      GADTs
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
