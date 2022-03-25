@@ -1,5 +1,0 @@
-It would be good to have an info property, say `Apt.mirror`, which sets a host's preferred apt mirror.  Then all properties in `Propellor.Property.Apt` would use this mirror when generating sources lists, falling back to the `deb.debian.org` default.  The value of `Apt.mirror` could be an apt cache on the LAN, or a mirror that is known to be better than the Debian CDN from where the host is located. --[[spwhitton|user/spwhitton]]
-
-[[!tag user/spwhitton]]
-
-> [[merged|done]] thank you! --[[Joey]]

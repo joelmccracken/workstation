@@ -1,3 +1,0 @@
-Seems that [the new virtio-fs](https://lwn.net/Articles/788333/) can be used for [the root filesystem of a libvirt VM](https://virtio-fs.gitlab.io/howto-boot.html).  That would allow propellor to keep updating the filesystem as it would just be a chroot on the KVM host, rather than an opaque image file.
-
---spwhitton

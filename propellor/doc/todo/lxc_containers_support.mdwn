@@ -1,1 +1,0 @@
-Adding lxc containers support would be great, as an alternative to docker, chroot, or systemd containers.

@@ -1,3 +1,0 @@
-I had a specific use-case that ensures a property while using a Consul session via the [consul-haskell package](https://hackage.haskell.org/package/consul-haskell-0.4/docs/Network-Consul.html#v:withSession); in order to make it type check a MonadBaseControl IO instance is needed, so I added one. Hopefully this is generally useful, so I don't need to maintain a forked version of propellor!
-
-Patch is located in the `MonadBaseControl` branch of my cloned git repo `git clone git@github.com:hellertime/propellor.git`

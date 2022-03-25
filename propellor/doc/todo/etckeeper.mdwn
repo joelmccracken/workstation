@@ -1,1 +1,0 @@
-It would be cool to have an etckeeper module :-).

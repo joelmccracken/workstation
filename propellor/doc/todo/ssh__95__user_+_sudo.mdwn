@@ -1,1 +1,0 @@
-It would be great to be able to ssh to a user different from root, and then to use sudo to run commands.
