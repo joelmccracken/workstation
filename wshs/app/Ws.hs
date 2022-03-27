@@ -2,6 +2,7 @@ import Turtle
 import qualified Data.Text as T
 import WSHS.Properties.Core
 import WSHS.Properties.MacOS
+import qualified WSHS.Properties.Debian as Deb
 
 data Options =
   Options { machineName :: Text
@@ -33,7 +34,7 @@ machineNameToProfile :: Text -> IO ()
 machineNameToProfile name =
   case name of
     "ci-macos" -> ciMacos
-    "ci-ubuntu" -> return () -- TODO add this
+    "ci-ubuntu" -> ciUbuntu
     _ -> error $ "No configuration available for machine named " <> T.unpack name
 
 -- check :: IO ()
@@ -51,3 +52,6 @@ ciMacos :: IO ()
 ciMacos = do
   satisfyProperties [brewBundled]
 
+ciUbuntu :: IO ()
+ciUbuntu = do
+  satisfyProperties [Deb.addRepository "ppa:kelleyk/emacs"]

@@ -27,6 +27,7 @@ library
   exposed-modules:
       Lib
       WSHS.Properties.Core
+      WSHS.Properties.Debian
       WSHS.Properties.MacOS
       WSHS.Util
   other-modules:
