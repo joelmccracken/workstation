@@ -54,4 +54,4 @@ ciMacos = do
 
 ciUbuntu :: IO ()
 ciUbuntu = do
-  satisfyProperties [Deb.addRepository "ppa:kelleyk/emacs"]
+  satisfyProperties [Deb.addSnap "emacs"]
