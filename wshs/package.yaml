@@ -26,6 +26,7 @@ default-extensions:
 - LambdaCase
 - AllowAmbiguousTypes
 - GADTs
+- QuasiQuotes
 
 dependencies:
 - base >= 4.7 && < 5
@@ -37,6 +38,9 @@ dependencies:
 - aeson
 - shelly
 - optional-args
+- raw-strings-qq
+- trifecta
+- parsers
 
 library:
   source-dirs: src
@@ -71,3 +75,4 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - wshs
+    - hspec
