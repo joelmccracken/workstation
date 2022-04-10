@@ -41,6 +41,7 @@ dependencies:
 - raw-strings-qq
 - trifecta
 - parsers
+- utf8-string
 
 library:
   source-dirs: src
