@@ -25,7 +25,6 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
       WSHS.Properties.Core
       WSHS.Properties.Debian
       WSHS.Properties.MacOS
@@ -43,6 +42,8 @@ library
       AllowAmbiguousTypes
       GADTs
       QuasiQuotes
+      NoImplicitPrelude
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -51,6 +52,7 @@ library
     , optional-args
     , parsers
     , raw-strings-qq
+    , rio
     , shelly
     , string-interpolate
     , text
@@ -71,7 +73,8 @@ executable bww
       AllowAmbiguousTypes
       GADTs
       QuasiQuotes
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
+      NoImplicitPrelude
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -80,6 +83,7 @@ executable bww
     , optional-args
     , parsers
     , raw-strings-qq
+    , rio
     , shelly
     , string-interpolate
     , text
@@ -101,7 +105,8 @@ executable ws
       AllowAmbiguousTypes
       GADTs
       QuasiQuotes
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
+      NoImplicitPrelude
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -110,6 +115,7 @@ executable ws
     , optional-args
     , parsers
     , raw-strings-qq
+    , rio
     , shelly
     , string-interpolate
     , text
@@ -135,7 +141,8 @@ test-suite wshs-test
       AllowAmbiguousTypes
       GADTs
       QuasiQuotes
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+      NoImplicitPrelude
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -145,6 +152,7 @@ test-suite wshs-test
     , optional-args
     , parsers
     , raw-strings-qq
+    , rio
     , shelly
     , string-interpolate
     , text

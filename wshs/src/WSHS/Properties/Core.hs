@@ -9,6 +9,8 @@ module WSHS.Properties.Core
   )
 where
 
+import RIO
+
 import Turtle
 
 data Property =

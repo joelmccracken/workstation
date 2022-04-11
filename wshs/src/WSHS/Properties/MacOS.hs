@@ -2,6 +2,8 @@
 
 module WSHS.Properties.MacOS (brewBundled) where
 
+import RIO
+
 import WSHS.Properties.Core
 import Turtle
 import WSHS.Util

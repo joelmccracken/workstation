@@ -2,6 +2,8 @@
 
 module WSHS.Properties.Debian where
 
+import RIO
+
 import WSHS.Properties.Core
 import WSHS.Util
 import Data.Text (Text, isPrefixOf, isInfixOf)
@@ -29,6 +31,6 @@ addSnap snapName =
         return $ isSatisfied snapIsInstalled
       satisfier :: IO ()
       satisfier = do
-        void $ proc "snap" ["install", snapName, "--classic"] mempty
+        void $ proc "sudo" [" snap", "install", snapName, "--classic"] mempty
   in
     Property {..}

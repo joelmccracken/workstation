@@ -27,6 +27,7 @@ default-extensions:
 - AllowAmbiguousTypes
 - GADTs
 - QuasiQuotes
+- NoImplicitPrelude
 
 dependencies:
 - base >= 4.7 && < 5
@@ -42,6 +43,17 @@ dependencies:
 - trifecta
 - parsers
 - utf8-string
+- rio
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Widentities
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wpartial-fields
+- -Wredundant-constraints
+
 
 library:
   source-dirs: src

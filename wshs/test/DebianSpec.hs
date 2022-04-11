@@ -45,10 +45,6 @@ spec = do
   describe "Debian" $ do
     describe "Snap List command" $ do
       it "parses output from my ubuntu server" $ do
-        -- problem which triggered this change
-        --
-        whcih
-
         case parseByteString Snap.snapListCommandOutputParser mempty snapListOutput of
           Success s -> s `shouldBe` [ Snap "emacs" "27.2-rc1", Snap "emacs2" "27.2" ]
           Failure info -> error $ show info

@@ -1,3 +1,5 @@
+import RIO
+
 import Turtle
 import qualified Data.Text as T
 import WSHS.Properties.Core

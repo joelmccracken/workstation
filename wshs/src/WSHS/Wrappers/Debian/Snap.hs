@@ -2,6 +2,8 @@
 
 module WSHS.Wrappers.Debian.Snap where
 
+import RIO
+
 import Turtle hiding (char, alphaNum, newline, spaces, Parser, anyChar)
 import qualified Data.Text as T
 import Text.Trifecta
