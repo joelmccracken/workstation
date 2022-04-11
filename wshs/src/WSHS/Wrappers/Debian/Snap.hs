@@ -6,7 +6,7 @@ import Turtle hiding (char, alphaNum, newline, spaces, Parser, anyChar)
 import qualified Data.Text as T
 import Text.Trifecta
 import Text.Parser.Combinators
-
+import Text.Parser.Token
 
 data Snap = Snap { name :: Text, version :: Text } deriving (Eq, Show)
 
@@ -22,6 +22,12 @@ snapListCommandHeader =
 
 snapListCommandOutputParser :: Parser [Snap]
 snapListCommandOutputParser = do
+  optional whiteSpace
+  optional (textSymbol "snapd")
+
+  optional $ do
+    whiteSpace
+    (textSymbol "snapd")
   snapListCommandHeader
   many snapItemParser
 
