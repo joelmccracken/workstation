@@ -129,7 +129,7 @@ time ./result/bin/ws install -m "$WORKSTATION_NAME";
 is_linux && {
     time sudo ~/workstation/bin/enable-passwordless-sudo.sh
     time sudo apt-get update
-    time sudo snap install emacs --classic
+    # time sudo snap install emacs --classic
     time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
 }
 
@@ -141,7 +141,7 @@ is_linux && {
     time git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
     # alternative: use this if encounter problems
     # ~/.emacs.d/bin/doom -y install;
-    time timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    time timeout 10m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
 # Bootstraping Script:1 ends here
