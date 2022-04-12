@@ -138,6 +138,7 @@ is_linux && {
     # just checking to see if the bin is there..
     ls -lah /usr/bin/snap
     sudo snap install emacs --classic
+    sudo snap list
 }
 
 cd  ~/workstation/wshs
