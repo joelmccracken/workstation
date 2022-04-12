@@ -120,16 +120,28 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
     set -u
 fi;
 
+
+is_linux && {
+    time sudo ~/workstation/bin/enable-passwordless-sudo.sh
+    time sudo apt-get update
+    # it seems that on github CI snap
+    # is not installed:
+    # https://github.com/joelmccracken/workstation/runs/5981940574?check_suite_focus=true
+    # + ./result/bin/ws install -m ci-ubuntu
+    # sudo:  snap: command not found
+    # https://phoenixnap.com/kb/install-snap-ubuntu
+    time sudo apt install snapd
+}
+
 cd  ~/workstation/wshs
+
 time nix build -L
+
 time ./result/bin/ws install -m "$WORKSTATION_NAME";
 
 # most of the stuff below this can be moved to propellor
 
 is_linux && {
-    time sudo ~/workstation/bin/enable-passwordless-sudo.sh
-    time sudo apt-get update
-    # time sudo snap install emacs --classic
     time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
 }
 
