@@ -131,6 +131,8 @@ is_linux && {
     # sudo:  snap: command not found
     # https://phoenixnap.com/kb/install-snap-ubuntu
     time sudo apt install snapd
+    ls -lah /usr/bin/snap
+    sudo snap install emacs --classic
 }
 
 cd  ~/workstation/wshs
