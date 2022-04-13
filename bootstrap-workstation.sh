@@ -162,7 +162,8 @@ is_linux && {
     time git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
     # alternative: use this if encounter problems
     # ~/.emacs.d/bin/doom -y install;
-    time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     echo FINISHED INSTALLING DOOM;
 }
 # Bootstraping Script:1 ends here
