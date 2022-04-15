@@ -1,13 +1,13 @@
 -- |
 module DebianSpec where
 
+import RIO
+
 import Test.Hspec
 import Text.RawString.QQ (r)
 
 import Text.Trifecta
 import WSHS.Wrappers.Debian.Snap as Snap
-import Data.ByteString
-import Text.Trifecta (Result(Success, Failure ))
 
 snapListOutput :: ByteString
 snapListOutput = [r|

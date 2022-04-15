@@ -1,5 +1,6 @@
-import Test.Hspec
+import RIO
 
+import Test.Hspec
 import qualified DebianSpec
 
 main :: IO ()

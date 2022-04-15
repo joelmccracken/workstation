@@ -38,5 +38,5 @@ snapItemParser = do
   name <- T.pack <$> many alphaNum
   void $ spaces
   version <- T.pack <$> many (alphaNum <|> char '.' <|> char '-')
-  void $ manyTill anyChar ((void newline) <|> eof)
+  void $ manyTill anyChar (void newline)
   return $ Snap name version
