@@ -133,8 +133,11 @@ is_linux && {
     # time sudo apt install snapd
     # kinda sorta try to do this from:
     # https://github.com/actions/virtual-environments/issues/2209#issuecomment-740526589
-    sudo mkdir /run/user/1001
+    [ -e /run/user/1001 ] || {
+        sudo mkdir /run/user/1001
+    }
     sudo chmod -R 777 /run/user/1001
+
     # just checking to see if the bin is there..
     ls -lah /usr/bin/snap
     # comment this out for now, just to see, because build seemed to pass/execute OK?
