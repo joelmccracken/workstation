@@ -44,6 +44,7 @@ dependencies:
 - parsers
 - utf8-string
 - rio
+- temporary
 
 ghc-options:
 - -Wall

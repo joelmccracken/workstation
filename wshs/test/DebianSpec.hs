@@ -40,6 +40,24 @@ lxd     4.0.9-8e2046b  22753  4.0/stable/…   canonical*  -
 snapd   2.55.2         15314  latest/stable  canonical*
 |]
 
+snapListOutputCI2 :: ByteString
+snapListOutputCI2 = [r|Name    Version        Rev    Tracking         Publisher   Notes
+core20  20220318       1405   latest/stable    canonical✓  base
+emacs   28.1           1490   latest/stable    alexmurray  classic
+lxd     5.0.0-e478009  22894  latest/stable/…  canonical✓  -
+snapd   2.54.4         15177  latest/stable    canonical✓  snapd
+|]
+
+snapListOutputCI3 :: ByteString
+snapListOutputCI3 = [r|snapd  canonical*    latest/stable  15177         2.54.4   snapd
+-  canonical*  latest/stable/…  22894  5.0.0-e478009     lxd
+classic  alexmurray    latest/stable   1490           28.1   emacs
+base  canonical*    latest/stable   1405       20220318  core20
+Notes   Publisher         Tracking    Rev        Version    Name
+|]
+
+
+
 spec :: Spec
 spec = do
   describe "Debian" $ do
@@ -57,4 +75,22 @@ spec = do
             , Snap {name = "snapd", version = "2.55.2"}
             ]
 
+          Failure info -> error $ show info
+
+        case parseByteString Snap.snapListCommandOutputParser mempty snapListOutputCI2 of
+          Success s -> s `shouldBe`
+            [ Snap {name = "core20", version = "20220318"}
+            , Snap {name = "emacs", version = "28.1"}
+            , Snap {name = "lxd", version = "5.0.0-e478009"}
+            , Snap {name = "snapd", version = "2.54.4"}
+            ]
+          Failure info -> error $ show info
+
+        case parseByteString Snap.snapListCommandOutputParser mempty snapListOutputCI3 of
+          Success s -> s `shouldBe`
+            [ Snap {name = "core20", version = "20220318"}
+            , Snap {name = "emacs", version = "28.1"}
+            , Snap {name = "lxd", version = "5.0.0-e478009"}
+            , Snap {name = "snapd", version = "2.54.4"}
+            ]
           Failure info -> error $ show info

@@ -55,6 +55,7 @@ library
     , rio
     , shelly
     , string-interpolate
+    , temporary
     , text
     , trifecta
     , turtle
@@ -86,6 +87,7 @@ executable bww
     , rio
     , shelly
     , string-interpolate
+    , temporary
     , text
     , trifecta
     , turtle
@@ -118,6 +120,7 @@ executable ws
     , rio
     , shelly
     , string-interpolate
+    , temporary
     , text
     , trifecta
     , turtle
@@ -155,6 +158,7 @@ test-suite wshs-test
     , rio
     , shelly
     , string-interpolate
+    , temporary
     , text
     , trifecta
     , turtle
