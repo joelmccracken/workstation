@@ -30,7 +30,7 @@ addSnap snapName =
         writeFileBinary tf outputbs
         let parseResult = parseByteString Snap.snapListCommandOutputParser mempty outputbs
         let showError err =
-              error (show err <> "; full text that did not parse: " <> toString outputbs)
+              error (show err <> "; full text that did not parse: (" <> toString outputbs <> ")")
         let snaps = foldResult showError id parseResult
         let snapIsInstalled = isJust $ List.find ((snapName ==) . name) snaps
         return $ isSatisfied snapIsInstalled
