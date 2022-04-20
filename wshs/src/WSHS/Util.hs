@@ -1,6 +1,6 @@
 -- |
 
-module WSHS.Util (filePathToText, shellToList) where
+module WSHS.Util (filePathToText, shellToList, shellToMonoid) where
 
 import RIO
 
@@ -13,3 +13,6 @@ filePathToText = T.pack . encodeString
 -- | run a shell to completion in IO, collecting output in a list
 shellToList :: Shell a -> IO [a]
 shellToList theShell = Turtle.fold theShell (Fold (flip (:)) [] id)
+
+shellToMonoid :: Monoid a => Shell a -> IO a
+shellToMonoid theShell = Turtle.fold theShell (Fold (<>) mempty id)

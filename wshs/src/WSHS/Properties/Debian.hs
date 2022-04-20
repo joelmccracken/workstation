@@ -24,7 +24,7 @@ addSnap :: Text -> Property
 addSnap snapName =
   let checker :: IO PropertyCheckResults
       checker = do
-        outputbs <- mconcat <$> (shellToList $ TBytes.inproc "snap" ["list"] mempty)
+        outputbs <- shellToMonoid $ TBytes.inproc "snap" ["list"] mempty
         tf <- emptySystemTempFile "snap-list-command-output.txt"
         BC.putStrLn $ BC.pack tf
         writeFileBinary tf outputbs
