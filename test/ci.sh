@@ -24,6 +24,9 @@ curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BO
 
 echo BEGINNING INITIAL INSTALL
 
+# disable native compilation, too slow for CI
+export DOOM_DISABLE_NATIVE_COMPILE=true
+
 if [ "$RUNNER_OS" == "macOS" ]; then
     bash bootstrap-workstation.sh ci-macos $WORKSTATION_BOOTSTRAP_COMMIT
 else
