@@ -45,8 +45,15 @@ emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
   fi
 }
 
-emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri))' | assert_input "doom-version" '21.12.0-alpha'
-emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-core-version) (terpri))' | assert_input "doom-core-version" '3.0.0-alpha'
+emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri))' | {
+  read actual;
+  if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" ]]; then
+    echo "doom version is correct"
+  else
+    echo "doom version is not correct, found '$actual', expected 21.12.0-alpha or 3.0.0-dev"
+    exit 1
+  fi
+}
 
 echo "TESTS COMPLETE"
 # test.sh:1 ends here
