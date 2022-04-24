@@ -166,7 +166,9 @@ is_linux && {
     # alternative: use this if encounter problems
     # ~/.emacs.d/bin/doom -y install;
     # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    time timeout 60m bash -c 'yes | ~/.emacs.d/bin/doom install'
+
     echo FINISHED INSTALLING DOOM;
 }
 # Bootstraping Script:1 ends here
