@@ -171,4 +171,13 @@ is_linux && {
 
     echo FINISHED INSTALLING DOOM;
 }
+
+HOME_MANAGER_SHA=0304f0f58b4c538ff704c58d53a778b062810ec7
+nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
+nix-channel --update
+
+export HOME_MANAGER_BACKUP_EXT=old
+nix-shell '<home-manager>' -A install
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+
 # Bootstraping Script:1 ends here
