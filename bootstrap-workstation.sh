@@ -120,7 +120,6 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
     set -u
 fi;
 
-
 is_linux && {
     time sudo ~/workstation/bin/enable-passwordless-sudo.sh
     time sudo apt-get update
@@ -176,6 +175,7 @@ HOME_MANAGER_SHA=0304f0f58b4c538ff704c58d53a778b062810ec7
 nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
 nix-channel --update
 
+export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 export HOME_MANAGER_BACKUP_EXT=old
 nix-shell '<home-manager>' -A install
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
