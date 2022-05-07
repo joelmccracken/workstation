@@ -178,6 +178,7 @@ nix-channel --update
 export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 export HOME_MANAGER_BACKUP_EXT=old
 nix-shell '<home-manager>' -A install
+set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
-
+set -u
 # Bootstraping Script:1 ends here
