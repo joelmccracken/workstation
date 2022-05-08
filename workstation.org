@@ -178,30 +178,16 @@ so the bash script would basically do the minimum amount required to set up
 everything for the haskell process.
 
 ** Remaining Tasks
-*** TODO set up ubuntu version CI process
-*** TODO set up ubuntu version of bootstrap
-seprate script, or script that is smart enough run on mac and linux?
-mac
-- setup/install/check xcode (needed for brew)
-- install homebrew (needed for bundle/git (maybe?))
-- brew install git
-- git init.. clone... etc polite checkout
-- brew bundle (needed for git (actually does xcode-select get this for me?))
-- setup/install/check doom
-- setup/install/check nix
-- setup/install/check haskell stack
-ubuntu
-- apt-get update/check
-- apt-get install/check all the things
-common
-- build bww however it needs to be built
 *** TODO figure out how to get bww sync to happen automatically
 *** TODO fix origins for workstation repo and dotfiles
-*** TODO move most of the setup process to haskell
-shell script should just download workstation repo, install stack, build haskell
-code, then invoke built setup process
+*** TODO port test/test.sh into wshs/haskell
+*** TODO look into using home manager/nix again for emacs
+the main thought here is that its becoming clear that I want to have at lest the
+option to build emacs with my own options (specifically, xwidget webkit support)
+or perhaps using one of the other projects I ha
+*** TODO use home manager for macos, ubuntu, nixos
 *** TODO echo instructions on what to do once bootstraip is done
-need to enter ~/secrets/bw_pass file
+need to enter ~/secrets/bw_pass file, then prep that
 *** TODO establish/determine "phases" to setup
 initial bootstrap (checkout files, setup haskell, etc)
 pre-authentication (pre-bww sync)
@@ -526,3 +512,7 @@ bash ~/workstation/test/test.sh
 ** TODO rebuild my personal laptop once all of this is stable
 * Misc
 ** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
+* Quick note
+#+begin_src sh
+home-manager switch --flake .
+#+end_src
