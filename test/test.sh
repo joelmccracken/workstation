@@ -35,6 +35,8 @@ else
   exit 1
 fi
 
+ls -lah ~/.emacs.d/
+
 emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
   read actual
   if [[ "$actual" == "27.1" || "$actual" == "27.2" || "$actual" == "28.1" ]]; then
@@ -45,7 +47,6 @@ emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
   fi
 }
 
-ls -lah ~/.emacs.d/
 
 emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri))' | {
   read actual;
