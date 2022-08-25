@@ -144,6 +144,11 @@ is_linux && {
     sudo snap list
 }
 
+is_mac && {
+    nix-build https://github.com/LnL7/nix-darwin/archive/ef0e7f41cdf8fae1d2390c4df246c90a364ed8d9.tar.gz -A installer
+    ./result/bin/darwin-installer
+}
+
 cd  ~/workstation/wshs
 
 time nix build -L
