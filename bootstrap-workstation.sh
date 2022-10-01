@@ -145,7 +145,7 @@ is_linux && {
 }
 
 is_mac && {
-    nix-build https://github.com/LnL7/nix-darwin/archive/ef0e7f41cdf8fae1d2390c4df246c90a364ed8d9.tar.gz -A installer
+    nix-build https://github.com/LnL7/nix-darwin/archive/02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf.tar.gz -A installer
     ./result/bin/darwin-installer
 }
 
