@@ -1,0 +1,12 @@
+#+TITLE: Wip Stuff
+
+try to run the nix darwin installer, ran into weird issues. trying to "update"
+to a new nix version hoping that will fix the issue
+
+
+sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
+
+
+afterwars, run
+
+nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
