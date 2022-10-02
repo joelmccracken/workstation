@@ -75,7 +75,7 @@ function mv_dir_dated_backup() {
 {
     cd ~;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || time polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+} || time polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git' $WORKSTATION_BOOTSTRAP_COMMIT
 
 {
     cd ~/worksation;
