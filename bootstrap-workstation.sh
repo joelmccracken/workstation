@@ -18,7 +18,7 @@ else
 fi
 
 if [ -z "${2+x}" ]; then
-    WORKSTATION_BOOTSTRAP_COMMIT=master
+    WORKSTATION_BOOTSTRAP_COMMIT=origin/master
 else
     WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
@@ -52,6 +52,7 @@ is_linux && {
 polite-git-checkout () {
     DIR=$1
     REPO=$2
+    COMMIT=$3
 
     cd $DIR
     git init
@@ -59,7 +60,7 @@ polite-git-checkout () {
     git fetch
 
     # wont work (it will have already been deleted from the index)
-    git reset --mixed origin/master
+    git reset --mixed COMMIT
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 }
