@@ -52,16 +52,14 @@ is_linux && {
 polite-git-checkout () {
     DIR=$1
     REPO=$2
-    COMMIT=$3
 
     cd $DIR
     git init
     git remote add origin $REPO
-    git fetch --all
+    git fetch
 
     # wont work (it will have already been deleted from the index)
-    git reset --mixed origin/$GITHUB_REF_NAME
-    git reset --mixed $COMMIT
+    git reset --mixed origin/master
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 }
@@ -76,7 +74,7 @@ function mv_dir_dated_backup() {
 {
     cd ~;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || time polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git' $WORKSTATION_BOOTSTRAP_COMMIT
+} || time polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 
 {
     cd ~/worksation;
@@ -84,6 +82,8 @@ function mv_dir_dated_backup() {
 } || {
     time mv_dir_dated_backup ~/workstation
     time git clone 'https://github.com/joelmccracken/workstation.git'
+    cd workstation
+    git checkout $WORKSTATION_BOOTSTRAP_COMMIT
 }
 
 echo installing nix
