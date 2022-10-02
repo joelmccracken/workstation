@@ -39,10 +39,10 @@ ls -lah ~/.emacs.d/
 
 emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
   read actual
-  if [[ "$actual" == "27.1" || "$actual" == "27.2" || "$actual" == "28.1" ]]; then
+  if [[ "$actual" == "27.1" || "$actual" == "27.2" || "$actual" == "28.1" || "$actual" == "28.2" ]]; then
     echo "emacs version is correct"
   else
-    echo "emacs version is not correct, found '$actual', expected 27.1, 27.2, or 28.1"
+    echo "emacs version is not correct, found '$actual', expected 27.1, 27.2, 28.1, or 28.2"
     exit 1
   fi
 }
