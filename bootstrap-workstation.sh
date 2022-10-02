@@ -8,6 +8,8 @@
 
 set -xeuo pipefail
 
+env
+
 if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
     exit 2
