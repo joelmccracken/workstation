@@ -57,7 +57,7 @@ polite-git-checkout () {
     cd $DIR
     git init
     git remote add origin $REPO
-    git fetch
+    git fetch --all
 
     # wont work (it will have already been deleted from the index)
     git reset --mixed origin/$GITHUB_REF_NAME
