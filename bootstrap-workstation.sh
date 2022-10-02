@@ -60,7 +60,7 @@ polite-git-checkout () {
     git fetch
 
     # wont work (it will have already been deleted from the index)
-    git reset --mixed COMMIT
+    git reset --mixed $COMMIT
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 }
