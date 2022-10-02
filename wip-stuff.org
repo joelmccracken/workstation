@@ -10,3 +10,4 @@ sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remo
 afterwars, run
 
 nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+darwin-rebuild switch -I darwin-config=$HOME/workstation/darwin-configuration.nix
