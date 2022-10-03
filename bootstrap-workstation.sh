@@ -176,7 +176,7 @@ is_linux && {
     # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
     time timeout 60m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-
+    ~/.emacs.d/bin/doom sync
     echo FINISHED INSTALLING DOOM;
 }
 
