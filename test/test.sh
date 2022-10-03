@@ -49,7 +49,7 @@ emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
 
 
 
-emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri))' | {
+emacs --batch --eval '(progn (princ doom-version) (terpri))' | {
   read actual;
   if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" ]]; then
     echo "doom version is correct"
