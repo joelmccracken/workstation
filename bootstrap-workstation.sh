@@ -190,4 +190,6 @@ nix-shell '<home-manager>' -A install
 set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
+ls -lah ~
+ls -lah ~/.emacs.d
 # Bootstraping Script:1 ends here
