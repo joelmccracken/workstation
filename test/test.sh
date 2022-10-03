@@ -48,13 +48,12 @@ emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
 }
 
 
-
-emacs --batch --eval '(progn (princ doom-version) (terpri))' | {
+emacs -l ~/.emacs.d/early-init.el --batch --eval '(progn (princ doom-version) (terpri))' | {
   read actual;
-  if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" ]]; then
+  if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" || "$actual" == "3.0.0-pre" ]]; then
     echo "doom version is correct"
   else
-    echo "doom version is not correct, found '$actual', expected 21.12.0-alpha or 3.0.0-dev"
+    echo "doom version is not correct, found '$actual', expected 21.12.0-alpha, 3.0.0-dev, or 3.0.0-pre"
     exit 1
   fi
 }
