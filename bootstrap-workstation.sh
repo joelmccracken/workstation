@@ -170,7 +170,7 @@ is_linux && {
     [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
 } || {
     mv_dir_dated_backup ~/.emacs.d;
-    time git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
+    time git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
     # alternative: use this if encounter problems
     # ~/.emacs.d/bin/doom -y install;
     # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
