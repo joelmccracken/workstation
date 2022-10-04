@@ -1,5 +1,5 @@
 {
-  description = "mJoel's darwin system";
+  description = "Joel's darwin system";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-20.09-darwin";
@@ -8,9 +8,9 @@
   };
 
   outputs = { self, darwin, nixpkgs }: {
-    darwinConfigurations."Johns-MacBook" = darwin.lib.darwinSystem {
+    darwinConfigurations."glamdring" = darwin.lib.darwinSystem {
       system = "x86_64-darwin";
-      modules = [ ./configuration.nix ];
+      modules = [ ./darwin-configuration.nix ];
     };
   };
 }
