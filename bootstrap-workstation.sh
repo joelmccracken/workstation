@@ -8,7 +8,7 @@
 
 set -xeuo pipefail
 
-env
+NIX_DARWIN_VERSION=02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf
 
 if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
@@ -149,8 +149,11 @@ is_linux && {
 }
 
 is_mac && {
-    nix-build https://github.com/LnL7/nix-darwin/archive/02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf.tar.gz -A installer
+    nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DAWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
+
+    nix build ~/workstation\#darwinConfigurations.glamdring.system
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
 }
 
 cd  ~/workstation/wshs
@@ -190,6 +193,4 @@ nix-shell '<home-manager>' -A install
 set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
-ls -lah ~
-ls -lah ~/.emacs.d
 # Bootstraping Script:1 ends here
