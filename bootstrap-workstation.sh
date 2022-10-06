@@ -159,8 +159,7 @@ is_mac && {
 
     nix build ~/workstation\#darwinConfigurations.glamdring.system
     echo hostname: $(hostname)
-    set -x
-    source ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
     rm -rf ./result
 }
 
