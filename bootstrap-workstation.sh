@@ -93,19 +93,16 @@ echo installing nix
 }
 
 export NIX_REMOTE=daemon
-
-# ( sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
-# trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-# substituters = https://cache.nixos.org https://hydra.iohk.io
-# experimental-features = nix-command flakes
-# trusted-users = root joel runner
-# build-users-group = nixbld
-# # END OF /etc/nix/nix.conf
-# EOF
-
+is_linux &&  {
+(sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+substituters = https://cache.nixos.org https://hydra.iohk.io
+experimental-features = nix-command flakes
+trusted-users = root joel runner
+build-users-group = nixbld
+# END OF /etc/nix/nix.conf
+EOF
 # cat /etc/nix/nix.conf
-
-is_linux && {
     time sudo systemctl restart nix-daemon.service;
 }
 
@@ -149,7 +146,7 @@ is_linux && {
 }
 
 is_mac && {
-    mv /etc/nix/nix.conf /etc/nix/nix.conf.old
+    sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.old
     cd ~/workstation
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
