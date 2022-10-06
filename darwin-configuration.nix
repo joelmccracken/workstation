@@ -2,8 +2,10 @@
 
 { config, pkgs, ... }:
 
+let hostname = "glamdring"; in
 {
-  networking.hostname = "glamdring";
+  networking.hostname = hostname;
+  networking.localHostName = hostname;
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
