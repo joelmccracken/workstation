@@ -151,9 +151,9 @@ is_mac && {
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    nix build ~/workstation\#darwinConfigurations.glamdring.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
-    rm -rf ./result
+    # nix build ~/workstation\#darwinConfigurations.glamdring.system
+    # ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
+    # rm -rf ./result
 }
 
 cd  ~/workstation/wshs
