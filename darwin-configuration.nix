@@ -3,7 +3,7 @@
 { config, pkgs, ... }:
 
 {
-  network.hostname = "glamdring";
+  networking.hostname = "glamdring";
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
