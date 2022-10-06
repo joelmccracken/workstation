@@ -149,7 +149,7 @@ is_linux && {
 }
 
 is_mac && {
-    nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DAWIN_VERSION}.tar.gz -A installer
+    nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
     nix build ~/workstation\#darwinConfigurations.glamdring.system
