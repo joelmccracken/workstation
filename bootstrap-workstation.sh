@@ -8,7 +8,7 @@
 
 set -xeuo pipefail
 
-NIX_DARWIN_VERSION=02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf
+export NIX_DARWIN_VERSION=02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf
 
 if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
@@ -190,7 +190,6 @@ nix-channel --update
 export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 export HOME_MANAGER_BACKUP_EXT=old
 nix-shell '<home-manager>' -A install
-set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
-set -u
+
 # Bootstraping Script:1 ends here
