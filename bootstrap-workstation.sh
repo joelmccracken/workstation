@@ -158,7 +158,8 @@ is_mac && {
     restart_mac_daemon
 
     nix build ~/workstation\#darwinConfigurations.glamdring.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
+    set -x
+    source ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
     rm -rf ./result
 }
 
