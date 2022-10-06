@@ -188,13 +188,17 @@ is_linux && {
     echo FINISHED INSTALLING DOOM;
 }
 
-HOME_MANAGER_SHA=0304f0f58b4c538ff704c58d53a778b062810ec7
+HOME_MANAGER_SHA=1a8e35d2e53ed2ccd9818fad9c9478d56c655661
 nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
 nix-channel --update
 
 export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 export HOME_MANAGER_BACKUP_EXT=old
 nix-shell '<home-manager>' -A install
+
+# evaluating this with set -u will cause an unbound variable error
+set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
 
 # Bootstraping Script:1 ends here
