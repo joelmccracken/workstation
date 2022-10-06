@@ -149,9 +149,12 @@ is_linux && {
 }
 
 is_mac && {
+    mv /etc/nix/nix.conf /etc/nix/nix.conf.old
     cd ~/workstation
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
+
+    source /etc/static/bashrc
 
     nix build ~/workstation\#darwinConfigurations.glamdring.system
     ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
