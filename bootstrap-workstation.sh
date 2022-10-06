@@ -106,11 +106,15 @@ EOF
     time sudo systemctl restart nix-daemon.service;
 }
 
-is_mac && {
+restart_mac_daemon() {
     set +e
     time sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
     time sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
     set -e
+}
+
+is_mac && {
+    restart_mac_daemon
 }
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -150,7 +154,7 @@ is_mac && {
     cd ~/workstation
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
-
+    restart_mac_daemon
     # nix build ~/workstation\#darwinConfigurations.glamdring.system
     # ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
     # rm -rf ./result
