@@ -154,6 +154,7 @@ is_mac && {
     cd ~/workstation
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
+
     restart_mac_daemon
 
     nix build ~/workstation\#darwinConfigurations.glamdring.system
