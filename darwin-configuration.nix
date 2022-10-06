@@ -4,7 +4,7 @@
 
 let hostname = "glamdring"; in
 {
-  networking.hostname = hostname;
+  networking.hostName = hostname;
   networking.localHostName = hostname;
 
   # List packages installed in system profile. To search by name, run:
