@@ -158,8 +158,8 @@ is_mac && {
     restart_mac_daemon
 
     nix build ~/workstation\#darwinConfigurations.glamdring.system
-    echo hostname: $(hostname)
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation
+    # inside bash -c so the new hostname is picked up
+    bash -c './result/sw/bin/darwin-rebuild switch --flake ~/workstation'
     rm -rf ./result
 }
 
