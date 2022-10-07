@@ -163,7 +163,7 @@ is_mac && {
     # sudo scutil --set LocalHostName glamdring
     # bash --login -c 'echo hostname: $(hostname)'
     # inside bash -c so the new hostname is picked up
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation\#darwinConfigurations.glamdring.system
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation\#glamdring
 
     rm -rf ./result
 }
