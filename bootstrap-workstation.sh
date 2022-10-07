@@ -158,9 +158,12 @@ is_mac && {
     restart_mac_daemon
 
     nix build ~/workstation\#darwinConfigurations.glamdring.system
-    bash -c 'echo hostname: $(hostname)'
+    sudo scutil --set ComputerName glamdring
+    sudo scutil --set HostName glamdring
+    sudo scutil --set LocalHostName glamdring
+    bash --login -c 'echo hostname: $(hostname)'
     # inside bash -c so the new hostname is picked up
-    bash -c './result/sw/bin/darwin-rebuild switch --flake ~/workstation'
+    bash --login -c './result/sw/bin/darwin-rebuild switch --flake ~/workstation'
     rm -rf ./result
 }
 
