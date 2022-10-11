@@ -155,15 +155,8 @@ is_mac && {
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    restart_mac_daemon
-
     nix build ~/workstation\#darwinConfigurations.glamdring.system
-    # sudo scutil --set ComputerName glamdring
-    # sudo scutil --set HostName glamdring
-    # sudo scutil --set LocalHostName glamdring
-    # bash --login -c 'echo hostname: $(hostname)'
-    # inside bash -c so the new hostname is picked up
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation\#glamdring
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#glamdring
 
     rm -rf ./result
 }
