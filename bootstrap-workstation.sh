@@ -161,6 +161,11 @@ is_mac && {
     rm -rf ./result
 }
 
+
+HOME_MANAGER_VERSION_SHA=04f53999788cd47c6ce932d6cbd7cbfd3998712f
+nix-channel --add https://github.com/rycee/home-manager/archive/$HOME_MANAGER_VERSION_SHA.tar.gz home-manager
+nix-channel --update
+
 cd  ~/workstation/wshs
 
 time nix build -L
