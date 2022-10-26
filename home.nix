@@ -22,6 +22,9 @@
       #   doomPrivateDir = ./doom.d;
       # }
     ];
+
+    # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
+    manual.manpages.enable = false;
     home.file = {
       ".emacs.d/init.el".text = ''
           ;; loads doom from nix store
