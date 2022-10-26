@@ -162,9 +162,20 @@ is_mac && {
 }
 
 
-HOME_MANAGER_VERSION_SHA=04f53999788cd47c6ce932d6cbd7cbfd3998712f
-nix-channel --add https://github.com/rycee/home-manager/archive/$HOME_MANAGER_VERSION_SHA.tar.gz home-manager
+HOME_MANAGER_SHA=1a8e35d2e53ed2ccd9818fad9c9478d56c655661
+nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
 nix-channel --update
+
+export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+export HOME_MANAGER_BACKUP_EXT=old
+nix-shell '<home-manager>' -A install
+
+# evaluating this with set -u will cause an unbound variable error
+set +u
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
+
+home-manager switch -f ~/workstation/home.nix
 
 cd  ~/workstation/wshs
 
@@ -192,18 +203,5 @@ is_linux && {
     ~/.emacs.d/bin/doom sync
     echo FINISHED INSTALLING DOOM;
 }
-
-HOME_MANAGER_SHA=1a8e35d2e53ed2ccd9818fad9c9478d56c655661
-nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
-nix-channel --update
-
-export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
-export HOME_MANAGER_BACKUP_EXT=old
-nix-shell '<home-manager>' -A install
-
-# evaluating this with set -u will cause an unbound variable error
-set +u
-source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
-set -u
 
 # Bootstraping Script:1 ends here
