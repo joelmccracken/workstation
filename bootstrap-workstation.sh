@@ -162,7 +162,7 @@ is_mac && {
 }
 
 
-HOME_MANAGER_SHA=1a8e35d2e53ed2ccd9818fad9c9478d56c655661
+HOME_MANAGER_SHA=7dc4e4ebd71280842b4d30975439980baaac9db8
 nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
 nix-channel --update
 
