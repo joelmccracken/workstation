@@ -164,8 +164,10 @@ is_mac && {
 
 export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 HOME_MANAGER_SHA=213a06295dff96668a1d673b9fd1c03ce1de6745
-nix-shell https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz -A install                                                                                     ~/workstation
+nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
+nix-channel --update
 export HOME_MANAGER_BACKUP_EXT=old
+nix-shell '<home-manager>' -A install
 
 # evaluating this with set -u will cause an unbound variable error
 set +u
