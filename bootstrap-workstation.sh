@@ -9,7 +9,7 @@
 set -xeuo pipefail
 
 export NIX_DARWIN_VERSION=02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf
-export HOME_MANAGER_SHA=213a06295dff96668a1d673b9fd1c03ce1de6745
+export HOME_MANAGER_VERSION=213a06295dff96668a1d673b9fd1c03ce1de6745
 
 if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
@@ -78,7 +78,7 @@ function mv_dir_dated_backup() {
 } || time polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 
 {
-    cd ~/worksation;
+    cd $WS_DIR
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
     time mv_dir_dated_backup ~/workstation
@@ -152,7 +152,7 @@ is_linux && {
 
 is_mac && {
     sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.old
-    cd ~/workstation
+    cd $WS_DIR
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
@@ -164,10 +164,11 @@ is_mac && {
 
 
 export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
-nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
+nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_VERSION}.tar.gz home-manager
 nix-channel --update
 export HOME_MANAGER_BACKUP_EXT=old
 
+mkdir -p $HOME/.config/nixpkgs/
 ln -s $HOME/workstation/home.nix $HOME/.config/nixpkgs/home.nix
 nix-shell '<home-manager>' -A install
 

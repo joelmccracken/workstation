@@ -52,37 +52,9 @@ reported to me.
 *** early problem reporting
 we'd like to know about problems asap. If a new update comes out, and our whole
 setup proces is flawed somehow with this system.
-*** A note on Nix
-In my circle, Nix is commonly used. So one may ask "why not do all this with
-Nix"?
-
-Nix has a "my way or the highway" philosophy. In fact, as far as I can
-tell, it really doesn't provide any good way to:
-
-- set up non-nix software
-- provision ssh keys, secrets files, etc
-- download and set up file system shares
-
-Of course, I am still learning Nix, and I am sure this isn't totally 100% right,
-its just my impressions. But the point is that I need some kind of "extra" setup
-stuff anyway which needs to be independent of nix *anyway*.
-
-This may change, but for now I'm just using nix sparingly, where it
-makes sense, and doing everything else without it.
 * Background and History
 I have had a few different setups over the
 years. Accomplishing this is a lot harder than I expected.
-** Nix
-This same repo/setup *was* based upon ~nix~, but I had to abandon it. I still want
-to go back to it, eventually. Most of the notes below which mention ~nix~ are
-wrong/out of date, and I need to get around to updating them.
-
-I kept that version with nix around in a branch, for my own future reference:
-https://github.com/joelmccracken/workstation/tree/upgrade-org-with-nix-doom-emacs
-
-I'd like to incorporate nix back into my workstation configuration, but I am not
-ready for that yet. I do install nix because I use it for scripting purposes,
-but its not used to set up the majority of this system.
 ** Literate Programming
 In my experience, these workstation projects are easy to put aside for a long
 time, and when you come back you can't remember how things were built.
