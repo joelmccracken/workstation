@@ -9,6 +9,7 @@
 set -xeuo pipefail
 
 export NIX_DARWIN_VERSION=02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf
+export HOME_MANAGER_SHA=213a06295dff96668a1d673b9fd1c03ce1de6745
 
 if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
@@ -163,10 +164,11 @@ is_mac && {
 
 
 export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
-HOME_MANAGER_SHA=213a06295dff96668a1d673b9fd1c03ce1de6745
 nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_SHA}.tar.gz home-manager
 nix-channel --update
 export HOME_MANAGER_BACKUP_EXT=old
+
+ln -s $HOME/workstation/home.nix $HOME/.config/nixpkgs/home.nix
 nix-shell '<home-manager>' -A install
 
 # evaluating this with set -u will cause an unbound variable error
