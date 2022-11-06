@@ -8,6 +8,7 @@
 
 set -xeuo pipefail
 
+export NIX_PM_VERSION=nix-2.11.1
 export NIX_DARWIN_VERSION=02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf
 export HOME_MANAGER_VERSION=213a06295dff96668a1d673b9fd1c03ce1de6745
 
@@ -90,7 +91,7 @@ function mv_dir_dated_backup() {
 echo installing nix
 
 { which nix > /dev/null; } || {
-    time sh <(curl -L https://releases.nixos.org/nix/nix-2.5.1/install) --daemon;
+    time sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
 }
 
 export NIX_REMOTE=daemon
@@ -170,6 +171,7 @@ export HOME_MANAGER_BACKUP_EXT=old
 
 mkdir -p $HOME/.config/nixpkgs/
 ln -s $HOME/workstation/home.nix $HOME/.config/nixpkgs/home.nix
+cat $HOME/.config/nixpkgs/home.nix
 nix-shell '<home-manager>' -A install
 
 # evaluating this with set -u will cause an unbound variable error
