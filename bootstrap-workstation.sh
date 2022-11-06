@@ -9,7 +9,7 @@
 set -xeuo pipefail
 
 export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf
+export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
 export HOME_MANAGER_VERSION=213a06295dff96668a1d673b9fd1c03ce1de6745
 
 if [ -z "${1+x}" ]; then
