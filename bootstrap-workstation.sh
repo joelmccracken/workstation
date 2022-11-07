@@ -169,9 +169,9 @@ nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_M
 nix-channel --update
 export HOME_MANAGER_BACKUP_EXT=old
 
-mkdir -p $HOME/.config/nixpkgs/
-ln -s $HOME/workstation/home.nix $HOME/.config/nixpkgs/home.nix
-cat $HOME/.config/nixpkgs/home.nix
+# mkdir -p $HOME/.config/nixpkgs/
+# ln -s $HOME/workstation/home.nix $HOME/.config/nixpkgs/home.nix
+# cat $HOME/.config/nixpkgs/home.nix
 nix-shell '<home-manager>' -A install
 
 # evaluating this with set -u will cause an unbound variable error
