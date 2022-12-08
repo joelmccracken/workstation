@@ -9,8 +9,8 @@
 set -xeuo pipefail
 
 export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=34c4a4cf9057d5eea84ba7320bbb742b54f129a5
-export HOME_MANAGER_VERSION=2af0d07678fc15612345e0dd55337550dcf6465f
+export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export HOME_MANAGER_VERSION=213a06295dff96668a1d673b9fd1c03ce1de6745
 
 if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
