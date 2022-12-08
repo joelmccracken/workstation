@@ -30,6 +30,15 @@ let hostname = "glamdring"; in
   system.stateVersion = 4;
 
   nix.settings.trusted-users = ["root" "joel" "runner"];
+  nix.settings.substituters = [
+    "https://cache.nixos.org"
+    "https://cache.iog.io"
+  ];
+  nix.settings.trusted-public-keys = [
+    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+  ];
+
   nix.extraOptions = ''
   experimental-features = nix-command flakes
   '';
