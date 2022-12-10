@@ -1,5 +1,4 @@
 {
-  name = "wshs";
   description = "A very basic flake";
   inputs.haskellNix.url = "github:input-output-hk/haskell.nix";
   inputs.nixpkgs.follows = "haskellNix/nixpkgs-unstable";
