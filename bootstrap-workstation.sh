@@ -179,7 +179,10 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-home-manager switch -f ~/workstation/home.nix
+# home-manager switch -f ~/workstation/home.nix
+
+nix build --no-link ./#homeConfigurations.joel.activationPackage
+"$(nix path-info ./#homeConfigurations.joel.activationPackage)"/activate
 
 cd  ~/workstation/wshs
 
