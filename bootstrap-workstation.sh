@@ -180,10 +180,10 @@ set -u
 
 
 # evaluating this with set -u will cause an unbound variable error
-# home-manager switch -f ~/workstation/home.nix
+home-manager switch -f ~/workstation/home.nix
 
-nix build --no-link ~/workstation/#homeConfigurations.joel.activationPackage
-"$(nix path-info ~/workstation/#homeConfigurations.joel.activationPackage)"/activate
+# nix build --no-link ~/workstation/#homeConfigurations.joel.activationPackage
+# "$(nix path-info ~/workstation/#homeConfigurations.joel.activationPackage)"/activate
 
 cd  ~/workstation/wshs
 
