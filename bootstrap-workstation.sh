@@ -172,7 +172,7 @@ export HOME_MANAGER_BACKUP_EXT=old
 # mkdir -p $HOME/.config/nixpkgs/
 # ln -s $HOME/workstation/home.nix $HOME/.config/nixpkgs/home.nix
 # cat $HOME/.config/nixpkgs/home.nix
-nix-shell '<home-manager>' -A install
+# nix-shell '<home-manager>' -A install
 
 # evaluating this with set -u will cause an unbound variable error
 set +u
@@ -181,8 +181,8 @@ set -u
 
 # home-manager switch -f ~/workstation/home.nix
 
-nix build --no-link ./#homeConfigurations.joel.activationPackage
-"$(nix path-info ./#homeConfigurations.joel.activationPackage)"/activate
+nix build --no-link ~/workstation/#homeConfigurations.joel.activationPackage
+"$(nix path-info ~/workstation/#homeConfigurations.joel.activationPackage)"/activate
 
 cd  ~/workstation/wshs
 
