@@ -175,14 +175,14 @@ export HOME_MANAGER_BACKUP_EXT=old
 # nix-shell '<home-manager>' -A install
 
 # evaluating this with set -u will cause an unbound variable error
-set +u
-source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
-set -u
-
 # home-manager switch -f ~/workstation/home.nix
 
 nix build --no-link ~/workstation/#homeConfigurations.joel.activationPackage
 "$(nix path-info ~/workstation/#homeConfigurations.joel.activationPackage)"/activate
+set +u
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
+
 
 cd  ~/workstation/wshs
 
