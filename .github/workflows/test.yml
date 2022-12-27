@@ -28,7 +28,7 @@ jobs:
         - ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Run a one-line script
       run: ./test/ci.sh
