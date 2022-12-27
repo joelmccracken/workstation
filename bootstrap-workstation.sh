@@ -183,7 +183,7 @@ set -u
 home-manager switch -f ~/workstation/home.nix
 
 nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.joel.activationPackage
-"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.activationPackage)"/activate
+"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.joel.activationPackage)"/activate
 
 cd  ~/workstation/wshs
 
