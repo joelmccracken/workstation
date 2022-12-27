@@ -18,12 +18,12 @@
     };
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager }:
+  outputs = { self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager }:
     let
       darwin-home-config = let
           system = "x86_64-darwin";
-          pkgs = nixpkgs.legacyPackages.${system};
-        in home-manager.lib.homeManagerConfiguration {
+          pkgs = darwin-nixpkgs.legacyPackages.${system};
+        in darwin-home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
           modules = [
