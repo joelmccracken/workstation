@@ -16,16 +16,18 @@ if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
     exit 2
 else
-    WORKSTATION_NAME="$1"
+    export WORKSTATION_NAME="$1"
 fi
 
 if [ -z "${2+x}" ]; then
-    WORKSTATION_BOOTSTRAP_COMMIT=origin/master
+    export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
 else
-    WORKSTATION_BOOTSTRAP_COMMIT="$2"
+    export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
 
 WS_DIR="$HOME/workstation"
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 
 function is_mac() {
     [[ "$(uname)" == 'Darwin' ]]
@@ -88,7 +90,18 @@ function mv_dir_dated_backup() {
     git checkout $WORKSTATION_BOOTSTRAP_COMMIT
 }
 
-echo installing nix
+echo DEBUG setting current host settings directory...
+echo DEBUG workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
+
+if [ -d $WORKSTATION_HOST_SETTINGS_SRC_DIR ]; then
+    echo DEBUG setting current host directory to $WORKSTATION_HOST_SETTINGS_SRC_DIR;
+    ln -s $WORKSTATION_HOST_SETTINGS_SRC_DIR $WORKSTATION_HOST_CURRENT_SETTINGS_DIR;
+else
+    echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
+    exit 5
+fi
+
+echo DEBUG installing nix
 
 { which nix > /dev/null; } || {
     time sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
