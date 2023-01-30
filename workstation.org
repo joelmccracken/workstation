@@ -64,8 +64,7 @@ org mode. This gives me an easy way to document my thoughts as I work, and also
 explore using ~org-mode~ for this task. I did this same thing a long time ago
 with my old dotfiles setup, and I liked it, but everything else about it was a
 massive pain, so it was eventually abandoned. If you want to see how this works,
-you should view this file raw. When github renders org mode source blocks, it
-omits all the headers.
+you should view this file raw.
 * README
 #+begin_src md :tangle ./README.md  :noweb yes
 WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
