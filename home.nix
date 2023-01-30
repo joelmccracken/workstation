@@ -13,18 +13,24 @@
     # You can update Home Manager without changing this value. See
     # the Home Manager release notes for a list of state version
     # changes in each release.
-    home.stateVersion = "22.05";
+    home.stateVersion = "22.11";
 
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
     home.packages = [
       # nix-doom-emacs.hmModule {
-      #   doomPrivateDir = ./doom.d;
+      #   doomPrivateDir = ./dotfiles/doom.d;
       # }
     ];
 
+    programs.doom-emacs = {
+      enable = true;
+      doomPrivateDir = ./dotfiles/doom.d;
+    };
+
     # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
     manual.manpages.enable = false;
+
     home.file = {
       ".emacs.d/init.el".text = ''
           ;; loads doom from nix store
