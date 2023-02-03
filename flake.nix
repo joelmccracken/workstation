@@ -30,11 +30,11 @@
 
     darwin-nix-doom-emacs = {
       url = "github:nix-community/nix-doom-emacs";
-      inputs = {
-        nixpkgs.follows = "darwin-nixpkgs";
-        emacs-overlay.follows = "emacs-overlay";
-        doom-emacs.follows = "doom-emacs";
-      };
+      # inputs = {
+      #   nixpkgs.follows = "darwin-nixpkgs";
+      #   emacs-overlay.follows = "emacs-overlay";
+      #   doom-emacs.follows = "doom-emacs";
+      # };
     };
   };
 
