@@ -193,7 +193,7 @@ source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
 
-home-manager switch -f ~/workstation/home.nix
+# home-manager switch -f ~/workstation/home.nix
 
 nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.joel.activationPackage
 "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.joel.activationPackage)"/activate
