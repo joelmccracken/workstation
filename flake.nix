@@ -74,7 +74,7 @@
       };
 
       homeConfigurations.glamdring.joel = darwin-home-config;
-      homeConfigurations."ci-macos".joel = darwin-home-config;
-      homeConfigurations."ci-ubuntu".joel = linux-home-config;
+      homeConfigurations."ci-macos".runner = darwin-home-config;
+      homeConfigurations."ci-ubuntu".runner = linux-home-config;
     };
 }
