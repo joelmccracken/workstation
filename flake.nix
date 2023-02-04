@@ -18,27 +18,28 @@
     };
     nix-doom-emacs = {
       url = "github:nix-community/nix-doom-emacs";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay/master";
-      inputs.nixpkgs.follows = "darwin-nixpkgs";
-    };
+    # emacs-overlay = {
+    #   url = "github:nix-community/emacs-overlay/master";
+    #   # inputs.nixpkgs.follows = "darwin-nixpkgs";
+    # };
 
-    doom-emacs = { url = "github:hlissner/doom-emacs/develop"; flake = false; };
+    # doom-emacs = { url = "github:hlissner/doom-emacs/develop"; flake = false; };
 
-    darwin-nix-doom-emacs = {
-      url = "github:nix-community/nix-doom-emacs";
-      # inputs = {
-      #   nixpkgs.follows = "darwin-nixpkgs";
-      #   emacs-overlay.follows = "emacs-overlay";
-      #   doom-emacs.follows = "doom-emacs";
-      # };
-    };
+    # darwin-nix-doom-emacs = {
+    #   url = "github:nix-community/nix-doom-emacs";
+    #   # inputs = {
+    #   #   nixpkgs.follows = "darwin-nixpkgs";
+    #   #   emacs-overlay.follows = "emacs-overlay";
+    #   #   doom-emacs.follows = "doom-emacs";
+    #   # };
+    # };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, nix-doom-emacs, darwin-nix-doom-emacs, ... }:
+  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, nix-doom-emacs, # darwin-nix-doom-emacs,
+    ... }:
     let
       darwin-home-config = let
           system = "x86_64-darwin";
@@ -47,7 +48,7 @@
           inherit pkgs;
 
           modules = [
-            darwin-nix-doom-emacs.hmModule
+            nix-doom-emacs.hmModule
             ./home.nix
           ]
 ;

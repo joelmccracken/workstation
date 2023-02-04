@@ -31,16 +31,16 @@
     # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
     manual.manpages.enable = false;
 
-    home.file = {
-      ".emacs.d/init.el".text = ''
-          ;; loads doom from nix store
-          (load "default.el")
-          (let
-            ((this-machine (expand-file-name "~/workstation/this-machine.el")))
-            (when (file-exists-p this-machine)
-              (load this-machine)))
-          ;; (when (file-exists-p "./this-machine.el" ))
-          (require 'nix-mode) ;; not sure why I suddenly need to do this
-           '';
-    };
+    # home.file = {
+    #   ".emacs.d/init.el".text = ''
+    #       ;; loads doom from nix store
+    #       (load "default.el")
+    #       (let
+    #         ((this-machine (expand-file-name "~/workstation/this-machine.el")))
+    #         (when (file-exists-p this-machine)
+    #           (load this-machine)))
+    #       ;; (when (file-exists-p "./this-machine.el" ))
+    #       (require 'nix-mode) ;; not sure why I suddenly need to do this
+    #        '';
+    # };
   }
