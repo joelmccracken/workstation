@@ -74,7 +74,7 @@
       };
 
       homeConfigurations.glamdring.joel = darwin-home-config {
-        user = "joel"; home = "/Users/runner";
+        user = "joel"; home = "/Users/joel";
       };
       homeConfigurations."ci-macos".runner = darwin-home-config {
         user = "runner"; home = "/Users/runner";

@@ -4,8 +4,8 @@
   {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
-    home.username = "joel";
-    home.homeDirectory = "/Users/joel";
+    home.username = user;
+    home.homeDirectory = home;
 
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage
@@ -20,14 +20,22 @@
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
     home.packages = [
-      # nix-doom-emacs.hmModule {
-      #   doomPrivateDir = ./dotfiles/doom.d;
-      # }
+      pkgs.ripgrep
+      pkgs.jq
+      pkgs.jl
+      pkgs.ispell
+      pkgs.bitwarden-cli
+      pkgs.direnv
+      pkgs.mr  # myrepos https://myrepos.branchable.com/install/
+      pkgs.graphviz
     ];
 
     programs.doom-emacs = {
       enable = true;
       doomPrivateDir = ./dotfiles/doom.d;
+      extraConfig = ''
+        (add-to-list 'exec-path "~/.nix-profile/bin/")
+      '';
     };
 
     # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
