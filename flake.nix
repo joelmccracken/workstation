@@ -41,7 +41,8 @@
   outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, nix-doom-emacs, # darwin-nix-doom-emacs,
     ... }:
     let
-      darwin-home-config = let
+      darwin-home-config = user-config:
+        let
           system = "x86_64-darwin";
           pkgs = darwin-nixpkgs.legacyPackages.${system};
         in darwin-home-manager.lib.homeManagerConfiguration {
@@ -49,11 +50,11 @@
 
           modules = [
             nix-doom-emacs.hmModule
-            ./home.nix
+            (import ./home.nix user-config)
           ]
 ;
         };
-      linux-home-config =
+      linux-home-config = user-config:
         let
           system = "x86_64-linux";
           pkgs = nixpkgs.legacyPackages.${system};
@@ -62,9 +63,8 @@
 
           modules = [
             nix-doom-emacs.hmModule
-            ./home.nix
+            (import ./home.nix user-config)
           ];
-
         };
     in
     {
@@ -73,8 +73,14 @@
         modules = [ ./darwin-configuration.nix ];
       };
 
-      homeConfigurations.glamdring.joel = darwin-home-config;
-      homeConfigurations."ci-macos".runner = darwin-home-config;
-      homeConfigurations."ci-ubuntu".runner = linux-home-config;
+      homeConfigurations.glamdring.joel = darwin-home-config {
+        user = "joel"; home = "/Users/runner";
+      };
+      homeConfigurations."ci-macos".runner = darwin-home-config {
+        user = "runner"; home = "/Users/runner";
+      };
+      homeConfigurations."ci-ubuntu".runner = linux-home-config{
+        user = "runner"; home = "/home/runner";
+      };
     };
 }
