@@ -36,7 +36,7 @@ machineNameToProfile :: Text -> IO ()
 machineNameToProfile name =
   case name of
     "ci-macos" -> ciMacos
-    "ci-ubuntu" -> putStrLn "NOTHING TO DO RN" -- ciUbuntu
+    "ci-ubuntu" -> pure () -- ciUbuntu
     _ -> error $ "No configuration available for machine named " <> T.unpack name
 
 -- check :: IO ()
