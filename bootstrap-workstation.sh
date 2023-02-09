@@ -200,6 +200,14 @@ set -u
 nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
 "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
 
+
+set +u
+# evaluating this with set -u will cause an unbound variable error
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
+
+
+
 cd  ~/workstation/wshs
 
 time nix build -L

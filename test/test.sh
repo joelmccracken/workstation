@@ -11,6 +11,14 @@
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
 
+
+set +u
+# evaluating this with set -u will cause an unbound variable error
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
+
+
+
 function assert_input() {
   local label=$1
   local expected=$2
