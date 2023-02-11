@@ -17,7 +17,9 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+env
 
+ls -lah ~/.nix-profile/bin
 
 function assert_input() {
   local label=$1
