@@ -206,25 +206,26 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-
-
+echo "building the 'ws' script"
 cd  ~/workstation/wshs
-
 time nix build -L
 
+echo "running the 'ws install' process"
 time ./result/bin/ws install -m "$WORKSTATION_NAME";
+echo "'ws install' process completed"
 
 # most of the stuff below this can be moved to propellor
 
 
 set +e
-echo "BEFORE IF_LINUX"
-is_linux && {
-    echo "BEFORE APT GET INSTALL"
-    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
-    echo "AFTER APT GET INSTALL"
-}
-echo "AFTER CHECKING IF_LINUX"
+echo "Running final installs (install)"
+if is_linux; then
+    echo "is linux, installing ripgrep, fdfind, etc via apt";
+    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
+    echo "done running final installs";
+else
+    echo "linux not detected, no final installs necessary";
+fi
 
 # {
 #     cd ~/.emacs.d;
