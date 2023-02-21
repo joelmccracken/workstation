@@ -216,9 +216,15 @@ time ./result/bin/ws install -m "$WORKSTATION_NAME";
 
 # most of the stuff below this can be moved to propellor
 
-# is_linux && {
-#     time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
-# }
+
+set +e
+echo "BEFORE IF_LINUX"
+is_linux && {
+    echo "BEFORE APT GET INSTALL"
+    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
+    echo "AFTER APT GET INSTALL"
+}
+echo "AFTER CHECKING IF_LINUX"
 
 # {
 #     cd ~/.emacs.d;
