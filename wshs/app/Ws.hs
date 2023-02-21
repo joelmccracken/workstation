@@ -36,7 +36,7 @@ machineNameToProfile :: Text -> IO ()
 machineNameToProfile name =
   case name of
     "ci-macos" -> ciMacos
-    "ci-ubuntu" -> ciUbuntu
+    "ci-ubuntu" -> pure () -- ciUbuntu
     _ -> error $ "No configuration available for machine named " <> T.unpack name
 
 -- check :: IO ()
@@ -54,6 +54,6 @@ ciMacos :: IO ()
 ciMacos = do
   satisfyProperties [brewBundled]
 
-ciUbuntu :: IO ()
-ciUbuntu = do
-  satisfyProperties [Deb.addSnap "emacs"]
+-- ciUbuntu :: IO ()
+-- ciUbuntu = do
+--   satisfyProperties [Deb.addSnap "emacs"]

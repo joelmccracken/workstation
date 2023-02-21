@@ -233,3 +233,6 @@ bin/haskell-language-server-macOS-8.8.4
 .pyenv/
 .zsh_sessions/
 wshs/result
+
+# this is a symlink to settings for the "current" machine
+hosts/current

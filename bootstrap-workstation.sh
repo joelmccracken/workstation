@@ -79,6 +79,8 @@ function mv_dir_dated_backup() {
     cd ~;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
 } || time polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+# delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
+rm -rf ~/.doom.d/
 
 {
     cd $WS_DIR
@@ -193,10 +195,18 @@ source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
 
-home-manager switch -f ~/workstation/home.nix
+# home-manager switch -f ~/workstation/home.nix
 
-nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.joel.activationPackage
-"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.joel.activationPackage)"/activate
+nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
+"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+
+
+set +u
+# evaluating this with set -u will cause an unbound variable error
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
+
+
 
 cd  ~/workstation/wshs
 
@@ -206,23 +216,29 @@ time ./result/bin/ws install -m "$WORKSTATION_NAME";
 
 # most of the stuff below this can be moved to propellor
 
-is_linux && {
-    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
-}
 
-{
-    cd ~/.emacs.d;
-    [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
-} || {
-    mv_dir_dated_backup ~/.emacs.d;
-    time git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-    # alternative: use this if encounter problems
-    # ~/.emacs.d/bin/doom -y install;
-    # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    time timeout 60m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    ~/.emacs.d/bin/doom sync
-    echo FINISHED INSTALLING DOOM;
+set +e
+echo "BEFORE IF_LINUX"
+is_linux && {
+    echo "BEFORE APT GET INSTALL"
+    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
+    echo "AFTER APT GET INSTALL"
 }
+echo "AFTER CHECKING IF_LINUX"
+
+# {
+#     cd ~/.emacs.d;
+#     [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
+# } || {
+#     mv_dir_dated_backup ~/.emacs.d;
+#     time git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+#     # alternative: use this if encounter problems
+#     # ~/.emacs.d/bin/doom -y install;
+#     # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+#     # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+#     time timeout 60m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+#     ~/.emacs.d/bin/doom sync
+#     echo FINISHED INSTALLING DOOM;
+# }
 
 # Bootstraping Script:1 ends here

@@ -11,6 +11,18 @@
 # WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
 
+
+set +u
+# evaluating this with set -u will cause an unbound variable error
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
+
+env
+
+ls -lah ~/.nix-profile/bin
+ls -lah ~/.nix-profile/bin/
+ls -lah ~/.nix-profile/bin/emacs
+
 function assert_input() {
   local label=$1
   local expected=$2
@@ -27,17 +39,18 @@ function assert_input() {
 
 echo "RUNNING TESTS"
 
+EMACS_PATH=~/.nix-profile/bin/emacs
+
 # emacs
-if which emacs; then
+if [ -x "$EMACS_PATH" ]; then
     echo found emacs
 else
   echo EMACS NOT FOUND
   exit 1
 fi
 
-ls -lah ~/.emacs.d/
 
-emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
+$EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
   read actual
   if [[ "$actual" == "27.1" || "$actual" == "27.2" || "$actual" == "28.1" || "$actual" == "28.2" ]]; then
     echo "emacs version is correct"
@@ -48,7 +61,7 @@ emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
 }
 
 
-emacs -l ~/.emacs.d/early-init.el --batch --eval '(progn (princ doom-version) (terpri))' | {
+$EMACS_PATH -l ~/.emacs.d/init.el --batch --eval '(progn (princ doom-version) (terpri))' | {
   read actual;
   if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" || "$actual" == "3.0.0-pre" ]]; then
     echo "doom version is correct"
