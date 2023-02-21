@@ -30,6 +30,10 @@
       pkgs.graphviz
     ];
 
+    home.sessionPath = [
+      "~/.nix-profile/bin/"
+    ];
+
     programs.doom-emacs = {
       enable = true;
       doomPrivateDir = ./dotfiles/doom.d;
