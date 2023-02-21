@@ -20,6 +20,8 @@ set -u
 env
 
 ls -lah ~/.nix-profile/bin
+ls -lah ~/.nix-profile/bin/
+ls -lah ~/.nix-profile/bin/emacs
 
 function assert_input() {
   local label=$1
