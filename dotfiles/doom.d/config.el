@@ -65,9 +65,9 @@
 (load-theme 'tsdh-light)
 
 
-(add-to-list 'load-path "~/Projects/shen-elisp/")
-(require 'shen-elisp)
-(require 'shen-repl)
+;; (add-to-list 'load-path "~/Projects/shen-elisp/")
+;; (require 'shen-elisp)
+;; (require 'shen-repl)
 ;; (setq org-src-preserve-indentation nil)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
