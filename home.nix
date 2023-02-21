@@ -20,14 +20,19 @@
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
     home.packages = [
+      pkgs.git
       pkgs.ripgrep
       pkgs.jq
       pkgs.jl
+      pkgs.fd
       pkgs.ispell
       pkgs.bitwarden-cli
       pkgs.direnv
       pkgs.mr  # myrepos https://myrepos.branchable.com/install/
       pkgs.graphviz
+      pkgs.cmake
+      pkgs.coreutils
+      pkgs.wget
     ];
 
     home.sessionPath = [
