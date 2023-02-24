@@ -71,5 +71,12 @@ $EMACS_PATH -l ~/.emacs.d/init.el --batch --eval '(progn (princ doom-version) (t
   fi
 }
 
+if $EMACS_PATH -l ~/.emacs.d/init.el --batch --eval "(progn (require 'vterm-module nil t))"; then
+  echo "emacs is able to load vterm-module, so vterm-module is compiled and ready to go";
+else
+  echo "error: emacs was not able to load vterm-module";
+  exit 1
+fi
+
 echo "TESTS COMPLETE"
 # test.sh:1 ends here
