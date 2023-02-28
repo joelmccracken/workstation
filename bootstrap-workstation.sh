@@ -175,6 +175,10 @@ is_mac && {
     nix build ~/workstation\#darwinConfigurations.glamdring.system
     ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#glamdring
 
+    # nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
+    # "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+
+
     rm -rf ./result
 }
 
