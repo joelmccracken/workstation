@@ -487,3 +487,18 @@ bash ~/workstation/test/test.sh
 #+begin_src sh
 home-manager switch --flake .
 #+end_src
+* TODO checklist
+- [ ] get rid of hardcoded things for glamdring. add support for other machines
+- [ ] can I get rid of having home manager use a channel for install?
+- [ ] add support for secrets setup/restoration
+- [ ] build nixos sever on gandi
+- [ ] experiment with seeing if I can use home manager to set nix.conf
+    I currently have two ways that I set up the nix.config file: via darwin nix and
+    shell script. debian/ubuntu doesn't have anything anything like darwin-nix, so
+    if I want to get rid of the duplicate method, home manager might work. seems
+    that home manager supports this:
+    https://nix-community.github.io/home-manager/options.html#opt-nix.settings
+- [ ] update workstation.org so it compiles cleanly (no file drift)
+- [ ] rebuild belthronding (lots of manual hacking)
+- [ ] get nix-doom-emacs back in system
+- [ ] add a CI step that ensures workstation.org compiles cleanly
