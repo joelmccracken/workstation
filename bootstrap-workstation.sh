@@ -145,25 +145,6 @@ fi;
 is_linux && {
     time sudo ~/workstation/bin/enable-passwordless-sudo.sh
     time sudo apt-get update
-    # it seems that on github CI snap
-    # is not installed:
-    # https://github.com/joelmccracken/workstation/runs/5981940574?check_suite_focus=true
-    # + ./result/bin/ws install -m ci-ubuntu
-    # sudo:  snap: command not found
-    # https://phoenixnap.com/kb/install-snap-ubuntu
-    # time sudo apt install snapd
-    # kinda sorta try to do this from:
-    # https://github.com/actions/virtual-environments/issues/2209#issuecomment-740526589
-    [ -e /run/user/1001 ] || {
-        sudo mkdir /run/user/1001
-    }
-    sudo chmod -R 777 /run/user/1001
-
-    # just checking to see if the bin is there..
-    ls -lah /usr/bin/snap
-    # comment this out for now, just to see, because build seemed to pass/execute OK?
-    # sudo snap install emacs --classic
-    sudo snap list
 }
 
 is_mac && {
