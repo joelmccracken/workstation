@@ -188,9 +188,6 @@ nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_M
 nix-channel --update
 export HOME_MANAGER_BACKUP_EXT=old
 
-# mkdir -p $HOME/.config/nixpkgs/
-# ln -s $HOME/workstation/home.nix $HOME/.config/nixpkgs/home.nix
-# cat $HOME/.config/nixpkgs/home.nix
 nix-shell '<home-manager>' -A install
 
 set +u
@@ -230,20 +227,5 @@ if is_linux; then
 else
     echo "linux not detected, no final installs necessary";
 fi
-
-# {
-#     cd ~/.emacs.d;
-#     [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
-# } || {
-#     mv_dir_dated_backup ~/.emacs.d;
-#     time git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-#     # alternative: use this if encounter problems
-#     # ~/.emacs.d/bin/doom -y install;
-#     # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-#     # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-#     time timeout 60m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-#     ~/.emacs.d/bin/doom sync
-#     echo FINISHED INSTALLING DOOM;
-# }
 
 # Bootstraping Script:1 ends here

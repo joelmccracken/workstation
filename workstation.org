@@ -502,3 +502,8 @@ home-manager switch --flake .
 - [ ] rebuild belthronding (lots of manual hacking)
 - [ ] get nix-doom-emacs back in system
 - [ ] add a CI step that ensures workstation.org compiles cleanly
+- [ ] document what I learned about snap and emacs and installing it etc
+- [ ] document what I learned about emacs in snap (how it can't access certain
+  files? in /tmp I think? not very useful!)
+- [ ] go through the commits and document anything that I think could use
+  documenting
