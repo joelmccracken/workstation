@@ -156,19 +156,17 @@ is_linux && {
 }
 
 is_mac && {
+    info installing darwin-nix
     sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.old
     cd $WS_DIR
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    nix build ~/workstation\#darwinConfigurations.glamdring.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#glamdring
-
-    # nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
-    # "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
-
+    nix build --no-link ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
 
     rm -rf ./result
+    info finished installing darwin-nix
 }
 
 

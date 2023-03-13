@@ -507,3 +507,14 @@ home-manager switch --flake .
   files? in /tmp I think? not very useful!)
 - [ ] go through the commits and document anything that I think could use
   documenting
+** quick planning (in rough order need to complete, to get to next phase of project)
+goal is to get ready to provision/set up nixos cloud machines
+1. [ ] backport changes to workstation.org
+2. [ ] use bww to sync/restore secrets on workstations
+3. [ ] create a new host for nixos server
+4. [ ] create script to sync updates from changes to workstation and dotfiles
+   - does something like https://nixos.wiki/wiki/NixOps help?
+5. [ ] figure out way to run update script on hosts that need it.
+6. [ ] experiement with https://docs.hercules-ci.com/arion/ for running
+   nextcloud (most urgent cloud service I want to use)
+7. [ ] set up "intelligent" s3 bucket for
