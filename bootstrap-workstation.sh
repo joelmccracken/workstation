@@ -37,9 +37,17 @@ function is_linux() {
     [[ "$(uname)" == 'Linux' ]]
 }
 
+function info() {
+    echo INFO $(date) $@
+}
+
+info starting workstation bootstrap
+
 is_mac && {
+    info ensuring xcode is installed
     sudo time bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 
+    info ensuring homebrew is installed
     which brew > /dev/null || {
         time /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
@@ -92,8 +100,8 @@ rm -rf ~/.doom.d/
     git checkout $WORKSTATION_BOOTSTRAP_COMMIT
 }
 
-echo DEBUG setting current host settings directory...
-echo DEBUG workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
+info setting current host settings directory...
+info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
 
 if [ -d $WORKSTATION_HOST_SETTINGS_SRC_DIR ]; then
     echo DEBUG setting current host directory to $WORKSTATION_HOST_SETTINGS_SRC_DIR;
@@ -175,9 +183,6 @@ set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
-
-
-# home-manager switch -f ~/workstation/home.nix
 
 nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
 "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
