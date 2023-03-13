@@ -45,20 +45,25 @@ info starting workstation bootstrap
 
 is_mac && {
     info ensuring xcode is installed
-    sudo time bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+    info finished ensuring xcode is installed
 
-    info ensuring homebrew is installed
+    info ensuring brew is installed
     which brew > /dev/null || {
-        time /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # install git, necessary for next step
         # TODO this should be safe to run even if its been run before
-        time brew install git
+        info installing git
+        brew install git
     }
+    info finished ensuring brew is installed
 }
 
 is_linux && {
-    time sudo bash -c 'apt-get update && apt-get install git'
+    info updating apt, installing git
+    sudo bash -c 'apt-get update && apt-get install git'
+    info finished updating apt, installing git
 }
 
 polite-git-checkout () {
@@ -83,20 +88,25 @@ function mv_dir_dated_backup() {
     fi
 }
 
+info ensuring dotfiles repo is checked out
 {
     cd ~;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || time polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
 # delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
 rm -rf ~/.doom.d/
+info finished ensuring dotfiles repo is checked out
 
 {
-    cd $WS_DIR
+    cd $WS_DIR;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
-    time mv_dir_dated_backup ~/workstation
-    time git clone 'https://github.com/joelmccracken/workstation.git'
+    info moving workstation dir to backup location
+    mv_dir_dated_backup ~/workstation
+    info cloning workstation repo into ~/workstation
+    git clone 'https://github.com/joelmccracken/workstation.git'
     cd workstation
+    info checking out specific workstation commit $WORKSTATION_BOOTSTRAP_COMMIT
     git checkout $WORKSTATION_BOOTSTRAP_COMMIT
 }
 
@@ -104,21 +114,24 @@ info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
 
 if [ -d $WORKSTATION_HOST_SETTINGS_SRC_DIR ]; then
-    echo DEBUG setting current host directory to $WORKSTATION_HOST_SETTINGS_SRC_DIR;
+    info setting current host directory to $WORKSTATION_HOST_SETTINGS_SRC_DIR;
     ln -s $WORKSTATION_HOST_SETTINGS_SRC_DIR $WORKSTATION_HOST_CURRENT_SETTINGS_DIR;
 else
     echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
     exit 5
 fi
 
-echo DEBUG installing nix
-
+info ensuring nix is installed
 { which nix > /dev/null; } || {
-    time sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
+    info installing nix
+    sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
 }
+info finished ensuring nix is installed
 
 export NIX_REMOTE=daemon
+
 is_linux &&  {
+    info linux detected, using HEREDOC method of setting up nix.conf
 (sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
 trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 substituters = https://cache.nixos.org https://cache.iog.io
@@ -127,19 +140,24 @@ trusted-users = root joel runner
 build-users-group = nixbld
 # END OF /etc/nix/nix.conf
 EOF
-# cat /etc/nix/nix.conf
-    time sudo systemctl restart nix-daemon.service;
+
+    info restarting nix-daemon via systemctl
+    sudo systemctl restart nix-daemon.service;
+    info finished restarting nix-daemon via systemctl
 }
+
 
 restart_mac_daemon() {
     set +e
-    time sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    time sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
     set -e
 }
 
 is_mac && {
+    info macos detected, restarting nix-daemon
     restart_mac_daemon
+    info finished restarting nix-daemon
 }
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -151,8 +169,8 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
 fi;
 
 is_linux && {
-    time sudo ~/workstation/bin/enable-passwordless-sudo.sh
-    time sudo apt-get update
+    sudo ~/workstation/bin/enable-passwordless-sudo.sh
+    sudo apt-get update
 }
 
 is_mac && {
@@ -162,13 +180,12 @@ is_mac && {
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    nix build --no-link ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+    nix build ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
     ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
 
     rm -rf ./result
     info finished installing darwin-nix
 }
-
 
 export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_VERSION}.tar.gz home-manager
@@ -185,7 +202,6 @@ set -u
 nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
 "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
 
-
 set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
@@ -199,9 +215,6 @@ echo "running the 'ws install' process"
 time ./result/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
 
-# most of the stuff below this can be moved to propellor
-
-
 set +e
 echo "Running final installs (install)"
 if is_linux; then
@@ -211,5 +224,4 @@ if is_linux; then
 else
     echo "linux not detected, no final installs necessary";
 fi
-
 # Bootstraping Script:1 ends here
