@@ -139,7 +139,7 @@
             nix.extraOptions = ''
             experimental-features = nix-command flakes
             '';
-          }
+          };
     in
     {
       darwinConfigurations."glamdring" = darwin.lib.darwinSystem {
