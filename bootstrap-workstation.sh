@@ -246,7 +246,7 @@ manually:
 These are the settings I use for slack:
 - accessibility then at bottom changbe up arrow to move focus to last message
 - advanced
-  - when in ```  enter should do a newline
+  - when in markdown block backticks, enter should do a newline
   - format messages with markup
 
 mac settings
