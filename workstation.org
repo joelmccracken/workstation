@@ -89,29 +89,6 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 Much more information may be found in
 <a href="workstation.org">workstation.org</a>.
 #+end_src
-* Manual installation and setup
-
-There are unfortunately a number of things I need to install and set up
-manually:
-- lastpass firefox extension
-- vimium-ff etension
-- dropbox
-- icloud
-- slack
-- spotify
-- install haskell language server in ~/bin (or somwewhere else?) for hls
-- set ~/secrets/bw_pass
-- bww force sync script
-
-These are the settings I use for slack:
-- accessibility then at bottom changbe up arrow to move focus to last message
-- advanced
-  - when in ```  enter should do a newline
-  - format messages with markup
-
-mac settings
-- enable screen sharing, _not_ remote management
-- enable remote login
 * Makefile
 Used to tangle ~workstation.org~. Tangling refers to the
 process of taking a literate program source and converting it to the target
@@ -155,14 +132,6 @@ For me, I currently basically have a single bash script. But what I want to do
 soon is change this so that its a bash script which invokes a haskell process asap.
 so the bash script would basically do the minimum amount required to set up
 everything for the haskell process.
-
-** Remaining Tasks
-*** TODO echo instructions on what to do once bootstraip is done
-need to enter ~/secrets/bw_pass file, then prep that
-*** TODO establish/determine "phases" to setup
-initial bootstrap (checkout files, setup haskell, etc)
-pre-authentication (pre-bww sync)
-using haskell to do remaining setup
 ** Bootstraping Script
 This script is intended to be entrypoint to this project. It can be curled to a
 new machine and then run, and will set things up on that machine as necessary.
@@ -388,13 +357,42 @@ else
     echo "linux not detected, no final installs necessary";
 fi
 
-
 echo outputting nix.conf to check its contents
 echo I have a hunch that something is not right
 cat /etc/nix/nix.conf
 
+cat <<-EOF
+Success! However, there are some remaining manual set up steps required.
+<<manual-setup-instructions>>
+EOF
+
 #+end_src
 * Post-bootstrap setup
+* Manual installation and setup
+#+NAME: manual-setup-instructions
+#+begin_src org
+There are unfortunately a number of things need to install and set up
+manually:
+- lastpass firefox extension
+- vimium-ff etension
+- dropbox
+- icloud
+- slack
+- spotify
+- install haskell language server in ~/bin (or somwewhere else?) for hls
+- set ~/secrets/bw_pass
+- bww force sync script
+
+These are the settings I use for slack:
+- accessibility then at bottom changbe up arrow to move focus to last message
+- advanced
+  - when in ```  enter should do a newline
+  - format messages with markup
+
+mac settings
+- enable screen sharing, _not_ remote management
+- enable remote login
+#+end_src
 * System update process
 - fetch ~/worksation and ~, if can clealy rebase, do so
 - run any other kind of "sync"
@@ -598,7 +596,7 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
-- [ ] get rid of hardcoded things for glamdring. add support for other machines
+- [ ] echo instructions on what to do once bootstrap workstation has completed
 - [ ] add support for secrets setup/restoration
 - [ ] build nixos sever on gandi
 - [ ] experiment with seeing if I can use home manager to set nix.conf
@@ -607,11 +605,8 @@ bash ~/workstation/test/test.sh
     if I want to get rid of the duplicate method, home manager might work. seems
     that home manager supports this:
     https://nix-community.github.io/home-manager/options.html#opt-nix.settings
-- [ ] rebuild belthronding (lots of manual hacking)
-- [ ] add a CI step/check that ensures workstation.org compiles cleanly
-- [ ] document what I learned about snap and emacs and installing it etc
-- [ ] document what I learned about emacs in snap (how it can't access certain
-  files? in /tmp I think? not very useful!)
+- [ ] rebuild belthronding/my cloud machine
+  - (has had lots of manual hacking)
 - [ ] go through the commits and document anything that I think could use
   documenting
 - [ ] there are lots of weird little things that have accumulated in
@@ -619,7 +614,7 @@ bash ~/workstation/test/test.sh
 - [ ] figure out how to get bww sync to happen automatically
 - [ ] devise method to prevent committing manually-edited target files
   - git pre-commit-hook?
-  - github action that runs tangle, checks for differences
+  - github action CI that runs tangle, checks for differences
 - [ ] rebuild my personal laptop once all of this is stable
 - [ ] port test/test.sh into wshs/haskell
 - [ ] laptop-state-checking script/features
@@ -627,6 +622,7 @@ bash ~/workstation/test/test.sh
   - ensure other secrets are there
   - check if can access/ssh/etc into some other machines
 - [ ] setup hammerspoon, and especially spacehammer
+- [ ] finish filling in the numerous incomplete sections
 ** quick planning
 (in rough order need to complete, to get to server-config phase of project)
 goal is to get ready to provision/set up nixos cloud machines

@@ -225,8 +225,32 @@ else
     echo "linux not detected, no final installs necessary";
 fi
 
-
 echo outputting nix.conf to check its contents
 echo I have a hunch that something is not right
 cat /etc/nix/nix.conf
+
+cat <<-EOF
+Success! However, there are some remaining manual set up steps required.
+There are unfortunately a number of things need to install and set up
+manually:
+- lastpass firefox extension
+- vimium-ff etension
+- dropbox
+- icloud
+- slack
+- spotify
+- install haskell language server in ~/bin (or somwewhere else?) for hls
+- set ~/secrets/bw_pass
+- bww force sync script
+
+These are the settings I use for slack:
+- accessibility then at bottom changbe up arrow to move focus to last message
+- advanced
+  - when in ```  enter should do a newline
+  - format messages with markup
+
+mac settings
+- enable screen sharing, _not_ remote management
+- enable remote login
+EOF
 # Bootstraping Script:1 ends here
