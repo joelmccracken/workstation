@@ -224,4 +224,9 @@ if is_linux; then
 else
     echo "linux not detected, no final installs necessary";
 fi
+
+
+echo outputting nix.conf to check its contents
+echo I have a hunch that something is not right
+cat /etc/nix/nix.conf
 # Bootstraping Script:1 ends here

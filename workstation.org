@@ -11,14 +11,14 @@ Worse, files will be left over from old *versions* of software that we still
 use. This makes it very confusing to tell what is essential and what is disjecta
 membra.
 
-This is my attempt to fix all that for myself, and perhaps you, dear reader.
-If you have any questions, feel free to shoot me an email or open an issue.
-
+This is my attempt to fix all that for myself, and perhaps you, dear reader, may
+find it of use as well. If you have any questions, feel free to shoot me an
+email or open an issue (honestly, it would be somewhat nice to know that at
+least *one* other person has read this).
 ** Rationale: The Problem
 Have you ever had a tool or setup break and had a devil of a time trying to get
-it back to a working state? This has happenend to me frequently.
-
-Over the years, I've set up many new tools to help me with my work. But, time passes,
+it back to a working state? Over the years, I've set up many new tools to help
+me with my work. But, time passes,
 and things break. Sometimes I don't even notice they've broken for a long time,
 so its even harder to fix. Something must have change must have changed: a
 dependency, perhaps? or filesystem contents?
@@ -27,31 +27,38 @@ Or, even, perhaps I've forgotten how it is supposed to work.
 This has been tricky to resolve. Especially if the tool is a hack I put
 together.
 
-To reach higher levels of productivty, it is essential to research,
+What is more, to reach higher levels of productivty, it is essential to research,
 develop, and use new tools for ourselves. Each of us has our own needs and
-constraints.
+constraints. However, without a firm foundation, these rube-goldberg development
+approaches are very fragile.
 
-So, I do not accept that this is just the way things have to be.
+So, I have been trying to do just this: provide myself a repeatable, executable
+workstation setup which I can extend when needed and rely on if something
+unforseen happens (e.g. laptop breaks).
 
 One final point: I've noticed over the years that there is a subtle pressure to
 not install new things because I *know* it will cause a problem for me in the
 future. But I think this is an anti-pattern, and needs to be fought against!
 ** Design choices
 *** Requirements
+- open source
+- hackable
+- where reasonable, use repeatable, automatable solutions
 *** invariants checking
-generally we want to check that the computer satisfies our requirements.
+It is necessary to check that the computer satisfies stated requirements.
 This might mean anything from "user can successfully use sudo" to "I can compile
 haskell source files".
-
-this can also  be an early warning system, telling us that we need to do
-something before it becomes an emergency.
 
 Basically, this can take shape as a script I run regularly, but more ideally it
 would (also) be something that is automatically run and have information
 reported to me.
+
+Currently, the intention is that this will come in the form of running ~ws
+check~, which is a part of the wshs sub-project in the wshs directory.
 *** early problem reporting
-we'd like to know about problems asap. If a new update comes out, and our whole
-setup proces is flawed somehow with this system.
+Ideally, we'd like to know about problems asap. If a new update comes out, and
+our whole setup proces is flawed somehow with the new update, it is important to
+realize and address when I can.
 * Background and History
 I have had a few different setups over the
 years. Accomplishing this is a lot harder than I expected.
@@ -63,8 +70,9 @@ So, this project is mostly written with literate
 org mode. This gives me an easy way to document my thoughts as I work, and also
 explore using ~org-mode~ for this task. I did this same thing a long time ago
 with my old dotfiles setup, and I liked it, but everything else about it was a
-massive pain, so it was eventually abandoned. If you want to see how this works,
-you should view this file raw.
+massive pain, so it was eventually abandoned.
+
+If you want to see how literate programming works in org mode, view this raw file.
 * README
 #+begin_src md :tangle ./README.md  :noweb yes
 WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
@@ -149,13 +157,6 @@ so the bash script would basically do the minimum amount required to set up
 everything for the haskell process.
 
 ** Remaining Tasks
-*** TODO figure out how to get bww sync to happen automatically
-*** TODO fix origins for workstation repo and dotfiles
-*** TODO port test/test.sh into wshs/haskell
-*** TODO look into using home manager/nix again for emacs
-the main thought here is that its becoming clear that I want to have at lest the
-option to build emacs with my own options (specifically, xwidget webkit support)
-or perhaps using one of the other projects I ha
 *** TODO echo instructions on what to do once bootstraip is done
 need to enter ~/secrets/bw_pass file, then prep that
 *** TODO establish/determine "phases" to setup
@@ -387,6 +388,11 @@ else
     echo "linux not detected, no final installs necessary";
 fi
 
+
+echo outputting nix.conf to check its contents
+echo I have a hunch that something is not right
+cat /etc/nix/nix.conf
+
 #+end_src
 * Post-bootstrap setup
 * System update process
@@ -591,17 +597,8 @@ echo INSTALL PROCESS COMPLETE, TESTING
 
 bash ~/workstation/test/test.sh
 #+end_src
-* Operational/maintenance
-** TODO rebuild my personal laptop once all of this is stable
-* Misc
-** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
-* Quick note
-#+begin_src sh
-home-manager switch --flake .
-#+end_src
-* TODO checklist
+* TODO tasks
 - [ ] get rid of hardcoded things for glamdring. add support for other machines
-- [ ] can I get rid of having home manager use a channel for install?
 - [ ] add support for secrets setup/restoration
 - [ ] build nixos sever on gandi
 - [ ] experiment with seeing if I can use home manager to set nix.conf
@@ -610,9 +607,7 @@ home-manager switch --flake .
     if I want to get rid of the duplicate method, home manager might work. seems
     that home manager supports this:
     https://nix-community.github.io/home-manager/options.html#opt-nix.settings
-- [X] update workstation.org so it compiles cleanly (no file drift)
 - [ ] rebuild belthronding (lots of manual hacking)
-- [X] get nix-doom-emacs back in system
 - [ ] add a CI step/check that ensures workstation.org compiles cleanly
 - [ ] document what I learned about snap and emacs and installing it etc
 - [ ] document what I learned about emacs in snap (how it can't access certain
@@ -621,7 +616,19 @@ home-manager switch --flake .
   documenting
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
-** quick planning (in rough order need to complete, to get to next phase of project)
+- [ ] figure out how to get bww sync to happen automatically
+- [ ] devise method to prevent committing manually-edited target files
+  - git pre-commit-hook?
+  - github action that runs tangle, checks for differences
+- [ ] rebuild my personal laptop once all of this is stable
+- [ ] port test/test.sh into wshs/haskell
+- [ ] laptop-state-checking script/features
+  - ensure secrets/bw_pass exists
+  - ensure other secrets are there
+  - check if can access/ssh/etc into some other machines
+- [ ] setup hammerspoon, and especially spacehammer
+** quick planning
+(in rough order need to complete, to get to server-config phase of project)
 goal is to get ready to provision/set up nixos cloud machines
 1. [ ] backport changes to workstation.org
 2. [ ] use bww to sync/restore secrets on workstations
