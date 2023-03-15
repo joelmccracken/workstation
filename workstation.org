@@ -82,6 +82,7 @@ Much more information may be found in
 <a href="workstation.org">workstation.org</a>.
 #+end_src
 * Manual installation and setup
+
 There are unfortunately a number of things I need to install and set up
 manually:
 - lastpass firefox extension
@@ -135,7 +136,6 @@ And a little emacs lisp that goes with the tangle process:
 
 ;;; tangle-file.el ends here
 #+end_src
-** TODO move bin/tangle script into workstation.org
 * Bootstrap process
 Bootstrapping is tricky. What do you actually start with? What can you assume?
 You want to keep the amount of manual steps which need to occur to a minimum.
@@ -156,7 +156,6 @@ everything for the haskell process.
 the main thought here is that its becoming clear that I want to have at lest the
 option to build emacs with my own options (specifically, xwidget webkit support)
 or perhaps using one of the other projects I ha
-*** TODO use home manager for macos, ubuntu, nixos
 *** TODO echo instructions on what to do once bootstraip is done
 need to enter ~/secrets/bw_pass file, then prep that
 *** TODO establish/determine "phases" to setup
@@ -299,7 +298,7 @@ is_linux &&  {
 trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 substituters = https://cache.nixos.org https://cache.iog.io
 experimental-features = nix-command flakes
-trusted-users = root joel runner
+trusted-users = root $(whoami) runner
 build-users-group = nixbld
 # END OF /etc/nix/nix.conf
 EOF
@@ -611,10 +610,10 @@ home-manager switch --flake .
     if I want to get rid of the duplicate method, home manager might work. seems
     that home manager supports this:
     https://nix-community.github.io/home-manager/options.html#opt-nix.settings
-- [ ] update workstation.org so it compiles cleanly (no file drift)
+- [X] update workstation.org so it compiles cleanly (no file drift)
 - [ ] rebuild belthronding (lots of manual hacking)
-- [ ] get nix-doom-emacs back in system
-- [ ] add a CI step that ensures workstation.org compiles cleanly
+- [X] get nix-doom-emacs back in system
+- [ ] add a CI step/check that ensures workstation.org compiles cleanly
 - [ ] document what I learned about snap and emacs and installing it etc
 - [ ] document what I learned about emacs in snap (how it can't access certain
   files? in /tmp I think? not very useful!)
