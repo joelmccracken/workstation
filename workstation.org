@@ -44,7 +44,7 @@ future. But I think this is an anti-pattern, and needs to be fought against!
 - open source
 - hackable
 - where reasonable, use repeatable, automatable solutions
-*** invariants checking
+*** Invariants checking
 It is necessary to check that the computer satisfies stated requirements.
 This might mean anything from "user can successfully use sudo" to "I can compile
 haskell source files".
@@ -434,18 +434,12 @@ out of the box bitwarden doesn't really do what I need it to.
 This restores SSH keys to my local computer.
 These can't be in git, and really they are essential for any meaningfully
 complete workstation setup.
-** TODO move the bww stuff into this section of workstation
-** TODO set up a testing account on bitwarden for CI/testing
-** TODO set up a "check" command which shows what would change if a sync happened
 * Machine profiles
-** TODO set up machine-specific settings profiles
-E.g. ~/workstation/profiles
 *** glamdring/
 *** anduril/
 *** aeglos/
 *** ci/
 * Testing
-** TODO convert all this testing to haskell
 ** test.sh
 At this point in time, this test actually checks very little, but what it DOES check
 is things that indicate that everything went right. Specifically, checking the doom version means
@@ -601,16 +595,22 @@ bash ~/workstation/test/test.sh
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
 - [ ] figure out how to get bww sync to happen automatically
+  - create "testing" account for bitwarden sync
 - [ ] devise method to prevent committing manually-edited target files
   - git pre-commit-hook?
   - github action CI that runs tangle, checks for differences
 - [ ] rebuild my personal laptop once all of this is stable
 - [ ] port test/test.sh into wshs/haskell
 - [ ] move various code not in workstation.org in here
+  - machine settings for each machine in workstation/hosts
+  - bww
+  - the ws code
+  - possibly content from wssh
 - [ ] laptop-state-checking script/features
   - ensure secrets/bw_pass exists
   - ensure other secrets are there
     - check that no new secrets need to be synced
+      - if any secrets have changed, list the changes
   - check if can access/ssh/etc into some other machines
   - check for updates on ~workstation origin
   - checks for nix (~nix store verify --all~ and ~nix-doctor~)
