@@ -206,10 +206,9 @@ set -u
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs
-time nix build -L
-
+nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
 echo "running the 'ws install' process"
-time ./result/bin/ws install -m "$WORKSTATION_NAME";
+$(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
 
 set +e

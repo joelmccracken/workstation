@@ -337,10 +337,9 @@ set -u
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs
-time nix build -L
-
+nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
 echo "running the 'ws install' process"
-time ./result/bin/ws install -m "$WORKSTATION_NAME";
+$(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
 
 set +e
@@ -579,33 +578,30 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
-- [ ] echo instructions on what to do once bootstrap workstation has completed
-- [ ] add support for secrets setup/restoration
-- [ ] build nixos sever on gandi
+- [ ] figure out how to get bww sync to happen automatically
+  - create "testing" account for bitwarden sync
+- [ ] there are lots of weird little things that have accumulated in
+  bootstrap-workstation.sh; try to clean some of them up
+  - many things in bootstrap-workstation.sh should also become helper scripts in bin
+- [ ] create mechanism to run for updating workstation
+- [ ] move various code not in workstation.org in here
+  - machine settings for each machine in workstation/hosts
+  - bww
+  - the ws code
+  - possibly content from wssh
+- [ ] finish filling in the numerous incomplete sections of prose in this document
 - [ ] experiment with seeing if I can use home manager to set nix.conf
     I currently have two ways that I set up the nix.config file: via darwin nix and
     shell script. debian/ubuntu doesn't have anything anything like darwin-nix, so
     if I want to get rid of the duplicate method, home manager might work. seems
     that home manager supports this:
     https://nix-community.github.io/home-manager/options.html#opt-nix.settings
-- [ ] rebuild belthronding/my cloud machine
-  - (has had lots of manual hacking)
-- [ ] go through the commits and document anything that I think could use
   documenting
-- [ ] there are lots of weird little things that have accumulated in
-  bootstrap-workstation.sh; try to clean some of them up
-- [ ] figure out how to get bww sync to happen automatically
-  - create "testing" account for bitwarden sync
 - [ ] devise method to prevent committing manually-edited target files
   - git pre-commit-hook?
   - github action CI that runs tangle, checks for differences
 - [ ] rebuild my personal laptop once all of this is stable
 - [ ] port test/test.sh into wshs/haskell
-- [ ] move various code not in workstation.org in here
-  - machine settings for each machine in workstation/hosts
-  - bww
-  - the ws code
-  - possibly content from wssh
 - [ ] laptop-state-checking script/features
   - ensure secrets/bw_pass exists
   - ensure other secrets are there
@@ -622,16 +618,17 @@ bash ~/workstation/test/test.sh
     - haskell language server versions
   - check for any changes/differences in ~/
 - [ ] setup hammerspoon, and especially spacehammer
-- [ ] finish filling in the numerous incomplete prose in this document
-** quick planning
+- [ ] rebuild belthronding/my cloud machine
+  - (has had lots of manual hacking)
+- [ ] build nixos sever on gandi
+** quick planning for server config needs
 (in rough order need to complete, to get to server-config phase of project)
 goal is to get ready to provision/set up nixos cloud machines
-1. [ ] backport changes to workstation.org
-2. [ ] use bww to sync/restore secrets on workstations
-3. [ ] create a new host for nixos server
-4. [ ] create script to sync updates from changes to workstation and dotfiles
+1. [ ] use bww to sync/restore secrets on workstations
+2. [ ] create a new host for nixos server
+3. [ ] create script to sync updates from changes to workstation and dotfiles
    - does something like https://nixos.wiki/wiki/NixOps help?
-5. [ ] figure out way to run update script on hosts that need it.
-6. [ ] experiement with https://docs.hercules-ci.com/arion/ for running
+4. [ ] figure out way to run update script on hosts that need it.
+5. [ ] experiement with https://docs.hercules-ci.com/arion/ for running
    nextcloud (most urgent cloud service I want to use)
-7. [ ] set up "intelligent" s3 bucket for
+6. [ ] set up "intelligent" s3 bucket for
