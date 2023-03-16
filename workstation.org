@@ -97,7 +97,6 @@ process of taking a literate program source and converting it to the target
 Formerly had some other targets, but now they are OBE. It may make sense to
 delete this makefile if it becomes clearly unnecessary.
 #+begin_src makefile :tangle ./Makefile  :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 all: tangle
 
 tangle:
@@ -109,7 +108,6 @@ And a little emacs lisp that goes with the tangle process:
 #+begin_src emacs-lisp :tangle ./lib/emacs/tangle-file.el
 ;;; tangle-file.el --- description -*- lexical-binding: t; -*-
 
-;; WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 (add-to-list 'command-switch-alist '("--tangle" . do-tangle))
 
 (defun do-tangle (arg)
@@ -136,7 +134,6 @@ everything for the haskell process.
 This script is intended to be entrypoint to this project. It can be curled to a
 new machine and then run, and will set things up on that machine as necessary.
 #+begin_src bash :shebang "#!/usr/bin/env bash" :tangle ./bootstrap-workstation.sh :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
 
@@ -185,7 +182,6 @@ is_mac && {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # install git, necessary for next step
-        # TODO this should be safe to run even if its been run before
         info installing git
         brew install git
     }
@@ -394,22 +390,19 @@ mac settings
 - enable remote login
 #+end_src
 * System update process
+this is still incomplete, but some things I think
 - fetch ~/worksation and ~, if can clealy rebase, do so
 - run any other kind of "sync"
+- on macos, run darwin-rebuild
+- run home-manager switch
+- run bww sync
 * System "check"
-need to have a "check that system is OK"
-** TODO make check for updates on remote of ~ and ~workstation
-** TODO make check for nix (~nix store verify --all~ and ~nix-doctor~)
-** TODO make check for brew
-** TODO make check that no new secrets need to be synced
-** TODO make check that reddup is good
-** TODO make check for various execuables I care about
+I need to have a process to check that system is OK.
 * Utilities
 ** Passwordless sudo
 Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
 to toggle passwordless sudo.
 #+begin_src sh :tangle ./bin/enable-passwordless-sudo.sh :shebang "#!/usr/bin/env bash"
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -eo pipefail
 
 if [[ -z "$SUDO_USER" ]]; then
@@ -429,7 +422,6 @@ mv $TEMPFILE /etc/sudoers.d/me-passwordless-sudo
 #+end_src
 
 #+begin_src sh :tangle ./bin/disable-passwordless-sudo.sh :shebang "#!/usr/bin/env bash"
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euo pipefail
 
 rm /etc/sudoers.d/me-passwordless-sudo
@@ -462,7 +454,6 @@ emacs, doom, and the whole doom setup process worked out.
 I plan to move this to a Haskell project at some point, probably do it with hspec instead.
 Or maybe that bats testing library. We'll see.
 #+begin_src sh :tangle ./test/test.sh :shebang "#!/usr/bin/env bash" :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
 
 set +u
@@ -535,7 +526,6 @@ caught with a regular build like this).
 I am running up close to maximum execution time, so very likely I will need to
 refactor/come up with some other way to do this.
 #+begin_src yaml :tangle ./.github/workflows/test.yml :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 name: CI
 
 on:
@@ -564,7 +554,6 @@ To run CI, we have a script which, thankfully, basically mirrors the install ins
 Importantly, this does a LOT of things, such as install nix, home-manager, etc, and eventually runs
 the test script.
 #+begin_src sh :tangle ./test/ci.sh :shebang "#!/usr/bin/env bash" :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
 
@@ -617,12 +606,23 @@ bash ~/workstation/test/test.sh
   - github action CI that runs tangle, checks for differences
 - [ ] rebuild my personal laptop once all of this is stable
 - [ ] port test/test.sh into wshs/haskell
+- [ ] move various code not in workstation.org in here
 - [ ] laptop-state-checking script/features
   - ensure secrets/bw_pass exists
   - ensure other secrets are there
+    - check that no new secrets need to be synced
   - check if can access/ssh/etc into some other machines
+  - check for updates on ~workstation origin
+  - checks for nix (~nix store verify --all~ and ~nix-doctor~)
+  - check for brew updates/state and presence of brew executable
+    - brew doctor?
+  - check reddup state
+  - check for various execuables I care about
+    - (e.g. each thing specifially installed)
+    - haskell language server versions
+  - check for any changes/differences in ~/
 - [ ] setup hammerspoon, and especially spacehammer
-- [ ] finish filling in the numerous incomplete sections
+- [ ] finish filling in the numerous incomplete prose in this document
 ** quick planning
 (in rough order need to complete, to get to server-config phase of project)
 goal is to get ready to provision/set up nixos cloud machines

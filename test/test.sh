@@ -8,7 +8,6 @@
 # Or maybe that bats testing library. We'll see.
 
 # [[file:../workstation.org::*test.sh][test.sh:1]]
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
 
 set +u

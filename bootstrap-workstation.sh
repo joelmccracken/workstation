@@ -4,8 +4,6 @@
 # new machine and then run, and will set things up on that machine as necessary.
 
 # [[file:workstation.org::*Bootstraping Script][Bootstraping Script:1]]
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-
 set -xeuo pipefail
 
 export NIX_PM_VERSION=nix-2.11.1
@@ -53,7 +51,6 @@ is_mac && {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # install git, necessary for next step
-        # TODO this should be safe to run even if its been run before
         info installing git
         brew install git
     }

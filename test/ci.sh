@@ -6,8 +6,6 @@
 # the test script.
 
 # [[file:../workstation.org::*The environment setup script][The environment setup script:1]]
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
-
 set -xeuo pipefail
 
 # env # are there environment variables where I can get the commit sha?
