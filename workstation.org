@@ -592,8 +592,11 @@ bash ~/workstation/test/test.sh
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
-- [ ] create mechanism to run for updating workstation
-- [ ] move various code not in workstation.org in here
+- [ ] create mechanism to run for updating workstations
+  - download updates to master branch of dotfiles and workstation
+  - run nix stuffs when appropriate
+  - maybe do bww sync?
+- [ ] move various code not in workstation.org into this file
   - machine settings for each machine in workstation/hosts
   - bww
   - the ws code
