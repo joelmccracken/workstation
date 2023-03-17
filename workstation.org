@@ -238,6 +238,8 @@ info finished ensuring dotfiles repo is checked out
     git checkout $WORKSTATION_BOOTSTRAP_COMMIT
 }
 
+source $WS_DIR/lib/shell/funcs.sh
+
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
 
@@ -352,15 +354,26 @@ else
     echo "linux not detected, no final installs necessary";
 fi
 
-echo outputting nix.conf to check its contents
-echo I have a hunch that something is not right
-cat /etc/nix/nix.conf
+if [ -z "${BW_CLIENTID+x}" ] && \
+   [ -z "${BW_CLIENTSECRET+x}" ] && \
+   [ -z "${WS_BW_MASTER_PASS+x}" ]; then
+    info variables requried to run bww force-sync are set, running
+    if [ ! -d ~/secrets ]; then
+        mkdir ~/secrets;
+    fi
+    # overwriting anything that was previously in the file
+    echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
+    bw login --apikey
+    bw_unlock
+    bw sync
+else
+    info variables required to run bww force sync are MISSING, skipping
+fi
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
 <<manual-setup-instructions>>
 EOF
-
 #+end_src
 * Post-bootstrap setup
 * Manual installation and setup
@@ -375,8 +388,6 @@ manually:
 - slack
 - spotify
 - install haskell language server in ~/bin (or somwewhere else?) for hls
-- set ~/secrets/bw_pass
-- bww force sync script
 
 These are the settings I use for slack:
 - accessibility then at bottom changbe up arrow to move focus to last message
@@ -578,8 +589,6 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
-- [ ] figure out how to get bww sync to happen automatically
-  - create "testing" account for bitwarden sync
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
@@ -621,6 +630,9 @@ bash ~/workstation/test/test.sh
 - [ ] rebuild belthronding/my cloud machine
   - (has had lots of manual hacking)
 - [ ] build nixos sever on gandi
+- [ ] document various components of bww sync
+  - how it works
+  - how to use it
 ** quick planning for server config needs
 (in rough order need to complete, to get to server-config phase of project)
 goal is to get ready to provision/set up nixos cloud machines

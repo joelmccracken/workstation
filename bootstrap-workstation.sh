@@ -107,6 +107,8 @@ info finished ensuring dotfiles repo is checked out
     git checkout $WORKSTATION_BOOTSTRAP_COMMIT
 }
 
+source $WS_DIR/lib/shell/funcs.sh
+
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
 
@@ -221,9 +223,21 @@ else
     echo "linux not detected, no final installs necessary";
 fi
 
-echo outputting nix.conf to check its contents
-echo I have a hunch that something is not right
-cat /etc/nix/nix.conf
+if [ -z "${BW_CLIENTID+x}" ] && \
+   [ -z "${BW_CLIENTSECRET+x}" ] && \
+   [ -z "${WS_BW_MASTER_PASS+x}" ]; then
+    info variables requried to run bww force-sync are set, running
+    if [ ! -d ~/secrets ]; then
+        mkdir ~/secrets;
+    fi
+    # overwriting anything that was previously in the file
+    echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
+    bw login --apikey
+    bw_unlock
+    bw sync
+else
+    info variables required to run bww force sync are MISSING, skipping
+fi
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
@@ -236,8 +250,6 @@ manually:
 - slack
 - spotify
 - install haskell language server in ~/bin (or somwewhere else?) for hls
-- set ~/secrets/bw_pass
-- bww force sync script
 
 These are the settings I use for slack:
 - accessibility then at bottom changbe up arrow to move focus to last message
