@@ -28,6 +28,8 @@
       home-manager-config = { user, home }:
         { config, pkgs, lib, ... }:
           {
+            home.enableNixpkgsReleaseCheck = true;
+
             # Home Manager needs a bit of information about you and the
             # paths it should manage.
             home.username = user;
