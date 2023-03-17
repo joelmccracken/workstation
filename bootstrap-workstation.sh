@@ -244,6 +244,10 @@ else
     info variables required to run bww force sync are MISSING, skipping
 fi
 
+echo outputting nix.conf to check its contents
+echo as I am trying to use home manager to manage it
+cat /etc/nix/nix.conf
+
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
 There are unfortunately a number of things need to install and set up

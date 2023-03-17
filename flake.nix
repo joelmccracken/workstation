@@ -75,6 +75,31 @@
 
             # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
             manual.manpages.enable = false;
+
+            nix.settings = {
+              trusted-public-keys = "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=";
+              substituters = "https://cache.nixos.org https://cache.iog.io";
+              experimental-features = "nix-command flakes";
+              trusted-users = "root ${user}";
+              build-users-group = "nixbld";
+            };
+            # additional nix.conf values set by nix-darwin
+            # temporarily adding here for reference
+            # allowed-users = *
+            # auto-optimise-store = false
+            # build-users-group = nixbld
+            # builders =
+            # cores = 0
+            # extra-sandbox-paths =
+            # max-jobs = auto
+            # require-sigs = true
+            # sandbox = false
+            # sandbox-fallback = false
+            # substituters = https://cache.nixos.org https://cache.iog.io https://cache.nixos.org/
+            # trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+            # trusted-substituters =
+            # trusted-users = root runner runner
+            # experimental-features = nix-command flakes
           };
 
 
@@ -110,9 +135,7 @@
 
             # List packages installed in system profile. To search by name, run:
             # $ nix-env -qaP | grep wget
-            environment.systemPackages =
-              [ pkgs.vim
-              ];
+            environment.systemPackages = [];
 
             # Auto upgrade nix package and the daemon service.
             services.nix-daemon.enable = true;
@@ -126,19 +149,19 @@
             # $ darwin-rebuild changelog
             system.stateVersion = 4;
 
-            nix.settings.trusted-users = ["root" user "runner"];
-            nix.settings.substituters = [
-              "https://cache.nixos.org"
-              "https://cache.iog.io"
-            ];
-            nix.settings.trusted-public-keys = [
-              "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-              "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-            ];
+            # nix.settings.trusted-users = ["root" user "runner"];
+            # nix.settings.substituters = [
+            #   "https://cache.nixos.org"
+            #   "https://cache.iog.io"
+            # ];
+            # nix.settings.trusted-public-keys = [
+            #   "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+            #   "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+            # ];
 
-            nix.extraOptions = ''
-            experimental-features = nix-command flakes
-            '';
+            # nix.extraOptions = ''
+            # experimental-features = nix-command flakes
+            # '';
           };
     in
     {

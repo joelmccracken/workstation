@@ -375,6 +375,10 @@ else
     info variables required to run bww force sync are MISSING, skipping
 fi
 
+echo outputting nix.conf to check its contents
+echo as I am trying to use home manager to manage it
+cat /etc/nix/nix.conf
+
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
 <<manual-setup-instructions>>
@@ -611,6 +615,7 @@ bash ~/workstation/test/test.sh
   - bww
   - the ws code
   - possibly content from wssh
+  - nix code (flake files)
 - [ ] finish filling in the numerous incomplete sections of prose in this document
 - [ ] experiment with seeing if I can use home manager to set nix.conf
     I currently have two ways that I set up the nix.config file: via darwin nix and
