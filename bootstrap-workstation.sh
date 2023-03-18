@@ -223,9 +223,10 @@ else
     echo "linux not detected, no final installs necessary";
 fi
 
-if [ -z "${BW_CLIENTID+x}" ] && \
-   [ -z "${BW_CLIENTSECRET+x}" ] && \
-   [ -z "${WS_BW_MASTER_PASS+x}" ]; then
+# why is bash so cryptic
+if [ ! -z "${BW_CLIENTID+x}" ] && \
+   [ ! -z "${BW_CLIENTSECRET+x}" ] && \
+   [ ! -z "${WS_BW_MASTER_PASS+x}" ]; then
     info variables requried to run bww force-sync are set, running
     if [ ! -d ~/secrets ]; then
         mkdir ~/secrets;
@@ -260,5 +261,9 @@ These are the settings I use for slack:
 mac settings
 - enable screen sharing, _not_ remote management
 - enable remote login
+- configure hammerspoon
+  - open it
+  - enable accessability settings
+  - launch at login
 EOF
 # Bootstraping Script:1 ends here
