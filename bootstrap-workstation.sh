@@ -182,7 +182,8 @@ is_mac && {
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    nix build ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+    nix build --extra-experimental-features "nix-command flakes" \
+        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
     ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
 
     rm -rf ./result
