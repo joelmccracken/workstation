@@ -240,6 +240,10 @@ info ensuring dotfiles repo is checked out
 rm -rf ~/.doom.d/
 info finished ensuring dotfiles repo is checked out
 
+info linking dotfiles that should be symlinked
+bash ~/workstation/bin/link-dotfiles.sh -f
+info finished linking dotfiles
+
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
 
@@ -275,7 +279,6 @@ EOF
     sudo systemctl restart nix-daemon.service;
     info finished restarting nix-daemon via systemctl
 }
-
 
 function restart_mac_daemon() {
     set +e

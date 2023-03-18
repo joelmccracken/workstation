@@ -1,20 +1,7 @@
-<!-- README -->
-<!-- Every project needs a README. -->
-<!-- This really just contains super simple instructions along with a link to this file, which -->
-<!-- contains all the important information. -->
+this directory contains a variety of configuration/"dotfiles"
+many of them are simply symlinked into their destinations
 
-<!-- [[file:workstation.org::*README][README:1]] -->
-WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
+some are used in other ways (for example, doom.d directory used with nix)
 
-# Instructions
-
-1. download the bootstrap shell script:
-`curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bin/bootstrap-workstation.sh > bootstrap-workstation.sh`
-2. run `bash bootstrap-workstation.sh MACHINE_NAME BRANCH
-3. Profit!
-4. See workstation.org for manual setup documentation
-# More Information
-
-For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
-<!-- README:1 ends here -->
-
+symlinking is done with the bin/link-dotfiles.sh script, see it for details on
+how that is handled
