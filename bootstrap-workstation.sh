@@ -36,7 +36,7 @@ function is_linux() {
 }
 
 function info() {
-    echo INFO $(date) $@
+    echo "INFO ========= $(date) $@"
 }
 
 info starting workstation bootstrap
