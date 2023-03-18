@@ -264,8 +264,7 @@ info finished ensuring nix is installed
 
 export NIX_REMOTE=daemon
 
-{
-    info setting up nix.conf
+info setting up nix.conf
 (sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
 trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 substituters = https://cache.nixos.org https://cache.iog.io
@@ -274,7 +273,7 @@ trusted-users = root $(whoami) runner
 build-users-group = nixbld
 # END OF /etc/nix/nix.conf
 EOF
-}
+
 
 function restart_linux_daemon() {
     sudo systemctl restart nix-daemon.service;

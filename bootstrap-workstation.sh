@@ -133,8 +133,7 @@ info finished ensuring nix is installed
 
 export NIX_REMOTE=daemon
 
-is_linux &&  {
-    info linux detected, using HEREDOC method of setting up nix.conf
+info setting up nix.conf
 (sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
 trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 substituters = https://cache.nixos.org https://cache.iog.io
@@ -144,9 +143,9 @@ build-users-group = nixbld
 # END OF /etc/nix/nix.conf
 EOF
 
-    info restarting nix-daemon via systemctl
+
+function restart_linux_daemon() {
     sudo systemctl restart nix-daemon.service;
-    info finished restarting nix-daemon via systemctl
 }
 
 function restart_mac_daemon() {
@@ -162,6 +161,13 @@ is_mac && {
     info finished restarting nix-daemon
 }
 
+is_linux && {
+    info restarting nix-daemon via systemctl
+    restart_linux_daemon
+    info finished restarting nix-daemon via systemctl
+}
+
+}
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH
 if [[ -e "$NIX_DAEMON_PATH" ]]; then
