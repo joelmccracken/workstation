@@ -216,14 +216,6 @@ function mv_dir_dated_backup() {
     fi
 }
 
-info ensuring dotfiles repo is checked out
-{
-    cd ~;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
-# delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
-rm -rf ~/.doom.d/
-info finished ensuring dotfiles repo is checked out
 
 {
     cd $WS_DIR;
@@ -239,6 +231,15 @@ info finished ensuring dotfiles repo is checked out
 }
 
 source $WS_DIR/lib/shell/funcs.sh
+
+info ensuring dotfiles repo is checked out
+{
+    cd ~;
+    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
+} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+# delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
+rm -rf ~/.doom.d/
+info finished ensuring dotfiles repo is checked out
 
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
