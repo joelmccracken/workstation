@@ -1,0 +1,42 @@
+-- GHCI config
+-- first off I always want overloaded strings on anyway so I can just
+-- have this run every time ghci starts
+:set -XOverloadedStrings
+import Prelude
+-- Read GHCI commands from the file whose name is
+-- in the GHCIRC environment variable
+-- :def _load const(System.Environment.getEnvironment >>= maybe (return "") readFile . lookup "GHCIRC")
+-- :_load
+-- :undef _load
+-- :module
+
+-- ** turtle shell
+-- I have experimented with using ghci and the turtle library to start making an interacive
+-- shell for myself to use in day-to-day work. The advantage of such a thing
+-- is that I get to "dog-food" my own experiences with haskell and shell scripting.
+
+-- Actually making this work well is a bit of a hack though.
+-- GHCI doesn't really
+-- have a way to pass in a custom file of "commands" to initialize the shell
+-- (that is, beyond what the GHCI file would be), and IIRC I am unable to provide
+-- a GHCI file for a custom invocation (e.g. many tools have a standard loction where
+-- the configuration is located but ALSO provides a way to specify an alternate config file, but it appears that GHCI does not)
+
+-- I foudn this ghci snippet somewhere on the internet for it, which will look for an environment variable pointing to a new file and if present it will load it.
+
+-- *** The .ghci file
+-- #+begin_src haskell :tangle ~/.ghci :noweb yes
+-- -- GHCI config
+-- -- first off I always want overloaded strings on anyway so I can just
+-- -- have this run every time ghci starts
+-- :set -XOverloadedStrings
+-- import Prelude
+-- -- Read GHCI commands from the file whose name is
+-- -- in the GHCIRC environment variable
+-- -- :def _load const(System.Environment.getEnvironment >>= maybe (return "") readFile . lookup "GHCIRC")
+-- -- :_load
+-- -- :undef _load
+-- -- :module
+-- #+END_SRC
+-- ** I... hmmm... need to finish this
+-- turtle-shell-rc.hs
