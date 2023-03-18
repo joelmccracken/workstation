@@ -63,7 +63,7 @@ is_linux && {
     info finished updating apt, installing git
 }
 
-polite-git-checkout () {
+function polite-git-checkout () {
     DIR=$1
     REPO=$2
 
@@ -84,7 +84,6 @@ function mv_dir_dated_backup() {
         mv "$THEDIR" "${THEDIR}-$(date +"%s")"
     fi
 }
-
 
 {
     cd $WS_DIR;
@@ -147,7 +146,7 @@ EOF
 }
 
 
-restart_mac_daemon() {
+function restart_mac_daemon() {
     set +e
     sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
     sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
