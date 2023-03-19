@@ -4,7 +4,6 @@
 # to toggle passwordless sudo.
 
 # [[file:../workstation.org::*Passwordless sudo][Passwordless sudo:1]]
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -eo pipefail
 
 if [[ -z "$SUDO_USER" ]]; then

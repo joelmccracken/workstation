@@ -11,14 +11,14 @@ Worse, files will be left over from old *versions* of software that we still
 use. This makes it very confusing to tell what is essential and what is disjecta
 membra.
 
-This is my attempt to fix all that for myself, and perhaps you, dear reader.
-If you have any questions, feel free to shoot me an email or open an issue.
-
+This is my attempt to fix all that for myself, and perhaps you, dear reader, may
+find it of use as well. If you have any questions, feel free to shoot me an
+email or open an issue (honestly, it would be somewhat nice to know that at
+least *one* other person has read this).
 ** Rationale: The Problem
 Have you ever had a tool or setup break and had a devil of a time trying to get
-it back to a working state? This has happenend to me frequently.
-
-Over the years, I've set up many new tools to help me with my work. But, time passes,
+it back to a working state? Over the years, I've set up many new tools to help
+me with my work. But, time passes,
 and things break. Sometimes I don't even notice they've broken for a long time,
 so its even harder to fix. Something must have change must have changed: a
 dependency, perhaps? or filesystem contents?
@@ -27,31 +27,38 @@ Or, even, perhaps I've forgotten how it is supposed to work.
 This has been tricky to resolve. Especially if the tool is a hack I put
 together.
 
-To reach higher levels of productivty, it is essential to research,
+What is more, to reach higher levels of productivty, it is essential to research,
 develop, and use new tools for ourselves. Each of us has our own needs and
-constraints.
+constraints. However, without a firm foundation, these rube-goldberg development
+approaches are very fragile.
 
-So, I do not accept that this is just the way things have to be.
+So, I have been trying to do just this: provide myself a repeatable, executable
+workstation setup which I can extend when needed and rely on if something
+unforseen happens (e.g. laptop breaks).
 
 One final point: I've noticed over the years that there is a subtle pressure to
 not install new things because I *know* it will cause a problem for me in the
 future. But I think this is an anti-pattern, and needs to be fought against!
 ** Design choices
 *** Requirements
-*** invariants checking
-generally we want to check that the computer satisfies our requirements.
+- open source
+- hackable
+- where reasonable, use repeatable, automatable solutions
+*** Invariants checking
+It is necessary to check that the computer satisfies stated requirements.
 This might mean anything from "user can successfully use sudo" to "I can compile
 haskell source files".
-
-this can also  be an early warning system, telling us that we need to do
-something before it becomes an emergency.
 
 Basically, this can take shape as a script I run regularly, but more ideally it
 would (also) be something that is automatically run and have information
 reported to me.
+
+Currently, the intention is that this will come in the form of running ~ws
+check~, which is a part of the wshs sub-project in the wshs directory.
 *** early problem reporting
-we'd like to know about problems asap. If a new update comes out, and our whole
-setup proces is flawed somehow with this system.
+Ideally, we'd like to know about problems asap. If a new update comes out, and
+our whole setup proces is flawed somehow with the new update, it is important to
+realize and address when I can.
 * Background and History
 I have had a few different setups over the
 years. Accomplishing this is a lot harder than I expected.
@@ -63,8 +70,9 @@ So, this project is mostly written with literate
 org mode. This gives me an easy way to document my thoughts as I work, and also
 explore using ~org-mode~ for this task. I did this same thing a long time ago
 with my old dotfiles setup, and I liked it, but everything else about it was a
-massive pain, so it was eventually abandoned. If you want to see how this works,
-you should view this file raw.
+massive pain, so it was eventually abandoned.
+
+If you want to see how literate programming works in org mode, view this raw file.
 * README
 #+begin_src md :tangle ./README.md  :noweb yes
 WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
@@ -75,34 +83,12 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 `curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bin/bootstrap-workstation.sh > bootstrap-workstation.sh`
 2. run `bash bootstrap-workstation.sh MACHINE_NAME BRANCH
 3. Profit!
-4. See workstation.org for manual setup documentation;
+4. See workstation.org for manual setup documentation
 # More Information
 
-You should really read the file
+Much more information may be found in
 <a href="workstation.org">workstation.org</a>.
 #+end_src
-* Manual installation and setup
-There are unfortunately a number of things I need to install and set up
-manually:
-- lastpass firefox extension
-- vimium-ff etension
-- dropbox
-- icloud
-- slack
-- spotify
-- install haskell language server in ~/bin (or somwewhere else?) for hls
-- set ~/secrets/bw_pass
-- bww force sync script
-
-These are the settings I use for slack:
-- accessibility then at bottom changbe up arrow to move focus to last message
-- advanced
-  - when in ```  enter should do a newline
-  - format messages with markup
-
-mac settings
-- enable screen sharing, _not_ remote management
-- enable remote login
 * Makefile
 Used to tangle ~workstation.org~. Tangling refers to the
 process of taking a literate program source and converting it to the target
@@ -111,7 +97,6 @@ process of taking a literate program source and converting it to the target
 Formerly had some other targets, but now they are OBE. It may make sense to
 delete this makefile if it becomes clearly unnecessary.
 #+begin_src makefile :tangle ./Makefile  :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 all: tangle
 
 tangle:
@@ -123,7 +108,6 @@ And a little emacs lisp that goes with the tangle process:
 #+begin_src emacs-lisp :tangle ./lib/emacs/tangle-file.el
 ;;; tangle-file.el --- description -*- lexical-binding: t; -*-
 
-;; WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 (add-to-list 'command-switch-alist '("--tangle" . do-tangle))
 
 (defun do-tangle (arg)
@@ -135,7 +119,6 @@ And a little emacs lisp that goes with the tangle process:
 
 ;;; tangle-file.el ends here
 #+end_src
-** TODO move bin/tangle script into workstation.org
 * Bootstrap process
 Bootstrapping is tricky. What do you actually start with? What can you assume?
 You want to keep the amount of manual steps which need to occur to a minimum.
@@ -147,44 +130,33 @@ For me, I currently basically have a single bash script. But what I want to do
 soon is change this so that its a bash script which invokes a haskell process asap.
 so the bash script would basically do the minimum amount required to set up
 everything for the haskell process.
-
-** Remaining Tasks
-*** TODO figure out how to get bww sync to happen automatically
-*** TODO fix origins for workstation repo and dotfiles
-*** TODO port test/test.sh into wshs/haskell
-*** TODO look into using home manager/nix again for emacs
-the main thought here is that its becoming clear that I want to have at lest the
-option to build emacs with my own options (specifically, xwidget webkit support)
-or perhaps using one of the other projects I ha
-*** TODO use home manager for macos, ubuntu, nixos
-*** TODO echo instructions on what to do once bootstraip is done
-need to enter ~/secrets/bw_pass file, then prep that
-*** TODO establish/determine "phases" to setup
-initial bootstrap (checkout files, setup haskell, etc)
-pre-authentication (pre-bww sync)
-using haskell to do remaining setup
 ** Bootstraping Script
 This script is intended to be entrypoint to this project. It can be curled to a
 new machine and then run, and will set things up on that machine as necessary.
 #+begin_src bash :shebang "#!/usr/bin/env bash" :tangle ./bootstrap-workstation.sh :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
+
+export NIX_PM_VERSION=nix-2.11.1
+export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export HOME_MANAGER_VERSION=213a06295dff96668a1d673b9fd1c03ce1de6745
 
 if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
     exit 2
 else
-    WORKSTATION_NAME="$1"
+    export WORKSTATION_NAME="$1"
 fi
 
 if [ -z "${2+x}" ]; then
-    WORKSTATION_BOOTSTRAP_COMMIT=master
+    export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
 else
-    WORKSTATION_BOOTSTRAP_COMMIT="$2"
+    export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
 
 WS_DIR="$HOME/workstation"
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 
 function is_mac() {
     [[ "$(uname)" == 'Darwin' ]]
@@ -194,23 +166,35 @@ function is_linux() {
     [[ "$(uname)" == 'Linux' ]]
 }
 
-is_mac && {
-    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+function info() {
+    echo "INFO ========= $(date) $@"
+}
 
+info starting workstation bootstrap
+
+is_mac && {
+    info ensuring xcode is installed
+    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+    info finished ensuring xcode is installed
+
+    info ensuring brew is installed
     which brew > /dev/null || {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # install git, necessary for next step
-        # TODO this should be safe to run even if its been run before
+        info installing git
         brew install git
     }
+    info finished ensuring brew is installed
 }
 
 is_linux && {
+    info updating apt, installing git
     sudo bash -c 'apt-get update && apt-get install git'
+    info finished updating apt, installing git
 }
 
-polite-git-checkout () {
+function polite-git-checkout () {
     DIR=$1
     REPO=$2
 
@@ -233,46 +217,85 @@ function mv_dir_dated_backup() {
 }
 
 {
+    cd $WS_DIR;
+    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
+} || {
+    info moving workstation dir to backup location
+    mv_dir_dated_backup ~/workstation
+    info cloning workstation repo into ~/workstation
+    git clone 'https://github.com/joelmccracken/workstation.git'
+    cd workstation
+    info checking out specific workstation commit $WORKSTATION_BOOTSTRAP_COMMIT
+    git checkout $WORKSTATION_BOOTSTRAP_COMMIT
+}
+
+source $WS_DIR/lib/shell/funcs.sh
+
+info ensuring dotfiles repo is checked out
+{
     cd ~;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
 } || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+# delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
+rm -rf ~/.doom.d/
+info finished ensuring dotfiles repo is checked out
 
-{
-    cd ~/worksation;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
-} || {
-    mv_dir_dated_backup ~/workstation
-    git clone 'https://github.com/joelmccracken/workstation.git'
-}
+info linking dotfiles that should be symlinked
+bash ~/workstation/bin/link-dotfiles.sh -f
+info finished linking dotfiles
 
-echo installing nix
+info setting current host settings directory...
+info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
 
+if [ -d $WORKSTATION_HOST_SETTINGS_SRC_DIR ]; then
+    info setting current host directory to $WORKSTATION_HOST_SETTINGS_SRC_DIR;
+    ln -s $WORKSTATION_HOST_SETTINGS_SRC_DIR $WORKSTATION_HOST_CURRENT_SETTINGS_DIR;
+else
+    echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
+    exit 5
+fi
+
+info ensuring nix is installed
 { which nix > /dev/null; } || {
-    sh <(curl -L https://releases.nixos.org/nix/nix-2.5.1/install) --daemon;
+    info installing nix
+    sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
 }
+info finished ensuring nix is installed
 
 export NIX_REMOTE=daemon
 
-( sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
+info setting up nix.conf
+(sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
 trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org https://hydra.iohk.io
+substituters = https://cache.nixos.org https://cache.iog.io
 experimental-features = nix-command flakes
-trusted-users = root joel runner
+trusted-users = root $(whoami) runner
 build-users-group = nixbld
 # END OF /etc/nix/nix.conf
 EOF
 
-cat /etc/nix/nix.conf
 
-is_linux && {
+function restart_linux_daemon() {
     sudo systemctl restart nix-daemon.service;
 }
 
-is_mac && {
+function restart_mac_daemon() {
     set +e
     sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
     sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
     set -e
+}
+
+is_mac && {
+    info macos detected, restarting nix-daemon
+    restart_mac_daemon
+    info finished restarting nix-daemon
+}
+
+is_linux && {
+    info restarting nix-daemon via systemctl
+    restart_linux_daemon
+    info finished restarting nix-daemon via systemctl
 }
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -283,49 +306,127 @@ if [[ -e "$NIX_DAEMON_PATH" ]]; then
     set -u
 fi;
 
-cd  ~/workstation/propellor/
-nix build .#propellor:exe:propellor-config
-result/bin/propellor-config "$WORKSTATION_NAME";
-
-# most of the stuff below this can be moved to propellor
-
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
-    sudo snap install emacs --classic
-    sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev
 }
 
-{
-    cd ~/.emacs.d;
-    [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
-} || {
-    mv_dir_dated_backup ~/.emacs.d;
-    git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d;
-    # alternative: use this if encounter problems
-    # ~/.emacs.d/bin/doom -y install;
-    timeout 7m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-    echo FINISHED INSTALLING DOOM;
+is_mac && {
+    info installing darwin-nix
+    cd $WS_DIR
+    nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
+    ./result/bin/darwin-installer
+
+    nix build --extra-experimental-features "nix-command flakes" \
+        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+
+    rm -rf ./result
+    info finished installing darwin-nix
 }
+
+export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_VERSION}.tar.gz home-manager
+nix-channel --update
+export HOME_MANAGER_BACKUP_EXT=old
+
+nix-shell '<home-manager>' -A install
+
+set +u
+# evaluating this with set -u will cause an unbound variable error
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
+
+nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
+"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+
+set +u
+# evaluating this with set -u will cause an unbound variable error
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
+
+echo "building the 'ws' script"
+cd  ~/workstation/wshs
+nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
+echo "running the 'ws install' process"
+$(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
+echo "'ws install' process completed"
+
+set +e
+echo "Running final installs (install)"
+if is_linux; then
+    echo "is linux, installing ripgrep, fdfind, etc via apt";
+    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
+    echo "done running final installs";
+else
+    echo "linux not detected, no final installs necessary";
+fi
+
+# why is bash so cryptic
+if [ ! -z "${BW_CLIENTID+x}" ] && \
+   [ ! -z "${BW_CLIENTSECRET+x}" ] && \
+   [ ! -z "${WS_BW_MASTER_PASS+x}" ]; then
+    info variables requried to run bww force-sync are set, running
+    if [ ! -d ~/secrets ]; then
+        mkdir ~/secrets;
+    fi
+    # overwriting anything that was previously in the file
+    echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
+    bw login --apikey
+    bw_unlock
+    bw sync
+else
+    info variables required to run bww force sync are MISSING, skipping
+fi
+
+cat <<-EOF
+Success! However, there are some remaining manual set up steps required.
+<<manual-setup-instructions>>
+EOF
 #+end_src
 * Post-bootstrap setup
+* Manual installation and setup
+#+NAME: manual-setup-instructions
+#+begin_src org
+There are unfortunately a number of things need to install and set up
+manually:
+- lastpass firefox extension
+- vimium-ff etension
+- dropbox
+- icloud
+- slack
+- spotify
+- install haskell language server in ~/bin (or somwewhere else?) for hls
+
+These are the settings I use for slack:
+- accessibility then at bottom changbe up arrow to move focus to last message
+- advanced
+  - when in markdown block backticks, enter should do a newline
+  - format messages with markup
+
+mac settings
+- enable screen sharing, _not_ remote management
+- enable remote login
+- configure hammerspoon
+  - open it
+  - enable accessability settings
+  - launch at login
+#+end_src
+
 * System update process
+this is still incomplete, but some things I think
 - fetch ~/worksation and ~, if can clealy rebase, do so
 - run any other kind of "sync"
+- on macos, run darwin-rebuild
+- run home-manager switch
+- run bww sync
 * System "check"
-need to have a "check that system is OK"
-** TODO make check for updates on remote of ~ and ~workstation
-** TODO make check for nix (~nix store verify --all~ and ~nix-doctor~)
-** TODO make check for brew
-** TODO make check that no new secrets need to be synced
-** TODO make check that reddup is good
-** TODO make check for various execuables I care about
+I need to have a process to check that system is OK.
 * Utilities
 ** Passwordless sudo
 Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
 to toggle passwordless sudo.
 #+begin_src sh :tangle ./bin/enable-passwordless-sudo.sh :shebang "#!/usr/bin/env bash"
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -eo pipefail
 
 if [[ -z "$SUDO_USER" ]]; then
@@ -345,7 +446,6 @@ mv $TEMPFILE /etc/sudoers.d/me-passwordless-sudo
 #+end_src
 
 #+begin_src sh :tangle ./bin/disable-passwordless-sudo.sh :shebang "#!/usr/bin/env bash"
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euo pipefail
 
 rm /etc/sudoers.d/me-passwordless-sudo
@@ -358,18 +458,12 @@ out of the box bitwarden doesn't really do what I need it to.
 This restores SSH keys to my local computer.
 These can't be in git, and really they are essential for any meaningfully
 complete workstation setup.
-** TODO move the bww stuff into this section of workstation
-** TODO set up a testing account on bitwarden for CI/testing
-** TODO set up a "check" command which shows what would change if a sync happened
 * Machine profiles
-** TODO set up machine-specific settings profiles
-E.g. ~/workstation/profiles
 *** glamdring/
 *** anduril/
 *** aeglos/
 *** ci/
 * Testing
-** TODO convert all this testing to haskell
 ** test.sh
 At this point in time, this test actually checks very little, but what it DOES check
 is things that indicate that everything went right. Specifically, checking the doom version means
@@ -378,8 +472,12 @@ emacs, doom, and the whole doom setup process worked out.
 I plan to move this to a Haskell project at some point, probably do it with hspec instead.
 Or maybe that bats testing library. We'll see.
 #+begin_src sh :tangle ./test/test.sh :shebang "#!/usr/bin/env bash" :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
+
+set +u
+# evaluating this with set -u will cause an unbound variable error
+source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+set -u
 
 function assert_input() {
   local label=$1
@@ -397,17 +495,42 @@ function assert_input() {
 
 echo "RUNNING TESTS"
 
+EMACS_PATH=~/.nix-profile/bin/emacs
 # emacs
-if which emacs; then
+if [ -x "$EMACS_PATH" ]; then
     echo found emacs
 else
-  echo EMACS NOT FOUND
-  exit 1
+    echo EMACS NOT FOUND
+    exit 1
 fi
 
-emacs -Q --batch --eval '(progn (princ emacs-version) (terpri))' | assert_input "emacs version" '27.2'
-emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-version) (terpri))' | assert_input "doom-version" '21.12.0-alpha'
-emacs --batch -l ~/.emacs.d/init.el --eval '(progn (princ doom-core-version) (terpri))' | assert_input "doom-core-version" '3.0.0-alpha'
+$EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
+  read actual
+  if [[ "$actual" == "27.1" || "$actual" == "27.2" || "$actual" == "28.1" || "$actual" == "28.2" ]]; then
+    echo "emacs version is correct"
+  else
+    echo "emacs version is not correct, found '$actual', expected 27.1, 27.2, 28.1, or 28.2"
+    exit 1
+  fi
+}
+
+
+$EMACS_PATH -l ~/.emacs.d/init.el --batch --eval '(progn (princ doom-version) (terpri))' | {
+  read actual;
+  if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" || "$actual" == "3.0.0-pre" ]]; then
+    echo "doom version is correct"
+  else
+    echo "doom version is not correct, found '$actual', expected 21.12.0-alpha, 3.0.0-dev, or 3.0.0-pre"
+    exit 1
+  fi
+}
+
+if $EMACS_PATH -l ~/.emacs.d/init.el --batch --eval "(progn (require 'vterm-module nil t))"; then
+  echo "emacs is able to load vterm-module, so vterm-module is compiled and ready to go";
+else
+  echo "error: emacs was not able to load vterm-module";
+  exit 1
+fi
 
 echo "TESTS COMPLETE"
 #+end_src
@@ -421,7 +544,6 @@ caught with a regular build like this).
 I am running up close to maximum execution time, so very likely I will need to
 refactor/come up with some other way to do this.
 #+begin_src yaml :tangle ./.github/workflows/test.yml :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 name: CI
 
 on:
@@ -438,9 +560,8 @@ jobs:
         - macos-latest
         - ubuntu-latest
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Run a one-line script
       run: ./test/ci.sh
@@ -451,7 +572,6 @@ To run CI, we have a script which, thankfully, basically mirrors the install ins
 Importantly, this does a LOT of things, such as install nix, home-manager, etc, and eventually runs
 the test script.
 #+begin_src sh :tangle ./test/ci.sh :shebang "#!/usr/bin/env bash" :noweb yes
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 
 set -xeuo pipefail
 
@@ -469,6 +589,9 @@ curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BO
 
 echo BEGINNING INITIAL INSTALL
 
+# disable native compilation, too slow for CI
+export DOOM_DISABLE_NATIVE_COMPILE=true
+
 if [ "$RUNNER_OS" == "macOS" ]; then
     bash bootstrap-workstation.sh ci-macos $WORKSTATION_BOOTSTRAP_COMMIT
 else
@@ -479,11 +602,62 @@ echo INSTALL PROCESS COMPLETE, TESTING
 
 bash ~/workstation/test/test.sh
 #+end_src
-* Operational/maintenance
-** TODO rebuild my personal laptop once all of this is stable
-* Misc
-** TODO investigate if its possible to prevent committing manually-edited target files (maybe with checksum and git pre-commit-hook?)
-* Quick note
-#+begin_src sh
-home-manager switch --flake .
-#+end_src
+* TODO tasks
+- [ ] there are lots of weird little things that have accumulated in
+  bootstrap-workstation.sh; try to clean some of them up
+  - many things in bootstrap-workstation.sh should also become helper scripts in bin
+- [ ] create mechanism to run for updating workstations
+  - download updates to master branch of dotfiles and workstation
+  - run nix stuffs when appropriate
+  - maybe do bww sync?
+- [ ] move various code not in workstation.org into this file
+  - machine settings for each machine in workstation/hosts
+  - bww
+  - the ws code
+  - possibly content from wssh
+- [ ] finish filling in the numerous incomplete sections of prose in this document
+- [ ] experiment with seeing if I can use home manager to set nix.conf
+    I currently have two ways that I set up the nix.config file: via darwin nix and
+    shell script. debian/ubuntu doesn't have anything anything like darwin-nix, so
+    if I want to get rid of the duplicate method, home manager might work. seems
+    that home manager supports this:
+    https://nix-community.github.io/home-manager/options.html#opt-nix.settings
+  documenting
+- [ ] devise method to prevent committing manually-edited target files
+  - git pre-commit-hook?
+  - github action CI that runs tangle, checks for differences
+- [ ] rebuild my personal laptop once all of this is stable
+- [ ] port test/test.sh into wshs/haskell
+- [ ] laptop-state-checking script/features
+  - ensure secrets/bw_pass exists
+  - ensure other secrets are there
+    - check that no new secrets need to be synced
+      - if any secrets have changed, list the changes
+  - check if can access/ssh/etc into some other machines
+  - check for updates on ~workstation origin
+  - checks for nix (~nix store verify --all~ and ~nix-doctor~)
+  - check for brew updates/state and presence of brew executable
+    - brew doctor?
+  - check reddup state
+  - check for various execuables I care about
+    - (e.g. each thing specifially installed)
+    - haskell language server versions
+  - check for any changes/differences in ~/
+- [ ] setup hammerspoon, and especially spacehammer
+- [ ] rebuild belthronding/my cloud machine
+  - (has had lots of manual hacking)
+- [ ] build nixos sever on gandi
+- [ ] document various components of bww sync
+  - how it works
+  - how to use it
+** quick planning for server config needs
+(in rough order need to complete, to get to server-config phase of project)
+goal is to get ready to provision/set up nixos cloud machines
+1. [ ] use bww to sync/restore secrets on workstations
+2. [ ] create a new host for nixos server
+3. [ ] create script to sync updates from changes to workstation and dotfiles
+   - does something like https://nixos.wiki/wiki/NixOps help?
+4. [ ] figure out way to run update script on hosts that need it.
+5. [ ] experiement with https://docs.hercules-ci.com/arion/ for running
+   nextcloud (most urgent cloud service I want to use)
+6. [ ] set up "intelligent" s3 bucket for

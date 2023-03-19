@@ -8,20 +8,12 @@
 # Or maybe that bats testing library. We'll see.
 
 # [[file:../workstation.org::*test.sh][test.sh:1]]
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 set -euox pipefail
-
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
-
-env
-
-ls -lah ~/.nix-profile/bin
-ls -lah ~/.nix-profile/bin/
-ls -lah ~/.nix-profile/bin/emacs
 
 function assert_input() {
   local label=$1
@@ -40,15 +32,13 @@ function assert_input() {
 echo "RUNNING TESTS"
 
 EMACS_PATH=~/.nix-profile/bin/emacs
-
 # emacs
 if [ -x "$EMACS_PATH" ]; then
     echo found emacs
 else
-  echo EMACS NOT FOUND
-  exit 1
+    echo EMACS NOT FOUND
+    exit 1
 fi
-
 
 $EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
   read actual

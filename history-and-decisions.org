@@ -1,6 +1,19 @@
 #+TITLE: History And Decisions
-* [2021-12-28 Tue]
-
+* [2023-02-28 Tue]
+I have moved back to using nix for this project. There has been a lot of churn,
+however I have learned quite a bit.
+- snap did not work out. There were reasons, one of which I think was that it
+  was hard to set up/use/dealwith, but also because
+- IIRC, I realized that if I just used an updated ubuntu/debian, I would be able
+  to acquire an emacs that was new enough much more easily, so this whole thing
+  wasn't needed. but i had learned that snaps have weird limitations (shch as
+  not being able to access files in /tmp)
+- I started experimenting and having success with flakes, and added nix *back*
+  in incrementally. This mostly worked, and once I got to the point where I now
+  had the nix-doom-emacs package.
+So I guess that although I had a good number of frustrations with nix, my core
+hunch (that it will be incredibly useful and powerful once I'm nearly expert at
+it, and that )
 * [2021-12-24 Fri]
 how should I organize the org files?
 one org file per source file seems wrong. But it also doesn't seem like

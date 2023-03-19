@@ -18,29 +18,66 @@
     };
     nix-doom-emacs = {
       url = "github:nix-community/nix-doom-emacs";
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # emacs-overlay = {
-    #   url = "github:nix-community/emacs-overlay/master";
-    #   # inputs.nixpkgs.follows = "darwin-nixpkgs";
-    # };
-
-    # doom-emacs = { url = "github:hlissner/doom-emacs/develop"; flake = false; };
-
-    # darwin-nix-doom-emacs = {
-    #   url = "github:nix-community/nix-doom-emacs";
-    #   # inputs = {
-    #   #   nixpkgs.follows = "darwin-nixpkgs";
-    #   #   emacs-overlay.follows = "emacs-overlay";
-    #   #   doom-emacs.follows = "doom-emacs";
-    #   # };
-    # };
   };
 
   outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, nix-doom-emacs, # darwin-nix-doom-emacs,
     ... }:
+
     let
+      home-manager-config = { user, home }:
+        { config, pkgs, lib, ... }:
+          {
+            # Home Manager needs a bit of information about you and the
+            # paths it should manage.
+            home.username = user;
+            home.homeDirectory = home;
+
+            # This value determines the Home Manager release that your
+            # configuration is compatible with. This helps avoid breakage
+            # when a new Home Manager release introduces backwards
+            # incompatible changes.
+            #
+            # You can update Home Manager without changing this value. See
+            # the Home Manager release notes for a list of state version
+            # changes in each release.
+            home.stateVersion = "22.11";
+
+            # Let Home Manager install and manage itself.
+            programs.home-manager.enable = true;
+            home.packages = [
+              pkgs.git
+              pkgs.ripgrep
+              pkgs.jq
+              pkgs.jl
+              pkgs.fd
+              pkgs.ispell
+              pkgs.bitwarden-cli
+              pkgs.direnv
+              pkgs.mr  # myrepos https://myrepos.branchable.com/install/
+              pkgs.graphviz
+              pkgs.cmake
+              pkgs.coreutils
+              pkgs.wget
+            ];
+
+            home.sessionPath = [
+              "~/.nix-profile/bin/"
+            ];
+
+            programs.doom-emacs = {
+              enable = true;
+              doomPrivateDir = ./dotfiles/doom.d;
+              extraConfig = ''
+                (add-to-list 'exec-path "~/.nix-profile/bin/")
+              '';
+            };
+
+            # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
+            manual.manpages.enable = false;
+          };
+
+
       darwin-home-config = user-config:
         let
           system = "x86_64-darwin";
@@ -50,9 +87,8 @@
 
           modules = [
             nix-doom-emacs.hmModule
-            (import ./home.nix user-config)
-          ]
-;
+            (home-manager-config user-config)
+          ];
         };
       linux-home-config = user-config:
         let
@@ -63,16 +99,47 @@
 
           modules = [
             nix-doom-emacs.hmModule
-            (import ./home.nix user-config)
+            (home-manager-config user-config)
           ];
         };
+      nix-darwin-config = {hostname, user, ...}:
+        { config, pkgs, ... }:
+          {
+            networking.hostName = hostname;
+            networking.localHostName = hostname;
+
+            # List packages installed in system profile. To search by name, run:
+            # $ nix-env -qaP | grep wget
+            environment.systemPackages =
+              [ pkgs.vim
+              ];
+
+            # Auto upgrade nix package and the daemon service.
+            services.nix-daemon.enable = true;
+            nix.package = pkgs.nix;
+
+            # Create /etc/bashrc that loads the nix-darwin environment.
+            programs.zsh.enable = true;  # default shell on catalina
+            # programs.fish.enable = true;
+
+            # Used for backwards compatibility, please read the changelog before changing.
+            # $ darwin-rebuild changelog
+            system.stateVersion = 4;
+          };
     in
     {
       darwinConfigurations."glamdring" = darwin.lib.darwinSystem {
         system = "x86_64-darwin";
-        modules = [ ./darwin-configuration.nix ];
+        modules = [
+          (nix-darwin-config { user = "joel"; hostname = "glamdring"; })
+        ];
       };
-
+      darwinConfigurations."ci-macos" = darwin.lib.darwinSystem {
+        system = "x86_64-darwin";
+        modules = [
+          (nix-darwin-config { user = "runner"; hostname = "ci-macos"; })
+        ];
+      };
       homeConfigurations.glamdring.joel = darwin-home-config {
         user = "joel"; home = "/Users/joel";
       };

@@ -1,7 +1,4 @@
 <!-- README -->
-<!-- Every project needs a README. -->
-<!-- This really just contains super simple instructions along with a link to this file, which -->
-<!-- contains all the important information. -->
 
 <!-- [[file:workstation.org::*README][README:1]] -->
 WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
@@ -15,6 +12,6 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 4. See workstation.org for manual setup documentation
 # More Information
 
-For more information, you should really read the <a href="workstation.org">workstation.org</a> file.
+Much more information may be found in
+<a href="workstation.org">workstation.org</a>.
 <!-- README:1 ends here -->
-

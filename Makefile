@@ -7,7 +7,6 @@
 # delete this makefile if it becomes clearly unnecessary.
 
 # [[file:workstation.org::*Makefile][Makefile:1]]
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 all: tangle
 
 tangle:

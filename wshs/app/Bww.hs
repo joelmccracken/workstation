@@ -29,6 +29,8 @@ will need to use like e.g.
 BW_SESSION="THE KEY" bin/bww.hs force-sync
 get this key via `bw unlock`
 
+or export BW_SESSION=`bw unlock --passwordfile ~/secrets/bw_pass --raw`;
+
 need to run `bw sync` to pick up on changes that have happend on the server.
 -}
 parser :: Parser Mode

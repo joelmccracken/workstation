@@ -9,14 +9,12 @@
 # refactor/come up with some other way to do this.
 
 # [[file:../../workstation.org::*Github Actions CI][Github Actions CI:1]]
-# WARNING: This file is managed by tangling workstation.org. Do not edit directly!
 name: CI
 
 on:
   push:
   schedule:
   - cron: '0 0 * * *'  # every day at midnight
-
 
 jobs:
   build:
