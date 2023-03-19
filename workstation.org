@@ -313,7 +313,6 @@ is_linux && {
 
 is_mac && {
     info installing darwin-nix
-    sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.old
     cd $WS_DIR
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
