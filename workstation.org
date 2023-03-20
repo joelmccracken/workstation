@@ -721,13 +721,6 @@ bash ~/workstation/test/test.sh
   - the ws code
   - possibly content from wssh
 - [ ] finish filling in the numerous incomplete sections of prose in this document
-- [ ] experiment with seeing if I can use home manager to set nix.conf
-    I currently have two ways that I set up the nix.config file: via darwin nix and
-    shell script. debian/ubuntu doesn't have anything anything like darwin-nix, so
-    if I want to get rid of the duplicate method, home manager might work. seems
-    that home manager supports this:
-    https://nix-community.github.io/home-manager/options.html#opt-nix.settings
-  documenting
 - [ ] devise method to prevent committing manually-edited target files
   - git pre-commit-hook?
   - github action CI that runs tangle, checks for differences
@@ -739,7 +732,7 @@ bash ~/workstation/test/test.sh
     - check that no new secrets need to be synced
       - if any secrets have changed, list the changes
   - check if can access/ssh/etc into some other machines
-  - check for updates on ~workstation origin
+  - check for updates on workstation origin
   - checks for nix (~nix store verify --all~ and ~nix-doctor~)
   - check for brew updates/state and presence of brew executable
     - brew doctor?
@@ -767,6 +760,8 @@ goal is to get ready to provision/set up nixos cloud machines
    nextcloud (most urgent cloud service I want to use)
 6. [ ] set up "intelligent" s3 bucket for
 * COMMENT Local Variables
+These are set like this so that the noweb characters don't conflict with shell
+HEREDOC syntax, breaking syntax highlighting/indentation etc.
 # Local Variables:
 # org-babel-noweb-wrap-start: "«"
 # org-babel-noweb-wrap-end: "»"
