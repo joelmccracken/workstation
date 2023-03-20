@@ -110,6 +110,10 @@ And a little emacs lisp that goes with the tangle process:
 
 (add-to-list 'command-switch-alist '("--tangle" . do-tangle))
 
+(setq safe-local-variable-values
+      '((org-babel-noweb-wrap-start . "«")
+        (org-babel-noweb-wrap-end . "»")))
+
 (defun do-tangle (arg)
   "Do the tangle. ARG is ignored."
   (find-file "workstation.org")
@@ -158,11 +162,11 @@ WS_DIR="$HOME/workstation"
 export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 
-<<is_mac_function>>
+«is_mac_function»
 
-<<is_linux_function>>
+«is_linux_function»
 
-<<info_function>>
+«info_function»
 
 info starting workstation bootstrap
 
@@ -375,7 +379,7 @@ fi
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
-<<manual-setup-instructions>>
+«manual-setup-instructions»
 EOF
 #+end_src
 ** Bootstrapping Components
@@ -476,14 +480,14 @@ rm /etc/sudoers.d/me-passwordless-sudo
 ** library of shell functions
 #+begin_src sh :tangle ./lib/shell/funcs.sh :shebang "#!/usr/bin/env bash" :noweb yes
 
-<<is_mac_function>>
+«is_mac_function»
 
-<<is_linux_function>>
+«is_linux_function»
 
-<<info_function>>
+«info_function»
 
 # unlocks bitwarden, so that the `bw` program can access the bitwarden database.
-<<bw_unlock_function>>
+«bw_unlock_function»
 
 #+end_src
 
@@ -713,3 +717,8 @@ goal is to get ready to provision/set up nixos cloud machines
 5. [ ] experiement with https://docs.hercules-ci.com/arion/ for running
    nextcloud (most urgent cloud service I want to use)
 6. [ ] set up "intelligent" s3 bucket for
+* COMMENT Local Variables
+# Local Variables:
+# org-babel-noweb-wrap-start: "«"
+# org-babel-noweb-wrap-end: "»"
+# End:

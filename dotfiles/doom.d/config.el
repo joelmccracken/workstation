@@ -90,4 +90,6 @@
       '((lsp-haskell-server-path . "~/bin/haskell-language-server-macOS-8.8.4")
         (lsp-haskell-formatting-provider . "stylish-haskell")
         (lsp-enable-file-watchers . t)
-        (lsp-file-watch-threshold . 2000)))
+        (lsp-file-watch-threshold . 2000)
+        (org-babel-noweb-wrap-start . "«")
+        (org-babel-noweb-wrap-end . "»")))

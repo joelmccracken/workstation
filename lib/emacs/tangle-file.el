@@ -6,6 +6,10 @@
 
 (add-to-list 'command-switch-alist '("--tangle" . do-tangle))
 
+(setq safe-local-variable-values
+      '((org-babel-noweb-wrap-start . "«")
+        (org-babel-noweb-wrap-end . "»")))
+
 (defun do-tangle (arg)
   "Do the tangle. ARG is ignored."
   (find-file "workstation.org")
