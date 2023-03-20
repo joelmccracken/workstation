@@ -335,8 +335,8 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
-"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+«home_manager_flake_switch_function»
+home_manager_flake_switch
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
@@ -410,7 +410,25 @@ function info() {
 }
 #+end_src
 ***
+* Nix components
+** Home Manager
+I use home manager as the primary method for installing and configuring software
+*** flake-world equivalent to home-manager 'switch'
+The pre-flake way of using home manager had a ~home-manager switch~ command
+which would build and then activate the next home manager generation. This is
+the flake "equivalent". Having it as a shell command makes it easier to run.
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/home-manager-flake-switch.sh :noweb yes
+«home_manager_flake_switch_function»
+home_manager_flake_switch
 
+#+end_src
+#+NAME: home_manager_flake_switch_function
+#+begin_src shell
+function home_manager_flake_switch() {
+    nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
+    "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+}
+#+end_src
 * Post-bootstrap setup
 * Manual installation and setup
 #+NAME: manual-setup-instructions
