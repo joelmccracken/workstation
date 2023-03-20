@@ -309,17 +309,16 @@ is_linux && {
     sudo apt-get update
 }
 
+«nix_darwin_rebuild_flake_function»
+
 is_mac && {
     info installing darwin-nix
     cd $WS_DIR
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    nix build --extra-experimental-features "nix-command flakes" \
-        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+    nix_darwin_rebuild_flake_function
 
-    rm -rf ./result
     info finished installing darwin-nix
 }
 
@@ -417,16 +416,48 @@ I use home manager as the primary method for installing and configuring software
 The pre-flake way of using home manager had a ~home-manager switch~ command
 which would build and then activate the next home manager generation. This is
 the flake "equivalent". Having it as a shell command makes it easier to run.
+
+Also, this script obviously requires the ~WORKSTATION_NAME~ environment variable
+to be set, which provides the 'identity' of the current machine -- not all
+machines have the same home manager configurations.
 #+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/home-manager-flake-switch.sh :noweb yes
+set -u # error in case WORKSTATION_NAME is not set
 «home_manager_flake_switch_function»
 home_manager_flake_switch
-
 #+end_src
 #+NAME: home_manager_flake_switch_function
 #+begin_src shell
 function home_manager_flake_switch() {
     nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
     "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+}
+#+end_src
+** Nix darwin
+I actually don't use this for much of anything now, but I do know that since
+home manager can't manage daemons on macos, I want to keep nix darwin around so
+that I can use it for that. I had used this for setting up nix.conf, but I
+decided to just unify how it was done since I have to do it another way anyway
+for non-darwin machines.
+
+Also, this script obviously requires the ~WORKSTATION_NAME~ environment variable
+to be set, which provides the 'identity' of the current machine -- not all
+machines have the same home manager configurations. This environment variable is
+set by other mechanisms withing the workstation system.
+*** command to have darwin build and switch to next generation
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/nix-darwin-rebuild-flake.sh  :noweb yes
+set -u # error in case WORKSTATION_NAME is not set
+«nix_darwin_rebuild_flake_function»
+nix_darwin_rebuild_flake_function
+#+end_src
+
+#+name: nix_darwin_rebuild_flake_function
+#+begin_src sh
+function nix_darwin_rebuild_flake() {
+    nix build --extra-experimental-features "nix-command flakes" \
+        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+
+    rm -rf ./result
 }
 #+end_src
 * Post-bootstrap setup
