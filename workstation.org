@@ -304,7 +304,7 @@ is_mac && {
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    nix_darwin_rebuild_flake_function
+    nix_darwin_rebuild_flake
 
     info finished installing darwin-nix
 }
