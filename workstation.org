@@ -192,20 +192,7 @@ is_linux && {
     info finished updating apt, installing git
 }
 
-function polite-git-checkout () {
-    DIR=$1
-    REPO=$2
-
-    cd $DIR
-    git init
-    git remote add origin $REPO
-    git fetch
-
-    # wont work (it will have already been deleted from the index)
-    git reset --mixed origin/master
-    # This formulation of the checkout command seems to work most reliably
-    git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
-}
+«polite_git_checkout_function»
 
 function mv_dir_dated_backup() {
     local THEDIR="$1"
@@ -527,6 +514,8 @@ set -euo pipefail
 rm /etc/sudoers.d/me-passwordless-sudo
 #+end_src
 ** library of shell functions
+This single file contains many of the general-purpose functions that I use in
+numerous scripts etc.
 #+begin_src sh :tangle ./lib/shell/funcs.sh :shebang "#!/usr/bin/env bash" :noweb yes
 
 «is_mac_function»
@@ -539,7 +528,37 @@ rm /etc/sudoers.d/me-passwordless-sudo
 «bw_unlock_function»
 
 #+end_src
+** Polite git checkout
+This script provides a way to check out a repository in a directory without
+clobbering the existing contents of the directory. This is useful in case the
+directory might have contents that you wish to save, and you think it might be
+handy to be able to i.e. ~git diff~ the contents against what git knows about
+in the repository, once all of the trivial differences have been resolved (i.e.
+files missing are put into place).
 
+I used to use this for setting up dotfiles, however, I've changed the approach,
+but I still think this script is handy and want to hang on to it.
+#+begin_src sh :tangle ./bin/polite-git-checkout.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«polite_git_checkout_function»
+polite-git-checkout $1 $2
+#+end_src
+#+name: polite_git_checkout_function
+#+begin_src sh
+function polite-git-checkout () {
+    DIR=$1
+    REPO=$2
+
+    cd $DIR
+    git init
+    git remote add origin $REPO
+    git fetch
+
+    # wont work (it will have already been deleted from the index)
+    git reset --mixed origin/master
+    # This formulation of the checkout command seems to work most reliably
+    git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
+}
+#+end_src
 * Bitwarden and personal secrets
 I have a script to set up and download various "private" information.
 for various reasons I've decided to try bitwarden for this, but
@@ -748,6 +767,8 @@ bash ~/workstation/test/test.sh
 - [ ] document various components of bww sync
   - how it works
   - how to use it
+- [ ] get rid of rming results when darwin-rebuild script finishes (use path
+  technique from home manager script)
 ** quick planning for server config needs
 (in rough order need to complete, to get to server-config phase of project)
 goal is to get ready to provision/set up nixos cloud machines
