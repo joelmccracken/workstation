@@ -252,6 +252,7 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw login --apikey
     bw_unlock
     bw sync
+    $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
 else
     info variables required to run bww force sync are MISSING, skipping
 fi

@@ -359,6 +359,7 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw login --apikey
     bw_unlock
     bw sync
+    $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
@@ -395,7 +396,6 @@ function info() {
     echo "INFO ========= $(date) $@"
 }
 #+end_src
-***
 * Nix components
 ** Home Manager
 I use home manager as the primary method for installing and configuring software
@@ -730,6 +730,14 @@ bash ~/workstation/test/test.sh
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
+    - mv_dir_dated_backup
+    - install git (mac and linux)? homebrew? nix?
+    - place nix.conf with custom file
+    - restart nix daemon, linux/macos
+    - build_wshs
+    - ws (an executable to run the currently built wshs), bww
+  - for various installations, document the interesting parts of each
+    and have subsections of the workstation config
 - [ ] create mechanism to run for updating workstations
   - download updates to master branch of dotfiles and workstation
   - run nix stuffs when appropriate
