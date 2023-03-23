@@ -141,32 +141,7 @@ new machine and then run, and will set things up on that machine as necessary.
 
 set -xeuo pipefail
 
-export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=213a06295dff96668a1d673b9fd1c03ce1de6745
-
-if [ -z "${1+x}" ]; then
-    echo WORKSTATION_NAME must be provided as first argument
-    exit 2
-else
-    export WORKSTATION_NAME="$1"
-fi
-
-if [ -z "${2+x}" ]; then
-    export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
-else
-    export WORKSTATION_BOOTSTRAP_COMMIT="$2"
-fi
-
-WS_DIR="$HOME/workstation"
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
-export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
-
-«is_mac_function»
-
-«is_linux_function»
-
-«info_function»
+«bootstrap-steps»
 
 info starting workstation bootstrap
 
@@ -192,21 +167,13 @@ is_linux && {
     info finished updating apt, installing git
 }
 
-«polite_git_checkout_function»
-
-function mv_dir_dated_backup() {
-    local THEDIR="$1"
-    if test -e "$THEDIR"; then
-        mv "$THEDIR" "${THEDIR}-$(date +"%s")"
-    fi
-}
 
 {
     cd $WS_DIR;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
     info moving workstation dir to backup location
-    mv_dir_dated_backup ~/workstation
+    mv_dated_backup ~/workstation
     info cloning workstation repo into ~/workstation
     git clone 'https://github.com/joelmccracken/workstation.git'
     cd workstation
@@ -369,6 +336,75 @@ Success! However, there are some remaining manual set up steps required.
 «manual-setup-instructions»
 EOF
 #+end_src
+** Bootstrap Script Steps
+:PROPERTIES:
+:header-args: :noweb-ref bootstrap-steps
+:END:
+*** Set Version Settings
+#+begin_src shell
+# These are the various versions of things that should be installed. Keeping them
+# in one place like this make them easier to keep track of.
+
+export NIX_PM_VERSION=nix-2.11.1
+export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export HOME_MANAGER_VERSION=213a06295dff96668a1d673b9fd1c03ce1de6745
+#+end_src
+*** Argument Parsing
+#+begin_src shell
+# Script should be passed a single argument, which is name of this workstation.
+
+# When using script to set up a workstation, the "name" of the workstation should
+# be provided as the first argument. This is used to pick which settings should be
+# applied to this machine.
+if [ -z "${1+x}" ]; then
+    echo WORKSTATION_NAME must be provided as first argument
+    exit 2
+else
+    export WORKSTATION_NAME="$1"
+fi
+
+# This argument generally should not be used by the user, but it is needed for
+# the CI process.
+# When the CI process starts, we start out with a check out of the code for this
+# commit in a directory on the CI machine. However, this is not how workstation runs:
+# - part of the job of workstation is getting its own code from the server
+# - workstation expects the code to be in a specific directory, that is, ~/workstation
+# Because of this (and possibly other reasons that escape me now), even though the
+# source code of the current commit is checked out on the CI machine already,
+# the CI process re-downloads the code (via this script). The specific SHA to get
+# is passed via the argument below. However, if actually being used by a user,
+# generally user will always want to use the most up to date content of the master
+# branch, so this can be ignored.
+# I think probably this sha should just be passed in as an environment variable
+# instead of a CLI argument, as that seems a bit less confusing to me.
+if [ -z "${2+x}" ]; then
+    export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
+else
+    export WORKSTATION_BOOTSTRAP_COMMIT="$2"
+fi
+#+end_src
+*** Setting some variables to keep things DRY
+#+begin_src shell
+# having these variables here really just makes the code a bit more DRY
+WS_DIR="$HOME/workstation"
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
+#+end_src
+*** Helper Functions
+#+begin_src shell :noweb yes
+# hereafter, we use many helper functions. Here they are defined up front
+
+«is_mac_function»
+
+«is_linux_function»
+
+«info_function»
+
+«polite_git_checkout_function»
+
+«mv_dated_backup_function»
+#+end_src
+*** First actual steps: macos pre-setup and installing git
 ** Bootstrapping Components
 *** Helper Functions
 **** is_mac
@@ -394,6 +430,16 @@ A simple function for logging.
 #+begin_src sh
 function info() {
     echo "INFO ========= $(date) $@"
+}
+#+end_src
+**** mv_dated_backup
+#+name: mv_dated_backup_function
+#+begin_src shell
+function mv_dated_backup() {
+    local THEDIR="$1"
+    if test -e "$THEDIR"; then
+        mv "$THEDIR" "${THEDIR}-$(date +"%s")"
+    fi
 }
 #+end_src
 * Nix components
@@ -527,6 +573,9 @@ numerous scripts etc.
 # unlocks bitwarden, so that the `bw` program can access the bitwarden database.
 «bw_unlock_function»
 
+«polite_git_checkout_function»
+
+«mv_dated_backup_function»
 #+end_src
 ** Polite git checkout
 This script provides a way to check out a repository in a directory without
@@ -730,7 +779,7 @@ bash ~/workstation/test/test.sh
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
-    - mv_dir_dated_backup
+    - mv_dated_backup
     - install git (mac and linux)? homebrew? nix?
     - place nix.conf with custom file
     - restart nix daemon, linux/macos
@@ -738,6 +787,10 @@ bash ~/workstation/test/test.sh
     - ws (an executable to run the currently built wshs), bww
   - for various installations, document the interesting parts of each
     and have subsections of the workstation config
+- [ ] change setting of WORKSTATION_BOOTSTRAP_COMMIT to use env var
+  its awkward having it be a cli arg, I feel the need to explain
+  when we need to use it
+- [ ] better document all of the workstation names that are available
 - [ ] create mechanism to run for updating workstations
   - download updates to master branch of dotfiles and workstation
   - run nix stuffs when appropriate
