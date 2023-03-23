@@ -110,6 +110,10 @@ And a little emacs lisp that goes with the tangle process:
 
 (add-to-list 'command-switch-alist '("--tangle" . do-tangle))
 
+(setq safe-local-variable-values
+      '((org-babel-noweb-wrap-start . "«")
+        (org-babel-noweb-wrap-end . "»")))
+
 (defun do-tangle (arg)
   "Do the tangle. ARG is ignored."
   (find-file "workstation.org")
@@ -133,7 +137,7 @@ everything for the haskell process.
 ** Bootstraping Script
 This script is intended to be entrypoint to this project. It can be curled to a
 new machine and then run, and will set things up on that machine as necessary.
-#+begin_src bash :shebang "#!/usr/bin/env bash" :tangle ./bootstrap-workstation.sh :noweb yes
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bootstrap-workstation.sh :noweb yes
 
 set -xeuo pipefail
 
@@ -158,17 +162,11 @@ WS_DIR="$HOME/workstation"
 export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 
-function is_mac() {
-    [[ "$(uname)" == 'Darwin' ]]
-}
+«is_mac_function»
 
-function is_linux() {
-    [[ "$(uname)" == 'Linux' ]]
-}
+«is_linux_function»
 
-function info() {
-    echo "INFO ========= $(date) $@"
-}
+«info_function»
 
 info starting workstation bootstrap
 
@@ -194,20 +192,7 @@ is_linux && {
     info finished updating apt, installing git
 }
 
-function polite-git-checkout () {
-    DIR=$1
-    REPO=$2
-
-    cd $DIR
-    git init
-    git remote add origin $REPO
-    git fetch
-
-    # wont work (it will have already been deleted from the index)
-    git reset --mixed origin/master
-    # This formulation of the checkout command seems to work most reliably
-    git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
-}
+«polite_git_checkout_function»
 
 function mv_dir_dated_backup() {
     local THEDIR="$1"
@@ -311,17 +296,16 @@ is_linux && {
     sudo apt-get update
 }
 
+«nix_darwin_rebuild_flake_function»
+
 is_mac && {
     info installing darwin-nix
     cd $WS_DIR
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    nix build --extra-experimental-features "nix-command flakes" \
-        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+    nix_darwin_rebuild_flake
 
-    rm -rf ./result
     info finished installing darwin-nix
 }
 
@@ -337,8 +321,8 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
-"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+«home_manager_flake_switch_function»
+home_manager_flake_switch
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
@@ -381,8 +365,87 @@ fi
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
-<<manual-setup-instructions>>
+«manual-setup-instructions»
 EOF
+#+end_src
+** Bootstrapping Components
+*** Helper Functions
+**** is_mac
+Detects if is running on a mac.
+
+#+NAME: is_mac_function
+#+begin_src sh
+function is_mac() {
+    [[ "$(uname)" == 'Darwin' ]]
+}
+#+end_src
+**** is_linux
+Detects if running on linux
+#+NAME: is_linux_function
+#+begin_src sh
+function is_linux() {
+    [[ "$(uname)" == 'Linux' ]]
+}
+#+end_src
+**** info
+A simple function for logging.
+#+NAME: info_function
+#+begin_src sh
+function info() {
+    echo "INFO ========= $(date) $@"
+}
+#+end_src
+***
+* Nix components
+** Home Manager
+I use home manager as the primary method for installing and configuring software
+*** flake-world equivalent to home-manager 'switch'
+The pre-flake way of using home manager had a ~home-manager switch~ command
+which would build and then activate the next home manager generation. This is
+the flake "equivalent". Having it as a shell command makes it easier to run.
+
+Also, this script obviously requires the ~WORKSTATION_NAME~ environment variable
+to be set, which provides the 'identity' of the current machine -- not all
+machines have the same home manager configurations.
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/home-manager-flake-switch.sh :noweb yes
+set -u # error in case WORKSTATION_NAME is not set
+«home_manager_flake_switch_function»
+home_manager_flake_switch
+#+end_src
+#+NAME: home_manager_flake_switch_function
+#+begin_src shell
+function home_manager_flake_switch() {
+    nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
+    "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+}
+#+end_src
+** Nix darwin
+I actually don't use this for much of anything now, but I do know that since
+home manager can't manage daemons on macos, I want to keep nix darwin around so
+that I can use it for that. I had used this for setting up nix.conf, but I
+decided to just unify how it was done since I have to do it another way anyway
+for non-darwin machines.
+
+Also, this script obviously requires the ~WORKSTATION_NAME~ environment variable
+to be set, which provides the 'identity' of the current machine -- not all
+machines have the same home manager configurations. This environment variable is
+set by other mechanisms withing the workstation system.
+*** command to have darwin build and switch to next generation
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/nix-darwin-rebuild-flake.sh  :noweb yes
+set -u # error in case WORKSTATION_NAME is not set
+«nix_darwin_rebuild_flake_function»
+nix_darwin_rebuild_flake_function
+#+end_src
+
+#+name: nix_darwin_rebuild_flake_function
+#+begin_src sh
+function nix_darwin_rebuild_flake() {
+    nix build --extra-experimental-features "nix-command flakes" \
+        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+
+    rm -rf ./result
+}
 #+end_src
 * Post-bootstrap setup
 * Manual installation and setup
@@ -450,6 +513,52 @@ set -euo pipefail
 
 rm /etc/sudoers.d/me-passwordless-sudo
 #+end_src
+** library of shell functions
+This single file contains many of the general-purpose functions that I use in
+numerous scripts etc.
+#+begin_src sh :tangle ./lib/shell/funcs.sh :shebang "#!/usr/bin/env bash" :noweb yes
+
+«is_mac_function»
+
+«is_linux_function»
+
+«info_function»
+
+# unlocks bitwarden, so that the `bw` program can access the bitwarden database.
+«bw_unlock_function»
+
+#+end_src
+** Polite git checkout
+This script provides a way to check out a repository in a directory without
+clobbering the existing contents of the directory. This is useful in case the
+directory might have contents that you wish to save, and you think it might be
+handy to be able to i.e. ~git diff~ the contents against what git knows about
+in the repository, once all of the trivial differences have been resolved (i.e.
+files missing are put into place).
+
+I used to use this for setting up dotfiles, however, I've changed the approach,
+but I still think this script is handy and want to hang on to it.
+#+begin_src sh :tangle ./bin/polite-git-checkout.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«polite_git_checkout_function»
+polite-git-checkout $1 $2
+#+end_src
+#+name: polite_git_checkout_function
+#+begin_src sh
+function polite-git-checkout () {
+    DIR=$1
+    REPO=$2
+
+    cd $DIR
+    git init
+    git remote add origin $REPO
+    git fetch
+
+    # wont work (it will have already been deleted from the index)
+    git reset --mixed origin/master
+    # This formulation of the checkout command seems to work most reliably
+    git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
+}
+#+end_src
 * Bitwarden and personal secrets
 I have a script to set up and download various "private" information.
 for various reasons I've decided to try bitwarden for this, but
@@ -458,6 +567,17 @@ out of the box bitwarden doesn't really do what I need it to.
 This restores SSH keys to my local computer.
 These can't be in git, and really they are essential for any meaningfully
 complete workstation setup.
+** bw_unlock bash function
+The ~bw_unlock~ function sets the ~BW_SESSION~ environment variable in the
+current shell process, which is required in order to query the bitwarden
+password database.
+#+NAME: bw_unlock_function
+#+begin_src sh
+bw_unlock () {
+    # authtenticates bitwarden for this shell session only
+    export BW_SESSION=`bw unlock --passwordfile ~/secrets/bw_pass --raw`;
+}
+#+end_src
 * Machine profiles
 *** glamdring/
 *** anduril/
@@ -564,6 +684,10 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Run a one-line script
+      env:
+        BW_CLIENTID: ${{ secrets.BW_CLIENTID }}
+        BW_CLIENTSECRET: ${{ secrets.BW_CLIENTSECRET }}
+        WS_BW_MASTER_PASS: ${{ secrets.WS_BW_MASTER_PASS }}
       run: ./test/ci.sh
 #+end_src
 ** The environment setup script
@@ -616,13 +740,6 @@ bash ~/workstation/test/test.sh
   - the ws code
   - possibly content from wssh
 - [ ] finish filling in the numerous incomplete sections of prose in this document
-- [ ] experiment with seeing if I can use home manager to set nix.conf
-    I currently have two ways that I set up the nix.config file: via darwin nix and
-    shell script. debian/ubuntu doesn't have anything anything like darwin-nix, so
-    if I want to get rid of the duplicate method, home manager might work. seems
-    that home manager supports this:
-    https://nix-community.github.io/home-manager/options.html#opt-nix.settings
-  documenting
 - [ ] devise method to prevent committing manually-edited target files
   - git pre-commit-hook?
   - github action CI that runs tangle, checks for differences
@@ -634,7 +751,7 @@ bash ~/workstation/test/test.sh
     - check that no new secrets need to be synced
       - if any secrets have changed, list the changes
   - check if can access/ssh/etc into some other machines
-  - check for updates on ~workstation origin
+  - check for updates on workstation origin
   - checks for nix (~nix store verify --all~ and ~nix-doctor~)
   - check for brew updates/state and presence of brew executable
     - brew doctor?
@@ -650,6 +767,8 @@ bash ~/workstation/test/test.sh
 - [ ] document various components of bww sync
   - how it works
   - how to use it
+- [ ] get rid of rming results when darwin-rebuild script finishes (use path
+  technique from home manager script)
 ** quick planning for server config needs
 (in rough order need to complete, to get to server-config phase of project)
 goal is to get ready to provision/set up nixos cloud machines
@@ -661,3 +780,10 @@ goal is to get ready to provision/set up nixos cloud machines
 5. [ ] experiement with https://docs.hercules-ci.com/arion/ for running
    nextcloud (most urgent cloud service I want to use)
 6. [ ] set up "intelligent" s3 bucket for
+* COMMENT Local Variables
+These are set like this so that the noweb characters don't conflict with shell
+HEREDOC syntax, breaking syntax highlighting/indentation etc.
+# Local Variables:
+# org-babel-noweb-wrap-start: "«"
+# org-babel-noweb-wrap-end: "»"
+# End:

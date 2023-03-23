@@ -90,4 +90,21 @@
       '((lsp-haskell-server-path . "~/bin/haskell-language-server-macOS-8.8.4")
         (lsp-haskell-formatting-provider . "stylish-haskell")
         (lsp-enable-file-watchers . t)
-        (lsp-file-watch-threshold . 2000)))
+        (lsp-file-watch-threshold . 2000)
+        (org-babel-noweb-wrap-start . "«")
+        (org-babel-noweb-wrap-end . "»")
+        (org-src-preserve-indentation)
+        (eval progn
+              (make-local-variable 'projectile-make-test-cmd)
+              (setq projectile-ruby-test-cmd "rake"))
+        (eval message "starting yaml-mode")
+        (eval message "hello there")
+        (eval progn
+              (let*
+                  ((load-path
+                    (cons
+                     (locate-dominating-file default-directory "ef.el")
+                     load-path)))
+                (require 'ef)))
+        (jnm/in-ef-dir . t)
+        (ef/files "actions.org" "projects-maintenance.org" "projects.org" "upcoming.org" "waiting.org")))

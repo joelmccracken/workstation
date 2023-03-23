@@ -180,17 +180,22 @@ is_linux && {
     sudo apt-get update
 }
 
+function nix_darwin_rebuild_flake() {
+    nix build --extra-experimental-features "nix-command flakes" \
+        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+
+    rm -rf ./result
+}
+
 is_mac && {
     info installing darwin-nix
     cd $WS_DIR
     nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
-    nix build --extra-experimental-features "nix-command flakes" \
-        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+    nix_darwin_rebuild_flake
 
-    rm -rf ./result
     info finished installing darwin-nix
 }
 
@@ -206,8 +211,11 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
-"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+function home_manager_flake_switch() {
+    nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage
+    "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate
+}
+home_manager_flake_switch
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
