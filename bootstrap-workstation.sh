@@ -276,6 +276,7 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw_unlock
     bw sync
     $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
+    ls -lah ~/secrets
 else
     info variables required to run bww force sync are MISSING, skipping
 fi

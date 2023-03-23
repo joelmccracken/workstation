@@ -327,6 +327,7 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw_unlock
     bw sync
     $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
+    ls -lah ~/secrets
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
@@ -776,6 +777,7 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
+- [ ] ensure that one secret file is in place
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
