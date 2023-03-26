@@ -281,7 +281,7 @@ nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_M
 nix-channel --update
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix-shell '<home-manager>' -A install
+nix-shell '<home-manager>' -A install --show-trace
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
