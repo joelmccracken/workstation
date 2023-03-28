@@ -6,10 +6,17 @@
 # [[file:workstation.org::*Bootstraping Script][Bootstraping Script:1]]
 set -xeuo pipefail
 
+# These are the various versions of things that should be installed. Keeping them
+# in one place like this make them easier to keep track of.
+
 export NIX_PM_VERSION=nix-2.11.1
 export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=213a06295dff96668a1d673b9fd1c03ce1de6745
+export HOME_MANAGER_VERSION=cf662b6c98a0da81e06066fff0ecf9cbd4627727
+# Script should be passed a single argument, which is name of this workstation.
 
+# When using script to set up a workstation, the "name" of the workstation should
+# be provided as the first argument. This is used to pick which settings should be
+# applied to this machine.
 if [ -z "${1+x}" ]; then
     echo WORKSTATION_NAME must be provided as first argument
     exit 2
@@ -17,15 +24,30 @@ else
     export WORKSTATION_NAME="$1"
 fi
 
+# This argument generally should not be used by the user, but it is needed for
+# the CI process.
+# When the CI process starts, we start out with a check out of the code for this
+# commit in a directory on the CI machine. However, this is not how workstation runs:
+# - part of the job of workstation is getting its own code from the server
+# - workstation expects the code to be in a specific directory, that is, ~/workstation
+# Because of this (and possibly other reasons that escape me now), even though the
+# source code of the current commit is checked out on the CI machine already,
+# the CI process re-downloads the code (via this script). The specific SHA to get
+# is passed via the argument below. However, if actually being used by a user,
+# generally user will always want to use the most up to date content of the master
+# branch, so this can be ignored.
+# I think probably this sha should just be passed in as an environment variable
+# instead of a CLI argument, as that seems a bit less confusing to me.
 if [ -z "${2+x}" ]; then
     export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
 else
     export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
-
+# having these variables here really just makes the code a bit more DRY
 WS_DIR="$HOME/workstation"
 export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
+# hereafter, we use many helper functions. Here they are defined up front
 
 function is_mac() {
     [[ "$(uname)" == 'Darwin' ]]
@@ -37,6 +59,28 @@ function is_linux() {
 
 function info() {
     echo "INFO ========= $(date) $@"
+}
+
+function polite-git-checkout () {
+    DIR=$1
+    REPO=$2
+
+    cd $DIR
+    git init
+    git remote add origin $REPO
+    git fetch
+
+    # wont work (it will have already been deleted from the index)
+    git reset --mixed origin/master
+    # This formulation of the checkout command seems to work most reliably
+    git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
+}
+
+function mv_dated_backup() {
+    local THEDIR="$1"
+    if test -e "$THEDIR"; then
+        mv "$THEDIR" "${THEDIR}-$(date +"%s")"
+    fi
 }
 
 info starting workstation bootstrap
@@ -63,34 +107,13 @@ is_linux && {
     info finished updating apt, installing git
 }
 
-function polite-git-checkout () {
-    DIR=$1
-    REPO=$2
-
-    cd $DIR
-    git init
-    git remote add origin $REPO
-    git fetch
-
-    # wont work (it will have already been deleted from the index)
-    git reset --mixed origin/master
-    # This formulation of the checkout command seems to work most reliably
-    git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
-}
-
-function mv_dir_dated_backup() {
-    local THEDIR="$1"
-    if test -e "$THEDIR"; then
-        mv "$THEDIR" "${THEDIR}-$(date +"%s")"
-    fi
-}
 
 {
     cd $WS_DIR;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
 } || {
     info moving workstation dir to backup location
-    mv_dir_dated_backup ~/workstation
+    mv_dated_backup ~/workstation
     info cloning workstation repo into ~/workstation
     git clone 'https://github.com/joelmccracken/workstation.git'
     cd workstation
@@ -204,7 +227,7 @@ nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_M
 nix-channel --update
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix-shell '<home-manager>' -A install
+nix-shell '<home-manager>' -A install --show-trace
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
@@ -252,6 +275,8 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw login --apikey
     bw_unlock
     bw sync
+    $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
+    ls -lah ~/secrets
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
