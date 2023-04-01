@@ -143,24 +143,6 @@ set -xeuo pipefail
 
 «bootstrap-steps»
 
-info starting workstation bootstrap
-
-is_mac && {
-    info ensuring xcode is installed
-    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
-    info finished ensuring xcode is installed
-
-    info ensuring brew is installed
-    which brew > /dev/null || {
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-        # install git, necessary for next step
-        info installing git
-        brew install git
-    }
-    info finished ensuring brew is installed
-}
-
 is_linux && {
     info updating apt, installing git
     sudo bash -c 'apt-get update && apt-get install git'
@@ -337,11 +319,14 @@ Success! However, there are some remaining manual set up steps required.
 «manual-setup-instructions»
 EOF
 #+end_src
-** Bootstrap Script Steps
+** Bootstrap Script Execution Process
 :PROPERTIES:
-:header-args: :noweb-ref bootstrap-steps
+:header-args: :noweb-ref bootstrap-steps :comments noweb
 :END:
+This portion of the document explains the various execution steps of bootstrap.
+For clarity, each of these steps are then
 *** Set Version Settings
+Here is some documentation
 #+begin_src shell
 # These are the various versions of things that should be installed. Keeping them
 # in one place like this make them easier to keep track of.
@@ -405,8 +390,38 @@ export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 
 «mv_dated_backup_function»
 #+end_src
-*** First actual steps: macos pre-setup and installing git
+*** Log that bootstrap is starting
+#+begin_src shell
+info starting workstation bootstrap
+#+end_src
+*** macos only: ensure xcode, homebrew, and git are ready to go
+#+begin_src shell :noweb yes
+«xcode_setup_function»
+«is_brew_installed_function»
+«homebrew_setup_function»
+
+is_mac && {
+    info ensuring xcode is installed
+    xcode_setup
+    info finished ensuring xcode is installed
+
+    info ensuring brew is installed
+    if ! is_brew_installed; then
+        homebrew_setup
+    fi
+    info finished ensuring brew is installed
+
+    info installing git
+    brew install git
+    info finished installing git
+
+}
+#+end_src
+
 ** Bootstrapping Components
+*** Note: Separate executables
+Many of these snippets are also added as scripts in the workstation repository.
+It is handy to have these quickly available if I am debugging a problem.
 *** Helper Functions
 **** is_mac
 Detects if is running on a mac.
@@ -443,6 +458,47 @@ function mv_dated_backup() {
     fi
 }
 #+end_src
+*** setting up xcode (macos)
+#+name: xcode_setup_function
+#+begin_src shell
+function xcode_setup() {
+    # this will accept the license that xcode requires from the command line
+    # and also install xcode if required.
+    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+}
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/xcode_setup.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«xcode_setup_function»
+xcode_setup
+#+end_src
+*** check if brew is installed
+#+name: is_brew_installed_function
+#+begin_src shell
+function is_brew_installed() {
+    which brew > /dev/null
+}
+#+end_src
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/is_brew_installed.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«is_brew_installed_function»
+is_brew_installed
+#+end_src
+
+*** set up homebrew (macos)
+#+name: homebrew_setup_function
+#+begin_src shell
+function homebrew_setup() {
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/homebrew_setup.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«homebrew_setup_function»
+homebrew_setup
+#+end_src
+***
 * Nix components
 ** Home Manager
 I use home manager as the primary method for installing and configuring software

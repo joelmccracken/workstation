@@ -49,18 +49,25 @@ export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 # hereafter, we use many helper functions. Here they are defined up front
 
+# [[[[file:~/workstation/workstation.org::is_mac_function][is_mac_function]]][is_mac_function]]
 function is_mac() {
     [[ "$(uname)" == 'Darwin' ]]
 }
+# is_mac_function ends here
 
+# [[[[file:~/workstation/workstation.org::is_linux_function][is_linux_function]]][is_linux_function]]
 function is_linux() {
     [[ "$(uname)" == 'Linux' ]]
 }
+# is_linux_function ends here
 
+# [[[[file:~/workstation/workstation.org::info_function][info_function]]][info_function]]
 function info() {
     echo "INFO ========= $(date) $@"
 }
+# info_function ends here
 
+# [[[[file:~/workstation/workstation.org::polite_git_checkout_function][polite_git_checkout_function]]][polite_git_checkout_function]]
 function polite-git-checkout () {
     DIR=$1
     REPO=$2
@@ -75,30 +82,50 @@ function polite-git-checkout () {
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 }
+# polite_git_checkout_function ends here
 
+# [[[[file:~/workstation/workstation.org::mv_dated_backup_function][mv_dated_backup_function]]][mv_dated_backup_function]]
 function mv_dated_backup() {
     local THEDIR="$1"
     if test -e "$THEDIR"; then
         mv "$THEDIR" "${THEDIR}-$(date +"%s")"
     fi
 }
-
+# mv_dated_backup_function ends here
 info starting workstation bootstrap
+# [[[[file:~/workstation/workstation.org::xcode_setup_function][xcode_setup_function]]][xcode_setup_function]]
+function xcode_setup() {
+    # this will accept the license that xcode requires from the command line
+    # and also install xcode if required.
+    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+}
+# xcode_setup_function ends here
+# [[[[file:~/workstation/workstation.org::is_brew_installed_function][is_brew_installed_function]]][is_brew_installed_function]]
+function is_brew_installed() {
+    which brew > /dev/null
+}
+# is_brew_installed_function ends here
+# [[[[file:~/workstation/workstation.org::homebrew_setup_function][homebrew_setup_function]]][homebrew_setup_function]]
+function homebrew_setup() {
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+# homebrew_setup_function ends here
 
 is_mac && {
     info ensuring xcode is installed
-    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+    xcode_setup
     info finished ensuring xcode is installed
 
     info ensuring brew is installed
-    which brew > /dev/null || {
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-        # install git, necessary for next step
-        info installing git
-        brew install git
-    }
+    if ! is_brew_installed; then
+        homebrew_setup
+    fi
     info finished ensuring brew is installed
+
+    info installing git
+    brew install git
+    info finished installing git
+
 }
 
 is_linux && {
