@@ -68,9 +68,9 @@ else
   exit 1
 fi
 
-if [ -f ~/secrets/test-secret ]; then
+if [ -f ~/secrets/test_secret ]; then
     echo "test secret file sucessfully synced"
-    cat ~/secrets/test-secret
+    cat ~/secrets/test_secret
 else
     echo "error: test secret file was missing"
 fi
