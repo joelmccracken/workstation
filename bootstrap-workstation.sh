@@ -127,14 +127,17 @@ is_mac && {
     info finished installing git
 
 }
+# [[[[file:~/workstation/workstation.org::update_apt_install_git_function][update_apt_install_git_function]]][update_apt_install_git_function]]
+function update_apt_install_git() {
+    sudo bash -c 'apt-get update && apt-get install git'
+}
+# update_apt_install_git_function ends here
 
 is_linux && {
     info updating apt, installing git
-    sudo bash -c 'apt-get update && apt-get install git'
+    update_apt_install_git
     info finished updating apt, installing git
 }
-
-
 {
     cd $WS_DIR;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
@@ -230,6 +233,7 @@ is_linux && {
     sudo apt-get update
 }
 
+# [[[[file:~/workstation/workstation.org::nix_darwin_rebuild_flake_function][nix_darwin_rebuild_flake_function]]][nix_darwin_rebuild_flake_function]]
 function nix_darwin_rebuild_flake() {
     nix build --extra-experimental-features "nix-command flakes" \
         ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
@@ -237,6 +241,7 @@ function nix_darwin_rebuild_flake() {
 
     rm -rf ./result
 }
+# nix_darwin_rebuild_flake_function ends here
 
 is_mac && {
     info installing darwin-nix
@@ -261,10 +266,12 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+# [[[[file:~/workstation/workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {
     nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
     "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
 }
+# home_manager_flake_switch_function ends here
 home_manager_flake_switch
 
 set +u
@@ -310,6 +317,7 @@ fi
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
+# [[[[file:~/workstation/workstation.org::manual-setup-instructions][manual-setup-instructions]]][manual-setup-instructions]]
 There are unfortunately a number of things need to install and set up
 manually:
 - lastpass firefox extension
@@ -333,5 +341,6 @@ mac settings
   - open it
   - enable accessability settings
   - launch at login
+# manual-setup-instructions ends here
 EOF
 # Bootstraping Script:1 ends here

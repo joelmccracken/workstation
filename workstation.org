@@ -1,4 +1,4 @@
-#+PROPERTY: header-args    :comments both
+#+PROPERTY: header-args  :comments both :noweb yes
 #+OPTIONS: ^:nil ;; let an underscore be an underscore, disable sub-superscripting
 #+OPTIONS: timestamp:nil
 #+TITLE: Workstation
@@ -143,13 +143,117 @@ set -xeuo pipefail
 
 «bootstrap-steps»
 
+#+end_src
+** Bootstrap Script Execution Process
+:PROPERTIES:
+:header-args: :noweb-ref bootstrap-steps :comments noweb
+:END:
+This portion of the document explains the various execution steps of bootstrap.
+For clarity, each of these steps are then
+*** Set Version Settings
+Here is some documentation
+#+begin_src shell
+# These are the various versions of things that should be installed. Keeping them
+# in one place like this make them easier to keep track of.
+
+export NIX_PM_VERSION=nix-2.11.1
+export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export HOME_MANAGER_VERSION=cf662b6c98a0da81e06066fff0ecf9cbd4627727
+#+end_src
+*** Argument Parsing
+#+begin_src shell
+# Script should be passed a single argument, which is name of this workstation.
+
+# When using script to set up a workstation, the "name" of the workstation should
+# be provided as the first argument. This is used to pick which settings should be
+# applied to this machine.
+if [ -z "${1+x}" ]; then
+    echo WORKSTATION_NAME must be provided as first argument
+    exit 2
+else
+    export WORKSTATION_NAME="$1"
+fi
+
+# This argument generally should not be used by the user, but it is needed for
+# the CI process.
+# When the CI process starts, we start out with a check out of the code for this
+# commit in a directory on the CI machine. However, this is not how workstation runs:
+# - part of the job of workstation is getting its own code from the server
+# - workstation expects the code to be in a specific directory, that is, ~/workstation
+# Because of this (and possibly other reasons that escape me now), even though the
+# source code of the current commit is checked out on the CI machine already,
+# the CI process re-downloads the code (via this script). The specific SHA to get
+# is passed via the argument below. However, if actually being used by a user,
+# generally user will always want to use the most up to date content of the master
+# branch, so this can be ignored.
+# I think probably this sha should just be passed in as an environment variable
+# instead of a CLI argument, as that seems a bit less confusing to me.
+if [ -z "${2+x}" ]; then
+    export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
+else
+    export WORKSTATION_BOOTSTRAP_COMMIT="$2"
+fi
+#+end_src
+*** Setting some variables to keep things DRY
+#+begin_src shell
+# having these variables here really just makes the code a bit more DRY
+WS_DIR="$HOME/workstation"
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
+#+end_src
+*** Helper Functions
+#+begin_src shell :noweb yes
+# hereafter, we use many helper functions. Here they are defined up front
+
+«is_mac_function»
+
+«is_linux_function»
+
+«info_function»
+
+«polite_git_checkout_function»
+
+«mv_dated_backup_function»
+#+end_src
+*** Log that bootstrap is starting
+#+begin_src shell
+info starting workstation bootstrap
+#+end_src
+*** macos only: ensure xcode, homebrew, and git are ready to go
+#+begin_src shell :noweb yes
+«xcode_setup_function»
+«is_brew_installed_function»
+«homebrew_setup_function»
+
+is_mac && {
+    info ensuring xcode is installed
+    xcode_setup
+    info finished ensuring xcode is installed
+
+    info ensuring brew is installed
+    if ! is_brew_installed; then
+        homebrew_setup
+    fi
+    info finished ensuring brew is installed
+
+    info installing git
+    brew install git
+    info finished installing git
+
+}
+#+end_src
+*** (ubuntu) linux only: update apt and install git
+#+begin_src shell :noweb yes
+«update_apt_install_git_function»
+
 is_linux && {
     info updating apt, installing git
-    sudo bash -c 'apt-get update && apt-get install git'
+    update_apt_install_git
     info finished updating apt, installing git
 }
-
-
+#+end_src
+*** rest of the script
+#+begin_src shell :noweb yes
 {
     cd $WS_DIR;
     [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
@@ -319,105 +423,6 @@ Success! However, there are some remaining manual set up steps required.
 «manual-setup-instructions»
 EOF
 #+end_src
-** Bootstrap Script Execution Process
-:PROPERTIES:
-:header-args: :noweb-ref bootstrap-steps :comments noweb
-:END:
-This portion of the document explains the various execution steps of bootstrap.
-For clarity, each of these steps are then
-*** Set Version Settings
-Here is some documentation
-#+begin_src shell
-# These are the various versions of things that should be installed. Keeping them
-# in one place like this make them easier to keep track of.
-
-export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=cf662b6c98a0da81e06066fff0ecf9cbd4627727
-#+end_src
-*** Argument Parsing
-#+begin_src shell
-# Script should be passed a single argument, which is name of this workstation.
-
-# When using script to set up a workstation, the "name" of the workstation should
-# be provided as the first argument. This is used to pick which settings should be
-# applied to this machine.
-if [ -z "${1+x}" ]; then
-    echo WORKSTATION_NAME must be provided as first argument
-    exit 2
-else
-    export WORKSTATION_NAME="$1"
-fi
-
-# This argument generally should not be used by the user, but it is needed for
-# the CI process.
-# When the CI process starts, we start out with a check out of the code for this
-# commit in a directory on the CI machine. However, this is not how workstation runs:
-# - part of the job of workstation is getting its own code from the server
-# - workstation expects the code to be in a specific directory, that is, ~/workstation
-# Because of this (and possibly other reasons that escape me now), even though the
-# source code of the current commit is checked out on the CI machine already,
-# the CI process re-downloads the code (via this script). The specific SHA to get
-# is passed via the argument below. However, if actually being used by a user,
-# generally user will always want to use the most up to date content of the master
-# branch, so this can be ignored.
-# I think probably this sha should just be passed in as an environment variable
-# instead of a CLI argument, as that seems a bit less confusing to me.
-if [ -z "${2+x}" ]; then
-    export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
-else
-    export WORKSTATION_BOOTSTRAP_COMMIT="$2"
-fi
-#+end_src
-*** Setting some variables to keep things DRY
-#+begin_src shell
-# having these variables here really just makes the code a bit more DRY
-WS_DIR="$HOME/workstation"
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
-export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
-#+end_src
-*** Helper Functions
-#+begin_src shell :noweb yes
-# hereafter, we use many helper functions. Here they are defined up front
-
-«is_mac_function»
-
-«is_linux_function»
-
-«info_function»
-
-«polite_git_checkout_function»
-
-«mv_dated_backup_function»
-#+end_src
-*** Log that bootstrap is starting
-#+begin_src shell
-info starting workstation bootstrap
-#+end_src
-*** macos only: ensure xcode, homebrew, and git are ready to go
-#+begin_src shell :noweb yes
-«xcode_setup_function»
-«is_brew_installed_function»
-«homebrew_setup_function»
-
-is_mac && {
-    info ensuring xcode is installed
-    xcode_setup
-    info finished ensuring xcode is installed
-
-    info ensuring brew is installed
-    if ! is_brew_installed; then
-        homebrew_setup
-    fi
-    info finished ensuring brew is installed
-
-    info installing git
-    brew install git
-    info finished installing git
-
-}
-#+end_src
-
 ** Bootstrapping Components
 *** Note: Separate executables
 Many of these snippets are also added as scripts in the workstation repository.
@@ -472,7 +477,7 @@ External Script:
 «xcode_setup_function»
 xcode_setup
 #+end_src
-*** check if brew is installed
+*** check if brew is installed (macos)
 #+name: is_brew_installed_function
 #+begin_src shell
 function is_brew_installed() {
@@ -485,7 +490,6 @@ External Script:
 «is_brew_installed_function»
 is_brew_installed
 #+end_src
-
 *** set up homebrew (macos)
 #+name: homebrew_setup_function
 #+begin_src shell
@@ -498,7 +502,19 @@ External Script:
 «homebrew_setup_function»
 homebrew_setup
 #+end_src
-***
+
+*** update apt and install git
+#+name: update_apt_install_git_function
+#+begin_src shell :noweb yes
+function update_apt_install_git() {
+    sudo bash -c 'apt-get update && apt-get install git'
+}
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/update_apt_install_git.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«update_apt_install_git_function»
+update_apt_install_git
+#+end_src
 * Nix components
 ** Home Manager
 I use home manager as the primary method for installing and configuring software
