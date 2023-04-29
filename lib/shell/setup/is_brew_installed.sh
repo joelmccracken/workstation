@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# #+end_src
 # External Script:
 
 # [[file:../../../workstation.org::*check if brew is installed (macos)][check if brew is installed (macos):2]]

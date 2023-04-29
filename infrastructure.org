@@ -1,9 +1,8 @@
 #+TITLE: Infrastructure
 * infra
 macbook air is 192.168.1.5
-work pro is 192.168.1.10
+mini is 192.168.1.10
 windows is 192.168.1.11
-mini is        192.168.1.2
 
 important! mcccracken.club and mcccracken.xyz both have three c's in them! easy
 to get wrong!
