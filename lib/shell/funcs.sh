@@ -43,4 +43,17 @@ function mv_dated_backup() {
         mv "$THEDIR" "${THEDIR}-$(date +"%s")"
     fi
 }
+
+function is_git_repo_cloned_at(){
+    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+}
+
+function clone_repo_and_checkout_at() {
+    mv_dated_backup $1
+    info cloning repo into $1
+    git clone $2 $1
+    cd $1
+    info checking out commit $3
+    git checkout $3
+}
 # library of shell functions:1 ends here

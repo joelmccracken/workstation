@@ -51,6 +51,7 @@ WS_DIR="$HOME/workstation"
 export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
+WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 # hereafter, we use many helper functions. Here they are defined up front
 
 # [[[[file:~/workstation/workstation.org::is_mac_function][is_mac_function]]][is_mac_function]]
@@ -142,18 +143,27 @@ is_linux && {
     update_apt_install_git
     info finished updating apt, installing git
 }
+# [[[[file:~/workstation/workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]][is_git_repo_cloned_at_function]]
 function is_git_repo_cloned_at(){
     cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
 }
-is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
-    info moving workstation dir to backup location
-    mv_dated_backup ~/workstation
-    info cloning workstation repo into ~/workstation
-    git clone 'https://github.com/joelmccracken/workstation.git'
-    cd workstation
-    info checking out specific workstation commit $WORKSTATION_BOOTSTRAP_COMMIT
-    git checkout $WORKSTATION_BOOTSTRAP_COMMIT
+# is_git_repo_cloned_at_function ends here
+# [[[[file:~/workstation/workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]][clone_repo_and_checkout_at_function]]
+function clone_repo_and_checkout_at() {
+    mv_dated_backup $1
+    info cloning repo into $1
+    git clone $2 $1
+    cd $1
+    info checking out commit $3
+    git checkout $3
 }
+# clone_repo_and_checkout_at_function ends here
+
+is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
+    clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
+        $WORKSTATION_BOOTSTRAP_COMMIT
+}
+
 
 source $WS_DIR/lib/shell/funcs.sh
 

@@ -207,6 +207,7 @@ WS_DIR="$HOME/workstation"
 export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
+WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 #+end_src
 *** Helper Functions
 #+begin_src shell :noweb yes
@@ -259,24 +260,19 @@ is_linux && {
     info finished updating apt, installing git
 }
 #+end_src
-*** utility function to see if a git repo is checked out
-Use the origin url as an approximate way to check if its checked out
-#+begin_src shell
-function is_git_repo_cloned_at(){
-    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+*** check out correct workstation commit
+#+begin_src shell :noweb yes
+«is_git_repo_cloned_at_function»
+«clone_repo_and_checkout_at_function»
+
+is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
+    clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
+        $WORKSTATION_BOOTSTRAP_COMMIT
 }
 #+end_src
 *** rest of the script
 #+begin_src shell :noweb yes
-is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
-    info moving workstation dir to backup location
-    mv_dated_backup ~/workstation
-    info cloning workstation repo into ~/workstation
-    git clone 'https://github.com/joelmccracken/workstation.git'
-    cd workstation
-    info checking out specific workstation commit $WORKSTATION_BOOTSTRAP_COMMIT
-    git checkout $WORKSTATION_BOOTSTRAP_COMMIT
-}
+
 
 source $WS_DIR/lib/shell/funcs.sh
 
@@ -474,6 +470,27 @@ function mv_dated_backup() {
     fi
 }
 #+end_src
+**** is_git_repo_cloned_at
+Utility function to see if a git repo is checked out
+Use the origin url as an approximate way to check if its checked out
+#+name: is_git_repo_cloned_at_function
+#+begin_src shell
+function is_git_repo_cloned_at(){
+    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+}
+#+end_src
+**** clone_repo_and_checkout_at
+#+name: clone_repo_and_checkout_at_function
+#+begin_src shell
+function clone_repo_and_checkout_at() {
+    mv_dated_backup $1
+    info cloning repo into $1
+    git clone $2 $1
+    cd $1
+    info checking out commit $3
+    git checkout $3
+}
+#+end_src
 *** setting up xcode (macos)
 #+name: xcode_setup_function
 #+begin_src shell
@@ -653,12 +670,15 @@ numerous scripts etc.
 
 «info_function»
 
-# unlocks bitwarden, so that the `bw` program can access the bitwarden database.
 «bw_unlock_function»
 
 «polite_git_checkout_function»
 
 «mv_dated_backup_function»
+
+«is_git_repo_cloned_at_function»
+
+«clone_repo_and_checkout_at_function»
 #+end_src
 ** Polite git checkout
 This script provides a way to check out a repository in a directory without
@@ -705,6 +725,7 @@ current shell process, which is required in order to query the bitwarden
 password database.
 #+NAME: bw_unlock_function
 #+begin_src sh
+# unlocks bitwarden, so that the `bw` program can access the bitwarden database.
 bw_unlock () {
     # authtenticates bitwarden for this shell session only
     export BW_SESSION=`bw unlock --passwordfile ~/secrets/bw_pass --raw`;
