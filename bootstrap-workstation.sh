@@ -3,6 +3,9 @@
 # This script is intended to be entrypoint to this project. It can be curled to a
 # new machine and then run, and will set things up on that machine as necessary.
 
+# The steps to the setup are given more details in
+# [[*Bootstrap Script Execution Process][Bootstrap Script Execution Process]].
+
 # [[file:workstation.org::*Bootstraping Script][Bootstraping Script:1]]
 set -xeuo pipefail
 
@@ -47,6 +50,7 @@ fi
 WS_DIR="$HOME/workstation"
 export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
+WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
 # hereafter, we use many helper functions. Here they are defined up front
 
 # [[[[file:~/workstation/workstation.org::is_mac_function][is_mac_function]]][is_mac_function]]
@@ -138,10 +142,10 @@ is_linux && {
     update_apt_install_git
     info finished updating apt, installing git
 }
-{
-    cd $WS_DIR;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
-} || {
+function is_git_repo_cloned_at(){
+    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+}
+is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
     info moving workstation dir to backup location
     mv_dated_backup ~/workstation
     info cloning workstation repo into ~/workstation
