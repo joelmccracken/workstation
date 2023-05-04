@@ -211,7 +211,8 @@ WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 #+end_src
 *** Helper Functions
 #+begin_src shell :noweb yes
-# hereafter, we use many helper functions. Here they are defined up front
+# hereafter, we use many helper functions. Here they are defined up front,
+# as some of them are used throughout the other code.
 
 «is_mac_function»
 
@@ -222,6 +223,22 @@ WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 «polite_git_checkout_function»
 
 «mv_dated_backup_function»
+
+«is_git_repo_cloned_at_function»
+
+«clone_repo_and_checkout_at_function»
+
+«xcode_setup_function»
+
+«is_brew_installed_function»
+
+«homebrew_setup_function»
+
+«update_apt_install_git_function»
+
+«is_git_repo_cloned_at_function»
+
+«clone_repo_and_checkout_at_function»
 #+end_src
 *** Log that bootstrap is starting
 #+begin_src shell
@@ -229,10 +246,6 @@ info starting workstation bootstrap
 #+end_src
 *** macos only: ensure xcode, homebrew, and git are ready to go
 #+begin_src shell :noweb yes
-«xcode_setup_function»
-«is_brew_installed_function»
-«homebrew_setup_function»
-
 is_mac && {
     info ensuring xcode is installed
     xcode_setup
@@ -252,8 +265,6 @@ is_mac && {
 #+end_src
 *** (ubuntu) linux only: update apt and install git
 #+begin_src shell :noweb yes
-«update_apt_install_git_function»
-
 is_linux && {
     info updating apt, installing git
     update_apt_install_git
@@ -262,32 +273,37 @@ is_linux && {
 #+end_src
 *** check out correct workstation commit
 #+begin_src shell :noweb yes
-«is_git_repo_cloned_at_function»
-«clone_repo_and_checkout_at_function»
-
 is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
     clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
         $WORKSTATION_BOOTSTRAP_COMMIT
 }
 #+end_src
-*** rest of the script
+*** check out the dotfiles repository
 #+begin_src shell :noweb yes
-
-
-source $WS_DIR/lib/shell/funcs.sh
-
+# at this point, this is hardly necessary; however, the gitignore file is handy
+# i may explore getting rid of this repo entirely and just having a fresh
+# repo without any origin in ~
 info ensuring dotfiles repo is checked out
-{
-    cd ~;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
-# delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
-rm -rf ~/.doom.d/
+
+is_git_repo_cloned_at ~ 'git@github.com:joelmccracken/dotfiles.git' ||
+    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+
 info finished ensuring dotfiles repo is checked out
 
 info linking dotfiles that should be symlinked
 bash ~/workstation/bin/link-dotfiles.sh -f
 info finished linking dotfiles
+#+end_src
+*** set up host specific settings
+#+begin_src shell :noweb yes
+# each workstaion host I use has different settings needs.
+# For example, my remote cloud hosted server has a different setup than
+# my mac laptop, which has a different set up from my work computer.
+# the way I have these settings specified is by having a directory in my home
+# directory which has all of the needed files I would need for such differences.
+# there are different directories for each host I maintain, but on a given host,
+# one of those directories are symlinked into 'current' host, which other things
+# can then refer to
 
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
@@ -299,7 +315,9 @@ else
     echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
     exit 5
 fi
-
+#+end_src
+*** rest of the script
+#+begin_src shell :noweb yes
 info ensuring nix is installed
 { which nix > /dev/null; } || {
     info installing nix
@@ -420,7 +438,6 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw_unlock
     bw sync
     $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
-    ls -lah ~/secrets
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
@@ -432,8 +449,9 @@ EOF
 #+end_src
 ** Bootstrapping Components
 *** Note: Separate executables
-Many of these snippets are also added as scripts in the workstation repository.
-It is handy to have these quickly available if I am debugging a problem.
+Many of these snippets are also provided as separate scripts in the workstation
+repository. It is handy to have these quickly available if I am debugging a
+problem; the alternative, frequently, is to reconstruct these things ad-hoc.
 *** Helper Functions
 **** is_mac
 Detects if is running on a mac.
@@ -887,7 +905,15 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
-- [ ] ensure that one secret file is in place
+- [ ] have link_dotfiles script use the make-dated-backup functionality for
+      any extant files.
+  - maybe also should have a saved diff of what the original contents were?
+  - brings up another idea: what if in ~/var/workstation_setup we had
+    - logs of each setup on that computer
+    - stored backup info
+- [ ] write code to fix the origins of both dotfiles and workstation checkouts
+  - also should have an assertion in the tests
+  - should I start thinking about TDD?
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
@@ -942,6 +968,7 @@ bash ~/workstation/test/test.sh
   - how to use it
 - [ ] get rid of rming results when darwin-rebuild script finishes (use path
   technique from home manager script)
+- [ ] move host settings into this file
 ** quick planning for server config needs
 (in rough order need to complete, to get to server-config phase of project)
 goal is to get ready to provision/set up nixos cloud machines

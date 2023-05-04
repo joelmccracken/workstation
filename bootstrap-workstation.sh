@@ -52,7 +52,8 @@ export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
 WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
-# hereafter, we use many helper functions. Here they are defined up front
+# hereafter, we use many helper functions. Here they are defined up front,
+# as some of them are used throughout the other code.
 
 # [[[[file:~/workstation/workstation.org::is_mac_function][is_mac_function]]][is_mac_function]]
 function is_mac() {
@@ -97,7 +98,24 @@ function mv_dated_backup() {
     fi
 }
 # mv_dated_backup_function ends here
-info starting workstation bootstrap
+
+# [[[[file:~/workstation/workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]][is_git_repo_cloned_at_function]]
+function is_git_repo_cloned_at(){
+    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+}
+# is_git_repo_cloned_at_function ends here
+
+# [[[[file:~/workstation/workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]][clone_repo_and_checkout_at_function]]
+function clone_repo_and_checkout_at() {
+    mv_dated_backup $1
+    info cloning repo into $1
+    git clone $2 $1
+    cd $1
+    info checking out commit $3
+    git checkout $3
+}
+# clone_repo_and_checkout_at_function ends here
+
 # [[[[file:~/workstation/workstation.org::xcode_setup_function][xcode_setup_function]]][xcode_setup_function]]
 function xcode_setup() {
     # this will accept the license that xcode requires from the command line
@@ -105,17 +123,42 @@ function xcode_setup() {
     sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
 }
 # xcode_setup_function ends here
+
 # [[[[file:~/workstation/workstation.org::is_brew_installed_function][is_brew_installed_function]]][is_brew_installed_function]]
 function is_brew_installed() {
     which brew > /dev/null
 }
 # is_brew_installed_function ends here
+
 # [[[[file:~/workstation/workstation.org::homebrew_setup_function][homebrew_setup_function]]][homebrew_setup_function]]
 function homebrew_setup() {
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 # homebrew_setup_function ends here
 
+# [[[[file:~/workstation/workstation.org::update_apt_install_git_function][update_apt_install_git_function]]][update_apt_install_git_function]]
+function update_apt_install_git() {
+    sudo bash -c 'apt-get update && apt-get install git'
+}
+# update_apt_install_git_function ends here
+
+# [[[[file:~/workstation/workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]][is_git_repo_cloned_at_function]]
+function is_git_repo_cloned_at(){
+    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+}
+# is_git_repo_cloned_at_function ends here
+
+# [[[[file:~/workstation/workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]][clone_repo_and_checkout_at_function]]
+function clone_repo_and_checkout_at() {
+    mv_dated_backup $1
+    info cloning repo into $1
+    git clone $2 $1
+    cd $1
+    info checking out commit $3
+    git checkout $3
+}
+# clone_repo_and_checkout_at_function ends here
+info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
     xcode_setup
@@ -132,53 +175,36 @@ is_mac && {
     info finished installing git
 
 }
-# [[[[file:~/workstation/workstation.org::update_apt_install_git_function][update_apt_install_git_function]]][update_apt_install_git_function]]
-function update_apt_install_git() {
-    sudo bash -c 'apt-get update && apt-get install git'
-}
-# update_apt_install_git_function ends here
-
 is_linux && {
     info updating apt, installing git
     update_apt_install_git
     info finished updating apt, installing git
 }
-# [[[[file:~/workstation/workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]][is_git_repo_cloned_at_function]]
-function is_git_repo_cloned_at(){
-    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
-}
-# is_git_repo_cloned_at_function ends here
-# [[[[file:~/workstation/workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]][clone_repo_and_checkout_at_function]]
-function clone_repo_and_checkout_at() {
-    mv_dated_backup $1
-    info cloning repo into $1
-    git clone $2 $1
-    cd $1
-    info checking out commit $3
-    git checkout $3
-}
-# clone_repo_and_checkout_at_function ends here
-
 is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
     clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
         $WORKSTATION_BOOTSTRAP_COMMIT
 }
-
-
-source $WS_DIR/lib/shell/funcs.sh
-
+# at this point, this is hardly necessary; however, the gitignore file is handy
+# i may explore getting rid of this repo entirely and just having a fresh
+# repo without any origin in ~
 info ensuring dotfiles repo is checked out
-{
-    cd ~;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
-# delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
-rm -rf ~/.doom.d/
+
+is_git_repo_cloned_at ~ 'git@github.com:joelmccracken/dotfiles.git' ||
+    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+
 info finished ensuring dotfiles repo is checked out
 
 info linking dotfiles that should be symlinked
 bash ~/workstation/bin/link-dotfiles.sh -f
 info finished linking dotfiles
+# each workstaion host I use has different settings needs.
+# For example, my remote cloud hosted server has a different setup than
+# my mac laptop, which has a different set up from my work computer.
+# the way I have these settings specified is by having a directory in my home
+# directory which has all of the needed files I would need for such differences.
+# there are different directories for each host I maintain, but on a given host,
+# one of those directories are symlinked into 'current' host, which other things
+# can then refer to
 
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
@@ -190,7 +216,6 @@ else
     echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
     exit 5
 fi
-
 info ensuring nix is installed
 { which nix > /dev/null; } || {
     info installing nix
@@ -324,7 +349,6 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw_unlock
     bw sync
     $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
-    ls -lah ~/secrets
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
