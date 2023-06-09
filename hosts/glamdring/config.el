@@ -3,7 +3,7 @@
 (after! org
   (setq org-directory "~/Dropbox/EF/")
   (setq org-roam-directory "~/Dropbox/EF/")
-  (setq org-roam-db-location "~/Dropbox/EF/org-roam.db")
+  (setq org-roam-db-location "~/Dropbox/EF/org-roam.glamdring.db")
 
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-directory "~/Dropbox/EF")
