@@ -1,4 +1,4 @@
-#+PROPERTY: header-args    :comments both
+#+PROPERTY: header-args  :comments both :noweb yes
 #+OPTIONS: ^:nil ;; let an underscore be an underscore, disable sub-superscripting
 #+OPTIONS: timestamp:nil
 #+TITLE: Workstation
@@ -126,75 +126,184 @@ And a little emacs lisp that goes with the tangle process:
 * Bootstrap process
 Bootstrapping is tricky. What do you actually start with? What can you assume?
 You want to keep the amount of manual steps which need to occur to a minimum.
-To my mind, this starts with a shell script.
+I start start with a shell script.
 This script could either do the entire setup process, or
 theoretically it could also prepare the way for another process.
 
 For me, I currently basically have a single bash script. But what I want to do
 soon is change this so that its a bash script which invokes a haskell process asap.
 so the bash script would basically do the minimum amount required to set up
-everything for the haskell process.
+everything for the haskell process. This is still a work in progress, and since
+this project is starting to stablize, I may abandon the haskell portion of the
+setup.
 ** Bootstraping Script
 This script is intended to be entrypoint to this project. It can be curled to a
 new machine and then run, and will set things up on that machine as necessary.
+
+The steps to the setup are given more details in
+[[*Bootstrap Script Execution Process][Bootstrap Script Execution Process]].
 #+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bootstrap-workstation.sh :noweb yes
 
 set -xeuo pipefail
 
 «bootstrap-steps»
 
-info starting workstation bootstrap
+#+end_src
+** Bootstrap Script Execution Process
+:PROPERTIES:
+:header-args: :noweb-ref bootstrap-steps :comments noweb
+:ID:       74975286-5772-4094-8077-052d7eb35f14
+:END:
+This portion of the document explains the various execution steps of bootstrap.
 
+Each of these steps are executed sequentially.
+*** Set Version Settings
+#+begin_src shell
+# These are the various versions of things that should be installed. Keeping them
+# in one place like this make them easier to keep track of.
+
+export NIX_PM_VERSION=nix-2.11.1
+export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export HOME_MANAGER_VERSION=cf662b6c98a0da81e06066fff0ecf9cbd4627727
+#+end_src
+*** Argument Parsing
+#+begin_src shell
+# Script should be passed a single argument, which is name of this workstation.
+
+# When using script to set up a workstation, the "name" of the workstation should
+# be provided as the first argument. This is used to pick which settings should be
+# applied to this machine.
+if [ -z "${1+x}" ]; then
+    echo WORKSTATION_NAME must be provided as first argument
+    exit 2
+else
+    export WORKSTATION_NAME="$1"
+fi
+
+# This argument generally should not be used by the user, but it is needed for
+# the CI process.
+# When the CI process starts, we start out with a check out of the code for this
+# commit in a directory on the CI machine. However, this is not how workstation runs:
+# - part of the job of workstation is getting its own code from the server
+# - workstation expects the code to be in a specific directory, that is, ~/workstation
+# Because of this (and possibly other reasons that escape me now), even though the
+# source code of the current commit is checked out on the CI machine already,
+# the CI process re-downloads the code (via this script). The specific SHA to get
+# is passed via the argument below. However, if actually being used by a user,
+# generally user will always want to use the most up to date content of the master
+# branch, so this can be ignored.
+# I think probably this sha should just be passed in as an environment variable
+# instead of a CLI argument, as that seems a bit less confusing to me.
+if [ -z "${2+x}" ]; then
+    export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
+else
+    export WORKSTATION_BOOTSTRAP_COMMIT="$2"
+fi
+#+end_src
+*** Setting some variables to keep things DRY
+#+begin_src shell
+# having these variables here really just makes the code a bit more DRY
+WS_DIR="$HOME/workstation"
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
+WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
+WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
+#+end_src
+*** Helper Functions
+#+begin_src shell :noweb yes
+# hereafter, we use many helper functions. Here they are defined up front,
+# as some of them are used throughout the other code.
+
+«is_mac_function»
+
+«is_linux_function»
+
+«info_function»
+
+«polite_git_checkout_function»
+
+«mv_dated_backup_function»
+
+«is_git_repo_cloned_at_function»
+
+«clone_repo_and_checkout_at_function»
+
+«xcode_setup_function»
+
+«is_brew_installed_function»
+
+«homebrew_setup_function»
+
+«update_apt_install_git_function»
+
+«is_git_repo_cloned_at_function»
+
+«clone_repo_and_checkout_at_function»
+#+end_src
+*** Log that bootstrap is starting
+#+begin_src shell
+info starting workstation bootstrap
+#+end_src
+*** macos only: ensure xcode, homebrew, and git are ready to go
+#+begin_src shell :noweb yes
 is_mac && {
     info ensuring xcode is installed
-    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+    xcode_setup
     info finished ensuring xcode is installed
 
     info ensuring brew is installed
-    which brew > /dev/null || {
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-        # install git, necessary for next step
-        info installing git
-        brew install git
-    }
+    if ! is_brew_installed; then
+        homebrew_setup
+    fi
     info finished ensuring brew is installed
-}
 
+    info installing git
+    brew install git
+    info finished installing git
+
+}
+#+end_src
+*** (ubuntu) linux only: update apt and install git
+#+begin_src shell :noweb yes
 is_linux && {
     info updating apt, installing git
-    sudo bash -c 'apt-get update && apt-get install git'
+    update_apt_install_git
     info finished updating apt, installing git
 }
-
-
-{
-    cd $WS_DIR;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
-} || {
-    info moving workstation dir to backup location
-    mv_dated_backup ~/workstation
-    info cloning workstation repo into ~/workstation
-    git clone 'https://github.com/joelmccracken/workstation.git'
-    cd workstation
-    info checking out specific workstation commit $WORKSTATION_BOOTSTRAP_COMMIT
-    git checkout $WORKSTATION_BOOTSTRAP_COMMIT
+#+end_src
+*** check out correct workstation commit
+#+begin_src shell :noweb yes
+is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
+    clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
+        $WORKSTATION_BOOTSTRAP_COMMIT
 }
-
-source $WS_DIR/lib/shell/funcs.sh
-
+#+end_src
+*** check out the dotfiles repository
+#+begin_src shell :noweb yes
+# at this point, this is hardly necessary; however, the gitignore file is handy
+# i may explore getting rid of this repo entirely and just having a fresh
+# repo without any origin in ~
 info ensuring dotfiles repo is checked out
-{
-    cd ~;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
-# delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
-rm -rf ~/.doom.d/
+
+is_git_repo_cloned_at ~ 'git@github.com:joelmccracken/dotfiles.git' ||
+    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+
 info finished ensuring dotfiles repo is checked out
 
 info linking dotfiles that should be symlinked
 bash ~/workstation/bin/link-dotfiles.sh -f
 info finished linking dotfiles
+#+end_src
+*** set up host specific settings
+#+begin_src shell :noweb yes
+# each workstaion host I use has different settings needs.
+# For example, my remote cloud hosted server has a different setup than
+# my mac laptop, which has a different set up from my work computer.
+# the way I have these settings specified is by having a directory in my home
+# directory which has all of the needed files I would need for such differences.
+# there are different directories for each host I maintain, but on a given host,
+# one of those directories are symlinked into 'current' host, which other things
+# can then refer to
 
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
@@ -206,7 +315,9 @@ else
     echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
     exit 5
 fi
-
+#+end_src
+*** rest of the script
+#+begin_src shell :noweb yes
 info ensuring nix is installed
 { which nix > /dev/null; } || {
     info installing nix
@@ -327,7 +438,6 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw_unlock
     bw sync
     $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
-    ls -lah ~/secrets
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
@@ -337,76 +447,11 @@ Success! However, there are some remaining manual set up steps required.
 «manual-setup-instructions»
 EOF
 #+end_src
-** Bootstrap Script Steps
-:PROPERTIES:
-:header-args: :noweb-ref bootstrap-steps
-:END:
-*** Set Version Settings
-#+begin_src shell
-# These are the various versions of things that should be installed. Keeping them
-# in one place like this make them easier to keep track of.
-
-export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=cf662b6c98a0da81e06066fff0ecf9cbd4627727
-#+end_src
-*** Argument Parsing
-#+begin_src shell
-# Script should be passed a single argument, which is name of this workstation.
-
-# When using script to set up a workstation, the "name" of the workstation should
-# be provided as the first argument. This is used to pick which settings should be
-# applied to this machine.
-if [ -z "${1+x}" ]; then
-    echo WORKSTATION_NAME must be provided as first argument
-    exit 2
-else
-    export WORKSTATION_NAME="$1"
-fi
-
-# This argument generally should not be used by the user, but it is needed for
-# the CI process.
-# When the CI process starts, we start out with a check out of the code for this
-# commit in a directory on the CI machine. However, this is not how workstation runs:
-# - part of the job of workstation is getting its own code from the server
-# - workstation expects the code to be in a specific directory, that is, ~/workstation
-# Because of this (and possibly other reasons that escape me now), even though the
-# source code of the current commit is checked out on the CI machine already,
-# the CI process re-downloads the code (via this script). The specific SHA to get
-# is passed via the argument below. However, if actually being used by a user,
-# generally user will always want to use the most up to date content of the master
-# branch, so this can be ignored.
-# I think probably this sha should just be passed in as an environment variable
-# instead of a CLI argument, as that seems a bit less confusing to me.
-if [ -z "${2+x}" ]; then
-    export WORKSTATION_BOOTSTRAP_COMMIT=origin/master
-else
-    export WORKSTATION_BOOTSTRAP_COMMIT="$2"
-fi
-#+end_src
-*** Setting some variables to keep things DRY
-#+begin_src shell
-# having these variables here really just makes the code a bit more DRY
-WS_DIR="$HOME/workstation"
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
-export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
-#+end_src
-*** Helper Functions
-#+begin_src shell :noweb yes
-# hereafter, we use many helper functions. Here they are defined up front
-
-«is_mac_function»
-
-«is_linux_function»
-
-«info_function»
-
-«polite_git_checkout_function»
-
-«mv_dated_backup_function»
-#+end_src
-*** First actual steps: macos pre-setup and installing git
 ** Bootstrapping Components
+*** Note: Separate executables
+Many of these snippets are also provided as separate scripts in the workstation
+repository. It is handy to have these quickly available if I am debugging a
+problem; the alternative, frequently, is to reconstruct these things ad-hoc.
 *** Helper Functions
 **** is_mac
 Detects if is running on a mac.
@@ -442,6 +487,78 @@ function mv_dated_backup() {
         mv "$THEDIR" "${THEDIR}-$(date +"%s")"
     fi
 }
+#+end_src
+**** is_git_repo_cloned_at
+Utility function to see if a git repo is checked out
+Use the origin url as an approximate way to check if its checked out
+#+name: is_git_repo_cloned_at_function
+#+begin_src shell
+function is_git_repo_cloned_at(){
+    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+}
+#+end_src
+**** clone_repo_and_checkout_at
+#+name: clone_repo_and_checkout_at_function
+#+begin_src shell
+function clone_repo_and_checkout_at() {
+    mv_dated_backup $1
+    info cloning repo into $1
+    git clone $2 $1
+    cd $1
+    info checking out commit $3
+    git checkout $3
+}
+#+end_src
+*** setting up xcode (macos)
+#+name: xcode_setup_function
+#+begin_src shell
+function xcode_setup() {
+    # this will accept the license that xcode requires from the command line
+    # and also install xcode if required.
+    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+}
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/xcode_setup.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«xcode_setup_function»
+xcode_setup
+#+end_src
+*** check if brew is installed (macos)
+#+name: is_brew_installed_function
+#+begin_src shell
+function is_brew_installed() {
+    which brew > /dev/null
+}
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/is_brew_installed.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«is_brew_installed_function»
+is_brew_installed
+#+end_src
+*** set up homebrew (macos)
+#+name: homebrew_setup_function
+#+begin_src shell
+function homebrew_setup() {
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/homebrew_setup.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«homebrew_setup_function»
+homebrew_setup
+#+end_src
+
+*** update apt and install git
+#+name: update_apt_install_git_function
+#+begin_src shell :noweb yes
+function update_apt_install_git() {
+    sudo bash -c 'apt-get update && apt-get install git'
+}
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/update_apt_install_git.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«update_apt_install_git_function»
+update_apt_install_git
 #+end_src
 * Nix components
 ** Home Manager
@@ -571,12 +688,15 @@ numerous scripts etc.
 
 «info_function»
 
-# unlocks bitwarden, so that the `bw` program can access the bitwarden database.
 «bw_unlock_function»
 
 «polite_git_checkout_function»
 
 «mv_dated_backup_function»
+
+«is_git_repo_cloned_at_function»
+
+«clone_repo_and_checkout_at_function»
 #+end_src
 ** Polite git checkout
 This script provides a way to check out a repository in a directory without
@@ -623,6 +743,7 @@ current shell process, which is required in order to query the bitwarden
 password database.
 #+NAME: bw_unlock_function
 #+begin_src sh
+# unlocks bitwarden, so that the `bw` program can access the bitwarden database.
 bw_unlock () {
     # authtenticates bitwarden for this shell session only
     export BW_SESSION=`bw unlock --passwordfile ~/secrets/bw_pass --raw`;
@@ -702,6 +823,13 @@ else
   exit 1
 fi
 
+if [ -f ~/secrets/test_secret ]; then
+    echo "test secret file sucessfully synced"
+    cat ~/secrets/test_secret
+else
+    echo "error: test secret file was missing"
+fi
+
 echo "TESTS COMPLETE"
 #+end_src
 ** Github Actions CI
@@ -776,6 +904,82 @@ echo INSTALL PROCESS COMPLETE, TESTING
 
 bash ~/workstation/test/test.sh
 #+end_src
+* TODO tasks
+- [ ] have link_dotfiles script use the make-dated-backup functionality for
+      any extant files.
+  - maybe also should have a saved diff of what the original contents were?
+  - brings up another idea: what if in ~/var/workstation_setup we had
+    - logs of each setup on that computer
+    - stored backup info
+- [ ] write code to fix the origins of both dotfiles and workstation checkouts
+  - also should have an assertion in the tests
+  - should I start thinking about TDD?
+- [ ] there are lots of weird little things that have accumulated in
+  bootstrap-workstation.sh; try to clean some of them up
+  - many things in bootstrap-workstation.sh should also become helper scripts in bin
+    - mv_dated_backup
+    - install git (mac and linux)? homebrew? nix?
+    - place nix.conf with custom file
+    - restart nix daemon, linux/macos
+    - build_wshs
+    - ws (an executable to run the currently built wshs), bww
+  - for various installations, document the interesting parts of each
+    and have subsections of the workstation config
+- [ ] change setting of WORKSTATION_BOOTSTRAP_COMMIT to use env var
+  its awkward having it be a cli arg, I feel the need to explain
+  when we need to use it
+- [ ] better document all of the workstation names that are available
+- [ ] create mechanism to run for updating workstations
+  - download updates to master branch of dotfiles and workstation
+  - run nix stuffs when appropriate
+  - maybe do bww sync?
+- [ ] move various code not in workstation.org into this file
+  - machine settings for each machine in workstation/hosts
+  - bww
+  - the ws code
+  - possibly content from wssh
+- [ ] finish filling in the numerous incomplete sections of prose in this document
+- [ ] devise method to prevent committing manually-edited target files
+  - git pre-commit-hook?
+  - github action CI that runs tangle, checks for differences
+- [ ] rebuild my personal laptop once all of this is stable
+- [ ] port test/test.sh into wshs/haskell
+- [ ] laptop-state-checking script/features
+  - ensure secrets/bw_pass exists
+  - ensure other secrets are there
+    - check that no new secrets need to be synced
+      - if any secrets have changed, list the changes
+  - check if can access/ssh/etc into some other machines
+  - check for updates on workstation origin
+  - checks for nix (~nix store verify --all~ and ~nix-doctor~)
+  - check for brew updates/state and presence of brew executable
+    - brew doctor?
+  - check reddup state
+  - check for various execuables I care about
+    - (e.g. each thing specifially installed)
+    - haskell language server versions
+  - check for any changes/differences in ~/
+- [ ] setup hammerspoon, and especially spacehammer
+- [ ] rebuild belthronding/my cloud machine
+  - (has had lots of manual hacking)
+- [ ] build nixos sever on gandi
+- [ ] document various components of bww sync
+  - how it works
+  - how to use it
+- [ ] get rid of rming results when darwin-rebuild script finishes (use path
+  technique from home manager script)
+- [ ] move host settings into this file
+** quick planning for server config needs
+(in rough order need to complete, to get to server-config phase of project)
+goal is to get ready to provision/set up nixos cloud machines
+1. [ ] use bww to sync/restore secrets on workstations
+2. [ ] create a new host for nixos server
+3. [ ] create script to sync updates from changes to workstation and dotfiles
+   - does something like https://nixos.wiki/wiki/NixOps help?
+4. [ ] figure out way to run update script on hosts that need it.
+5. [ ] experiement with https://docs.hercules-ci.com/arion/ for running
+   nextcloud (most urgent cloud service I want to use)
+6. [ ] set up "intelligent" s3 bucket for
 * COMMENT Local Variables
 These are set like this so that the noweb characters don't conflict with shell
 HEREDOC syntax, breaking syntax highlighting/indentation etc.

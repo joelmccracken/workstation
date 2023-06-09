@@ -3,6 +3,9 @@
 # This script is intended to be entrypoint to this project. It can be curled to a
 # new machine and then run, and will set things up on that machine as necessary.
 
+# The steps to the setup are given more details in
+# [[*Bootstrap Script Execution Process][Bootstrap Script Execution Process]].
+
 # [[file:workstation.org::*Bootstraping Script][Bootstraping Script:1]]
 set -xeuo pipefail
 
@@ -47,20 +50,30 @@ fi
 WS_DIR="$HOME/workstation"
 export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
-# hereafter, we use many helper functions. Here they are defined up front
+WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
+WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
+# hereafter, we use many helper functions. Here they are defined up front,
+# as some of them are used throughout the other code.
 
+# [[[[file:~/workstation/workstation.org::is_mac_function][is_mac_function]]][is_mac_function]]
 function is_mac() {
     [[ "$(uname)" == 'Darwin' ]]
 }
+# is_mac_function ends here
 
+# [[[[file:~/workstation/workstation.org::is_linux_function][is_linux_function]]][is_linux_function]]
 function is_linux() {
     [[ "$(uname)" == 'Linux' ]]
 }
+# is_linux_function ends here
 
+# [[[[file:~/workstation/workstation.org::info_function][info_function]]][info_function]]
 function info() {
     echo "INFO ========= $(date) $@"
 }
+# info_function ends here
 
+# [[[[file:~/workstation/workstation.org::polite_git_checkout_function][polite_git_checkout_function]]][polite_git_checkout_function]]
 function polite-git-checkout () {
     DIR=$1
     REPO=$2
@@ -75,66 +88,123 @@ function polite-git-checkout () {
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
 }
+# polite_git_checkout_function ends here
 
+# [[[[file:~/workstation/workstation.org::mv_dated_backup_function][mv_dated_backup_function]]][mv_dated_backup_function]]
 function mv_dated_backup() {
     local THEDIR="$1"
     if test -e "$THEDIR"; then
         mv "$THEDIR" "${THEDIR}-$(date +"%s")"
     fi
 }
+# mv_dated_backup_function ends here
 
+# [[[[file:~/workstation/workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]][is_git_repo_cloned_at_function]]
+function is_git_repo_cloned_at(){
+    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+}
+# is_git_repo_cloned_at_function ends here
+
+# [[[[file:~/workstation/workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]][clone_repo_and_checkout_at_function]]
+function clone_repo_and_checkout_at() {
+    mv_dated_backup $1
+    info cloning repo into $1
+    git clone $2 $1
+    cd $1
+    info checking out commit $3
+    git checkout $3
+}
+# clone_repo_and_checkout_at_function ends here
+
+# [[[[file:~/workstation/workstation.org::xcode_setup_function][xcode_setup_function]]][xcode_setup_function]]
+function xcode_setup() {
+    # this will accept the license that xcode requires from the command line
+    # and also install xcode if required.
+    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+}
+# xcode_setup_function ends here
+
+# [[[[file:~/workstation/workstation.org::is_brew_installed_function][is_brew_installed_function]]][is_brew_installed_function]]
+function is_brew_installed() {
+    which brew > /dev/null
+}
+# is_brew_installed_function ends here
+
+# [[[[file:~/workstation/workstation.org::homebrew_setup_function][homebrew_setup_function]]][homebrew_setup_function]]
+function homebrew_setup() {
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+# homebrew_setup_function ends here
+
+# [[[[file:~/workstation/workstation.org::update_apt_install_git_function][update_apt_install_git_function]]][update_apt_install_git_function]]
+function update_apt_install_git() {
+    sudo bash -c 'apt-get update && apt-get install git'
+}
+# update_apt_install_git_function ends here
+
+# [[[[file:~/workstation/workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]][is_git_repo_cloned_at_function]]
+function is_git_repo_cloned_at(){
+    cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
+}
+# is_git_repo_cloned_at_function ends here
+
+# [[[[file:~/workstation/workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]][clone_repo_and_checkout_at_function]]
+function clone_repo_and_checkout_at() {
+    mv_dated_backup $1
+    info cloning repo into $1
+    git clone $2 $1
+    cd $1
+    info checking out commit $3
+    git checkout $3
+}
+# clone_repo_and_checkout_at_function ends here
 info starting workstation bootstrap
-
 is_mac && {
     info ensuring xcode is installed
-    sudo bash -c '(xcodebuild -license accept; xcode-select --install) || exit 0'
+    xcode_setup
     info finished ensuring xcode is installed
 
     info ensuring brew is installed
-    which brew > /dev/null || {
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-        # install git, necessary for next step
-        info installing git
-        brew install git
-    }
+    if ! is_brew_installed; then
+        homebrew_setup
+    fi
     info finished ensuring brew is installed
-}
 
+    info installing git
+    brew install git
+    info finished installing git
+
+}
 is_linux && {
     info updating apt, installing git
-    sudo bash -c 'apt-get update && apt-get install git'
+    update_apt_install_git
     info finished updating apt, installing git
 }
-
-
-{
-    cd $WS_DIR;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/workstation.git' ]]
-} || {
-    info moving workstation dir to backup location
-    mv_dated_backup ~/workstation
-    info cloning workstation repo into ~/workstation
-    git clone 'https://github.com/joelmccracken/workstation.git'
-    cd workstation
-    info checking out specific workstation commit $WORKSTATION_BOOTSTRAP_COMMIT
-    git checkout $WORKSTATION_BOOTSTRAP_COMMIT
+is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
+    clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
+        $WORKSTATION_BOOTSTRAP_COMMIT
 }
-
-source $WS_DIR/lib/shell/funcs.sh
-
+# at this point, this is hardly necessary; however, the gitignore file is handy
+# i may explore getting rid of this repo entirely and just having a fresh
+# repo without any origin in ~
 info ensuring dotfiles repo is checked out
-{
-    cd ~;
-    [[ "$(git remote get-url origin)" == 'git@github.com:joelmccracken/dotfiles.git' ]]
-} || polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
-# delete doom directory, temporary solution, eventually need to just remove from this dotfiles dir
-rm -rf ~/.doom.d/
+
+is_git_repo_cloned_at ~ 'git@github.com:joelmccracken/dotfiles.git' ||
+    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+
 info finished ensuring dotfiles repo is checked out
 
 info linking dotfiles that should be symlinked
 bash ~/workstation/bin/link-dotfiles.sh -f
 info finished linking dotfiles
+# each workstaion host I use has different settings needs.
+# For example, my remote cloud hosted server has a different setup than
+# my mac laptop, which has a different set up from my work computer.
+# the way I have these settings specified is by having a directory in my home
+# directory which has all of the needed files I would need for such differences.
+# there are different directories for each host I maintain, but on a given host,
+# one of those directories are symlinked into 'current' host, which other things
+# can then refer to
 
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
@@ -146,7 +216,6 @@ else
     echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
     exit 5
 fi
-
 info ensuring nix is installed
 { which nix > /dev/null; } || {
     info installing nix
@@ -203,6 +272,7 @@ is_linux && {
     sudo apt-get update
 }
 
+# [[[[file:~/workstation/workstation.org::nix_darwin_rebuild_flake_function][nix_darwin_rebuild_flake_function]]][nix_darwin_rebuild_flake_function]]
 function nix_darwin_rebuild_flake() {
     nix build --extra-experimental-features "nix-command flakes" \
         ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
@@ -210,6 +280,7 @@ function nix_darwin_rebuild_flake() {
 
     rm -rf ./result
 }
+# nix_darwin_rebuild_flake_function ends here
 
 is_mac && {
     info installing darwin-nix
@@ -234,10 +305,12 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+# [[[[file:~/workstation/workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {
     nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
     "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
 }
+# home_manager_flake_switch_function ends here
 home_manager_flake_switch
 
 set +u
@@ -276,13 +349,13 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
     bw_unlock
     bw sync
     $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
-    ls -lah ~/secrets
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
+# [[[[file:~/workstation/workstation.org::manual-setup-instructions][manual-setup-instructions]]][manual-setup-instructions]]
 There are unfortunately a number of things need to install and set up
 manually:
 - lastpass firefox extension
@@ -306,5 +379,6 @@ mac settings
   - open it
   - enable accessability settings
   - launch at login
+# manual-setup-instructions ends here
 EOF
 # Bootstraping Script:1 ends here

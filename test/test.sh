@@ -68,5 +68,12 @@ else
   exit 1
 fi
 
+if [ -f ~/secrets/test_secret ]; then
+    echo "test secret file sucessfully synced"
+    cat ~/secrets/test_secret
+else
+    echo "error: test secret file was missing"
+fi
+
 echo "TESTS COMPLETE"
 # test.sh:1 ends here
