@@ -40,21 +40,24 @@
 (when (file-exists-p workstation-config-path)
   (load workstation-config-path))
 
-
 (after! org
   (setq org-agenda-custom-commands
       '(("p" "Projects" tags "+CATEGORY=\"PROJ\"+LEVEL=1")
         ("a" "Actions" tags "+TODO=\"TODO\"|+TODO=\"LOOP\"")))
 
-      (setq +org-capture-notes-file "inbox.org")
+  (setq +org-capture-notes-file "inbox.org")
 
-      (setq org-mobile-files
-            '( "~/Dropbox/EF/actions.org"
-               "~/Dropbox/EF/projects.org"))
+  (setq org-mobile-files
+        '( "~/Dropbox/EF/actions.org"
+           "~/Dropbox/EF/projects.org"))
 
-      (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org")
+  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org")
 
-      (add-hook 'org-mode-hook 'turn-on-auto-fill))
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+
+  (setq org-src-preserve-indentation t)
+  (setq org-adapt-indentation t)
+  (setq org-startup-indented t))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
