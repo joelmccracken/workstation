@@ -79,6 +79,15 @@ executables:
     dependencies:
     - wshs
 
+  wstool:
+    main:                app/WsTool.hs
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -Wall
+    dependencies:
+    - wshs
 tests:
   wshs-test:
     main:                Spec.hs
