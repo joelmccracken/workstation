@@ -71,6 +71,23 @@
               extraConfig = ''
                 (add-to-list 'exec-path "~/.nix-profile/bin/")
               '';
+
+              emacsPackagesOverlay = self: super: {
+                # https://github.com/doomemacs/doomemacs/blob/07fca786154551f90f36535bfb21f8ca4abd5027/modules/completion/vertico/packages.el#L4C18-L7
+                vertico = self.trivialBuild {
+                  pname = "vertico";
+                  ename = "vertico";
+                  version = "926234ab3fbe2b89e8c7ddfccecff518d73ac6ba";
+                  packageRequires = [ super.compat super.emacs ];
+                  src = pkgs.fetchFromGitHub {
+                    owner = "minad";
+                    repo = "vertico";
+                    rev = "926234ab3fbe2b89e8c7ddfccecff518d73ac6ba";
+                    sha256 = "sha256-8vsNZKSWY6AcLs/a8/b9tjmkF2LEeRSAOvsdiWq+cAc=";
+
+                  };
+                };
+              };
             };
 
             # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
