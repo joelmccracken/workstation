@@ -27,7 +27,6 @@
        ;; bug that seems to be in the search code for vertico.
        ;; no idea when it may get resolved
        ivy               ; a search engine for love and life
-
        ;; vertico           ; the search engine of the future
 
        :ui

@@ -307,8 +307,8 @@ set -u
 
 # [[[[file:~/workstation/workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {
-    nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
-    "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
+    nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace && \
+      "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
 }
 # home_manager_flake_switch_function ends here
 home_manager_flake_switch
