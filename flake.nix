@@ -3,8 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "git+file:///Users/joel/Projects/nixpkgs";
     darwin-nixpkgs = {
-      url = "github:nixos/nixpkgs/nixpkgs-22.11-darwin";
+      url = "git+file:///Users/joel/Projects/nixpkgs";
     };
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "darwin-nixpkgs";
@@ -17,14 +18,22 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-doom-emacs = {
-      url = "github:nix-community/nix-doom-emacs";
+      url = "git+file:///Users/joel/Projects/nix-doom-emacs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+
+
+        doom-emacs.url = "git+file:///Users/joel/Projects/doomemacs";
+        nix-straight.url = "git+file:///Users/joel/Projects/nix-straight.el";
+      };
     };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, nix-doom-emacs, # darwin-nix-doom-emacs,
+  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, nix-doom-emacs,
     ... }:
 
     let
+
       home-manager-config = { user, home }:
         { config, pkgs, lib, ... }:
           {
@@ -72,22 +81,73 @@
                 (add-to-list 'exec-path "~/.nix-profile/bin/")
               '';
 
-              emacsPackagesOverlay = self: super: {
-                # https://github.com/doomemacs/doomemacs/blob/07fca786154551f90f36535bfb21f8ca4abd5027/modules/completion/vertico/packages.el#L4C18-L7
-                vertico = self.trivialBuild {
-                  pname = "vertico";
-                  ename = "vertico";
-                  version = "2ad46196653b8a873adf11aee949d621af8ff6bc";
-                  packageRequires = [ super.compat super.emacs ];
-                  src = pkgs.fetchFromGitHub {
-                    owner = "minad";
-                    repo = "vertico";
-                    rev = "2ad46196653b8a873adf11aee949d621af8ff6bc";
-                    sha256 = "sha256-8vsNZKSWY6AcLs/a8/b9tjmkF2LEeRSAOvsdiWq+cAc=";
+              # emacsPackagesOverlay = self: super: {
+              #   embark = self.trivialBuild {
+              #     pname = "embark";
+              #     ename = "embark";
+              #     version = "5d0459d27aa7cf738b5af36cf862723a62bef955";
+              #     packageRequires = [ super.compat super.emacs ];
+              #     src = pkgs.fetchFromGitHub {
+              #       owner = "oantolin";
+              #       repo = "embark";
+              #       rev = "5d0459d27aa7cf738b5af36cf862723a62bef955";
+              #       sha256 = "sha256-7U94GRmUA+UdqvwSBSEGSwHSpfqaaiKghqg4P4gn85c=";
+              #     };
+              #     meta = {
+              #       homepage = "https://elpa.gnu.org/packages/embark.html";
+              #       license = lib.licenses.free;
+              #     };
 
-                  };
-                };
-              };
+              #   };
+              #   # https://github.com/doomemacs/doomemacs/blob/07fca786154551f90f36535bfb21f8ca4abd5027/modules/completion/vertico/packages.el#L4C18-L7
+              #   vertico = self.trivialBuild {
+              #     pname = "vertico";
+              #     ename = "vertico";
+              #     version = "2ad46196653b8a873adf11aee949d621af8ff6bc";
+              #     packageRequires = [ super.compat super.emacs ];
+              #     src = pkgs.fetchFromGitHub {
+              #       owner = "minad";
+              #       repo = "vertico";
+              #       rev = "2ad46196653b8a873adf11aee949d621af8ff6bc";
+              #       sha256 = "sha256-8vsNZKSWY6AcLs/a8/b9tjmkF2LEeRSAOvsdiWq+cAc=";
+              #     };
+              #     meta = {
+              #       homepage = "https://elpa.gnu.org/packages/vertico.html";
+              #       license = lib.licenses.free;
+              #     };
+
+              #   };
+
+              #   # vertico = self.melpaBuild {
+              #   #   pname = "vertico";
+
+              #   #   # inherit (haskellPackages.ghc-mod) version src;
+              #   #   version = "2ad46196653b8a873adf11aee949d621af8ff6bc";
+
+              #   #   src = pkgs.fetchFromGitHub {
+              #   #     owner = "minad";
+              #   #     repo = "vertico";
+              #   #     rev = "2ad46196653b8a873adf11aee949d621af8ff6bc";
+              #   #     sha256 = "sha256-8vsNZKSWY6AcLs/a8/b9tjmkF2LEeRSAOvsdiWq+cAc=";
+              #   #   };
+
+              #   #   packageRequires = [ super.compat super.emacs ];
+
+              #   #   # propagatedUserEnvPkgs = [ haskellPackages.ghc-mod ];
+
+              #   #   recipe = pkgs.writeText "recipe" ''
+              #   #       (vertico :repo "minad/vertico" :fetcher github :files ("*.el" "extensions/*.el"))
+              #   #   '';
+
+              #   #   fileSpecs = [ "*.el" "extensions/*.el" ];
+
+              #   #   meta = {
+              #   #     homepage = "https://elpa.gnu.org/packages/vertico.html";
+              #   #     license = lib.licenses.free;
+              #   #   };
+              #   # };
+              # }
+              # ;
             };
 
             # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
@@ -165,6 +225,7 @@
       };
       homeConfigurations."ci-ubuntu".runner = linux-home-config{
         user = "runner"; home = "/home/runner";
+
       };
     };
 }

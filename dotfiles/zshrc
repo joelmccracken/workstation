@@ -22,10 +22,6 @@ export HISTSIZE=10000
 # TODO figure out how to make this work in zsh
 # shopt -s histappend
 
-do_command_done_alert() {
-    osascript -e 'display dialog "Command Done!"'
-}
-
 alert_when_done() {
     if test -n "$1";
     then
@@ -34,7 +30,7 @@ alert_when_done() {
             sleep 1
         done
     fi
-    do_command_done_alert
+    notify.sh "command $1 has exited"
 }
 
 sourceIfExists ~/etc/machine-settings.sh

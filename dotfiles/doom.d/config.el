@@ -66,7 +66,8 @@
 (setq global-flycheck-mode nil)
 
 (load-theme 'tsdh-light)
-
+(toggle-debug-on-error)
+(toggle-debug-on-quit)
 
 ;; (add-to-list 'load-path "~/Projects/shen-elisp/")
 ;; (require 'shen-elisp)
