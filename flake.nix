@@ -16,12 +16,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-doom-emacs = {
-      url = "github:nix-community/nix-doom-emacs";
-    };
+    # nix-doom-emacs = {
+    #   url = "github:nix-community/nix-doom-emacs";
+    # };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, nix-doom-emacs, # darwin-nix-doom-emacs,
+  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, # nix-doom-emacs,
+                     # darwin-nix-doom-emacs,
     ... }:
 
     let
@@ -65,13 +66,18 @@
               "~/.nix-profile/bin/"
             ];
 
-            programs.doom-emacs = {
+            programs.emacs = {
               enable = true;
-              doomPrivateDir = ./dotfiles/doom.d;
-              extraConfig = ''
-                (add-to-list 'exec-path "~/.nix-profile/bin/")
-              '';
+              extraPackages = epkgs: [ epkgs.vterm epkgs.sqlite];
             };
+
+            # programs.doom-emacs = {
+            #   enable = true;
+            #   doomPrivateDir = ./dotfiles/doom.d;
+            #   extraConfig = ''
+            #     (add-to-list 'exec-path "~/.nix-profile/bin/")
+            #   '';
+            # };
 
             # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
             manual.manpages.enable = false;
@@ -86,7 +92,7 @@
           inherit pkgs;
 
           modules = [
-            nix-doom-emacs.hmModule
+            # nix-doom-emacs.hmModule
             (home-manager-config user-config)
           ];
         };
@@ -98,7 +104,7 @@
           inherit pkgs;
 
           modules = [
-            nix-doom-emacs.hmModule
+            # nix-doom-emacs.hmModule
             (home-manager-config user-config)
           ];
         };
@@ -126,20 +132,20 @@
             # $ darwin-rebuild changelog
             system.stateVersion = 4;
           };
-    in
-    {
-      darwinConfigurations."glamdring" = darwin.lib.darwinSystem {
+
+     darwinConfig = user: hostname:
+       darwin.lib.darwinSystem {
         system = "x86_64-darwin";
         modules = [
           (nix-darwin-config { user = "joel"; hostname = "glamdring"; })
         ];
       };
-      darwinConfigurations."ci-macos" = darwin.lib.darwinSystem {
-        system = "x86_64-darwin";
-        modules = [
-          (nix-darwin-config { user = "runner"; hostname = "ci-macos"; })
-        ];
-      };
+
+    in
+    {
+      darwinConfigurations."glamdring" = darwinConfig "joel" "glamdring";
+      darwinConfigurations."ci-macos" =  darwinConfig "runner" "ci-macos";
+
       homeConfigurations.glamdring.joel = darwin-home-config {
         user = "joel"; home = "/Users/joel";
       };

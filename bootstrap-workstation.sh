@@ -158,6 +158,24 @@ function clone_repo_and_checkout_at() {
     git checkout $3
 }
 # clone_repo_and_checkout_at_function ends here
+
+function install_doom_emacs_no_nix() {
+    {
+        cd ~/.emacs.d;
+        [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
+    } || {
+        mv_dir_dated_backup ~/.emacs.d;
+        time git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+        # alternative: use this if encounter problems
+        # ~/.emacs.d/bin/doom -y install;
+        # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        time timeout 60m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        ~/.emacs.d/bin/doom sync
+        echo FINISHED INSTALLING DOOM;
+    }
+}
+
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -317,6 +335,8 @@ set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
+
+install_doom_emacs_no_nix
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs

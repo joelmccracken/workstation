@@ -1,6 +1,6 @@
 # Makefile
 # Used to tangle ~workstation.org~. Tangling refers to the
-# process of taking a literate program source and converting it to the target
+# process of taking a literate program source and convedropting it to the target
 # "source" file for execution.
 
 # Formerly had some other targets, but now they are OBE. It may make sense to
