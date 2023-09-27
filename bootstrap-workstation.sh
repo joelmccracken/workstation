@@ -15,6 +15,7 @@ set -xeuo pipefail
 export NIX_PM_VERSION=nix-2.11.1
 export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
 export HOME_MANAGER_VERSION=0144ac418ef633bfc9dbd89b8c199ad3a617c59f
+export HOME_MANAGER_VERSION=feb70061596134d403e14cc5ef7b01ab114d1dbd
 # Script should be passed a single argument, which is name of this workstation.
 
 # When using script to set up a workstation, the "name" of the workstation should
