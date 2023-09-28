@@ -165,7 +165,7 @@ function install_doom_emacs_no_nix() {
         cd ~/.emacs.d;
         [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
     } || {
-        mv_dir_dated_backup ~/.emacs.d;
+        mv_dated_backup ~/.emacs.d;
         time git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
         # alternative: use this if encounter problems
         # ~/.emacs.d/bin/doom -y install;
