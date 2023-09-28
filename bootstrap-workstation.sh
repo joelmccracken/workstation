@@ -15,7 +15,7 @@ set -xeuo pipefail
 export NIX_PM_VERSION=nix-2.11.1
 export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
 export HOME_MANAGER_VERSION=0144ac418ef633bfc9dbd89b8c199ad3a617c59f
-export HOME_MANAGER_VERSION=feb70061596134d403e14cc5ef7b01ab114d1dbd
+# export HOME_MANAGER_VERSION=feb70061596134d403e14cc5ef7b01ab114d1dbd
 # Script should be passed a single argument, which is name of this workstation.
 
 # When using script to set up a workstation, the "name" of the workstation should
@@ -312,12 +312,14 @@ is_mac && {
     info finished installing darwin-nix
 }
 
-export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
-nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_VERSION}.tar.gz home-manager
-nix-channel --update
+# export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+# nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_VERSION}.tar.gz home-manager
+# nix-channel --update
+
+export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix-shell '<home-manager>' -A install --show-trace
+nix run home-manager/$HOME_MANAGER_VERSION -- init --switch ~/workstation
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
