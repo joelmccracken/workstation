@@ -149,11 +149,22 @@
       homeConfigurations.glamdring.joel = darwin-home-config {
         user = "joel"; home = "/Users/joel";
       };
+
       homeConfigurations."ci-macos".runner = darwin-home-config {
         user = "runner"; home = "/Users/runner";
       };
       homeConfigurations."ci-ubuntu".runner = linux-home-config{
         user = "runner"; home = "/home/runner";
       };
+
+
+      packages.x86_64-darwin.homeConfigurations.runner = darwin-home-config {
+        user = "runner"; home = "/Users/runner";
+      };
+      packages.x86_64-linux.homeConfigurations.runner = linux-home-config{
+        user = "runner"; home = "/home/runner";
+      };
+
+
     };
 }
