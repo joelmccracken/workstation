@@ -53,6 +53,7 @@ export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
 WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
+EMACS_CONFIG_DIR=~/.config/emacs
 # hereafter, we use many helper functions. Here they are defined up front,
 # as some of them are used throughout the other code.
 
@@ -162,17 +163,17 @@ function clone_repo_and_checkout_at() {
 
 function install_doom_emacs_no_nix() {
     {
-        cd ~/.emacs.d;
+        cd $EMACS_CONFIG_DIR
         [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
     } || {
-        mv_dated_backup ~/.emacs.d;
+        mv_dated_backup $EMACS_CONFIG_DIR
         time git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
         # alternative: use this if encounter problems
         # ~/.emacs.d/bin/doom -y install;
         # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
         # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
         time timeout 60m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        ~/.emacs.d/bin/doom sync
+        $EMACS_CONFIG_DIR/bin/doom sync
         echo FINISHED INSTALLING DOOM;
     }
 }
