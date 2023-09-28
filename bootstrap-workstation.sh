@@ -167,12 +167,12 @@ function install_doom_emacs_no_nix() {
         [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
     } || {
         mv_dated_backup $EMACS_CONFIG_DIR
-        time git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+        time git clone --depth 1 https://github.com/doomemacs/doomemacs $EMACS_CONFIG_DIR/
         # alternative: use this if encounter problems
         # ~/.emacs.d/bin/doom -y install;
         # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
         # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        time timeout 60m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        time timeout 60m bash -c 'yes | $EMACS_CONFIG_DIR/bin/doom install' || exit 0
         $EMACS_CONFIG_DIR/bin/doom sync
         echo FINISHED INSTALLING DOOM;
     }
