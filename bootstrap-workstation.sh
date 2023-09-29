@@ -172,7 +172,7 @@ function install_doom_emacs_no_nix() {
         # ~/.emacs.d/bin/doom -y install;
         # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
         # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        time timeout 60m bash -c 'yes | $EMACS_CONFIG_DIR/bin/doom install' || exit 0
+        time timeout 60m bash -c "yes | $EMACS_CONFIG_DIR/bin/doom install" || exit 0
         $EMACS_CONFIG_DIR/bin/doom sync
         echo FINISHED INSTALLING DOOM;
     }
