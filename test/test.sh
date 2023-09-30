@@ -53,7 +53,7 @@ $EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
 }
 
 
-$EMACS_PATH -l $EMACS_CONFIG_DIR/init.el --batch --eval '(progn (princ doom-version) (terpri))' | {
+$EMACS_PATH -l $EMACS_CONFIG_DIR/early-init.el --batch --eval '(progn (princ doom-version) (terpri))' | {
   read actual;
   if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" || "$actual" == "3.0.0-pre" ]]; then
     echo "doom version is correct"
@@ -63,7 +63,7 @@ $EMACS_PATH -l $EMACS_CONFIG_DIR/init.el --batch --eval '(progn (princ doom-vers
   fi
 }
 
-if $EMACS_PATH -l $EMACS_CONFIG_DIR/init.el --batch --eval "(progn (require 'vterm-module nil t))"; then
+if $EMACS_PATH -l $EMACS_CONFIG_DIR/early-init.el --batch --eval "(progn (require 'vterm-module nil t))"; then
   echo "emacs is able to load vterm-module, so vterm-module is compiled and ready to go";
 else
   echo "error: emacs was not able to load vterm-module";
