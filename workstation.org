@@ -1,4 +1,4 @@
-#+PROPERTY: header-args  :comments both :noweb yes
+#+PROPERTY: header-args :comments both :noweb yes
 #+OPTIONS: ^:nil ;; let an underscore be an underscore, disable sub-superscripting
 #+OPTIONS: timestamp:nil
 #+TITLE: Workstation
@@ -74,7 +74,7 @@ massive pain, so it was eventually abandoned.
 
 If you want to see how literate programming works in org mode, view this raw file.
 * README
-#+begin_src md :tangle ./README.md  :noweb yes
+#+begin_src md :tangle ./README.md  :noweb yes :comments none
 WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
 
 # Instructions

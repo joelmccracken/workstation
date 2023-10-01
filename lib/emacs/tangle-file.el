@@ -1,21 +1,24 @@
 
+
 ;; And a little emacs lisp that goes with the tangle process:
 
-;; [[file:../../workstation.org::*Makefile][Makefile:2]]
+;; [[file:../../workstation.org::*Makefile][Makefile:3]]
 ;;; tangle-file.el --- description -*- lexical-binding: t; -*-
-
-(add-to-list 'command-switch-alist '("--tangle" . do-tangle))
 
 (setq safe-local-variable-values
       '((org-babel-noweb-wrap-start . "«")
         (org-babel-noweb-wrap-end . "»")))
 
-(defun do-tangle (arg)
-  "Do the tangle. ARG is ignored."
+(doom-require 'doom-start)
+
+(defun do-tangle ()
+  "Do the tangle"
   (find-file "workstation.org")
   (org-babel-tangle))
+
+(do-tangle)
 
 (provide 'tangle-file)
 
 ;;; tangle-file.el ends here
-;; Makefile:2 ends here
+;; Makefile:3 ends here
