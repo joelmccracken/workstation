@@ -1,6 +1,3 @@
-<!-- README -->
-
-<!-- [[file:workstation.org::*README][README:1]] -->
 WARNING: this file is managed by tangling the file workstation.org. Do not edit directly!
 
 # Instructions
@@ -14,4 +11,3 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 
 Much more information may be found in
 <a href="workstation.org">workstation.org</a>.
-<!-- README:1 ends here -->

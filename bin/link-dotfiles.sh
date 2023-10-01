@@ -65,6 +65,7 @@ ln_dotfile npmrc
 ln_dotfile reddup.yml
 ln_dotfile zshrc
 ln_dotfile zshrc.aeglos.sh
+ln_dotfile doom.d
 
 ln_norm Brewfile
 ln_norm Brewfile.lock.json

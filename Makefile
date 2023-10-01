@@ -10,7 +10,7 @@
 all: tangle
 
 tangle:
-	emacs -l ~/.emacs.d/init.el -l lib/emacs/tangle-file.el --batch --tangle
+	bash bin/tangle.sh
 
 .PHONY: tangle
 # Makefile:1 ends here

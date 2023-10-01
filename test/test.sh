@@ -15,6 +15,27 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+EMACS_CONFIG_DIR=~/.config/emacs
+
+function find_emacs_init() {
+  init_file="";
+  for x in "$EMACS_CONFIG_DIR/early-init.el" "$EMACS_CONFIG_DIR/init.el"; do
+    if [[ -f "$x" ]]; then
+      init_file="$x"
+      break;
+    fi;
+  done;
+  if [[ "$init_file" = "" ]]; then
+    echo "Error: Could not find emacs init file" 1>&2
+    exit 43
+  else
+    echo "$init_file"
+  fi
+}
+
+emacs_init="$(find_emacs_init)"
+
+
 function assert_input() {
   local label=$1
   local expected=$2
@@ -50,8 +71,7 @@ $EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
   fi
 }
 
-
-$EMACS_PATH -l ~/.emacs.d/init.el --batch --eval '(progn (princ doom-version) (terpri))' | {
+$EMACS_PATH -l "$emacs_init" --batch --eval '(progn (princ doom-version) (terpri))' | {
   read actual;
   if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" || "$actual" == "3.0.0-pre" ]]; then
     echo "doom version is correct"
@@ -61,7 +81,7 @@ $EMACS_PATH -l ~/.emacs.d/init.el --batch --eval '(progn (princ doom-version) (t
   fi
 }
 
-if $EMACS_PATH -l ~/.emacs.d/init.el --batch --eval "(progn (require 'vterm-module nil t))"; then
+if $EMACS_PATH -l "$emacs_init" --batch --eval "(progn (require 'vterm-module nil t))"; then
   echo "emacs is able to load vterm-module, so vterm-module is compiled and ready to go";
 else
   echo "error: emacs was not able to load vterm-module";
