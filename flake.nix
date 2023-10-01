@@ -82,8 +82,14 @@
             # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
             manual.manpages.enable = false;
           };
-
-
+      home-config = settings:
+        let pkgs = settings.pkgs.legacyPackages.${settings.system};
+        in settings.hmModule.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            (home-manager-config user-config)
+          ]
+        };
       darwin-home-config = user-config:
         let
           system = "x86_64-darwin";
@@ -156,15 +162,19 @@
       homeConfigurations."ci-ubuntu".runner = linux-home-config{
         user = "runner"; home = "/home/runner";
       };
-
-
-      packages.x86_64-darwin.homeConfigurations.runner = darwin-home-config {
-        user = "runner"; home = "/Users/runner";
-      };
+      # packages.x86_64-darwin.homeConfigurations.runner = darwin-home-config {
+      #   user = "runner"; home = "/Users/runner";
+      # };
       packages.x86_64-linux.homeConfigurations.runner = linux-home-config{
         user = "runner"; home = "/home/runner";
       };
-
-
+      packages.x86_64-darwin.homeConfigurations.runner = home-config {
+        user = "runner"; home = "/Users/runner"; system = "x86_64-darwin";
+        hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
+      };
+      packages.x86_64-linux.homeConfigurations.runner = linux-home-config{
+        user = "runner"; home = "/home/runner"; system = "x86_64-linux";
+        hmModule = home-manager;  pkgs = nixpkgs;
+      };
     };
 }
