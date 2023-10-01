@@ -15,7 +15,6 @@ set -xeuo pipefail
 export NIX_PM_VERSION=nix-2.11.1
 export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
 export HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
-# export HOME_MANAGER_VERSION=feb70061596134d403e14cc5ef7b01ab114d1dbd
 # Script should be passed a single argument, which is name of this workstation.
 
 # When using script to set up a workstation, the "name" of the workstation should
@@ -57,25 +56,25 @@ EMACS_CONFIG_DIR=~/.config/emacs
 # hereafter, we use many helper functions. Here they are defined up front,
 # as some of them are used throughout the other code.
 
-# [[[[file:~/workstation/workstation.org::is_mac_function][is_mac_function]]][is_mac_function]]
+# [[file:workstation.org::is_mac_function][is_mac_function]]
 function is_mac() {
     [[ "$(uname)" == 'Darwin' ]]
 }
 # is_mac_function ends here
 
-# [[[[file:~/workstation/workstation.org::is_linux_function][is_linux_function]]][is_linux_function]]
+# [[file:workstation.org::is_linux_function][is_linux_function]]
 function is_linux() {
     [[ "$(uname)" == 'Linux' ]]
 }
 # is_linux_function ends here
 
-# [[[[file:~/workstation/workstation.org::info_function][info_function]]][info_function]]
+# [[file:workstation.org::info_function][info_function]]
 function info() {
     echo "INFO ========= $(date) $@"
 }
 # info_function ends here
 
-# [[[[file:~/workstation/workstation.org::polite_git_checkout_function][polite_git_checkout_function]]][polite_git_checkout_function]]
+# [[file:workstation.org::polite_git_checkout_function][polite_git_checkout_function]]
 function polite-git-checkout () {
     DIR=$1
     REPO=$2
@@ -92,7 +91,7 @@ function polite-git-checkout () {
 }
 # polite_git_checkout_function ends here
 
-# [[[[file:~/workstation/workstation.org::mv_dated_backup_function][mv_dated_backup_function]]][mv_dated_backup_function]]
+# [[file:workstation.org::mv_dated_backup_function][mv_dated_backup_function]]
 function mv_dated_backup() {
     local THEDIR="$1"
     if test -e "$THEDIR"; then
@@ -101,13 +100,13 @@ function mv_dated_backup() {
 }
 # mv_dated_backup_function ends here
 
-# [[[[file:~/workstation/workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]][is_git_repo_cloned_at_function]]
+# [[file:workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]
 function is_git_repo_cloned_at(){
     cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
 }
 # is_git_repo_cloned_at_function ends here
 
-# [[[[file:~/workstation/workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]][clone_repo_and_checkout_at_function]]
+# [[file:workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]
 function clone_repo_and_checkout_at() {
     mv_dated_backup $1
     info cloning repo into $1
@@ -118,7 +117,7 @@ function clone_repo_and_checkout_at() {
 }
 # clone_repo_and_checkout_at_function ends here
 
-# [[[[file:~/workstation/workstation.org::xcode_setup_function][xcode_setup_function]]][xcode_setup_function]]
+# [[file:workstation.org::xcode_setup_function][xcode_setup_function]]
 function xcode_setup() {
     # this will accept the license that xcode requires from the command line
     # and also install xcode if required.
@@ -126,31 +125,31 @@ function xcode_setup() {
 }
 # xcode_setup_function ends here
 
-# [[[[file:~/workstation/workstation.org::is_brew_installed_function][is_brew_installed_function]]][is_brew_installed_function]]
+# [[file:workstation.org::is_brew_installed_function][is_brew_installed_function]]
 function is_brew_installed() {
     which brew > /dev/null
 }
 # is_brew_installed_function ends here
 
-# [[[[file:~/workstation/workstation.org::homebrew_setup_function][homebrew_setup_function]]][homebrew_setup_function]]
+# [[file:workstation.org::homebrew_setup_function][homebrew_setup_function]]
 function homebrew_setup() {
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 # homebrew_setup_function ends here
 
-# [[[[file:~/workstation/workstation.org::update_apt_install_git_function][update_apt_install_git_function]]][update_apt_install_git_function]]
+# [[file:workstation.org::update_apt_install_git_function][update_apt_install_git_function]]
 function update_apt_install_git() {
     sudo bash -c 'apt-get update && apt-get install git'
 }
 # update_apt_install_git_function ends here
 
-# [[[[file:~/workstation/workstation.org::is_git_repo_cloned_at_function][is_git_repo_cloned_at_function]]][is_git_repo_cloned_at_function]]
+# [[file:workstation.org::*Bootstraping Script][is_git_repo_cloned_at_function]]
 function is_git_repo_cloned_at(){
     cd $1 && [[ "$(git remote get-url origin)" == "$2" ]]
 }
 # is_git_repo_cloned_at_function ends here
 
-# [[[[file:~/workstation/workstation.org::clone_repo_and_checkout_at_function][clone_repo_and_checkout_at_function]]][clone_repo_and_checkout_at_function]]
+# [[file:workstation.org::*Bootstraping Script][clone_repo_and_checkout_at_function]]
 function clone_repo_and_checkout_at() {
     mv_dated_backup $1
     info cloning repo into $1
@@ -161,6 +160,7 @@ function clone_repo_and_checkout_at() {
 }
 # clone_repo_and_checkout_at_function ends here
 
+# [[file:workstation.org::install_doom_emacs_no_nix_function][install_doom_emacs_no_nix_function]]
 function install_doom_emacs_no_nix() {
     {
         cd $EMACS_CONFIG_DIR
@@ -177,7 +177,7 @@ function install_doom_emacs_no_nix() {
         echo FINISHED INSTALLING DOOM;
     }
 }
-
+# install_doom_emacs_no_nix_function ends here
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -292,7 +292,7 @@ is_linux && {
     sudo apt-get update
 }
 
-# [[[[file:~/workstation/workstation.org::nix_darwin_rebuild_flake_function][nix_darwin_rebuild_flake_function]]][nix_darwin_rebuild_flake_function]]
+# [[file:workstation.org::nix_darwin_rebuild_flake_function][nix_darwin_rebuild_flake_function]]
 function nix_darwin_rebuild_flake() {
     nix build --extra-experimental-features "nix-command flakes" \
         ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
@@ -313,10 +313,6 @@ is_mac && {
     info finished installing darwin-nix
 }
 
-# export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
-# nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_VERSION}.tar.gz home-manager
-# nix-channel --update
-
 export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
@@ -327,7 +323,7 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-# [[[[file:~/workstation/workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]][home_manager_flake_switch_function]]
+# [[file:workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {
     nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
     "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
@@ -379,7 +375,7 @@ fi
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
-# [[[[file:~/workstation/workstation.org::manual-setup-instructions][manual-setup-instructions]]][manual-setup-instructions]]
+# [[file:workstation.org::manual-setup-instructions][manual-setup-instructions]]
 There are unfortunately a number of things need to install and set up
 manually:
 - lastpass firefox extension

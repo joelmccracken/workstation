@@ -35,6 +35,7 @@ function find_emacs_init() {
 
 emacs_init="$(find_emacs_init)"
 
+
 function assert_input() {
   local label=$1
   local expected=$2
@@ -69,7 +70,6 @@ $EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
     exit 1
   fi
 }
-
 
 $EMACS_PATH -l "$emacs_init" --batch --eval '(progn (princ doom-version) (terpri))' | {
   read actual;

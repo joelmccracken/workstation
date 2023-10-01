@@ -100,24 +100,34 @@ delete this makefile if it becomes clearly unnecessary.
 all: tangle
 
 tangle:
-	emacs -l ~/.emacs.d/init.el -l lib/emacs/tangle-file.el --batch --tangle
+	bash bin/tangle.sh
 
 .PHONY: tangle
 #+end_src
+
+Which requires a shell script:
+
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/tangle.sh
+EMACS_CONFIG_DIR=~/.config/emacs;
+$EMACS_CONFIG_DIR/bin/doomscript lib/emacs/tangle-file.el
+#+end_src
+
 And a little emacs lisp that goes with the tangle process:
 #+begin_src emacs-lisp :tangle ./lib/emacs/tangle-file.el
 ;;; tangle-file.el --- description -*- lexical-binding: t; -*-
-
-(add-to-list 'command-switch-alist '("--tangle" . do-tangle))
 
 (setq safe-local-variable-values
       '((org-babel-noweb-wrap-start . "«")
         (org-babel-noweb-wrap-end . "»")))
 
-(defun do-tangle (arg)
-  "Do the tangle. ARG is ignored."
+(doom-require 'doom-start)
+
+(defun do-tangle ()
+  "Do the tangle"
   (find-file "workstation.org")
   (org-babel-tangle))
+
+(do-tangle)
 
 (provide 'tangle-file)
 
@@ -164,7 +174,7 @@ Each of these steps are executed sequentially.
 
 export NIX_PM_VERSION=nix-2.11.1
 export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=0144ac418ef633bfc9dbd89b8c199ad3a617c59f
+export HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
 #+end_src
 *** Argument Parsing
 #+begin_src shell
@@ -208,6 +218,7 @@ export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
 WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
 WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
+EMACS_CONFIG_DIR=~/.config/emacs
 #+end_src
 *** Helper Functions
 #+begin_src shell :noweb yes
@@ -239,6 +250,8 @@ WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 «is_git_repo_cloned_at_function»
 
 «clone_repo_and_checkout_at_function»
+
+«install_doom_emacs_no_nix_function»
 #+end_src
 *** Log that bootstrap is starting
 #+begin_src shell
@@ -387,12 +400,10 @@ is_mac && {
     info finished installing darwin-nix
 }
 
-export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
-nix-channel --add https://github.com/nix-community/home-manager/archive/${HOME_MANAGER_VERSION}.tar.gz home-manager
-nix-channel --update
+export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix-shell '<home-manager>' -A install --show-trace
+nix run home-manager/$HOME_MANAGER_VERSION -- init --switch ~/workstation
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
@@ -406,6 +417,8 @@ set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
+
+install_doom_emacs_no_nix
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs
@@ -507,6 +520,26 @@ function clone_repo_and_checkout_at() {
     cd $1
     info checking out commit $3
     git checkout $3
+}
+#+end_src
+**** install_doom_emacs_no_nix
+#+name: install_doom_emacs_no_nix_function
+#+begin_src shell
+function install_doom_emacs_no_nix() {
+    {
+        cd $EMACS_CONFIG_DIR
+        [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
+    } || {
+        mv_dated_backup $EMACS_CONFIG_DIR
+        time git clone --depth 1 https://github.com/doomemacs/doomemacs $EMACS_CONFIG_DIR/
+        # alternative: use this if encounter problems
+        # ~/.emacs.d/bin/doom -y install;
+        # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        time timeout 60m bash -c "yes | $EMACS_CONFIG_DIR/bin/doom install" || exit 0
+        $EMACS_CONFIG_DIR/bin/doom sync
+        echo FINISHED INSTALLING DOOM;
+    }
 }
 #+end_src
 *** setting up xcode (macos)
@@ -770,6 +803,27 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+EMACS_CONFIG_DIR=~/.config/emacs
+
+function find_emacs_init() {
+  init_file="";
+  for x in "$EMACS_CONFIG_DIR/early-init.el" "$EMACS_CONFIG_DIR/init.el"; do
+    if [[ -f "$x" ]]; then
+      init_file="$x"
+      break;
+    fi;
+  done;
+  if [[ "$init_file" = "" ]]; then
+    echo "Error: Could not find emacs init file" 1>&2
+    exit 43
+  else
+    echo "$init_file"
+  fi
+}
+
+emacs_init="$(find_emacs_init)"
+
+
 function assert_input() {
   local label=$1
   local expected=$2
@@ -805,8 +859,7 @@ $EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
   fi
 }
 
-
-$EMACS_PATH -l ~/.emacs.d/init.el --batch --eval '(progn (princ doom-version) (terpri))' | {
+$EMACS_PATH -l "$emacs_init" --batch --eval '(progn (princ doom-version) (terpri))' | {
   read actual;
   if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" || "$actual" == "3.0.0-pre" ]]; then
     echo "doom version is correct"
@@ -816,7 +869,7 @@ $EMACS_PATH -l ~/.emacs.d/init.el --batch --eval '(progn (princ doom-version) (t
   fi
 }
 
-if $EMACS_PATH -l ~/.emacs.d/init.el --batch --eval "(progn (require 'vterm-module nil t))"; then
+if $EMACS_PATH -l "$emacs_init" --batch --eval "(progn (require 'vterm-module nil t))"; then
   echo "emacs is able to load vterm-module, so vterm-module is compiled and ready to go";
 else
   echo "error: emacs was not able to load vterm-module";
