@@ -319,11 +319,6 @@ export HOME_MANAGER_BACKUP_EXT=old
 # nix run home-manager/$HOME_MANAGER_VERSION -- --flake ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage init --switch ~/workstation
 nix run home-manager/$HOME_MANAGER_VERSION -- init ~/workstation
 
-set +u
-# evaluating this with set -u will cause an unbound variable error
-source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
-set -u
-
 # [[file:workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {
     nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
