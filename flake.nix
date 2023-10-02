@@ -88,7 +88,7 @@
           inherit pkgs;
           modules = [
             (home-manager-config user-config)
-          ]
+          ];
         };
       darwin-home-config = user-config:
         let
