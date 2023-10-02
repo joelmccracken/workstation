@@ -165,14 +165,14 @@
       # packages.x86_64-darwin.homeConfigurations.runner = darwin-home-config {
       #   user = "runner"; home = "/Users/runner";
       # };
-      packages.x86_64-linux.homeConfigurations.runner = linux-home-config{
-        user = "runner"; home = "/home/runner";
-      };
+      # packages.x86_64-linux.homeConfigurations.runner = linux-home-config{
+      #   user = "runner"; home = "/home/runner";
+      # };
       packages.x86_64-darwin.homeConfigurations.runner = home-config {
         user = "runner"; home = "/Users/runner"; system = "x86_64-darwin";
         hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
       };
-      packages.x86_64-linux.homeConfigurations.runner = linux-home-config{
+      packages.x86_64-linux.homeConfigurations.runner = home-config {
         user = "runner"; home = "/home/runner"; system = "x86_64-linux";
         hmModule = home-manager;  pkgs = nixpkgs;
       };
