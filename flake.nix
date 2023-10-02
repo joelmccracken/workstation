@@ -26,7 +26,7 @@
     ... }:
 
     let
-      home-manager-config = { user, home }:
+      home-manager-config = { user, home, ... }:
         { config, pkgs, lib, ... }:
           {
             # Home Manager needs a bit of information about you and the
