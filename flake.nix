@@ -87,7 +87,7 @@
         in settings.hmModule.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            (home-manager-config user-config)
+            (home-manager-config settings)
           ];
         };
       darwin-home-config = user-config:
