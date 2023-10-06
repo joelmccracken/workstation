@@ -111,28 +111,40 @@
             system.stateVersion = 4;
           };
 
-      darwinConfig = user: hostname:
+      darwinConfig = settings:
         darwin.lib.darwinSystem {
           system = "x86_64-darwin";
           modules = [
-            (nix-darwin-config { user = "joel"; hostname = "glamdring"; })
+            (nix-darwin-config settings)
           ];
         };
     in
     {
-      darwinConfigurations."glamdring" = darwinConfig "joel" "glamdring";
-      darwinConfigurations."ci-macos" =  darwinConfig "runner" "ci-macos";
-
+      # glamdring / personal laptop configs
+      darwinConfigurations."glamdring" = darwinConfig {
+        user = "joel"; hostname = "glamdring";
+      };
       homeConfigurations.glamdring.joel = home-config {
         user = "joel"; home = "/Users/joel"; system = "x86_64-darwin";
         hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
       };
 
+
+
+
+      # ci-macos / github macos ci runner
+      darwinConfigurations."ci-macos" =  darwinConfig {
+        user = "runner"; hostname = "ci-macos";
+      };
       homeConfigurations."ci-macos".runner = home-config {
         user = "runner"; home = "/Users/runner"; system = "x86_64-darwin";
         hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
       };
 
+
+
+
+      # ci-ubuntu / github ubuntu ci runner
       homeConfigurations."ci-ubuntu".runner = home-config {
         user = "runner"; home = "/home/runner"; system = "x86_64-linux";
         hmModule = home-manager;  pkgs = nixpkgs;
