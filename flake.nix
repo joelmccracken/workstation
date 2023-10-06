@@ -152,27 +152,17 @@
       darwinConfigurations."glamdring" = darwinConfig "joel" "glamdring";
       darwinConfigurations."ci-macos" =  darwinConfig "runner" "ci-macos";
 
-      homeConfigurations.glamdring.joel = darwin-home-config {
-        user = "joel"; home = "/Users/joel";
+      homeConfigurations.glamdring.joel = home-config {
+        user = "joel"; home = "/Users/joel"; system = "x86_64-darwin";
+        hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
       };
 
-      homeConfigurations."ci-macos".runner = darwin-home-config {
-        user = "runner"; home = "/Users/runner";
-      };
-      homeConfigurations."ci-ubuntu".runner = linux-home-config{
-        user = "runner"; home = "/home/runner";
-      };
-      # packages.x86_64-darwin.homeConfigurations.runner = darwin-home-config {
-      #   user = "runner"; home = "/Users/runner";
-      # };
-      # packages.x86_64-linux.homeConfigurations.runner = linux-home-config{
-      #   user = "runner"; home = "/home/runner";
-      # };
-      packages.x86_64-darwin.homeConfigurations.runner = home-config {
+      homeConfigurations."ci-macos".runner = home-config {
         user = "runner"; home = "/Users/runner"; system = "x86_64-darwin";
         hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
       };
-      packages.x86_64-linux.homeConfigurations.runner = home-config {
+
+      homeConfigurations."ci-ubuntu".runner = home-config {
         user = "runner"; home = "/home/runner"; system = "x86_64-linux";
         hmModule = home-manager;  pkgs = nixpkgs;
       };
