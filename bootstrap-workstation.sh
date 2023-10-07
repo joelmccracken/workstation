@@ -224,9 +224,9 @@ is_git_repo_cloned_at ~ "$DOTFILES_ORIGIN" ||
 
 info finished ensuring dotfiles repo is checked out
 
-info linking dotfiles that should be symlinked
-bash ~/workstation/bin/link-dotfiles.sh -f -c
-info finished linking dotfiles
+# info linking dotfiles that should be symlinked
+# bash ~/workstation/bin/link-dotfiles.sh -f -c
+# info finished linking dotfiles
 # each workstaion host I use has different settings needs.
 # For example, my remote cloud hosted server has a different setup than
 # my mac laptop, which has a different set up from my work computer.
