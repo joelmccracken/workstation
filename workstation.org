@@ -403,12 +403,7 @@ is_mac && {
 export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix run home-manager/$HOME_MANAGER_VERSION -- init --switch ~/workstation
-
-set +u
-# evaluating this with set -u will cause an unbound variable error
-source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
-set -u
+nix run home-manager/$HOME_MANAGER_VERSION -- init ~/workstation
 
 «home_manager_flake_switch_function»
 home_manager_flake_switch
