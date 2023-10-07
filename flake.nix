@@ -70,15 +70,6 @@
                   extraPackages = epkgs: [ epkgs.vterm epkgs.sqlite];
                 };
 
-                # programs.doom-emacs = {
-                #   enable = true;
-                #   doomPrivateDir = ./dotfiles/doom.d;
-                #   extraConfig = ''
-                #     (add-to-list 'exec-path "~/.nix-profile/bin/")
-                #   '';
-                # };
-
-                # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
                 manual.manpages.enable = false;
               };
           in settings.hmModule.lib.homeManagerConfiguration {
@@ -118,36 +109,41 @@
             (nix-darwin-config settings)
           ];
         };
+
+      macConfig = settings:
+        {
+          darwinConfigurations.${settings.hostname} = darwinConfig settings;
+
+          homeConfigurations.${settings.hostname}.${settings.user} = home-config (
+            settings // { hmModule = darwin-home-manager; pkgs = darwin-nixpkgs; }
+          );
+        };
+
+      linuxConfig = settings:
+        {
+          homeConfigurations.${settings.hostname}.${settings.user} = home-config (
+            settings // { hmModule = home-manager;  pkgs = nixpkgs; }
+          );
+        };
+
+      mergeDefs = m1: m2: {
+        darwinConfigurations = (m1.darwinConfigurations or {}) // (m2.darwinConfigurations or {});
+        homeConfigurations = (m1.homeConfigurations or {}) // (m2.homeConfigurations or {});
+      };
+
+      machineDefs = machines: builtins.foldl' mergeDefs {} machines;
     in
-    {
-      # glamdring / personal laptop configs
-      darwinConfigurations."glamdring" = darwinConfig {
-        user = "joel"; hostname = "glamdring";
-      };
-      homeConfigurations.glamdring.joel = home-config {
-        user = "joel"; home = "/Users/joel"; system = "x86_64-darwin";
-        hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
-      };
+      machineDefs [
+        (macConfig {
+          user = "joel"; hostname = "glamdring"; system = "x86_64-darwin"; home = "/Users/joel";
+        })
 
+        (macConfig {
+          user = "runner"; hostname = "ci-macos"; system = "x86_64-darwin"; home = "/Users/runner";
+        })
 
-
-
-      # ci-macos / github macos ci runner
-      darwinConfigurations."ci-macos" =  darwinConfig {
-        user = "runner"; hostname = "ci-macos";
-      };
-      homeConfigurations."ci-macos".runner = home-config {
-        user = "runner"; home = "/Users/runner"; system = "x86_64-darwin";
-        hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
-      };
-
-
-
-
-      # ci-ubuntu / github ubuntu ci runner
-      homeConfigurations."ci-ubuntu".runner = home-config {
-        user = "runner"; home = "/home/runner"; system = "x86_64-linux";
-        hmModule = home-manager;  pkgs = nixpkgs;
-      };
-    };
+        (linuxConfig {
+          user = "runner"; hostname = "ci-ubuntu"; system = "x86_64-linux"; home = "/home/runner";
+        })
+      ];
 }
