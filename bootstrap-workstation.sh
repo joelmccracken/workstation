@@ -78,6 +78,7 @@ function info() {
 function polite-git-checkout () {
     DIR=$1
     REPO=$2
+    ORIGIN=$3
 
     cd $DIR
     git init
@@ -88,6 +89,8 @@ function polite-git-checkout () {
     git reset --mixed origin/master
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
+    # fixing; used public to start, but want to be able to push
+    git remote set-url origin $ORIGIN
 }
 # polite_git_checkout_function ends here
 
@@ -114,6 +117,8 @@ function clone_repo_and_checkout_at() {
     cd $1
     info checking out commit $3
     git checkout $3
+    info setting origin
+    git remote set-url origin $4
 }
 # clone_repo_and_checkout_at_function ends here
 
@@ -202,15 +207,16 @@ is_linux && {
 }
 is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
     clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
-        $WORKSTATION_BOOTSTRAP_COMMIT
+        $WORKSTATION_BOOTSTRAP_COMMIT $WS_ORIGIN
 }
 # at this point, this is hardly necessary; however, the gitignore file is handy
 # i may explore getting rid of this repo entirely and just having a fresh
 # repo without any origin in ~
 info ensuring dotfiles repo is checked out
 
-is_git_repo_cloned_at ~ 'git@github.com:joelmccracken/dotfiles.git' ||
-    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+DOTFILES_ORIGIN='git@github.com:joelmccracken/dotfiles.git'
+is_git_repo_cloned_at ~ "$DOTFILES_ORIGIN" ||
+    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git' "$DOTFILES_ORIGIN"
 
 info finished ensuring dotfiles repo is checked out
 

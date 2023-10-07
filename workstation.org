@@ -953,9 +953,6 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
-- [ ] write code to fix the origins of both dotfiles and workstation checkouts
-  - also should have an assertion in the tests
-  - should I start thinking about TDD?
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
