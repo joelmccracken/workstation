@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 source ~/workstation/lib/shell/funcs.sh
-# set -x
 set -e
 export FORCE=false;
 export VERBOSE=false;
