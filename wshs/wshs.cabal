@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.6.
+-- This file has been generated from package.yaml by hpack version 0.35.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -97,6 +97,39 @@ executable bww
 
 executable ws
   main-is: app/Ws.hs
+  other-modules:
+      Paths_wshs
+  default-extensions:
+      OverloadedStrings
+      RecordWildCards
+      DuplicateRecordFields
+      LambdaCase
+      AllowAmbiguousTypes
+      GADTs
+      QuasiQuotes
+      NoImplicitPrelude
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N -Wall
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , directory
+    , optional-args
+    , parsers
+    , raw-strings-qq
+    , rio
+    , shelly
+    , string-interpolate
+    , temporary
+    , text
+    , trifecta
+    , turtle
+    , utf8-string
+    , wshs
+  default-language: Haskell2010
+
+executable wstool
+  main-is: app/WsTool.hs
   other-modules:
       Paths_wshs
   default-extensions:
