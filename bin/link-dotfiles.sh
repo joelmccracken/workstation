@@ -39,7 +39,7 @@ function ln_helper() {
         check "OK: $dest already points to $src"
     else
         check "NOT OK: $dest does not point to $src"
-        if [ "$CHECK" = "true" ]; then
+        if [ "$CHECK" = "true" ] && ! [ "$FORCE" = "true" ]; then
             exit 11
         fi
 
