@@ -953,12 +953,6 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
-- [ ] have link_dotfiles script use the make-dated-backup functionality for
-      any extant files.
-  - maybe also should have a saved diff of what the original contents were?
-  - brings up another idea: what if in ~/var/workstation_setup we had
-    - logs of each setup on that computer
-    - stored backup info
 - [ ] write code to fix the origins of both dotfiles and workstation checkouts
   - also should have an assertion in the tests
   - should I start thinking about TDD?

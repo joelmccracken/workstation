@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
 
-echo FORCE=false;
+source ~/workstation/lib/shell/funcs.sh
+
+FORCE=false;
 if [ "$1" == "-f" ]; then
     export FORCE=true
 fi
 
 function handle_force() {
     if [ "$FORCE" == "true" ]; then
-        if [ -e "$1" ]; then
-            rm -f $1
-        fi
+        mv_dated_backup "$1"
     fi
 }
 
 function ln_helper() {
     dest=~/$2$1
+    src=~/workstation/dotfiles/$1
+    # curr=$(readlink -f "$dest")
     handle_force $dest
 
-    if [ ! -L $dest ]  && [ ! -f $dest ]; then
-        ln -s ~/workstation/dotfiles/$1 $dest;
+    if [ ! -L $dest ] && [ ! -f $dest ]; then
+        ln -s "$src" "$dest";
     else
         if [ -f $dest ]; then
             echo warning: file already exists at $dest
