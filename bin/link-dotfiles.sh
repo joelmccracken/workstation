@@ -1,32 +1,51 @@
 #!/usr/bin/env bash
 
 source ~/workstation/lib/shell/funcs.sh
+# set -x
+set -e
+export FORCE=false;
+export VERBOSE=false;
+export CHECK=false;
 
-FORCE=false;
-if [ "$1" == "-f" ]; then
-    export FORCE=true
-fi
+function error() {
+    printf "$@" >&2
+    exit 1
+}
 
 function handle_force() {
-    if [ "$FORCE" == "true" ]; then
+    if [ "$FORCE" = "true" ]; then
         mv_dated_backup "$1"
     fi
 }
 
+function verbose() {
+    if [ "$VERBOSE" = "true" ]; then
+        echo "$@"
+    fi
+}
+
+function check () {
+    if [ "$CHECK" = "true" ] || [ "$VERBOSE" = "true" ]; then
+        echo "$@"
+    fi
+}
+
+
 function ln_helper() {
     dest=~/$2$1
     src=~/workstation/dotfiles/$1
-    # curr=$(readlink -f "$dest")
-    handle_force $dest
+    curr=$(readlink -f "$dest")
 
-    if [ ! -L $dest ] && [ ! -f $dest ]; then
-        ln -s "$src" "$dest";
+    if [ -L "$dest" ] && [ "$curr" = "$src" ]; then
+        check "OK: $dest already points to $src"
     else
-        if [ -f $dest ]; then
-            echo warning: file already exists at $dest
-        else
-            echo warning: symlink already exists at $dest
+        check "NOT OK: $dest does not point to $src"
+        if [ "$CHECK" = "true" ]; then
+            exit 11
         fi
+
+        handle_force $dest
+        ln -s "$src" "$dest"
     fi
 }
 
@@ -47,16 +66,29 @@ function ln_dotfile_n() {
         mkdir -p $destdir
     fi
 
-    handle_force $dest
-
-    if [ ! -L $dest ] && [ ! -f $dest ]; then
-        ln -s $src $dest;
-    else
-        if [ -f $dest ]; then
-            echo warning: file already exists at $dest.
-        fi
-    fi
+    ln_helper $1 "."
 }
+
+while (( $# > 0 )); do
+    opt="$1"
+    shift
+
+    case $opt in
+        -f)
+            FORCE=true
+            ;;
+        -v)
+            VERBOSE=true
+            ;;
+        -c)
+            CHECK=true
+            ;;
+        *)
+            error "%s: error, unknown option '%s'" "$0" "$opt"
+            exit 1
+            ;;
+    esac
+done
 
 ln_dotfile bashrc
 ln_dotfile ghci
