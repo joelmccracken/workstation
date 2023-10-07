@@ -162,6 +162,8 @@ function clone_repo_and_checkout_at() {
     cd $1
     info checking out commit $3
     git checkout $3
+    info setting origin
+    git remote set-url origin $4
 }
 # clone_repo_and_checkout_at_function ends here
 
@@ -215,8 +217,10 @@ is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
 info ensuring dotfiles repo is checked out
 
 DOTFILES_ORIGIN='git@github.com:joelmccracken/dotfiles.git'
+
 is_git_repo_cloned_at ~ "$DOTFILES_ORIGIN" ||
-    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git' "$DOTFILES_ORIGIN"
+    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git' \
+        "$DOTFILES_ORIGIN"
 
 info finished ensuring dotfiles repo is checked out
 
