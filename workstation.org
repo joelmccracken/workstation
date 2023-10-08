@@ -305,10 +305,6 @@ is_git_repo_cloned_at ~ "$DOTFILES_ORIGIN" ||
         "$DOTFILES_ORIGIN"
 
 info finished ensuring dotfiles repo is checked out
-
-info linking dotfiles that should be symlinked
-bash ~/workstation/bin/link-dotfiles.sh -f -c
-info finished linking dotfiles
 #+end_src
 *** set up host specific settings
 #+begin_src shell :noweb yes
@@ -424,6 +420,10 @@ nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
 echo "running the 'ws install' process"
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
+
+info linking dotfiles that should be symlinked
+bash ~/workstation/bin/link-dotfiles.sh -f -c
+info finished linking dotfiles
 
 set +e
 echo "Running final installs (install)"
