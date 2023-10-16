@@ -288,7 +288,7 @@ is_linux && {
 #+begin_src shell :noweb yes
 is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
     clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
-        $WORKSTATION_BOOTSTRAP_COMMIT
+        $WORKSTATION_BOOTSTRAP_COMMIT $WS_ORIGIN
 }
 #+end_src
 *** check out the dotfiles repository
@@ -298,14 +298,13 @@ is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
 # repo without any origin in ~
 info ensuring dotfiles repo is checked out
 
-is_git_repo_cloned_at ~ 'git@github.com:joelmccracken/dotfiles.git' ||
-    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+DOTFILES_ORIGIN='git@github.com:joelmccracken/dotfiles.git'
+
+is_git_repo_cloned_at ~ "$DOTFILES_ORIGIN" ||
+    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git' \
+        "$DOTFILES_ORIGIN"
 
 info finished ensuring dotfiles repo is checked out
-
-info linking dotfiles that should be symlinked
-bash ~/workstation/bin/link-dotfiles.sh -f
-info finished linking dotfiles
 #+end_src
 *** set up host specific settings
 #+begin_src shell :noweb yes
@@ -403,12 +402,7 @@ is_mac && {
 export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix run home-manager/$HOME_MANAGER_VERSION -- init --switch ~/workstation
-
-set +u
-# evaluating this with set -u will cause an unbound variable error
-source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
-set -u
+nix run home-manager/$HOME_MANAGER_VERSION -- init ~/workstation
 
 «home_manager_flake_switch_function»
 home_manager_flake_switch
@@ -426,6 +420,10 @@ nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
 echo "running the 'ws install' process"
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
+
+info linking dotfiles that should be symlinked
+bash ~/workstation/bin/link-dotfiles.sh -f -c
+info finished linking dotfiles
 
 set +e
 echo "Running final installs (install)"
@@ -520,6 +518,8 @@ function clone_repo_and_checkout_at() {
     cd $1
     info checking out commit $3
     git checkout $3
+    info setting origin
+    git remote set-url origin $4
 }
 #+end_src
 **** install_doom_emacs_no_nix
@@ -750,6 +750,7 @@ polite-git-checkout $1 $2
 function polite-git-checkout () {
     DIR=$1
     REPO=$2
+    ORIGIN=$3
 
     cd $DIR
     git init
@@ -760,6 +761,8 @@ function polite-git-checkout () {
     git reset --mixed origin/master
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
+    # fixing; used public to start, but want to be able to push
+    git remote set-url origin $ORIGIN
 }
 #+end_src
 * Bitwarden and personal secrets
@@ -958,21 +961,11 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
-- [ ] have link_dotfiles script use the make-dated-backup functionality for
-      any extant files.
-  - maybe also should have a saved diff of what the original contents were?
-  - brings up another idea: what if in ~/var/workstation_setup we had
-    - logs of each setup on that computer
-    - stored backup info
-- [ ] write code to fix the origins of both dotfiles and workstation checkouts
-  - also should have an assertion in the tests
-  - should I start thinking about TDD?
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
     - mv_dated_backup
     - install git (mac and linux)? homebrew? nix?
-    - place nix.conf with custom file
     - restart nix daemon, linux/macos
     - build_wshs
     - ws (an executable to run the currently built wshs), bww

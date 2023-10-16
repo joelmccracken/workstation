@@ -1,5 +1,3 @@
--- |
-
 module WSHS.Properties.Debian where
 
 import RIO

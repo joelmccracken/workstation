@@ -16,98 +16,67 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # nix-doom-emacs = {
-    #   url = "github:nix-community/nix-doom-emacs";
-    # };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager, # nix-doom-emacs,
-                     # darwin-nix-doom-emacs,
+  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager,
     ... }:
-
     let
-      home-manager-config = { user, home }:
-        { config, pkgs, lib, ... }:
-          {
-            # Home Manager needs a bit of information about you and the
-            # paths it should manage.
-            home.username = user;
-            home.homeDirectory = home;
+      home-config = settings@{system, user, home, ...}:
+        let
+          pkgs = settings.pkgs.legacyPackages.${settings.system};
 
-            # This value determines the Home Manager release that your
-            # configuration is compatible with. This helps avoid breakage
-            # when a new Home Manager release introduces backwards
-            # incompatible changes.
-            #
-            # You can update Home Manager without changing this value. See
-            # the Home Manager release notes for a list of state version
-            # changes in each release.
-            home.stateVersion = "22.11";
+          home-manager-config =
+            { config, pkgs, lib, ... }:
+              {
+                # Home Manager needs a bit of information about you and the
+                # paths it should manage.
+                home.username = user;
+                home.homeDirectory = home;
 
-            # Let Home Manager install and manage itself.
-            programs.home-manager.enable = true;
-            home.packages = [
-              pkgs.git
-              pkgs.ripgrep
-              pkgs.jq
-              pkgs.jl
-              pkgs.fd
-              pkgs.ispell
-              pkgs.bitwarden-cli
-              pkgs.direnv
-              pkgs.mr  # myrepos https://myrepos.branchable.com/install/
-              pkgs.graphviz
-              pkgs.cmake
-              pkgs.coreutils
-              pkgs.wget
-            ];
+                # This value determines the Home Manager release that your
+                # configuration is compatible with. This helps avoid breakage
+                # when a new Home Manager release introduces backwards
+                # incompatible changes.
+                #
+                # You can update Home Manager without changing this value. See
+                # the Home Manager release notes for a list of state version
+                # changes in each release.
+                home.stateVersion = "22.11";
 
-            home.sessionPath = [
-              "~/.nix-profile/bin/"
-            ];
+                # Let Home Manager install and manage itself.
+                programs.home-manager.enable = true;
+                home.packages = [
+                  pkgs.git
+                  pkgs.ripgrep
+                  pkgs.jq
+                  pkgs.jl
+                  pkgs.fd
+                  pkgs.ispell
+                  pkgs.bitwarden-cli
+                  pkgs.direnv
+                  pkgs.mr  # myrepos https://myrepos.branchable.com/install/
+                  pkgs.graphviz
+                  pkgs.cmake
+                  pkgs.coreutils
+                  pkgs.wget
+                ];
 
-            programs.emacs = {
-              enable = true;
-              extraPackages = epkgs: [ epkgs.vterm epkgs.sqlite];
+                home.sessionPath = [
+                  "~/.nix-profile/bin/"
+                ];
+
+                programs.emacs = {
+                  enable = true;
+                  extraPackages = epkgs: [ epkgs.vterm epkgs.sqlite];
+                };
+
+                manual.manpages.enable = false;
+              };
+          in settings.hmModule.lib.homeManagerConfiguration {
+              inherit pkgs;
+              modules = [home-manager-config];
             };
 
-            # programs.doom-emacs = {
-            #   enable = true;
-            #   doomPrivateDir = ./dotfiles/doom.d;
-            #   extraConfig = ''
-            #     (add-to-list 'exec-path "~/.nix-profile/bin/")
-            #   '';
-            # };
-
-            # workaround; see https://github.com/nix-community/home-manager/issues/3342#issuecomment-1283158398
-            manual.manpages.enable = false;
-          };
-
-
-      darwin-home-config = user-config:
-        let
-          system = "x86_64-darwin";
-          pkgs = darwin-nixpkgs.legacyPackages.${system};
-        in darwin-home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          modules = [
-            # nix-doom-emacs.hmModule
-            (home-manager-config user-config)
-          ];
-        };
-      linux-home-config = user-config:
-        let
-          system = "x86_64-linux";
-          pkgs = nixpkgs.legacyPackages.${system};
-        in home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          modules = [
-            # nix-doom-emacs.hmModule
-            (home-manager-config user-config)
-          ];
-        };
       nix-darwin-config = {hostname, user, ...}:
         { config, pkgs, ... }:
           {
@@ -133,38 +102,48 @@
             system.stateVersion = 4;
           };
 
-     darwinConfig = user: hostname:
-       darwin.lib.darwinSystem {
-        system = "x86_64-darwin";
-        modules = [
-          (nix-darwin-config { user = "joel"; hostname = "glamdring"; })
-        ];
+      darwinConfig = settings:
+        darwin.lib.darwinSystem {
+          system = "x86_64-darwin";
+          modules = [
+            (nix-darwin-config settings)
+          ];
+        };
+
+      macConfig = settings:
+        {
+          darwinConfigurations.${settings.hostname} = darwinConfig settings;
+
+          homeConfigurations.${settings.hostname}.${settings.user} = home-config (
+            settings // { hmModule = darwin-home-manager; pkgs = darwin-nixpkgs; }
+          );
+        };
+
+      linuxConfig = settings:
+        {
+          homeConfigurations.${settings.hostname}.${settings.user} = home-config (
+            settings // { hmModule = home-manager;  pkgs = nixpkgs; }
+          );
+        };
+
+      mergeDefs = m1: m2: {
+        darwinConfigurations = (m1.darwinConfigurations or {}) // (m2.darwinConfigurations or {});
+        homeConfigurations = (m1.homeConfigurations or {}) // (m2.homeConfigurations or {});
       };
 
+      machineDefs = machines: builtins.foldl' mergeDefs {} machines;
     in
-    {
-      darwinConfigurations."glamdring" = darwinConfig "joel" "glamdring";
-      darwinConfigurations."ci-macos" =  darwinConfig "runner" "ci-macos";
+      machineDefs [
+        (macConfig {
+          user = "joel"; hostname = "glamdring"; system = "x86_64-darwin"; home = "/Users/joel";
+        })
 
-      homeConfigurations.glamdring.joel = darwin-home-config {
-        user = "joel"; home = "/Users/joel";
-      };
+        (macConfig {
+          user = "runner"; hostname = "ci-macos"; system = "x86_64-darwin"; home = "/Users/runner";
+        })
 
-      homeConfigurations."ci-macos".runner = darwin-home-config {
-        user = "runner"; home = "/Users/runner";
-      };
-      homeConfigurations."ci-ubuntu".runner = linux-home-config{
-        user = "runner"; home = "/home/runner";
-      };
-
-
-      packages.x86_64-darwin.homeConfigurations.runner = darwin-home-config {
-        user = "runner"; home = "/Users/runner";
-      };
-      packages.x86_64-linux.homeConfigurations.runner = linux-home-config{
-        user = "runner"; home = "/home/runner";
-      };
-
-
-    };
+        (linuxConfig {
+          user = "runner"; hostname = "ci-ubuntu"; system = "x86_64-linux"; home = "/home/runner";
+        })
+      ];
 }

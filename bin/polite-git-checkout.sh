@@ -14,6 +14,7 @@
 function polite-git-checkout () {
     DIR=$1
     REPO=$2
+    ORIGIN=$3
 
     cd $DIR
     git init
@@ -24,6 +25,8 @@ function polite-git-checkout () {
     git reset --mixed origin/master
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
+    # fixing; used public to start, but want to be able to push
+    git remote set-url origin $ORIGIN
 }
 polite-git-checkout $1 $2
 # Polite git checkout:1 ends here

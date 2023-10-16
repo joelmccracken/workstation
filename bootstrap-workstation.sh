@@ -78,6 +78,7 @@ function info() {
 function polite-git-checkout () {
     DIR=$1
     REPO=$2
+    ORIGIN=$3
 
     cd $DIR
     git init
@@ -88,6 +89,8 @@ function polite-git-checkout () {
     git reset --mixed origin/master
     # This formulation of the checkout command seems to work most reliably
     git status -s | grep -E '^ D' | sed -E 's/^ D //' | xargs -n 1 -- git checkout
+    # fixing; used public to start, but want to be able to push
+    git remote set-url origin $ORIGIN
 }
 # polite_git_checkout_function ends here
 
@@ -114,6 +117,8 @@ function clone_repo_and_checkout_at() {
     cd $1
     info checking out commit $3
     git checkout $3
+    info setting origin
+    git remote set-url origin $4
 }
 # clone_repo_and_checkout_at_function ends here
 
@@ -157,6 +162,8 @@ function clone_repo_and_checkout_at() {
     cd $1
     info checking out commit $3
     git checkout $3
+    info setting origin
+    git remote set-url origin $4
 }
 # clone_repo_and_checkout_at_function ends here
 
@@ -202,21 +209,20 @@ is_linux && {
 }
 is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
     clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
-        $WORKSTATION_BOOTSTRAP_COMMIT
+        $WORKSTATION_BOOTSTRAP_COMMIT $WS_ORIGIN
 }
 # at this point, this is hardly necessary; however, the gitignore file is handy
 # i may explore getting rid of this repo entirely and just having a fresh
 # repo without any origin in ~
 info ensuring dotfiles repo is checked out
 
-is_git_repo_cloned_at ~ 'git@github.com:joelmccracken/dotfiles.git' ||
-    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git'
+DOTFILES_ORIGIN='git@github.com:joelmccracken/dotfiles.git'
+
+is_git_repo_cloned_at ~ "$DOTFILES_ORIGIN" ||
+    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git' \
+        "$DOTFILES_ORIGIN"
 
 info finished ensuring dotfiles repo is checked out
-
-info linking dotfiles that should be symlinked
-bash ~/workstation/bin/link-dotfiles.sh -f
-info finished linking dotfiles
 # each workstaion host I use has different settings needs.
 # For example, my remote cloud hosted server has a different setup than
 # my mac laptop, which has a different set up from my work computer.
@@ -316,12 +322,7 @@ is_mac && {
 export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix run home-manager/$HOME_MANAGER_VERSION -- init --switch ~/workstation
-
-set +u
-# evaluating this with set -u will cause an unbound variable error
-source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
-set -u
+nix run home-manager/$HOME_MANAGER_VERSION -- init ~/workstation
 
 # [[file:workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {
@@ -344,6 +345,10 @@ nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
 echo "running the 'ws install' process"
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
+
+info linking dotfiles that should be symlinked
+bash ~/workstation/bin/link-dotfiles.sh -f -c
+info finished linking dotfiles
 
 set +e
 echo "Running final installs (install)"
