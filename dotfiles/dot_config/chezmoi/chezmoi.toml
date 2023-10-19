@@ -1,0 +1,2 @@
+mode = "symlink"
+sourceDir = "~/workstation/dotfiles/"

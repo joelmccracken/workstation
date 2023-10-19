@@ -347,7 +347,7 @@ $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
 
 info linking dotfiles that should be symlinked
-bash ~/workstation/bin/link-dotfiles.sh -f -c
+chezmoi -c ~/workstation/dotfiles/dot_config/chezmoi/chezmoi.toml --source ~/workstation/dotfiles apply
 info finished linking dotfiles
 
 set +e

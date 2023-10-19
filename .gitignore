@@ -236,3 +236,6 @@ wshs/result
 
 # this is a symlink to settings for the "current" machine
 hosts/current
+
+# it wants to keep it in here =(
+dotfiles/dot_config/chezmoi/chezmoistate.boltdb
