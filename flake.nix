@@ -46,6 +46,7 @@
                 # Let Home Manager install and manage itself.
                 programs.home-manager.enable = true;
                 home.packages = [
+                  pkgs.chezmoi
                   pkgs.git
                   pkgs.ripgrep
                   pkgs.jq
