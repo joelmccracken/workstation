@@ -17,8 +17,8 @@ function restart_nix_daemon_mac() {
 }
 
 function restart_nix_daemon () {
-    is_mac && restart_nix_daemon_mac
-    is_linux && restart_nix_daemon_linux
+    if is_mac; then  restart_nix_daemon_mac; fi
+    if is_linux; then restart_nix_daemon_linux; fi
 }
 restart_nix_daemon
 # restart nix daemons:2 ends here
