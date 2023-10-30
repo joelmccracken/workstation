@@ -213,7 +213,7 @@ function restart_nix_daemon_mac() {
 
 function restart_nix_daemon () {
     is_mac && restart_nix_daemon_mac
-    is_linux && nix_nix_daemon_linux
+    is_linux && restart_nix_daemon_linux
 }
 # restart_nix_deamon_function ends here
 info starting workstation bootstrap
