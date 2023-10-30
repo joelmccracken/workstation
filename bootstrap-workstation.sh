@@ -185,6 +185,37 @@ function install_doom_emacs_no_nix() {
     }
 }
 # install_doom_emacs_no_nix_function ends here
+
+# [[file:workstation.org::install_system_nix_conf_function][install_system_nix_conf_function]]
+function install_system_nix_conf() {
+  (sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+substituters = https://cache.nixos.org https://cache.iog.io
+experimental-features = nix-command flakes
+trusted-users = root $(whoami) runner
+build-users-group = nixbld
+# END OF /etc/nix/nix.conf
+EOF
+}
+# install_system_nix_conf_function ends here
+
+# [[file:workstation.org::restart_nix_deamon_function][restart_nix_deamon_function]]
+function restart_nix_daemon_linux() {
+    sudo systemctl restart nix-daemon.service;
+}
+
+function restart_nix_daemon_mac() {
+    set +e
+    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    set -e
+}
+
+function restart_nix_daemon () {
+    is_mac && restart_nix_daemon_mac
+    is_linux && nix_nix_daemon_linux
+}
+# restart_nix_deamon_function ends here
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -252,38 +283,11 @@ info finished ensuring nix is installed
 export NIX_REMOTE=daemon
 
 info setting up nix.conf
-(sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org https://cache.iog.io
-experimental-features = nix-command flakes
-trusted-users = root $(whoami) runner
-build-users-group = nixbld
-# END OF /etc/nix/nix.conf
-EOF
+install_system_nix_conf
 
-
-function restart_linux_daemon() {
-    sudo systemctl restart nix-daemon.service;
-}
-
-function restart_mac_daemon() {
-    set +e
-    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    set -e
-}
-
-is_mac && {
-    info macos detected, restarting nix-daemon
-    restart_mac_daemon
-    info finished restarting nix-daemon
-}
-
-is_linux && {
-    info restarting nix-daemon via systemctl
-    restart_linux_daemon
-    info finished restarting nix-daemon via systemctl
-}
+info restarting nix daemon
+restart_nix_daemon
+info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH

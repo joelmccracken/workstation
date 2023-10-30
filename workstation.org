@@ -220,7 +220,7 @@ WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
 WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 EMACS_CONFIG_DIR=~/.config/emacs
 #+end_src
-*** Helper Functions
+*** Helper and Component Functions
 #+begin_src shell :noweb yes
 # hereafter, we use many helper functions. Here they are defined up front,
 # as some of them are used throughout the other code.
@@ -252,6 +252,10 @@ EMACS_CONFIG_DIR=~/.config/emacs
 «clone_repo_and_checkout_at_function»
 
 «install_doom_emacs_no_nix_function»
+
+«install_system_nix_conf_function»
+
+«restart_nix_deamon_function»
 #+end_src
 *** Log that bootstrap is starting
 #+begin_src shell
@@ -340,38 +344,11 @@ info finished ensuring nix is installed
 export NIX_REMOTE=daemon
 
 info setting up nix.conf
-(sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org https://cache.iog.io
-experimental-features = nix-command flakes
-trusted-users = root $(whoami) runner
-build-users-group = nixbld
-# END OF /etc/nix/nix.conf
-EOF
+install_system_nix_conf
 
-
-function restart_linux_daemon() {
-    sudo systemctl restart nix-daemon.service;
-}
-
-function restart_mac_daemon() {
-    set +e
-    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    set -e
-}
-
-is_mac && {
-    info macos detected, restarting nix-daemon
-    restart_mac_daemon
-    info finished restarting nix-daemon
-}
-
-is_linux && {
-    info restarting nix-daemon via systemctl
-    restart_linux_daemon
-    info finished restarting nix-daemon via systemctl
-}
+info restarting nix daemon
+restart_nix_daemon
+info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH
@@ -593,6 +570,66 @@ External Script:
 «update_apt_install_git_function»
 update_apt_install_git
 #+end_src
+*** install nix configuration file
+I wish I could do this with a nix-like thing, but sadly, there are several
+complications.
+- for MacOS, this is nix-darwin.
+- for Ubuntu, there is nothing that can do it.
+- There _is_ a way to do something similar with home manager, but it sets the
+  _user_ nix settings, _not_ the system settings. This is not overly surprising,
+  but it does mean that it can't be the sole solution for setting
+  configurations, if you need to set up caches/substituters.
+  At the very least, I would need some *other* way besides home manager to
+  sepecify that my user is a trusted user. But, then, there becomes a question
+  of bootstrapping (nix settings needed before home manager ever runs), so I
+  think its overall easier to just hack a thing with bash.
+#+name: install_system_nix_conf_function
+#+begin_src shell :noweb yes
+function install_system_nix_conf() {
+  (sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+substituters = https://cache.nixos.org https://cache.iog.io
+experimental-features = nix-command flakes
+trusted-users = root $(whoami) runner
+build-users-group = nixbld
+# END OF /etc/nix/nix.conf
+EOF
+}
+#+end_src
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/install_system_nix_conf.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«install_system_nix_conf_function»
+install_system_nix_conf
+#+end_src
+*** restart nix daemons
+sometimes we need to restart the nix daemons, e.g. after editing the nix config
+file.
+#+name: restart_nix_deamon_function
+#+begin_src shell :noweb yes
+function restart_nix_daemon_linux() {
+    sudo systemctl restart nix-daemon.service;
+}
+
+function restart_nix_daemon_mac() {
+    set +e
+    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    set -e
+}
+
+function restart_nix_daemon () {
+    is_mac && restart_nix_daemon_mac
+    is_linux && nix_nix_daemon_linux
+}
+#+end_src
+
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/restart_nix_deamon.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/funcs.sh
+«restart_nix_deamon_function»
+restart_nix_daemon
+#+end_src
+
 * Nix components
 ** Home Manager
 I use home manager as the primary method for installing and configuring software
