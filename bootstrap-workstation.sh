@@ -291,11 +291,10 @@ info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 cat $NIX_DAEMON_PATH
-if [[ -e "$NIX_DAEMON_PATH" ]]; then
-    set +u
-    source "$NIX_DAEMON_PATH";
-    set -u
-fi;
+
+set +u
+source "$NIX_DAEMON_PATH";
+set -u
 
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
