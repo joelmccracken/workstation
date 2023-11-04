@@ -261,6 +261,18 @@ function nix_darwin_rebuild_flake() {
 }
 # nix_darwin_rebuild_flake_function ends here
 
+# [[file:workstation.org::install_nix_darwin_function][install_nix_darwin_function]]
+
+function install_nix_darwin() {
+    cd $WORKSTATION_DIR
+    nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
+    ./result/bin/darwin-installer
+
+    nix_darwin_rebuild_flake
+}
+
+# install_nix_darwin_function ends here
+
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -343,12 +355,7 @@ is_linux && {
 
 is_mac && {
     info installing darwin-nix
-    cd $WORKSTATION_DIR
-    nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
-    ./result/bin/darwin-installer
-
-    nix_darwin_rebuild_flake
-
+    install_nix_darwin
     info finished installing darwin-nix
 }
 
