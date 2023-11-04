@@ -11,10 +11,11 @@ set -xeuo pipefail
 
 # These are the various versions of things that should be installed. Keeping them
 # in one place like this make them easier to keep track of.
-
-export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
+# [[file:../../../workstation.org::workstation_setup_versions][workstation_setup_versions]]
+export WORKSTATION_NIX_PM_VERSION=nix-2.11.1
+export WORKSTATION_NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export WORKSTATION_HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
+# workstation_setup_versions ends here
 # Script should be passed a single argument, which is name of this workstation.
 
 # When using script to set up a workstation, the "name" of the workstation should
@@ -283,7 +284,7 @@ fi
 info ensuring nix is installed
 { which nix > /dev/null; } || {
     info installing nix
-    sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
+    sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
 }
 info finished ensuring nix is installed
 
@@ -321,7 +322,7 @@ function nix_darwin_rebuild_flake() {
 is_mac && {
     info installing darwin-nix
     cd $WS_DIR
-    nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
+    nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
     nix_darwin_rebuild_flake
@@ -332,7 +333,8 @@ is_mac && {
 export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix run home-manager/$HOME_MANAGER_VERSION -- init ~/workstation
+nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
+
 
 # [[file:workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {

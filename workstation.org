@@ -168,13 +168,10 @@ This portion of the document explains the various execution steps of bootstrap.
 
 Each of these steps are executed sequentially.
 *** Set Version Settings
-#+begin_src shell
+#+begin_src shell :noweb yes
 # These are the various versions of things that should be installed. Keeping them
 # in one place like this make them easier to keep track of.
-
-export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
+«workstation_setup_versions»
 #+end_src
 *** Argument Parsing
 #+begin_src shell
@@ -337,7 +334,7 @@ fi
 info ensuring nix is installed
 { which nix > /dev/null; } || {
     info installing nix
-    sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
+    sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
 }
 info finished ensuring nix is installed
 
@@ -367,7 +364,7 @@ is_linux && {
 is_mac && {
     info installing darwin-nix
     cd $WS_DIR
-    nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
+    nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
     nix_darwin_rebuild_flake
@@ -378,7 +375,7 @@ is_mac && {
 export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
-nix run home-manager/$HOME_MANAGER_VERSION -- init ~/workstation
+nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
 
 «home_manager_flake_switch_function»
 home_manager_flake_switch
@@ -435,10 +432,13 @@ Success! However, there are some remaining manual set up steps required.
 EOF
 #+end_src
 ** Bootstrapping Components
-*** Note: Separate executables
+There are many components
 Many of these snippets are also provided as separate scripts in the workstation
 repository. It is handy to have these quickly available if I am debugging a
 problem; the alternative, frequently, is to reconstruct these things ad-hoc.
+
+For that matter, thinking about extracting things from the giant install file
+into pieces is helpful.
 *** Helper Functions
 **** is_mac
 Detects if is running on a mac.
@@ -498,25 +498,12 @@ function clone_repo_and_checkout_at() {
     git remote set-url origin $4
 }
 #+end_src
-**** install_doom_emacs_no_nix
-#+name: install_doom_emacs_no_nix_function
-#+begin_src shell
-function install_doom_emacs_no_nix() {
-    {
-        cd $EMACS_CONFIG_DIR
-        [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
-    } || {
-        mv_dated_backup $EMACS_CONFIG_DIR
-        time git clone --depth 1 https://github.com/doomemacs/doomemacs $EMACS_CONFIG_DIR/
-        # alternative: use this if encounter problems
-        # ~/.emacs.d/bin/doom -y install;
-        # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        time timeout 60m bash -c "yes | $EMACS_CONFIG_DIR/bin/doom install" || exit 0
-        $EMACS_CONFIG_DIR/bin/doom sync
-        echo FINISHED INSTALLING DOOM;
-    }
-}
+*** Versions
+#+name: workstation_setup_versions
+#+begin_src sh :tangle ./lib/shell/setup/workstation_setup_versions.sh :noweb yes
+export WORKSTATION_NIX_PM_VERSION=nix-2.11.1
+export WORKSTATION_NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export WORKSTATION_HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
 #+end_src
 *** setting up xcode (macos)
 #+name: xcode_setup_function
@@ -608,7 +595,7 @@ External Script:
 install_system_nix_conf
 #+end_src
 *** restart nix daemons
-sometimes we need to restart the nix daemons, e.g. after editing the nix config
+Sometimes we need to restart the nix daemons, e.g. after editing the nix config
 file.
 #+name: restart_nix_deamon_function
 #+begin_src shell :noweb yes
@@ -635,7 +622,47 @@ source ~/workstation/lib/shell/funcs.sh
 «restart_nix_deamon_function»
 restart_nix_daemon
 #+end_src
+*** Install Nix
+#+name: ensure_nix_installed_function
+#+begin_src shell :noweb yes
+source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
+source ~/workstation/lib/shell/funcs.sh
 
+function ensure_nix_installed () {
+    if which nix > /dev/null; then
+        info "nix exists in path, not installing"
+    else
+        info "nix not in path, installing"
+        sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
+    fi
+}
+#+end_src
+
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/ensure_nix_installed.sh :shebang "#!/usr/bin/env bash" :noweb yes
+«ensure_nix_installed_function»
+ensure_nix_installed
+#+end_src
+*** Install doom emacs without nix
+#+name: install_doom_emacs_no_nix_function
+#+begin_src shell
+function install_doom_emacs_no_nix() {
+    {
+        cd $EMACS_CONFIG_DIR
+        [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
+    } || {
+        mv_dated_backup $EMACS_CONFIG_DIR
+        time git clone --depth 1 https://github.com/doomemacs/doomemacs $EMACS_CONFIG_DIR/
+        # alternative: use this if encounter problems
+        # ~/.emacs.d/bin/doom -y install;
+        # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        time timeout 60m bash -c "yes | $EMACS_CONFIG_DIR/bin/doom install" || exit 0
+        $EMACS_CONFIG_DIR/bin/doom sync
+        echo FINISHED INSTALLING DOOM;
+    }
+}
+#+end_src
 * Nix components
 ** Home Manager
 I use home manager as the primary method for installing and configuring software
@@ -1026,7 +1053,7 @@ bash ~/workstation/test/test.sh
   - machine settings for each machine in workstation/hosts
   - bww
   - the ws code
-  - possibly content from wssh
+  - various code in lib
 - [ ] finish filling in the numerous incomplete sections of prose in this document
 - [ ] devise method to prevent committing manually-edited target files
   - git pre-commit-hook?
