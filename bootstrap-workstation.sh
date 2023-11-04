@@ -14,6 +14,21 @@ set -xeuo pipefail
 export WORKSTATION_DIR="$HOME/workstation"
 export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
+export WORKSTATION_EMACS_CONFIG_DIR=~/.config/emacs
+export WORKSTATION_GIT_ORIGIN='git@github.com:joelmccracken/workstation.git'
+export WORKSTATION_GIT_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
+
+sourceIfExists () {
+    if [ -f "$1" ]; then
+        source "$1"
+    fi
+}
+
+if [ -z "${WORKSTATION_NAME+x}" ] ; then
+    if [ -f "$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh" ]; then
+       source "~/$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh"
+    fi
+fi
 
 # workstation_foundation ends here
 # These are the various versions of things that should be installed. Keeping them
@@ -54,11 +69,6 @@ if [ -z "${2+x}" ]; then
 else
     export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
-# having these variables here really just makes the code a bit more DRY
-
-WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
-WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
-EMACS_CONFIG_DIR=~/.config/emacs
 # hereafter, we use many helper functions. Here they are defined up front,
 # as some of them are used throughout the other code.
 
@@ -176,17 +186,17 @@ function clone_repo_and_checkout_at() {
 # [[file:workstation.org::install_doom_emacs_no_nix_function][install_doom_emacs_no_nix_function]]
 function install_doom_emacs_no_nix() {
     {
-        cd $EMACS_CONFIG_DIR
+        cd $WORKSTATION_EMACS_CONFIG_DIR
         [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
     } || {
-        mv_dated_backup $EMACS_CONFIG_DIR
-        time git clone --depth 1 https://github.com/doomemacs/doomemacs $EMACS_CONFIG_DIR/
+        mv_dated_backup $WORKSTATION_EMACS_CONFIG_DIR
+        time git clone --depth 1 https://github.com/doomemacs/doomemacs $WORKSTATION_EMACS_CONFIG_DIR/
         # alternative: use this if encounter problems
         # ~/.emacs.d/bin/doom -y install;
         # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
         # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        time timeout 60m bash -c "yes | $EMACS_CONFIG_DIR/bin/doom install" || exit 0
-        $EMACS_CONFIG_DIR/bin/doom sync
+        time timeout 60m bash -c "yes | $WORKSTATION_EMACS_CONFIG_DIR/bin/doom install" || exit 0
+        $WORKSTATION_EMACS_CONFIG_DIR/bin/doom sync
         echo FINISHED INSTALLING DOOM;
     }
 }
@@ -273,9 +283,9 @@ is_linux && {
     update_apt_install_git
     info finished updating apt, installing git
 }
-is_git_repo_cloned_at $WORKSTATION_DIR $WS_ORIGIN || {
-    clone_repo_and_checkout_at $WORKSTATION_DIR $WS_ORIGIN_PUB \
-        $WORKSTATION_BOOTSTRAP_COMMIT $WS_ORIGIN
+is_git_repo_cloned_at $WORKSTATION_DIR $WORKSTATION_GIT_ORIGIN || {
+    clone_repo_and_checkout_at $WORKSTATION_DIR $WORKSTATION_GIT_ORIGIN_PUB \
+        $WORKSTATION_BOOTSTRAP_COMMIT $WORKSTATION_GIT_ORIGIN
 }
 # at this point, this is hardly necessary; however, the gitignore file is handy
 # i may explore getting rid of this repo entirely and just having a fresh
