@@ -295,7 +295,7 @@ fi
 info ensuring nix is installed
 ensure_nix_installed
 info finished ensuring nix is installed
-export NIX_REMOTE=daemon
+# export NIX_REMOTE=daemon
 
 info setting up nix.conf
 install_system_nix_conf
