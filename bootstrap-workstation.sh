@@ -293,12 +293,12 @@ else
     exit 5
 fi
 
-info setting up nix.conf
-install_system_nix_conf
-
 info ensuring nix is installed
 ensure_nix_installed
 info finished ensuring nix is installed
+
+info setting up nix.conf
+install_system_nix_conf
 
 # export NIX_REMOTE=daemon
 
