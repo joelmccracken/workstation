@@ -1,4 +1,4 @@
-# TODO move this to an org mode file
+#!/usr/bin/env sh
 
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
