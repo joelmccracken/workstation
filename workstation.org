@@ -167,16 +167,6 @@ set -xeuo pipefail
 This portion of the document explains the various execution steps of bootstrap.
 
 Each of these steps are executed sequentially.
-*** Foundations
-#+begin_src shell :noweb yes
-«workstation_foundation»
-#+end_src
-*** Set Version Settings
-#+begin_src shell :noweb yes
-# These are the various versions of things that should be installed. Keeping them
-# in one place like this make them easier to keep track of.
-«workstation_setup_versions»
-#+end_src
 *** Argument Parsing
 #+begin_src shell
 # Script should be passed a single argument, which is name of this workstation.
@@ -210,6 +200,16 @@ if [ -z "${2+x}" ]; then
 else
     export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
+#+end_src
+*** Foundations
+#+begin_src shell :noweb yes
+«workstation_foundation»
+#+end_src
+*** Set Version Settings
+#+begin_src shell :noweb yes
+# These are the various versions of things that should be installed. Keeping them
+# in one place like this make them easier to keep track of.
+«workstation_setup_versions»
 #+end_src
 *** Helper and Component Functions
 #+begin_src shell :noweb yes

@@ -9,35 +9,6 @@
 # [[file:workstation.org::*Bootstraping Script][Bootstraping Script:1]]
 set -xeuo pipefail
 
-# [[file:../../workstation.org::workstation_foundation][workstation_foundation]]
-
-export WORKSTATION_DIR="$HOME/workstation"
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
-export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
-export WORKSTATION_EMACS_CONFIG_DIR=~/.config/emacs
-export WORKSTATION_GIT_ORIGIN='git@github.com:joelmccracken/workstation.git'
-export WORKSTATION_GIT_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
-
-sourceIfExists () {
-    if [ -f "$1" ]; then
-        source "$1"
-    fi
-}
-
-if [ -z "${WORKSTATION_NAME+x}" ] ; then
-    if [ -f "$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh" ]; then
-       source "~/$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh"
-    fi
-fi
-
-# workstation_foundation ends here
-# These are the various versions of things that should be installed. Keeping them
-# in one place like this make them easier to keep track of.
-# [[file:../../../workstation.org::workstation_setup_versions][workstation_setup_versions]]
-export WORKSTATION_NIX_PM_VERSION=nix-2.11.1
-export WORKSTATION_NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export WORKSTATION_HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
-# workstation_setup_versions ends here
 # Script should be passed a single argument, which is name of this workstation.
 
 # When using script to set up a workstation, the "name" of the workstation should
@@ -69,6 +40,35 @@ if [ -z "${2+x}" ]; then
 else
     export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
+# [[file:../../workstation.org::workstation_foundation][workstation_foundation]]
+
+export WORKSTATION_DIR="$HOME/workstation"
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
+export WORKSTATION_EMACS_CONFIG_DIR=~/.config/emacs
+export WORKSTATION_GIT_ORIGIN='git@github.com:joelmccracken/workstation.git'
+export WORKSTATION_GIT_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
+
+sourceIfExists () {
+    if [ -f "$1" ]; then
+        source "$1"
+    fi
+}
+
+if [ -z "${WORKSTATION_NAME+x}" ] ; then
+    if [ -f "$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh" ]; then
+       source "~/$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh"
+    fi
+fi
+
+# workstation_foundation ends here
+# These are the various versions of things that should be installed. Keeping them
+# in one place like this make them easier to keep track of.
+# [[file:../../../workstation.org::workstation_setup_versions][workstation_setup_versions]]
+export WORKSTATION_NIX_PM_VERSION=nix-2.11.1
+export WORKSTATION_NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export WORKSTATION_HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
+# workstation_setup_versions ends here
 # hereafter, we use many helper functions. Here they are defined up front,
 # as some of them are used throughout the other code.
 
