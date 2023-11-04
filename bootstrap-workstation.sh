@@ -292,13 +292,15 @@ else
     echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
     exit 5
 fi
-info ensuring nix is installed
-ensure_nix_installed
-info finished ensuring nix is installed
-# export NIX_REMOTE=daemon
 
 info setting up nix.conf
 install_system_nix_conf
+
+info ensuring nix is installed
+ensure_nix_installed
+info finished ensuring nix is installed
+
+# export NIX_REMOTE=daemon
 
 info restarting nix daemon
 restart_nix_daemon
@@ -310,6 +312,7 @@ cat $NIX_DAEMON_PATH
 set +u
 source "$NIX_DAEMON_PATH";
 set -u
+
 
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
