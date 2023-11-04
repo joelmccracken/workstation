@@ -9,6 +9,13 @@
 # [[file:workstation.org::*Bootstraping Script][Bootstraping Script:1]]
 set -xeuo pipefail
 
+# [[file:../../workstation.org::workstation_foundation][workstation_foundation]]
+
+export WORKSTATION_DIR="$HOME/workstation"
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
+
+# workstation_foundation ends here
 # These are the various versions of things that should be installed. Keeping them
 # in one place like this make them easier to keep track of.
 # [[file:../../../workstation.org::workstation_setup_versions][workstation_setup_versions]]
@@ -48,9 +55,7 @@ else
     export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
 # having these variables here really just makes the code a bit more DRY
-WS_DIR="$HOME/workstation"
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
-export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
+
 WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
 WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 EMACS_CONFIG_DIR=~/.config/emacs
@@ -235,6 +240,17 @@ function ensure_nix_installed () {
     fi
 }
 # ensure_nix_installed_function ends here
+
+# [[file:workstation.org::nix_darwin_rebuild_flake_function][nix_darwin_rebuild_flake_function]]
+function nix_darwin_rebuild_flake() {
+    nix build --extra-experimental-features "nix-command flakes" \
+        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+
+    rm -rf ./result
+}
+# nix_darwin_rebuild_flake_function ends here
+
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -257,8 +273,8 @@ is_linux && {
     update_apt_install_git
     info finished updating apt, installing git
 }
-is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
-    clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
+is_git_repo_cloned_at $WORKSTATION_DIR $WS_ORIGIN || {
+    clone_repo_and_checkout_at $WORKSTATION_DIR $WS_ORIGIN_PUB \
         $WORKSTATION_BOOTSTRAP_COMMIT $WS_ORIGIN
 }
 # at this point, this is hardly necessary; however, the gitignore file is handy
@@ -300,15 +316,11 @@ info finished ensuring nix is installed
 info setting up nix.conf
 install_system_nix_conf
 
-# export NIX_REMOTE=daemon
-
 info restarting nix daemon
 restart_nix_daemon
 info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-cat $NIX_DAEMON_PATH
-
 set +u
 source "$NIX_DAEMON_PATH";
 set -u
@@ -319,19 +331,9 @@ is_linux && {
     sudo apt-get update
 }
 
-# [[file:workstation.org::nix_darwin_rebuild_flake_function][nix_darwin_rebuild_flake_function]]
-function nix_darwin_rebuild_flake() {
-    nix build --extra-experimental-features "nix-command flakes" \
-        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
-
-    rm -rf ./result
-}
-# nix_darwin_rebuild_flake_function ends here
-
 is_mac && {
     info installing darwin-nix
-    cd $WS_DIR
+    cd $WORKSTATION_DIR
     nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 

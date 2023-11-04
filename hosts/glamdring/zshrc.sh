@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-export WORKSTATION_NAME=glamdring
+source ~/workstation/hosts/glamdring/settings.sh

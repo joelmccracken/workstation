@@ -167,6 +167,10 @@ set -xeuo pipefail
 This portion of the document explains the various execution steps of bootstrap.
 
 Each of these steps are executed sequentially.
+*** Foundations
+#+begin_src shell :noweb yes
+«workstation_foundation»
+#+end_src
 *** Set Version Settings
 #+begin_src shell :noweb yes
 # These are the various versions of things that should be installed. Keeping them
@@ -207,12 +211,11 @@ else
     export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
 #+end_src
+
 *** Setting some variables to keep things DRY
 #+begin_src shell
 # having these variables here really just makes the code a bit more DRY
-WS_DIR="$HOME/workstation"
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
-export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
+
 WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
 WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 EMACS_CONFIG_DIR=~/.config/emacs
@@ -255,6 +258,9 @@ EMACS_CONFIG_DIR=~/.config/emacs
 «restart_nix_deamon_function»
 
 «ensure_nix_installed_function»
+
+«nix_darwin_rebuild_flake_function»
+
 #+end_src
 *** Log that bootstrap is starting
 #+begin_src shell
@@ -289,8 +295,8 @@ is_linux && {
 #+end_src
 *** check out correct workstation commit
 #+begin_src shell :noweb yes
-is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
-    clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
+is_git_repo_cloned_at $WORKSTATION_DIR $WS_ORIGIN || {
+    clone_repo_and_checkout_at $WORKSTATION_DIR $WS_ORIGIN_PUB \
         $WORKSTATION_BOOTSTRAP_COMMIT $WS_ORIGIN
 }
 #+end_src
@@ -342,33 +348,30 @@ info finished ensuring nix is installed
 info setting up nix.conf
 install_system_nix_conf
 
-# export NIX_REMOTE=daemon
-
 info restarting nix daemon
 restart_nix_daemon
 info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-cat $NIX_DAEMON_PATH
-
 set +u
 source "$NIX_DAEMON_PATH";
 set -u
 
 #+end_src
-*** rest of the script
+*** TODO this may be deletable?
 #+begin_src shell :noweb yes
 
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
 }
-
-«nix_darwin_rebuild_flake_function»
+#+end_src
+*** rest of the script
+#+begin_src shell :noweb yes
 
 is_mac && {
     info installing darwin-nix
-    cd $WS_DIR
+    cd $WORKSTATION_DIR
     nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
     ./result/bin/darwin-installer
 
@@ -787,6 +790,17 @@ mv $TEMPFILE /etc/sudoers.d/me-passwordless-sudo
 set -euo pipefail
 
 rm /etc/sudoers.d/me-passwordless-sudo
+#+end_src
+
+** Foundation settings
+This is the kind of thing that sets up the "foundation" for everything else.
+#+name: workstation_foundation
+#+begin_src sh :tangle ./lib/shell/foundation.sh :noweb yes
+
+export WORKSTATION_DIR="$HOME/workstation"
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
+
 #+end_src
 ** library of shell functions
 This single file contains many of the general-purpose functions that I use in
