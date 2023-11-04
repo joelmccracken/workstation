@@ -1,4 +1,7 @@
 # Versions
+# The versions of various things that are installed as part of the bootstrapping
+# process. Sometimes I need to update these, having them contained in one spot is
+# helpful.
 # #+name: workstation_setup_versions
 
 # [[file:../../../workstation.org::workstation_setup_versions][workstation_setup_versions]]

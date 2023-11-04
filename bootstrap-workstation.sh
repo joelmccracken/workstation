@@ -224,6 +224,17 @@ function restart_nix_daemon () {
     if is_linux; then restart_nix_daemon_linux; fi
 }
 # restart_nix_deamon_function ends here
+
+# [[file:workstation.org::ensure_nix_installed_function][ensure_nix_installed_function]]
+function ensure_nix_installed () {
+    if which nix > /dev/null; then
+        info "nix exists in path, not installing"
+    else
+        info "nix not in path, installing"
+        sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
+    fi
+}
+# ensure_nix_installed_function ends here
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -282,12 +293,8 @@ else
     exit 5
 fi
 info ensuring nix is installed
-{ which nix > /dev/null; } || {
-    info installing nix
-    sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
-}
+ensure_nix_installed
 info finished ensuring nix is installed
-
 export NIX_REMOTE=daemon
 
 info setting up nix.conf
@@ -334,7 +341,6 @@ export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
 nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
-
 
 # [[file:workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {

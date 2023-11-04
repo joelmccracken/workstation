@@ -253,6 +253,8 @@ EMACS_CONFIG_DIR=~/.config/emacs
 «install_system_nix_conf_function»
 
 «restart_nix_deamon_function»
+
+«ensure_nix_installed_function»
 #+end_src
 *** Log that bootstrap is starting
 #+begin_src shell
@@ -329,15 +331,15 @@ else
     exit 5
 fi
 #+end_src
-*** rest of the script
+
+*** set up nix
 #+begin_src shell :noweb yes
 info ensuring nix is installed
-{ which nix > /dev/null; } || {
-    info installing nix
-    sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
-}
+ensure_nix_installed
 info finished ensuring nix is installed
-
+#+end_src
+*** rest of the script
+#+begin_src shell :noweb yes
 export NIX_REMOTE=daemon
 
 info setting up nix.conf
@@ -499,6 +501,9 @@ function clone_repo_and_checkout_at() {
 }
 #+end_src
 *** Versions
+The versions of various things that are installed as part of the bootstrapping
+process. Sometimes I need to update these, having them contained in one spot is
+helpful.
 #+name: workstation_setup_versions
 #+begin_src sh :tangle ./lib/shell/setup/workstation_setup_versions.sh :noweb yes
 export WORKSTATION_NIX_PM_VERSION=nix-2.11.1
@@ -625,9 +630,6 @@ restart_nix_daemon
 *** Install Nix
 #+name: ensure_nix_installed_function
 #+begin_src shell :noweb yes
-source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
-source ~/workstation/lib/shell/funcs.sh
-
 function ensure_nix_installed () {
     if which nix > /dev/null; then
         info "nix exists in path, not installing"
@@ -640,6 +642,9 @@ function ensure_nix_installed () {
 
 External Script:
 #+begin_src sh :tangle ./lib/shell/setup/ensure_nix_installed.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
+source ~/workstation/lib/shell/funcs.sh
+
 «ensure_nix_installed_function»
 ensure_nix_installed
 #+end_src
