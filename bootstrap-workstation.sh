@@ -386,7 +386,9 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+
 install_doom_emacs_no_nix
+
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs
@@ -395,9 +397,11 @@ echo "running the 'ws install' process"
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
 
+
 info linking dotfiles that should be symlinked
 bash ~/workstation/bin/link-dotfiles.sh -f -c
 info finished linking dotfiles
+
 
 set +e
 echo "Running final installs (install)"
@@ -408,6 +412,7 @@ if is_linux; then
 else
     echo "linux not detected, no final installs necessary";
 fi
+
 
 # why is bash so cryptic
 if [ ! -z "${BW_CLIENTID+x}" ] && \
@@ -426,6 +431,7 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
+
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.

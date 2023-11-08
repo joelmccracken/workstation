@@ -361,7 +361,7 @@ is_linux && {
     sudo apt-get update
 }
 #+end_src
-*** rest of the script
+*** install nix darwin
 #+begin_src shell :noweb yes
 
 is_mac && {
@@ -370,6 +370,9 @@ is_mac && {
     info finished installing darwin-nix
 }
 
+#+end_src
+*** install home manager
+#+begin_src shell :noweb yes
 export NIX_PATH=""
 export HOME_MANAGER_BACKUP_EXT=old
 
@@ -383,7 +386,19 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+#+end_src
+*** install doom emacs
+Unfortunately, because of some problems that are highly detailed (which are too
+much to get into here), the project nix-doom-emacs doesn't work for my purposes,
+and so while emacs itself is installed via nix, doom does its own package
+management.
+#+begin_src shell :noweb yes
+
 install_doom_emacs_no_nix
+
+#+end_src
+*** set up 'ws' workstation tool
+#+begin_src shell :noweb yes
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs
@@ -392,9 +407,19 @@ echo "running the 'ws install' process"
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
 
+#+end_src
+*** link dotfiles into place
+#+begin_src shell :noweb yes
+
 info linking dotfiles that should be symlinked
 bash ~/workstation/bin/link-dotfiles.sh -f -c
 info finished linking dotfiles
+
+#+end_src
+*** do some final linux specific installs, things that are not handled otherwise
+TODO fix these, should move to home manager.
+
+#+begin_src shell :noweb yes
 
 set +e
 echo "Running final installs (install)"
@@ -405,6 +430,10 @@ if is_linux; then
 else
     echo "linux not detected, no final installs necessary";
 fi
+
+#+end_src
+*** set up workstation secrets
+#+begin_src shell :noweb yes
 
 # why is bash so cryptic
 if [ ! -z "${BW_CLIENTID+x}" ] && \
@@ -423,6 +452,10 @@ if [ ! -z "${BW_CLIENTID+x}" ] && \
 else
     info variables required to run bww force sync are MISSING, skipping
 fi
+
+#+end_src
+*** output final manual setup notes
+#+begin_src shell :noweb yes
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
