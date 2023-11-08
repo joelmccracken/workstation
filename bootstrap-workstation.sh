@@ -58,7 +58,6 @@ if [ -z "${WORKSTATION_NAME+x}" ] ; then
     sourceIfExists "$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh"
 fi
 
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
 
 if [ -z "${WORKSTATION_NAME+x}" ] ; then
     echo WARNING: no environment variable WORKSTATION_NAME provided.
@@ -66,6 +65,8 @@ if [ -z "${WORKSTATION_NAME+x}" ] ; then
     echo $WORKSTATION_DIR/hosts/current/settings.sh
     echo see workstation.org for more information
     echo TODO provide reference to exact location
+else
+    export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
 fi
 # workstation_foundation ends here
 # These are the various versions of things that should be installed. Keeping them
