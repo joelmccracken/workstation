@@ -368,10 +368,17 @@ is_mac && {
     info finished installing darwin-nix
 }
 
-export NIX_PATH=""
-export HOME_MANAGER_BACKUP_EXT=old
 
-nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
+# [[file:workstation.org::install_home_manager_function][install_home_manager_function]]
+
+function install_home_manager() {
+    export HOME_MANAGER_BACKUP_EXT=old
+
+    nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
+}
+
+# install_home_manager_function ends here
+install_home_manager
 
 # [[file:workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]
 function home_manager_flake_switch() {

@@ -373,10 +373,9 @@ is_mac && {
 #+end_src
 *** install home manager
 #+begin_src shell :noweb yes
-export NIX_PATH=""
-export HOME_MANAGER_BACKUP_EXT=old
 
-nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
+«install_home_manager_function»
+install_home_manager
 
 «home_manager_flake_switch_function»
 home_manager_flake_switch
@@ -727,6 +726,24 @@ source ~/workstation/lib/shell/setup/workstation_setup_verions.sh
 «nix_darwin_rebuild_flake_function»
 «install_nix_darwin_function»
 install_nix_darwin
+
+#+end_src
+*** Install home manager
+#+name: install_home_manager_function
+#+begin_src shell
+
+function install_home_manager() {
+    export HOME_MANAGER_BACKUP_EXT=old
+
+    nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
+}
+
+#+end_src
+
+#+begin_src sh :tangle ./lib/shell/setup/install_home_manager.sh :shebang "#!/usr/bin/env bash" :noweb yes
+
+«install_home_manager_function»
+install_home_manager
 
 #+end_src
 * Nix components
