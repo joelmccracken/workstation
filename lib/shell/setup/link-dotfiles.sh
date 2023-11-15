@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+# Linking dotfiles
 
+# [[file:../../../workstation.org::*Linking dotfiles][Linking dotfiles:1]]
 source ~/workstation/lib/shell/funcs.sh
 
 export FORCE=false;
@@ -105,3 +107,4 @@ ln_norm Brewfile.lock.json
 ln_norm bitbar
 
 ln_dotfile_n config/git
+# Linking dotfiles:1 ends here

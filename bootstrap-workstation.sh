@@ -433,19 +433,19 @@ echo "'ws install' process completed"
 
 
 info linking dotfiles that should be symlinked
-bash ~/workstation/bin/link-dotfiles.sh -f -c
+bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
 
 
-set +e
-echo "Running final installs (install)"
-if is_linux; then
-    echo "is linux, installing ripgrep, fdfind, etc via apt";
-    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
-    echo "done running final installs";
-else
-    echo "linux not detected, no final installs necessary";
-fi
+# set +e
+# echo "Running final installs (install)"
+# if is_linux; then
+#     echo "is linux, installing ripgrep, fdfind, etc via apt";
+#     time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
+#     echo "done running final installs";
+# else
+#     echo "linux not detected, no final installs necessary";
+# fi
 
 
 initial_bitwarden_sync
