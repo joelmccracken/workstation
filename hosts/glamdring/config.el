@@ -1,5 +1,6 @@
-;;; config.el --- Description -*- lexical-binding: t; -*-
+;; glamdring/
 
+;; [[file:../../workstation.org::*glamdring/][glamdring/:1]]
 (after! org
   (setq org-directory "~/Dropbox/EF/")
   (setq org-roam-directory "~/Dropbox/EF/")
@@ -17,4 +18,4 @@
   (setq +org-capture-notes-file "inbox.org")
   (setq org-mobile-files (org-agenda-files))
   (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
-;;; config.el ends here
+;; glamdring/:1 ends here
