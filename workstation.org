@@ -254,7 +254,6 @@ fi
 
 «install_nix_darwin_function»
 
-«initial_bitwarden_sync_function»
 #+end_src
 *** Log that bootstrap is starting
 #+begin_src shell
@@ -434,9 +433,7 @@ TODO fix these, should move to home manager.
 #+end_src
 *** set up workstation secrets
 #+begin_src shell :noweb yes
-
-initial_bitwarden_sync
-
+bash ~/workstation/lib/shell/setup/initial_bitwarden_sync.sh
 #+end_src
 *** output final manual setup notes
 #+begin_src shell :noweb yes
@@ -735,7 +732,6 @@ install_home_manager
 *** Initial Bitwarden Sync
 #+name: initial_bitwarden_sync_function
 #+begin_src shell
-source ~/workstation/lib/shell/funcs.sh
 
 # The initial BitWarden Sync process. Requires wshs/bww executable to
 # be built and available. This could all be more robust
@@ -765,6 +761,7 @@ function initial_bitwarden_sync() {
 #+end_src
 
 #+begin_src sh :tangle ./lib/shell/setup/initial_bitwarden_sync.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/funcs.sh
 
 «initial_bitwarden_sync_function»
 initial_bitwarden_sync
