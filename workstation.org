@@ -1136,6 +1136,33 @@ export WORKSTATION_NAME=glamdring
 #+end_src
 *** anduril/
 *** aeglos/
+#+begin_src emacs-lisp :tangle ./hosts/aeglos/config.el :noweb yes
+(after! org
+  (setq org-directory "~/Dropbox/EF/")
+  (setq org-roam-directory "~/Dropbox/EF/")
+  (setq org-roam-db-location "~/Dropbox/EF/org-roam.aeglos.db")
+
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-directory "~/Dropbox/EF")
+  (setq org-id-locations-file "~/Dropbox/EF/.orgids.el")
+
+  (setq org-agenda-files '("~/Dropbox/EF"
+                           "~/Dropbox/EF/reference"
+                           "~/Dropbox/EF/projects"
+                           ))
+
+  (setq +org-capture-notes-file "inbox.org")
+  (setq org-mobile-files (org-agenda-files))
+  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
+#+end_src
+
+#+begin_src emacs-lisp :tangle ./hosts/aeglos/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/hosts/aeglos/settings.sh
+#+end_src
+
+#+begin_src emacs-lisp :tangle ./hosts/aeglos/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
+export WORKSTATION_NAME=aeglos
+#+end_src
 *** ci/
 * Testing
 ** test.sh
