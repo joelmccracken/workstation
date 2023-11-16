@@ -281,6 +281,8 @@ function install_nix_darwin() {
 # install_nix_darwin_function ends here
 
 # [[file:workstation.org::initial_bitwarden_sync_function][initial_bitwarden_sync_function]]
+source ~/workstation/lib/shell/funcs.sh
+
 # The initial BitWarden Sync process. Requires wshs/bww executable to
 # be built and available. This could all be more robust
 # extracting it is theoretically useful as it provides a mechanism for

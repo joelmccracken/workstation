@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # [[file:../../../workstation.org::*Initial Bitwarden Sync][Initial Bitwarden Sync:2]]
+source ~/workstation/lib/shell/funcs.sh
+
 # The initial BitWarden Sync process. Requires wshs/bww executable to
 # be built and available. This could all be more robust
 # extracting it is theoretically useful as it provides a mechanism for
