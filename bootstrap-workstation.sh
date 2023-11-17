@@ -258,28 +258,6 @@ function ensure_nix_installed () {
 }
 # ensure_nix_installed_function ends here
 
-# [[file:workstation.org::nix_darwin_rebuild_flake_function][nix_darwin_rebuild_flake_function]]
-function nix_darwin_rebuild_flake() {
-    nix build --extra-experimental-features "nix-command flakes" \
-        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
-
-    rm -rf ./result
-}
-# nix_darwin_rebuild_flake_function ends here
-
-# [[file:workstation.org::install_nix_darwin_function][install_nix_darwin_function]]
-
-function install_nix_darwin() {
-    cd $WORKSTATION_DIR
-    nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
-    ./result/bin/darwin-installer
-
-    nix_darwin_rebuild_flake
-}
-
-# install_nix_darwin_function ends here
-
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -364,7 +342,7 @@ is_linux && {
 
 is_mac && {
     info installing darwin-nix
-    install_nix_darwin
+    ~/workstation/lib/shell/setup/install_nix_darwin.sh
     info finished installing darwin-nix
 }
 
