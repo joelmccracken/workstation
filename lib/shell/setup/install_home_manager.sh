@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-# [[file:../../../workstation.org::*Install home manager][Install home manager:2]]
-function install_home_manager() {
-    export HOME_MANAGER_BACKUP_EXT=old
+# Install home manager
 
-    nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
-}
+# [[file:../../../workstation.org::*Install home manager][Install home manager:1]]
+export HOME_MANAGER_BACKUP_EXT=old
 
-install_home_manager
-# Install home manager:2 ends here
+nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
+# Install home manager:1 ends here

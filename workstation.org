@@ -80,7 +80,7 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 # Instructions
 
 1. download the bootstrap shell script:
-`curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bin/bootstrap-workstation.sh > bootstrap-workstation.sh`
+`curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bootstrap-workstation.sh > bootstrap-workstation.sh`
 2. run `bash bootstrap-workstation.sh MACHINE_NAME BRANCH
 3. Profit!
 4. See workstation.org for manual setup documentation
@@ -374,11 +374,9 @@ is_mac && {
 *** install home manager
 #+begin_src shell :noweb yes
 
-«install_home_manager_function»
-install_home_manager
+~/workstation/lib/shell/setup/install_home_manager.sh
 
-«home_manager_flake_switch_function»
-home_manager_flake_switch
+~/workstation/lib/shell/setup/home-manager-flake-switch.sh
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
@@ -711,22 +709,10 @@ install_nix_darwin
 
 #+end_src
 *** Install home manager
-#+name: install_home_manager_function
-#+begin_src shell
-
-function install_home_manager() {
-    export HOME_MANAGER_BACKUP_EXT=old
-
-    nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
-}
-
-#+end_src
-
 #+begin_src sh :tangle ./lib/shell/setup/install_home_manager.sh :shebang "#!/usr/bin/env bash" :noweb yes
+export HOME_MANAGER_BACKUP_EXT=old
 
-«install_home_manager_function»
-install_home_manager
-
+nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
 #+end_src
 
 *** Initial Bitwarden Sync
@@ -880,7 +866,7 @@ ln_dotfile_n config/git
 * Nix components
 ** Home Manager
 I use home manager as the primary method for installing and configuring software
-*** flake-world equivalent to home-manager 'switch'
+*** flake-world equivalent to 'home-manager switch'
 The pre-flake way of using home manager had a ~home-manager switch~ command
 which would build and then activate the next home manager generation. This is
 the flake "equivalent". Having it as a shell command makes it easier to run.
@@ -888,17 +874,13 @@ the flake "equivalent". Having it as a shell command makes it easier to run.
 Also, this script obviously requires the ~WORKSTATION_NAME~ environment variable
 to be set, which provides the 'identity' of the current machine -- not all
 machines have the same home manager configurations.
-#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/home-manager-flake-switch.sh :noweb yes
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./lib/shell/setup/home-manager-flake-switch.sh :noweb yes
 set -u # error in case WORKSTATION_NAME is not set
-«home_manager_flake_switch_function»
-home_manager_flake_switch
-#+end_src
-#+NAME: home_manager_flake_switch_function
-#+begin_src shell
-function home_manager_flake_switch() {
-    nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
-    "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
-}
+
+nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
+
+"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
+
 #+end_src
 ** Nix darwin
 I actually don't use this for much of anything now, but I do know that since
