@@ -209,26 +209,6 @@ function install_doom_emacs_no_nix() {
 }
 # install_doom_emacs_no_nix_function ends here
 
-# [[file:workstation.org::install_system_nix_conf_function][install_system_nix_conf_function]]
-
-function emit_nix_conf_content () {
-    cat - <<-EOF
-# Generated at $(date)
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org https://cache.iog.io
-experimental-features = nix-command flakes
-trusted-users = root $(whoami) runner
-build-users-group = nixbld
-# END OF /etc/nix/nix.conf
-EOF
-}
-
-function install_system_nix_conf() {
-  emit_nix_conf_content | \
-      sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf'
-}
-# install_system_nix_conf_function ends here
-
 # [[file:workstation.org::restart_nix_deamon_function][restart_nix_deamon_function]]
 function restart_nix_daemon_linux() {
     sudo systemctl restart nix-daemon.service;
@@ -246,17 +226,6 @@ function restart_nix_daemon () {
     if is_linux; then restart_nix_daemon_linux; fi
 }
 # restart_nix_deamon_function ends here
-
-# [[file:workstation.org::ensure_nix_installed_function][ensure_nix_installed_function]]
-function ensure_nix_installed () {
-    if which nix > /dev/null; then
-        info "nix exists in path, not installing"
-    else
-        info "nix not in path, installing"
-        sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
-    fi
-}
-# ensure_nix_installed_function ends here
 
 info starting workstation bootstrap
 is_mac && {
@@ -319,11 +288,12 @@ else
 fi
 
 info ensuring nix is installed
-ensure_nix_installed
+~/workstation/lib/shell/setup/ensure_nix_installed.sh
+
 info finished ensuring nix is installed
 
 info setting up nix.conf
-install_system_nix_conf
+~/workstation/lib/shell/setup/install_system_nix_conf.sh
 
 info restarting nix daemon
 restart_nix_daemon

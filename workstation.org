@@ -244,11 +244,7 @@ fi
 
 «install_doom_emacs_no_nix_function»
 
-«install_system_nix_conf_function»
-
 «restart_nix_deamon_function»
-
-«ensure_nix_installed_function»
 
 #+end_src
 *** Log that bootstrap is starting
@@ -333,11 +329,12 @@ fi
 #+begin_src shell :noweb yes
 
 info ensuring nix is installed
-ensure_nix_installed
+~/workstation/lib/shell/setup/ensure_nix_installed.sh
+
 info finished ensuring nix is installed
 
 info setting up nix.conf
-install_system_nix_conf
+~/workstation/lib/shell/setup/install_system_nix_conf.sh
 
 info restarting nix daemon
 restart_nix_daemon
@@ -578,9 +575,7 @@ complications.
   sepecify that my user is a trusted user. But, then, there becomes a question
   of bootstrapping (nix settings needed before home manager ever runs), so I
   think its overall easier to just hack a thing with bash.
-#+name: install_system_nix_conf_function
-#+begin_src shell :noweb yes
-
+#+begin_src sh :tangle ./lib/shell/setup/install_system_nix_conf.sh :shebang "#!/usr/bin/env bash" :noweb yes
 function emit_nix_conf_content () {
     cat - <<-EOF
 # Generated at $(date)
@@ -593,15 +588,9 @@ build-users-group = nixbld
 EOF
 }
 
-function install_system_nix_conf() {
-  emit_nix_conf_content | \
-      sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf'
-}
-#+end_src
-External Script:
-#+begin_src sh :tangle ./lib/shell/setup/install_system_nix_conf.sh :shebang "#!/usr/bin/env bash" :noweb yes
-«install_system_nix_conf_function»
-install_system_nix_conf
+emit_nix_conf_content | \
+    sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf'
+
 #+end_src
 *** restart nix daemons
 Sometimes we need to restart the nix daemons, e.g. after editing the nix config
@@ -632,25 +621,17 @@ source ~/workstation/lib/shell/funcs.sh
 restart_nix_daemon
 #+end_src
 *** Install Nix
-#+name: ensure_nix_installed_function
-#+begin_src shell :noweb yes
-function ensure_nix_installed () {
-    if which nix > /dev/null; then
-        info "nix exists in path, not installing"
-    else
-        info "nix not in path, installing"
-        sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
-    fi
-}
-#+end_src
-
-External Script:
 #+begin_src sh :tangle ./lib/shell/setup/ensure_nix_installed.sh :shebang "#!/usr/bin/env bash" :noweb yes
 source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
 source ~/workstation/lib/shell/funcs.sh
 
-«ensure_nix_installed_function»
-ensure_nix_installed
+if which nix > /dev/null; then
+    info "nix exists in path, not installing"
+else
+    info "nix not in path, installing"
+    sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
+fi
+
 #+end_src
 *** Install doom emacs without nix
 #+name: install_doom_emacs_no_nix_function
