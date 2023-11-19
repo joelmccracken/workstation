@@ -1,10 +1,10 @@
-;; glamdring/
+;; aeglos/
 
-;; [[file:../../workstation.org::*glamdring/][glamdring/:1]]
+;; [[file:../../workstation.org::*aeglos/][aeglos/:1]]
 (after! org
   (setq org-directory "~/Dropbox/EF/")
   (setq org-roam-directory "~/Dropbox/EF/")
-  (setq org-roam-db-location "~/Dropbox/EF/org-roam.glamdring.db")
+  (setq org-roam-db-location "~/Dropbox/EF/org-roam.aeglos.db")
 
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-directory "~/Dropbox/EF")
@@ -18,4 +18,4 @@
   (setq +org-capture-notes-file "inbox.org")
   (setq org-mobile-files (org-agenda-files))
   (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
-;; glamdring/:1 ends here
+;; aeglos/:1 ends here

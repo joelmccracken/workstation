@@ -5,6 +5,6 @@
 
 
 # [[file:../workstation.org::*Makefile][Makefile:2]]
-EMACS_CONFIG_DIR=~/.config/emacs;
-$EMACS_CONFIG_DIR/bin/doomscript lib/emacs/tangle-file.el
+source ~/workstation/lib/shell/foundation.sh
+$WORKSTATION_EMACS_CONFIG_DIR/bin/doomscript lib/emacs/tangle-file.el
 # Makefile:2 ends here

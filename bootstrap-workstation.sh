@@ -9,12 +9,6 @@
 # [[file:workstation.org::*Bootstraping Script][Bootstraping Script:1]]
 set -xeuo pipefail
 
-# These are the various versions of things that should be installed. Keeping them
-# in one place like this make them easier to keep track of.
-
-export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
 # Script should be passed a single argument, which is name of this workstation.
 
 # When using script to set up a workstation, the "name" of the workstation should
@@ -46,13 +40,42 @@ if [ -z "${2+x}" ]; then
 else
     export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
-# having these variables here really just makes the code a bit more DRY
-WS_DIR="$HOME/workstation"
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
-export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
-WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
-WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
-EMACS_CONFIG_DIR=~/.config/emacs
+# [[file:../../workstation.org::workstation_foundation][workstation_foundation]]
+
+export WORKSTATION_DIR="$HOME/workstation"
+export WORKSTATION_EMACS_CONFIG_DIR=~/.config/emacs
+export WORKSTATION_GIT_ORIGIN='git@github.com:joelmccracken/workstation.git'
+export WORKSTATION_GIT_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
+
+sourceIfExists () {
+    if [ -f "$1" ]; then
+        source "$1"
+    fi
+}
+
+if [ -z "${WORKSTATION_NAME+x}" ] ; then
+    sourceIfExists "$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh"
+fi
+
+
+if [ -z "${WORKSTATION_NAME+x}" ] ; then
+    echo WARNING: no environment variable WORKSTATION_NAME provided.
+    echo This variable should be exported by a script at:
+    echo $WORKSTATION_DIR/hosts/current/settings.sh
+    echo see workstation.org for more information
+    echo TODO provide reference to exact location
+else
+    export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
+fi
+# workstation_foundation ends here
+# These are the various versions of things that should be installed. Keeping them
+# in one place like this make them easier to keep track of.
+# [[file:../../../workstation.org::workstation_setup_versions][workstation_setup_versions]]
+export WORKSTATION_NIX_PM_VERSION=nix-2.11.1
+export WORKSTATION_NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export WORKSTATION_HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
+# workstation_setup_versions ends here
 # hereafter, we use many helper functions. Here they are defined up front,
 # as some of them are used throughout the other code.
 
@@ -170,21 +193,40 @@ function clone_repo_and_checkout_at() {
 # [[file:workstation.org::install_doom_emacs_no_nix_function][install_doom_emacs_no_nix_function]]
 function install_doom_emacs_no_nix() {
     {
-        cd $EMACS_CONFIG_DIR
+        cd $WORKSTATION_EMACS_CONFIG_DIR
         [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
     } || {
-        mv_dated_backup $EMACS_CONFIG_DIR
-        time git clone --depth 1 https://github.com/doomemacs/doomemacs $EMACS_CONFIG_DIR/
+        mv_dated_backup $WORKSTATION_EMACS_CONFIG_DIR
+        time git clone --depth 1 https://github.com/doomemacs/doomemacs $WORKSTATION_EMACS_CONFIG_DIR/
         # alternative: use this if encounter problems
         # ~/.emacs.d/bin/doom -y install;
         # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
         # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        time timeout 60m bash -c "yes | $EMACS_CONFIG_DIR/bin/doom install" || exit 0
-        $EMACS_CONFIG_DIR/bin/doom sync
+        time timeout 60m bash -c "yes | $WORKSTATION_EMACS_CONFIG_DIR/bin/doom install" || exit 0
+        $WORKSTATION_EMACS_CONFIG_DIR/bin/doom sync
         echo FINISHED INSTALLING DOOM;
     }
 }
 # install_doom_emacs_no_nix_function ends here
+
+# [[file:workstation.org::restart_nix_deamon_function][restart_nix_deamon_function]]
+function restart_nix_daemon_linux() {
+    sudo systemctl restart nix-daemon.service;
+}
+
+function restart_nix_daemon_mac() {
+    set +e
+    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    set -e
+}
+
+function restart_nix_daemon () {
+    if is_mac; then  restart_nix_daemon_mac; fi
+    if is_linux; then restart_nix_daemon_linux; fi
+}
+# restart_nix_deamon_function ends here
+
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -207,9 +249,9 @@ is_linux && {
     update_apt_install_git
     info finished updating apt, installing git
 }
-is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
-    clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
-        $WORKSTATION_BOOTSTRAP_COMMIT $WS_ORIGIN
+is_git_repo_cloned_at $WORKSTATION_DIR $WORKSTATION_GIT_ORIGIN || {
+    clone_repo_and_checkout_at $WORKSTATION_DIR $WORKSTATION_GIT_ORIGIN_PUB \
+        $WORKSTATION_BOOTSTRAP_COMMIT $WORKSTATION_GIT_ORIGIN
 }
 # at this point, this is hardly necessary; however, the gitignore file is handy
 # i may explore getting rid of this repo entirely and just having a fresh
@@ -232,6 +274,8 @@ info finished ensuring dotfiles repo is checked out
 # one of those directories are symlinked into 'current' host, which other things
 # can then refer to
 
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
+
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
 
@@ -242,102 +286,49 @@ else
     echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
     exit 5
 fi
+
 info ensuring nix is installed
-{ which nix > /dev/null; } || {
-    info installing nix
-    sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
-}
+~/workstation/lib/shell/setup/ensure_nix_installed.sh
+
 info finished ensuring nix is installed
 
-export NIX_REMOTE=daemon
-
 info setting up nix.conf
-(sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org https://cache.iog.io
-experimental-features = nix-command flakes
-trusted-users = root $(whoami) runner
-build-users-group = nixbld
-# END OF /etc/nix/nix.conf
-EOF
+~/workstation/lib/shell/setup/install_system_nix_conf.sh
 
-
-function restart_linux_daemon() {
-    sudo systemctl restart nix-daemon.service;
-}
-
-function restart_mac_daemon() {
-    set +e
-    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    set -e
-}
-
-is_mac && {
-    info macos detected, restarting nix-daemon
-    restart_mac_daemon
-    info finished restarting nix-daemon
-}
-
-is_linux && {
-    info restarting nix-daemon via systemctl
-    restart_linux_daemon
-    info finished restarting nix-daemon via systemctl
-}
+info restarting nix daemon
+restart_nix_daemon
+info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-cat $NIX_DAEMON_PATH
-if [[ -e "$NIX_DAEMON_PATH" ]]; then
-    set +u
-    source "$NIX_DAEMON_PATH";
-    set -u
-fi;
+set +u
+source "$NIX_DAEMON_PATH";
+set -u
+
 
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
 }
 
-# [[file:workstation.org::nix_darwin_rebuild_flake_function][nix_darwin_rebuild_flake_function]]
-function nix_darwin_rebuild_flake() {
-    nix build --extra-experimental-features "nix-command flakes" \
-        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
-
-    rm -rf ./result
-}
-# nix_darwin_rebuild_flake_function ends here
-
 is_mac && {
     info installing darwin-nix
-    cd $WS_DIR
-    nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
-    ./result/bin/darwin-installer
-
-    nix_darwin_rebuild_flake
-
+    ~/workstation/lib/shell/setup/install_nix_darwin.sh
     info finished installing darwin-nix
 }
 
-export NIX_PATH=""
-export HOME_MANAGER_BACKUP_EXT=old
 
-nix run home-manager/$HOME_MANAGER_VERSION -- init ~/workstation
+~/workstation/lib/shell/setup/install_home_manager.sh
 
-# [[file:workstation.org::home_manager_flake_switch_function][home_manager_flake_switch_function]]
-function home_manager_flake_switch() {
-    nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
-    "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
-}
-# home_manager_flake_switch_function ends here
-home_manager_flake_switch
+~/workstation/lib/shell/setup/home-manager-flake-switch.sh
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+
 install_doom_emacs_no_nix
+
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs
@@ -346,37 +337,23 @@ echo "running the 'ws install' process"
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
 
+
 info linking dotfiles that should be symlinked
-bash ~/workstation/bin/link-dotfiles.sh -f -c
+bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
 
-set +e
-echo "Running final installs (install)"
-if is_linux; then
-    echo "is linux, installing ripgrep, fdfind, etc via apt";
-    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
-    echo "done running final installs";
-else
-    echo "linux not detected, no final installs necessary";
-fi
 
-# why is bash so cryptic
-if [ ! -z "${BW_CLIENTID+x}" ] && \
-   [ ! -z "${BW_CLIENTSECRET+x}" ] && \
-   [ ! -z "${WS_BW_MASTER_PASS+x}" ]; then
-    info variables requried to run bww force-sync are set, running
-    if [ ! -d ~/secrets ]; then
-        mkdir ~/secrets;
-    fi
-    # overwriting anything that was previously in the file
-    echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
-    bw login --apikey
-    bw_unlock
-    bw sync
-    $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
-else
-    info variables required to run bww force sync are MISSING, skipping
-fi
+# set +e
+# echo "Running final installs (install)"
+# if is_linux; then
+#     echo "is linux, installing ripgrep, fdfind, etc via apt";
+#     time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
+#     echo "done running final installs";
+# else
+#     echo "linux not detected, no final installs necessary";
+# fi
+
+bash ~/workstation/lib/shell/setup/initial_bitwarden_sync.sh
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.

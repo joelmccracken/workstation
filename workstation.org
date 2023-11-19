@@ -80,7 +80,7 @@ WARNING: this file is managed by tangling the file workstation.org. Do not edit 
 # Instructions
 
 1. download the bootstrap shell script:
-`curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bin/bootstrap-workstation.sh > bootstrap-workstation.sh`
+`curl https://raw.githubusercontent.com/joelmccracken/workstation/master/bootstrap-workstation.sh > bootstrap-workstation.sh`
 2. run `bash bootstrap-workstation.sh MACHINE_NAME BRANCH
 3. Profit!
 4. See workstation.org for manual setup documentation
@@ -108,8 +108,8 @@ tangle:
 Which requires a shell script:
 
 #+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/tangle.sh
-EMACS_CONFIG_DIR=~/.config/emacs;
-$EMACS_CONFIG_DIR/bin/doomscript lib/emacs/tangle-file.el
+source ~/workstation/lib/shell/foundation.sh
+$WORKSTATION_EMACS_CONFIG_DIR/bin/doomscript lib/emacs/tangle-file.el
 #+end_src
 
 And a little emacs lisp that goes with the tangle process:
@@ -167,15 +167,6 @@ set -xeuo pipefail
 This portion of the document explains the various execution steps of bootstrap.
 
 Each of these steps are executed sequentially.
-*** Set Version Settings
-#+begin_src shell
-# These are the various versions of things that should be installed. Keeping them
-# in one place like this make them easier to keep track of.
-
-export NIX_PM_VERSION=nix-2.11.1
-export NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
-export HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
-#+end_src
 *** Argument Parsing
 #+begin_src shell
 # Script should be passed a single argument, which is name of this workstation.
@@ -210,17 +201,17 @@ else
     export WORKSTATION_BOOTSTRAP_COMMIT="$2"
 fi
 #+end_src
-*** Setting some variables to keep things DRY
-#+begin_src shell
-# having these variables here really just makes the code a bit more DRY
-WS_DIR="$HOME/workstation"
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WS_DIR/hosts/$WORKSTATION_NAME
-export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WS_DIR/hosts/current
-WS_ORIGIN='git@github.com:joelmccracken/workstation.git'
-WS_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
-EMACS_CONFIG_DIR=~/.config/emacs
+*** Foundations
+#+begin_src shell :noweb yes
+«workstation_foundation»
 #+end_src
-*** Helper Functions
+*** Set Version Settings
+#+begin_src shell :noweb yes
+# These are the various versions of things that should be installed. Keeping them
+# in one place like this make them easier to keep track of.
+«workstation_setup_versions»
+#+end_src
+*** Helper and Component Functions
 #+begin_src shell :noweb yes
 # hereafter, we use many helper functions. Here they are defined up front,
 # as some of them are used throughout the other code.
@@ -252,6 +243,9 @@ EMACS_CONFIG_DIR=~/.config/emacs
 «clone_repo_and_checkout_at_function»
 
 «install_doom_emacs_no_nix_function»
+
+«restart_nix_deamon_function»
+
 #+end_src
 *** Log that bootstrap is starting
 #+begin_src shell
@@ -286,9 +280,9 @@ is_linux && {
 #+end_src
 *** check out correct workstation commit
 #+begin_src shell :noweb yes
-is_git_repo_cloned_at $WS_DIR $WS_ORIGIN || {
-    clone_repo_and_checkout_at $WS_DIR $WS_ORIGIN_PUB \
-        $WORKSTATION_BOOTSTRAP_COMMIT $WS_ORIGIN
+is_git_repo_cloned_at $WORKSTATION_DIR $WORKSTATION_GIT_ORIGIN || {
+    clone_repo_and_checkout_at $WORKSTATION_DIR $WORKSTATION_GIT_ORIGIN_PUB \
+        $WORKSTATION_BOOTSTRAP_COMMIT $WORKSTATION_GIT_ORIGIN
 }
 #+end_src
 *** check out the dotfiles repository
@@ -317,6 +311,8 @@ info finished ensuring dotfiles repo is checked out
 # one of those directories are symlinked into 'current' host, which other things
 # can then refer to
 
+export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
+
 info setting current host settings directory...
 info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
 
@@ -328,91 +324,71 @@ else
     exit 5
 fi
 #+end_src
-*** rest of the script
+
+*** set up nix
 #+begin_src shell :noweb yes
+
 info ensuring nix is installed
-{ which nix > /dev/null; } || {
-    info installing nix
-    sh <(curl -L https://releases.nixos.org/nix/$NIX_PM_VERSION/install) --daemon;
-}
+~/workstation/lib/shell/setup/ensure_nix_installed.sh
+
 info finished ensuring nix is installed
 
-export NIX_REMOTE=daemon
-
 info setting up nix.conf
-(sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf') <<-EOF
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-substituters = https://cache.nixos.org https://cache.iog.io
-experimental-features = nix-command flakes
-trusted-users = root $(whoami) runner
-build-users-group = nixbld
-# END OF /etc/nix/nix.conf
-EOF
+~/workstation/lib/shell/setup/install_system_nix_conf.sh
 
-
-function restart_linux_daemon() {
-    sudo systemctl restart nix-daemon.service;
-}
-
-function restart_mac_daemon() {
-    set +e
-    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    set -e
-}
-
-is_mac && {
-    info macos detected, restarting nix-daemon
-    restart_mac_daemon
-    info finished restarting nix-daemon
-}
-
-is_linux && {
-    info restarting nix-daemon via systemctl
-    restart_linux_daemon
-    info finished restarting nix-daemon via systemctl
-}
+info restarting nix daemon
+restart_nix_daemon
+info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-cat $NIX_DAEMON_PATH
-if [[ -e "$NIX_DAEMON_PATH" ]]; then
-    set +u
-    source "$NIX_DAEMON_PATH";
-    set -u
-fi;
+set +u
+source "$NIX_DAEMON_PATH";
+set -u
+
+#+end_src
+*** TODO this may be deletable?
+#+begin_src shell :noweb yes
 
 is_linux && {
     sudo ~/workstation/bin/enable-passwordless-sudo.sh
     sudo apt-get update
 }
-
-«nix_darwin_rebuild_flake_function»
+#+end_src
+*** install nix darwin
+#+begin_src shell :noweb yes
 
 is_mac && {
     info installing darwin-nix
-    cd $WS_DIR
-    nix-build https://github.com/LnL7/nix-darwin/archive/${NIX_DARWIN_VERSION}.tar.gz -A installer
-    ./result/bin/darwin-installer
-
-    nix_darwin_rebuild_flake
-
+    ~/workstation/lib/shell/setup/install_nix_darwin.sh
     info finished installing darwin-nix
 }
 
-export NIX_PATH=""
-export HOME_MANAGER_BACKUP_EXT=old
+#+end_src
+*** install home manager
+#+begin_src shell :noweb yes
 
-nix run home-manager/$HOME_MANAGER_VERSION -- init ~/workstation
+~/workstation/lib/shell/setup/install_home_manager.sh
 
-«home_manager_flake_switch_function»
-home_manager_flake_switch
+~/workstation/lib/shell/setup/home-manager-flake-switch.sh
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+#+end_src
+*** install doom emacs
+Unfortunately, because of some problems that are highly detailed (which are too
+much to get into here), the project nix-doom-emacs doesn't work for my purposes,
+and so while emacs itself is installed via nix, doom does its own package
+management.
+#+begin_src shell :noweb yes
+
 install_doom_emacs_no_nix
+
+#+end_src
+*** set up 'ws' workstation tool
+#+begin_src shell :noweb yes
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs
@@ -421,37 +397,37 @@ echo "running the 'ws install' process"
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
 
+#+end_src
+*** link dotfiles into place
+#+begin_src shell :noweb yes
+
 info linking dotfiles that should be symlinked
-bash ~/workstation/bin/link-dotfiles.sh -f -c
+bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
 
-set +e
-echo "Running final installs (install)"
-if is_linux; then
-    echo "is linux, installing ripgrep, fdfind, etc via apt";
-    time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
-    echo "done running final installs";
-else
-    echo "linux not detected, no final installs necessary";
-fi
+#+end_src
+*** do some final linux specific installs, things that are not handled otherwise
+TODO fix these, should move to home manager.
 
-# why is bash so cryptic
-if [ ! -z "${BW_CLIENTID+x}" ] && \
-   [ ! -z "${BW_CLIENTSECRET+x}" ] && \
-   [ ! -z "${WS_BW_MASTER_PASS+x}" ]; then
-    info variables requried to run bww force-sync are set, running
-    if [ ! -d ~/secrets ]; then
-        mkdir ~/secrets;
-    fi
-    # overwriting anything that was previously in the file
-    echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
-    bw login --apikey
-    bw_unlock
-    bw sync
-    $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
-else
-    info variables required to run bww force sync are MISSING, skipping
-fi
+#+begin_src shell :noweb yes
+
+# set +e
+# echo "Running final installs (install)"
+# if is_linux; then
+#     echo "is linux, installing ripgrep, fdfind, etc via apt";
+#     time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
+#     echo "done running final installs";
+# else
+#     echo "linux not detected, no final installs necessary";
+# fi
+
+#+end_src
+*** set up workstation secrets
+#+begin_src shell :noweb yes
+bash ~/workstation/lib/shell/setup/initial_bitwarden_sync.sh
+#+end_src
+*** output final manual setup notes
+#+begin_src shell :noweb yes
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
@@ -459,10 +435,13 @@ Success! However, there are some remaining manual set up steps required.
 EOF
 #+end_src
 ** Bootstrapping Components
-*** Note: Separate executables
+There are many components
 Many of these snippets are also provided as separate scripts in the workstation
 repository. It is handy to have these quickly available if I am debugging a
 problem; the alternative, frequently, is to reconstruct these things ad-hoc.
+
+For that matter, thinking about extracting things from the giant install file
+into pieces is helpful.
 *** Helper Functions
 **** is_mac
 Detects if is running on a mac.
@@ -522,25 +501,15 @@ function clone_repo_and_checkout_at() {
     git remote set-url origin $4
 }
 #+end_src
-**** install_doom_emacs_no_nix
-#+name: install_doom_emacs_no_nix_function
-#+begin_src shell
-function install_doom_emacs_no_nix() {
-    {
-        cd $EMACS_CONFIG_DIR
-        [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
-    } || {
-        mv_dated_backup $EMACS_CONFIG_DIR
-        time git clone --depth 1 https://github.com/doomemacs/doomemacs $EMACS_CONFIG_DIR/
-        # alternative: use this if encounter problems
-        # ~/.emacs.d/bin/doom -y install;
-        # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        time timeout 60m bash -c "yes | $EMACS_CONFIG_DIR/bin/doom install" || exit 0
-        $EMACS_CONFIG_DIR/bin/doom sync
-        echo FINISHED INSTALLING DOOM;
-    }
-}
+*** Versions
+The versions of various things that are installed as part of the bootstrapping
+process. Sometimes I need to update these, having them contained in one spot is
+helpful.
+#+name: workstation_setup_versions
+#+begin_src sh :tangle ./lib/shell/setup/workstation_setup_versions.sh :noweb yes
+export WORKSTATION_NIX_PM_VERSION=nix-2.11.1
+export WORKSTATION_NIX_DARWIN_VERSION=f6648ca0698d1611d7eadfa72b122252b833f86c
+export WORKSTATION_HOME_MANAGER_VERSION=0f4e5b4999fd6a42ece5da8a3a2439a50e48e486
 #+end_src
 *** setting up xcode (macos)
 #+name: xcode_setup_function
@@ -593,10 +562,277 @@ External Script:
 «update_apt_install_git_function»
 update_apt_install_git
 #+end_src
+*** install nix configuration file
+I wish I could do this with a nix-like thing, but sadly, there are several
+complications.
+- for MacOS, this is nix-darwin.
+- for Ubuntu, there is nothing that can do it.
+- There _is_ a way to do something similar with home manager, but it sets the
+  _user_ nix settings, _not_ the system settings. This is not overly surprising,
+  but it does mean that it can't be the sole solution for setting
+  configurations, if you need to set up caches/substituters.
+  At the very least, I would need some *other* way besides home manager to
+  sepecify that my user is a trusted user. But, then, there becomes a question
+  of bootstrapping (nix settings needed before home manager ever runs), so I
+  think its overall easier to just hack a thing with bash.
+#+begin_src sh :tangle ./lib/shell/setup/install_system_nix_conf.sh :shebang "#!/usr/bin/env bash" :noweb yes
+function emit_nix_conf_content () {
+    cat - <<-EOF
+# Generated at $(date)
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+substituters = https://cache.nixos.org https://cache.iog.io
+experimental-features = nix-command flakes
+trusted-users = root $(whoami) runner
+build-users-group = nixbld
+# END OF /etc/nix/nix.conf
+EOF
+}
+
+emit_nix_conf_content | \
+    sudo bash -c 'mkdir -p /etc/nix; cat > /etc/nix/nix.conf'
+
+#+end_src
+*** restart nix daemons
+Sometimes we need to restart the nix daemons, e.g. after editing the nix config
+file.
+#+name: restart_nix_deamon_function
+#+begin_src shell :noweb yes
+function restart_nix_daemon_linux() {
+    sudo systemctl restart nix-daemon.service;
+}
+
+function restart_nix_daemon_mac() {
+    set +e
+    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+    set -e
+}
+
+function restart_nix_daemon () {
+    if is_mac; then  restart_nix_daemon_mac; fi
+    if is_linux; then restart_nix_daemon_linux; fi
+}
+#+end_src
+
+External Script:
+#+begin_src sh :tangle ./lib/shell/setup/restart_nix_deamon.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/funcs.sh
+«restart_nix_deamon_function»
+restart_nix_daemon
+#+end_src
+*** Install Nix
+#+begin_src sh :tangle ./lib/shell/setup/ensure_nix_installed.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
+source ~/workstation/lib/shell/funcs.sh
+
+if which nix > /dev/null; then
+    info "nix exists in path, not installing"
+else
+    info "nix not in path, installing"
+    sh <(curl -L https://releases.nixos.org/nix/$WORKSTATION_NIX_PM_VERSION/install) --daemon;
+fi
+
+#+end_src
+*** Install doom emacs without nix
+#+name: install_doom_emacs_no_nix_function
+#+begin_src shell
+function install_doom_emacs_no_nix() {
+    {
+        cd $WORKSTATION_EMACS_CONFIG_DIR
+        [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
+    } || {
+        mv_dated_backup $WORKSTATION_EMACS_CONFIG_DIR
+        time git clone --depth 1 https://github.com/doomemacs/doomemacs $WORKSTATION_EMACS_CONFIG_DIR/
+        # alternative: use this if encounter problems
+        # ~/.emacs.d/bin/doom -y install;
+        # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+        time timeout 60m bash -c "yes | $WORKSTATION_EMACS_CONFIG_DIR/bin/doom install" || exit 0
+        $WORKSTATION_EMACS_CONFIG_DIR/bin/doom sync
+        echo FINISHED INSTALLING DOOM;
+    }
+}
+#+end_src
+
+#+begin_src sh :tangle ./lib/shell/setup/install_doom_emacs_no_nix.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/foundation.sh
+
+«install_doom_emacs_no_nix_function»
+install_doom_emacs_no_nix
+#+end_src
+
+*** Install nix-darwin
+#+begin_src sh :tangle ./lib/shell/setup/install_nix_darwin.sh :shebang "#!/usr/bin/env bash" :noweb yes
+
+source ~/workstation/lib/shell/foundation.sh
+source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
+
+cd $WORKSTATION_DIR
+nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
+./result/bin/darwin-installer
+
+source ~/workstation/lib/shell/setup/nix-darwin-rebuild-flake.sh
+
+#+end_src
+*** Install home manager
+#+begin_src sh :tangle ./lib/shell/setup/install_home_manager.sh :shebang "#!/usr/bin/env bash" :noweb yes
+export HOME_MANAGER_BACKUP_EXT=old
+
+nix run home-manager/$WORKSTATION_HOME_MANAGER_VERSION -- init ~/workstation
+#+end_src
+
+*** Initial Bitwarden Sync
+#+name: initial_bitwarden_sync_function
+#+begin_src shell
+
+# The initial BitWarden Sync process. Requires wshs/bww executable to
+# be built and available. This could all be more robust
+# extracting it is theoretically useful as it provides a mechanism for
+# resetting the secrets.
+# Likely this should be broken down into separate functions that can be reused.
+function initial_bitwarden_sync() {
+    # why is bash so cryptic
+    if [ ! -z "${BW_CLIENTID+x}" ] && \
+       [ ! -z "${BW_CLIENTSECRET+x}" ] && \
+       [ ! -z "${WS_BW_MASTER_PASS+x}" ]; then
+        info variables requried to run bww force-sync are set, running
+        if [ ! -d ~/secrets ]; then
+            mkdir ~/secrets;
+        fi
+        # overwriting anything that was previously in the file
+        echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
+        bw login --apikey
+        bw_unlock
+        bw sync
+        $(nix path-info .#"wshs:exe:bww")/bin/bww force-sync
+    else
+        info variables required to run bww force sync are MISSING, skipping
+    fi
+}
+
+#+end_src
+
+#+begin_src sh :tangle ./lib/shell/setup/initial_bitwarden_sync.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/funcs.sh
+
+«initial_bitwarden_sync_function»
+initial_bitwarden_sync
+
+#+end_src
+*** Linking dotfiles
+#+begin_src sh :tangle ./lib/shell/setup/link-dotfiles.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/funcs.sh
+
+export FORCE=false;
+export VERBOSE=false;
+export CHECK=false;
+
+function error() {
+    printf "$@" >&2
+    exit 1
+}
+
+function handle_force() {
+    if [ "$FORCE" = "true" ]; then
+        mv_dated_backup "$1"
+    fi
+}
+
+function verbose() {
+    if [ "$VERBOSE" = "true" ]; then
+        echo "$@"
+    fi
+}
+
+function check () {
+    if [ "$CHECK" = "true" ] || [ "$VERBOSE" = "true" ]; then
+        echo "$@"
+    fi
+}
+
+
+function ln_helper() {
+    dest=~/$2$1
+    src=~/workstation/dotfiles/$1
+    curr=$(readlink -f "$dest")
+
+    if [ -L "$dest" ] && [ "$curr" = "$src" ]; then
+        check "OK: $dest already points to $src"
+    else
+        check "NOT OK: $dest does not point to $src"
+        if [ "$CHECK" = "true" ] && ! [ "$FORCE" = "true" ]; then
+            exit 11
+        fi
+
+        handle_force $dest
+        ln -s "$src" "$dest"
+    fi
+}
+
+function ln_dotfile() {
+    ln_helper $1 "."
+}
+
+function ln_norm() {
+    ln_helper $1 ""
+}
+
+function ln_dotfile_n() {
+    src=~/workstation/dotfiles/$1
+    dest=~/.$1
+    destdir=$(dirname dest)
+
+    if [ ! -d $destdir ]; then
+        mkdir -p $destdir
+    fi
+
+    ln_helper $1 "."
+}
+
+while (( $# > 0 )); do
+    opt="$1"
+    shift
+
+    case $opt in
+        -f)
+            FORCE=true
+            ;;
+        -v)
+            VERBOSE=true
+            ;;
+        -c)
+            CHECK=true
+            ;;
+        *)
+            error "%s: error, unknown option '%s'" "$0" "$opt"
+            exit 1
+            ;;
+    esac
+done
+
+ln_dotfile bashrc
+ln_dotfile ghci
+ln_dotfile gitconfig
+ln_dotfile hammerspoon
+ln_dotfile nix-channels
+ln_dotfile npmrc
+ln_dotfile reddup.yml
+ln_dotfile zshrc
+ln_dotfile zshrc.aeglos.sh
+ln_dotfile doom.d
+
+ln_norm Brewfile
+ln_norm Brewfile.lock.json
+ln_norm bitbar
+
+ln_dotfile_n config/git
+
+#+end_src
+
 * Nix components
 ** Home Manager
 I use home manager as the primary method for installing and configuring software
-*** flake-world equivalent to home-manager 'switch'
+*** flake-world equivalent to 'home-manager switch'
 The pre-flake way of using home manager had a ~home-manager switch~ command
 which would build and then activate the next home manager generation. This is
 the flake "equivalent". Having it as a shell command makes it easier to run.
@@ -604,17 +840,13 @@ the flake "equivalent". Having it as a shell command makes it easier to run.
 Also, this script obviously requires the ~WORKSTATION_NAME~ environment variable
 to be set, which provides the 'identity' of the current machine -- not all
 machines have the same home manager configurations.
-#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/home-manager-flake-switch.sh :noweb yes
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./lib/shell/setup/home-manager-flake-switch.sh :noweb yes
 set -u # error in case WORKSTATION_NAME is not set
-«home_manager_flake_switch_function»
-home_manager_flake_switch
-#+end_src
-#+NAME: home_manager_flake_switch_function
-#+begin_src shell
-function home_manager_flake_switch() {
-    nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
-    "$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
-}
+
+nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
+
+"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
+
 #+end_src
 ** Nix darwin
 I actually don't use this for much of anything now, but I do know that since
@@ -628,21 +860,14 @@ to be set, which provides the 'identity' of the current machine -- not all
 machines have the same home manager configurations. This environment variable is
 set by other mechanisms withing the workstation system.
 *** command to have darwin build and switch to next generation
-#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/nix-darwin-rebuild-flake.sh  :noweb yes
+#+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./lib/shell/setup/nix-darwin-rebuild-flake.sh  :noweb yes
 set -u # error in case WORKSTATION_NAME is not set
-«nix_darwin_rebuild_flake_function»
-nix_darwin_rebuild_flake_function
-#+end_src
 
-#+name: nix_darwin_rebuild_flake_function
-#+begin_src sh
-function nix_darwin_rebuild_flake() {
-    nix build --extra-experimental-features "nix-command flakes" \
-        ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
-    ./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
+nix build --extra-experimental-features "nix-command flakes" \
+    ~/workstation\#darwinConfigurations.${WORKSTATION_NAME}.system
+./result/sw/bin/darwin-rebuild switch --flake ~/workstation#${WORKSTATION_NAME}
 
-    rm -rf ./result
-}
+rm -rf ./result
 #+end_src
 * Post-bootstrap setup
 * Manual installation and setup
@@ -710,6 +935,40 @@ set -euo pipefail
 
 rm /etc/sudoers.d/me-passwordless-sudo
 #+end_src
+
+** Foundation settings
+This is the kind of thing that sets up the "foundation" for everything else.
+#+name: workstation_foundation
+#+begin_src sh :tangle ./lib/shell/foundation.sh :noweb yes
+
+export WORKSTATION_DIR="$HOME/workstation"
+export WORKSTATION_EMACS_CONFIG_DIR=~/.config/emacs
+export WORKSTATION_GIT_ORIGIN='git@github.com:joelmccracken/workstation.git'
+export WORKSTATION_GIT_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
+export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
+
+sourceIfExists () {
+    if [ -f "$1" ]; then
+        source "$1"
+    fi
+}
+
+if [ -z "${WORKSTATION_NAME+x}" ] ; then
+    sourceIfExists "$WORKSTATION_HOST_CURRENT_SETTINGS_DIR/settings.sh"
+fi
+
+
+if [ -z "${WORKSTATION_NAME+x}" ] ; then
+    echo WARNING: no environment variable WORKSTATION_NAME provided.
+    echo This variable should be exported by a script at:
+    echo $WORKSTATION_DIR/hosts/current/settings.sh
+    echo see workstation.org for more information
+    echo TODO provide reference to exact location
+else
+    export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
+fi
+#+end_src
+
 ** library of shell functions
 This single file contains many of the general-purpose functions that I use in
 numerous scripts etc.
@@ -787,8 +1046,62 @@ bw_unlock () {
 #+end_src
 * Machine profiles
 *** glamdring/
+#+begin_src emacs-lisp :tangle ./hosts/glamdring/config.el :noweb yes
+(after! org
+  (setq org-directory "~/Dropbox/EF/")
+  (setq org-roam-directory "~/Dropbox/EF/")
+  (setq org-roam-db-location "~/Dropbox/EF/org-roam.glamdring.db")
+
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-directory "~/Dropbox/EF")
+  (setq org-id-locations-file "~/Dropbox/EF/.orgids.el")
+
+  (setq org-agenda-files '("~/Dropbox/EF"
+                           "~/Dropbox/EF/reference"
+                           "~/Dropbox/EF/projects"
+                           ))
+
+  (setq +org-capture-notes-file "inbox.org")
+  (setq org-mobile-files (org-agenda-files))
+  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
+#+end_src
+
+#+begin_src emacs-lisp :tangle ./hosts/glamdring/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/hosts/glamdring/settings.sh
+#+end_src
+
+#+begin_src emacs-lisp :tangle ./hosts/glamdring/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
+export WORKSTATION_NAME=glamdring
+#+end_src
 *** anduril/
 *** aeglos/
+#+begin_src emacs-lisp :tangle ./hosts/aeglos/config.el :noweb yes
+(after! org
+  (setq org-directory "~/Dropbox/EF/")
+  (setq org-roam-directory "~/Dropbox/EF/")
+  (setq org-roam-db-location "~/Dropbox/EF/org-roam.aeglos.db")
+
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-directory "~/Dropbox/EF")
+  (setq org-id-locations-file "~/Dropbox/EF/.orgids.el")
+
+  (setq org-agenda-files '("~/Dropbox/EF"
+                           "~/Dropbox/EF/reference"
+                           "~/Dropbox/EF/projects"
+                           ))
+
+  (setq +org-capture-notes-file "inbox.org")
+  (setq org-mobile-files (org-agenda-files))
+  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
+#+end_src
+
+#+begin_src emacs-lisp :tangle ./hosts/aeglos/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/hosts/aeglos/settings.sh
+#+end_src
+
+#+begin_src emacs-lisp :tangle ./hosts/aeglos/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
+export WORKSTATION_NAME=aeglos
+#+end_src
 *** ci/
 * Testing
 ** test.sh
@@ -806,11 +1119,11 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-EMACS_CONFIG_DIR=~/.config/emacs
+source ~/workstation/lib/shell/foundation.sh
 
 function find_emacs_init() {
   init_file="";
-  for x in "$EMACS_CONFIG_DIR/early-init.el" "$EMACS_CONFIG_DIR/init.el"; do
+  for x in "$WORKSTATION_EMACS_CONFIG_DIR/early-init.el" "$WORKSTATION_EMACS_CONFIG_DIR/init.el"; do
     if [[ -f "$x" ]]; then
       init_file="$x"
       break;
@@ -983,7 +1296,7 @@ bash ~/workstation/test/test.sh
   - machine settings for each machine in workstation/hosts
   - bww
   - the ws code
-  - possibly content from wssh
+  - various code in lib
 - [ ] finish filling in the numerous incomplete sections of prose in this document
 - [ ] devise method to prevent committing manually-edited target files
   - git pre-commit-hook?

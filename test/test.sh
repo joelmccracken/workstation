@@ -15,11 +15,11 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-EMACS_CONFIG_DIR=~/.config/emacs
+source ~/workstation/lib/shell/foundation.sh
 
 function find_emacs_init() {
   init_file="";
-  for x in "$EMACS_CONFIG_DIR/early-init.el" "$EMACS_CONFIG_DIR/init.el"; do
+  for x in "$WORKSTATION_EMACS_CONFIG_DIR/early-init.el" "$WORKSTATION_EMACS_CONFIG_DIR/init.el"; do
     if [[ -f "$x" ]]; then
       init_file="$x"
       break;

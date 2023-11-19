@@ -33,6 +33,7 @@
       flake = pkgs.wsProject.flake {
         # This adds support for `nix build .#js-unknown-ghcjs-cabal:hello:exe:hello`
         # crossPlatforms = p: [p.ghcjs];
+
       };
     in flake // {
       # Built by `nix build .`
