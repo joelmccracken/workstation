@@ -1066,11 +1066,11 @@ bw_unlock () {
   (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
 #+end_src
 
-#+begin_src emacs-lisp :tangle ./hosts/glamdring/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
+#+begin_src sh :tangle ./hosts/glamdring/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
 source ~/workstation/hosts/glamdring/settings.sh
 #+end_src
 
-#+begin_src emacs-lisp :tangle ./hosts/glamdring/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
+#+begin_src sh :tangle ./hosts/glamdring/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
 export WORKSTATION_NAME=glamdring
 #+end_src
 *** anduril/
@@ -1095,11 +1095,11 @@ export WORKSTATION_NAME=glamdring
   (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
 #+end_src
 
-#+begin_src emacs-lisp :tangle ./hosts/aeglos/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
+#+begin_src sh :tangle ./hosts/aeglos/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
 source ~/workstation/hosts/aeglos/settings.sh
 #+end_src
 
-#+begin_src emacs-lisp :tangle ./hosts/aeglos/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
+#+begin_src sh :tangle ./hosts/aeglos/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
 export WORKSTATION_NAME=aeglos
 #+end_src
 *** ci/
