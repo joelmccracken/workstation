@@ -25,7 +25,6 @@ if [ -z "${WORKSTATION_NAME+x}" ] ; then
     echo This variable should be exported by a script at:
     echo $WORKSTATION_DIR/hosts/current/settings.sh
     echo see workstation.org for more information
-    echo TODO provide reference to exact location
 else
     export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
 fi

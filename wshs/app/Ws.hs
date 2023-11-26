@@ -35,7 +35,8 @@ main = do
 machineNameToProfile :: Text -> IO ()
 machineNameToProfile name =
   case name of
-    "ci-macos" -> ciMacos
+    "ci-macos" -> macosProfile
+    "glamdring" -> macosProfile
     "ci-ubuntu" -> pure () -- ciUbuntu
     "glamdring" -> ciMacos
     _ -> error $ "No configuration available for machine named " <> T.unpack name
@@ -51,8 +52,8 @@ machineNameToProfile name =
 -- unFilePath fp =
 --   return $ either (error . (unpack . ("could not decode filepath: " <>))) id $ toText fp
 
-ciMacos :: IO ()
-ciMacos = do
+macosProfile :: IO ()
+macosProfile = do
   satisfyProperties [brewBundled]
 
 -- ciUbuntu :: IO ()
