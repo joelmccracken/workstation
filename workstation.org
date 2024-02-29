@@ -1274,6 +1274,9 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
+- check if current username is different from expected username
+- use flake.nix to generate the different username/pw settings;
+  - or... generate the targets of flake.nix from expected combos?
 - [ ] there are lots of weird little things that have accumulated in
   bootstrap-workstation.sh; try to clean some of them up
   - many things in bootstrap-workstation.sh should also become helper scripts in bin
@@ -1325,6 +1328,8 @@ bash ~/workstation/test/test.sh
 - [ ] document various components of bww sync
   - how it works
   - how to use it
+  - document/alert if going to replace a file with server version
+    - display diff of files
 - [ ] get rid of rming results when darwin-rebuild script finishes (use path
   technique from home manager script)
 - [ ] move host settings into this file
