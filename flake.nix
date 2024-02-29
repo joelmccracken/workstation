@@ -135,7 +135,7 @@
     in
       machineDefs [
         (macConfig {
-          user = "joel"; hostname = "glamdring"; system = "x86_64-darwin"; home = "/Users/joel";
+          user = "joelmccracken"; hostname = "glamdring"; system = "x86_64-darwin"; home = "/Users/joelmccracken";
         })
 
         (macConfig {
