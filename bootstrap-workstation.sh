@@ -329,11 +329,9 @@ set -u
 
 install_doom_emacs_no_nix
 
-# TODO this must be before wshs is run otherwise ws will not be able to brew bundle
 info linking dotfiles that should be symlinked
 bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
-
 
 echo "building the 'ws' script"
 cd  ~/workstation/wshs
@@ -341,7 +339,6 @@ nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
 echo "running the 'ws install' process"
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 echo "'ws install' process completed"
-
 
 
 # set +e
