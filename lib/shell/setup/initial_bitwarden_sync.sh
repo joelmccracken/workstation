@@ -17,6 +17,7 @@ function initial_bitwarden_sync() {
         if [ ! -d ~/secrets ]; then
             mkdir ~/secrets;
         fi
+        cd  ~/workstation/wshs
         # overwriting anything that was previously in the file
         echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
         bw login --apikey
