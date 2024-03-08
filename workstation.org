@@ -241,11 +241,6 @@ fi
 «is_git_repo_cloned_at_function»
 
 «clone_repo_and_checkout_at_function»
-
-«install_doom_emacs_no_nix_function»
-
-«restart_nix_deamon_function»
-
 #+end_src
 *** Log that bootstrap is starting
 #+begin_src shell
@@ -337,7 +332,7 @@ info setting up nix.conf
 ~/workstation/lib/shell/setup/install_system_nix_conf.sh
 
 info restarting nix daemon
-restart_nix_daemon
+~/workstation/lib/shell/setup/restart_nix_daemon.sh
 info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -345,14 +340,6 @@ set +u
 source "$NIX_DAEMON_PATH";
 set -u
 
-#+end_src
-*** TODO this may be deletable?
-#+begin_src shell :noweb yes
-
-is_linux && {
-    sudo ~/workstation/bin/enable-passwordless-sudo.sh
-    sudo apt-get update
-}
 #+end_src
 *** install nix darwin
 #+begin_src shell :noweb yes
@@ -383,9 +370,7 @@ much to get into here), the project nix-doom-emacs doesn't work for my purposes,
 and so while emacs itself is installed via nix, doom does its own package
 management.
 #+begin_src shell :noweb yes
-
-install_doom_emacs_no_nix
-
+~/workstation/lib/shell/setup/install_doom_emacs_no_nix.sh
 #+end_src
 *** link dotfiles into place
 Note: this must be before wshs is run otherwise when ~ws~ runs ~brew bundle~, it
@@ -398,30 +383,19 @@ info finished linking dotfiles
 #+end_src
 *** set up 'ws' workstation tool
 #+begin_src shell :noweb yes
+info "building the 'ws' script"
+~/workstation/lib/shell/setup/build_ws_tool.sh
 
-echo "building the 'ws' script"
-cd  ~/workstation/wshs
-nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
-echo "running the 'ws install' process"
-$(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
-echo "'ws install' process completed"
-
+info "running the 'ws install' process"
+~/workstation/lib/shell/setup/ws_install.sh
+info "'ws install' process completed"
 #+end_src
-*** do some final linux specific installs, things that are not handled otherwise
-TODO fix these, should move to home manager.
-
+*** link dotfiles into place
 #+begin_src shell :noweb yes
 
-# set +e
-# echo "Running final installs (install)"
-# if is_linux; then
-#     echo "is linux, installing ripgrep, fdfind, etc via apt";
-#     time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
-#     echo "done running final installs";
-# else
-#     echo "linux not detected, no final installs necessary";
-# fi
-
+info linking dotfiles that should be symlinked
+bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
+info finished linking dotfiles
 #+end_src
 *** set up workstation secrets
 #+begin_src shell :noweb yes
@@ -596,8 +570,8 @@ emit_nix_conf_content | \
 *** restart nix daemons
 Sometimes we need to restart the nix daemons, e.g. after editing the nix config
 file.
-#+name: restart_nix_deamon_function
-#+begin_src shell :noweb yes
+#+begin_src sh :tangle ./lib/shell/setup/restart_nix_daemon.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/lib/shell/funcs.sh
 function restart_nix_daemon_linux() {
     sudo systemctl restart nix-daemon.service;
 }
@@ -609,17 +583,8 @@ function restart_nix_daemon_mac() {
     set -e
 }
 
-function restart_nix_daemon () {
-    if is_mac; then  restart_nix_daemon_mac; fi
-    if is_linux; then restart_nix_daemon_linux; fi
-}
-#+end_src
-
-External Script:
-#+begin_src sh :tangle ./lib/shell/setup/restart_nix_deamon.sh :shebang "#!/usr/bin/env bash" :noweb yes
-source ~/workstation/lib/shell/funcs.sh
-«restart_nix_deamon_function»
-restart_nix_daemon
+if is_mac; then  restart_nix_daemon_mac; fi
+if is_linux; then restart_nix_daemon_linux; fi
 #+end_src
 *** Install Nix
 #+begin_src sh :tangle ./lib/shell/setup/ensure_nix_installed.sh :shebang "#!/usr/bin/env bash" :noweb yes
@@ -635,33 +600,36 @@ fi
 
 #+end_src
 *** Install doom emacs without nix
-#+name: install_doom_emacs_no_nix_function
-#+begin_src shell
-function install_doom_emacs_no_nix() {
-    {
-        cd $WORKSTATION_EMACS_CONFIG_DIR
-        [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
-    } || {
-        mv_dated_backup $WORKSTATION_EMACS_CONFIG_DIR
-        time git clone --depth 1 https://github.com/doomemacs/doomemacs $WORKSTATION_EMACS_CONFIG_DIR/
-        # alternative: use this if encounter problems
-        # ~/.emacs.d/bin/doom -y install;
-        # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        time timeout 60m bash -c "yes | $WORKSTATION_EMACS_CONFIG_DIR/bin/doom install" || exit 0
-        $WORKSTATION_EMACS_CONFIG_DIR/bin/doom sync
-        echo FINISHED INSTALLING DOOM;
-    }
-}
-#+end_src
-
 #+begin_src sh :tangle ./lib/shell/setup/install_doom_emacs_no_nix.sh :shebang "#!/usr/bin/env bash" :noweb yes
 source ~/workstation/lib/shell/foundation.sh
 
-«install_doom_emacs_no_nix_function»
-install_doom_emacs_no_nix
+{
+    cd $WORKSTATION_EMACS_CONFIG_DIR
+    [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
+} || {
+    mv_dated_backup $WORKSTATION_EMACS_CONFIG_DIR
+    time git clone --depth 1 https://github.com/doomemacs/doomemacs $WORKSTATION_EMACS_CONFIG_DIR/
+    # alternative: use this if encounter problems
+    # ~/.emacs.d/bin/doom -y install;
+    # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
+    time timeout 60m bash -c "yes | $WORKSTATION_EMACS_CONFIG_DIR/bin/doom install" || exit 0
+    $WORKSTATION_EMACS_CONFIG_DIR/bin/doom sync
+    echo FINISHED INSTALLING DOOM;
+}
+
 #+end_src
 
+*** Build WS tool
+#+begin_src sh :tangle ./lib/shell/setup/build_ws_tool.sh :shebang "#!/usr/bin/env bash" :noweb yes
+cd  ~/workstation/wshs
+nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
+#+end_src
+*** Run WS install
+#+begin_src sh :tangle ./lib/shell/setup/ws_install.sh :shebang "#!/usr/bin/env bash" :noweb yes
+cd  ~/workstation/wshs
+$(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
+#+end_src
 *** Install nix-darwin
 #+begin_src sh :tangle ./lib/shell/setup/install_nix_darwin.sh :shebang "#!/usr/bin/env bash" :noweb yes
 
@@ -700,6 +668,7 @@ function initial_bitwarden_sync() {
         if [ ! -d ~/secrets ]; then
             mkdir ~/secrets;
         fi
+        cd  ~/workstation/wshs
         # overwriting anything that was previously in the file
         echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
         bw login --apikey
@@ -963,7 +932,6 @@ if [ -z "${WORKSTATION_NAME+x}" ] ; then
     echo This variable should be exported by a script at:
     echo $WORKSTATION_DIR/hosts/current/settings.sh
     echo see workstation.org for more information
-    echo TODO provide reference to exact location
 else
     export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
 fi
@@ -1045,7 +1013,20 @@ bw_unlock () {
 }
 #+end_src
 * Machine profiles
-*** glamdring/
+One of the issues that is inherent in workstation configuration is variation
+between individual workstations. I have different configuation needs on machines
+for work use and for personal use.
+
+There are many possible ways to handle this, but the one I use here is to have
+the configurations unique to each machine in specific subdirectories (i.e.
+~workstation/hosts/glamdring~, ~workstation/hosts/anduril~, etc), and then have
+the _current_ configuration specified by a symlink from
+~/workstation/hosts/current~ to one of the other directories. I can then put
+whatever is convenient in those directories (shell scripts, emacs lisp), and
+have other systems read from there.
+
+Kinda ugly, but it works.
+** glamdring/
 #+begin_src emacs-lisp :tangle ./hosts/glamdring/config.el :noweb yes
 (after! org
   (setq org-directory "~/Dropbox/EF/")
@@ -1073,8 +1054,8 @@ source ~/workstation/hosts/glamdring/settings.sh
 #+begin_src sh :tangle ./hosts/glamdring/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
 export WORKSTATION_NAME=glamdring
 #+end_src
-*** anduril/
-*** aeglos/
+** anduril/
+** aeglos/
 #+begin_src emacs-lisp :tangle ./hosts/aeglos/config.el :noweb yes
 (after! org
   (setq org-directory "~/Dropbox/EF/")
@@ -1102,7 +1083,7 @@ source ~/workstation/hosts/aeglos/settings.sh
 #+begin_src sh :tangle ./hosts/aeglos/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
 export WORKSTATION_NAME=aeglos
 #+end_src
-*** ci/
+** ci/
 * Testing
 ** test.sh
 At this point in time, this test actually checks very little, but what it DOES check

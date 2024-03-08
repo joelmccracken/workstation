@@ -11,6 +11,7 @@ import WSHS.Util
 brewBundled :: Property
 brewBundled =
   let
+    name = "brew bundle is run and up to date"
     getBrewfile :: IO Turtle.FilePath
     getBrewfile = do
       h <- home

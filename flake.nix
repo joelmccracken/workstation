@@ -3,8 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-updated.url = "github:nixos/nixpkgs/nixos-unstable";
     darwin-nixpkgs = {
       url = "github:nixos/nixpkgs/nixpkgs-22.11-darwin";
+    };
+    darwin-nixpkgs-updated = {
+      url = "github:nixos/nixpkgs/nixpkgs-unstable";
     };
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "darwin-nixpkgs";
@@ -18,11 +22,13 @@
     };
   };
 
-  outputs = inputs@{ self, darwin, nixpkgs, darwin-nixpkgs, home-manager, darwin-home-manager,
-    ... }:
+  outputs = inputs@{ self, darwin, nixpkgs, nixpkgs-updated, darwin-nixpkgs,
+                     darwin-nixpkgs-updated, home-manager, darwin-home-manager,
+                     ... }:
     let
-      home-config = settings@{system, user, home, ...}:
+      home-config = settings@{system, user, home, newer-pkgs, ...}:
         let
+          newer-pkgs = settings.newer-pkgs.legacyPackages.${settings.system};
           pkgs = settings.pkgs.legacyPackages.${settings.system};
 
           home-manager-config =
@@ -59,6 +65,7 @@
                   pkgs.cmake
                   pkgs.coreutils
                   pkgs.wget
+                  newer-pkgs.racket
                 ];
 
                 home.sessionPath = [
@@ -115,14 +122,15 @@
           darwinConfigurations.${settings.hostname} = darwinConfig settings;
 
           homeConfigurations.${settings.hostname}.${settings.user} = home-config (
-            settings // { hmModule = darwin-home-manager; pkgs = darwin-nixpkgs; }
+            settings // { hmModule = darwin-home-manager; pkgs = darwin-nixpkgs;
+                          newer-pkgs = darwin-nixpkgs-updated; }
           );
         };
 
       linuxConfig = settings:
         {
           homeConfigurations.${settings.hostname}.${settings.user} = home-config (
-            settings // { hmModule = home-manager;  pkgs = nixpkgs; }
+            settings // { hmModule = home-manager;  pkgs = nixpkgs; newer-pkgs = nixpkgs-updated; }
           );
         };
 

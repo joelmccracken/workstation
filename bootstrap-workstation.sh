@@ -64,7 +64,6 @@ if [ -z "${WORKSTATION_NAME+x}" ] ; then
     echo This variable should be exported by a script at:
     echo $WORKSTATION_DIR/hosts/current/settings.sh
     echo see workstation.org for more information
-    echo TODO provide reference to exact location
 else
     export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
 fi
@@ -189,44 +188,6 @@ function clone_repo_and_checkout_at() {
     git remote set-url origin $4
 }
 # clone_repo_and_checkout_at_function ends here
-
-# [[file:workstation.org::install_doom_emacs_no_nix_function][install_doom_emacs_no_nix_function]]
-function install_doom_emacs_no_nix() {
-    {
-        cd $WORKSTATION_EMACS_CONFIG_DIR
-        [[ "$(git remote get-url origin)" == 'https://github.com/hlissner/doom-emacs' ]]
-    } || {
-        mv_dated_backup $WORKSTATION_EMACS_CONFIG_DIR
-        time git clone --depth 1 https://github.com/doomemacs/doomemacs $WORKSTATION_EMACS_CONFIG_DIR/
-        # alternative: use this if encounter problems
-        # ~/.emacs.d/bin/doom -y install;
-        # time timeout 45m bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        # time bash -c 'yes | ~/.emacs.d/bin/doom install' || exit 0
-        time timeout 60m bash -c "yes | $WORKSTATION_EMACS_CONFIG_DIR/bin/doom install" || exit 0
-        $WORKSTATION_EMACS_CONFIG_DIR/bin/doom sync
-        echo FINISHED INSTALLING DOOM;
-    }
-}
-# install_doom_emacs_no_nix_function ends here
-
-# [[file:workstation.org::restart_nix_deamon_function][restart_nix_deamon_function]]
-function restart_nix_daemon_linux() {
-    sudo systemctl restart nix-daemon.service;
-}
-
-function restart_nix_daemon_mac() {
-    set +e
-    sudo launchctl unload /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
-    set -e
-}
-
-function restart_nix_daemon () {
-    if is_mac; then  restart_nix_daemon_mac; fi
-    if is_linux; then restart_nix_daemon_linux; fi
-}
-# restart_nix_deamon_function ends here
-
 info starting workstation bootstrap
 is_mac && {
     info ensuring xcode is installed
@@ -296,7 +257,7 @@ info setting up nix.conf
 ~/workstation/lib/shell/setup/install_system_nix_conf.sh
 
 info restarting nix daemon
-restart_nix_daemon
+~/workstation/lib/shell/setup/restart_nix_daemon.sh
 info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -304,11 +265,6 @@ set +u
 source "$NIX_DAEMON_PATH";
 set -u
 
-
-is_linux && {
-    sudo ~/workstation/bin/enable-passwordless-sudo.sh
-    sudo apt-get update
-}
 
 is_mac && {
     info installing darwin-nix
@@ -326,31 +282,20 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
+~/workstation/lib/shell/setup/install_doom_emacs_no_nix.sh
+info linking dotfiles that should be symlinked
+bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
+info finished linking dotfiles
+info "building the 'ws' script"
+~/workstation/lib/shell/setup/build_ws_tool.sh
 
-install_doom_emacs_no_nix
+info "running the 'ws install' process"
+~/workstation/lib/shell/setup/ws_install.sh
+info "'ws install' process completed"
 
 info linking dotfiles that should be symlinked
 bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
-
-echo "building the 'ws' script"
-cd  ~/workstation/wshs
-nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
-echo "running the 'ws install' process"
-$(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
-echo "'ws install' process completed"
-
-
-# set +e
-# echo "Running final installs (install)"
-# if is_linux; then
-#     echo "is linux, installing ripgrep, fdfind, etc via apt";
-#     time sudo apt-get install ripgrep fd-find zsh make libtool libvterm-dev;
-#     echo "done running final installs";
-# else
-#     echo "linux not detected, no final installs necessary";
-# fi
-
 bash ~/workstation/lib/shell/setup/initial_bitwarden_sync.sh
 
 cat <<-EOF

@@ -2,19 +2,19 @@
   "entries": {
     "tap": {
       "homebrew/bundle": {
-        "revision": "9d77d7001e805498d4c6c3001c13124f605eed24"
+        "revision": "e4798d8075e1a793f065be3e5e1674ec09193d17"
       },
       "homebrew/cask": {
-        "revision": "d327e0cdc989fac31b7d9c4b932b68e55bdb7af3"
+        "revision": "13534a84249bb96a999673e1b05e995930078a8e"
       },
       "homebrew/core": {
-        "revision": "d62f532fcbb7b3f99b6515560504a2b437267c43"
+        "revision": "5fe4943f8a803e5b1e08a7e4bea79be17117fa67"
       },
       "railwaycat/emacsmacport": {
         "revision": "09504b43dffcaba7ee321d1ad3343e678e97b4a4"
       },
       "homebrew/cask-versions": {
-        "revision": "815f57f806c71a45f58752df46e10a29985069dd"
+        "revision": "5125253a13a3842fc7b4c2a7ede883b60116a5f1"
       }
     },
     "brew": {
@@ -688,21 +688,27 @@
         }
       },
       "dropbox": {
-        "version": "193.4.5594",
+        "version": "189.4.8395",
         "options": {
           "full_name": "dropbox"
         }
       },
       "slack": {
-        "version": "4.36.140",
+        "version": "4.36.136",
         "options": {
           "full_name": "slack"
         }
       },
       "spotify": {
-        "version": "1.2.31.1205,4d59ad7c,345",
+        "version": "1.2.26.1187,36b715a1,270",
         "options": {
           "full_name": "spotify"
+        }
+      },
+      "racket": {
+        "version": "8.11.1",
+        "options": {
+          "full_name": "racket"
         }
       }
     }
@@ -718,20 +724,12 @@
         "macOS": "11.6.1"
       },
       "monterey": {
-        "HOMEBREW_VERSION": "4.1.14-52-g8f7e06a",
+        "HOMEBREW_VERSION": "4.2.1-30-gf3c687e",
         "HOMEBREW_PREFIX": "/usr/local",
         "Homebrew/homebrew-core": "api",
         "CLT": "14.2.0.0.1.1668646533",
         "Xcode": "14.2",
         "macOS": "12.6.5"
-      },
-      "sonoma": {
-        "HOMEBREW_VERSION": "4.2.9",
-        "HOMEBREW_PREFIX": "/usr/local",
-        "Homebrew/homebrew-core": "api",
-        "CLT": "",
-        "Xcode": "",
-        "macOS": "14.3.1"
       }
     }
   }
