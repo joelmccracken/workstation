@@ -4,7 +4,7 @@ import Turtle
 import qualified Data.Text as T
 import WSHS.Properties.Core
 import WSHS.Properties.MacOS
-import qualified WSHS.Properties.Debian as Deb
+-- import qualified WSHS.Properties.Debian as Deb
 
 data Options =
   Options { machineName :: Text
@@ -27,18 +27,24 @@ commandParser =
 main :: IO ()
 main = do
   Options { .. } <- options "workstation manager" parseOptions
+  let
+    nameError =
+      error $ "No configuration available for machine named " <> T.unpack machineName
+    props =
+      fromMaybe nameError $  machineNameToProfile machineName
   case command of
-    Install -> machineNameToProfile machineName
-    Check -> error "check not implemented yet"
+    Install ->
+      satisfyProperties props
+    Check ->
+      checkProperties props
 
-
-machineNameToProfile :: Text -> IO ()
+machineNameToProfile :: Text -> Maybe [Property]
 machineNameToProfile name =
   case name of
-    "ci-macos" -> macosProfile
-    "glamdring" -> macosProfile
-    "ci-ubuntu" -> pure () -- ciUbuntu
-    _ -> error $ "No configuration available for machine named " <> T.unpack name
+    "ci-macos" -> Just macosProfile
+    "glamdring" -> Just macosProfile
+    "ci-ubuntu" -> Just []
+    _ -> Nothing
 
 -- check :: IO ()
 -- check = do
@@ -51,9 +57,8 @@ machineNameToProfile name =
 -- unFilePath fp =
 --   return $ either (error . (unpack . ("could not decode filepath: " <>))) id $ toText fp
 
-macosProfile :: IO ()
-macosProfile = do
-  satisfyProperties [brewBundled]
+macosProfile :: [Property]
+macosProfile = [ brewBundled ]
 
 -- ciUbuntu :: IO ()
 -- ciUbuntu = do

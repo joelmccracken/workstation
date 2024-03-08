@@ -30,10 +30,11 @@ addSnap snapName =
         let showError err =
               error (show err <> "; full text that did not parse: (" <> toString outputbs <> ")")
         let snaps = foldResult showError id parseResult
-        let snapIsInstalled = isJust $ List.find ((snapName ==) . name) snaps
+        let snapIsInstalled = isJust $ List.find ((snapName ==) . Snap.name) snaps
         return $ isSatisfied snapIsInstalled
       satisfier :: IO ()
       satisfier = do
         void $ proc "sudo" ["snap", "install", snapName, "--classic"] mempty
+      name = "snap " <> snapName
   in
     Property {..}

@@ -4,11 +4,11 @@ module WSHS.Wrappers.Debian.Snap where
 
 import RIO
 
-import Turtle hiding (char, alphaNum, newline, spaces, Parser, anyChar, eof)
+-- import Turtle hiding (char, alphaNum, newline, spaces, Parser, anyChar, eof)
 import qualified Data.Text as T
 import Text.Trifecta
-import Text.Parser.Combinators
-import Text.Parser.Token
+-- import Text.Parser.Combinators
+-- import Text.Parser.Token
 
 data Snap = Snap { name :: Text, version :: Text } deriving (Eq, Show)
 
@@ -24,10 +24,9 @@ snapListCommandHeader =
 
 snapListCommandOutputParser :: Parser [Snap]
 snapListCommandOutputParser = do
-  optional whiteSpace
-  optional (textSymbol "snapd")
-
-  optional $ do
+  void $ optional whiteSpace
+  void $ optional (textSymbol "snapd")
+  void $ optional $ do
     whiteSpace
     (textSymbol "snapd")
   snapListCommandHeader
