@@ -2,7 +2,7 @@
   "entries": {
     "tap": {
       "homebrew/bundle": {
-        "revision": "e4798d8075e1a793f065be3e5e1674ec09193d17"
+        "revision": "faf12b3096f5e05aba220c380cfff6a223572917"
       },
       "homebrew/cask": {
         "revision": "13534a84249bb96a999673e1b05e995930078a8e"
@@ -14,7 +14,7 @@
         "revision": "09504b43dffcaba7ee321d1ad3343e678e97b4a4"
       },
       "homebrew/cask-versions": {
-        "revision": "5125253a13a3842fc7b4c2a7ede883b60116a5f1"
+        "revision": "ed94dc52e6d2f783e9c43aed5b29db807d39dc23"
       }
     },
     "brew": {
@@ -688,25 +688,25 @@
         }
       },
       "dropbox": {
-        "version": "189.4.8395",
+        "version": "194.4.6267",
         "options": {
           "full_name": "dropbox"
         }
       },
       "slack": {
-        "version": "4.36.136",
+        "version": "4.37.94",
         "options": {
           "full_name": "slack"
         }
       },
       "spotify": {
-        "version": "1.2.26.1187,36b715a1,270",
+        "version": "1.2.33.1039,8ddb5918,3051",
         "options": {
           "full_name": "spotify"
         }
       },
       "racket": {
-        "version": "8.11.1",
+        "version": "8.12",
         "options": {
           "full_name": "racket"
         }
@@ -730,6 +730,14 @@
         "CLT": "14.2.0.0.1.1668646533",
         "Xcode": "14.2",
         "macOS": "12.6.5"
+      },
+      "sonoma": {
+        "HOMEBREW_VERSION": "4.2.13",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "api",
+        "CLT": "15.1.0.0.1.1700200546",
+        "Xcode": "15.1",
+        "macOS": "14.3.1"
       }
     }
   }
