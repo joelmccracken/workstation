@@ -838,8 +838,7 @@ nix build --extra-experimental-features "nix-command flakes" \
 
 rm -rf ./result
 #+end_src
-* Post-bootstrap setup
-* Manual installation and setup
+* Post-bootstrap manual installation and setup
 #+NAME: manual-setup-instructions
 #+begin_src org
 There are unfortunately a number of things need to install and set up
