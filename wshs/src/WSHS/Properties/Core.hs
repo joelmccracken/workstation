@@ -1,4 +1,5 @@
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE TupleSections #-}
 module WSHS.Properties.Core
   ( Property(..),
     PropertyCheckResults(..),
@@ -11,9 +12,9 @@ where
 
 import RIO
 
-import Prelude (putStrLn)
+import Data.Text.IO (putStrLn)
 
-import Turtle
+import Turtle hiding ((<&>))
 
 data Property =
   Property
@@ -42,18 +43,17 @@ isSatisfied = \case
   True -> Satisfied
   False -> Unsatisfied
 
+isSatisfied' :: PropertyCheckResults -> Bool
+isSatisfied' = (== Satisfied)
+
 checkProperties :: [Property] -> IO ()
 checkProperties props = do
   results <- mapM checkProperty props
-  if (and $ (== Satisfied ) <$> results) then
-    putStrLn "Properties fulfilled"
-  else
-    error "properties unfulfilleed"
+  when (not $ all (isSatisfied' . snd)  results) $
+    forM_ (filter ((not . isSatisfied') . snd) results) $ \(propName,_) -> do
+      putStrLn $ "property unfulfilled: " <> propName
+      exit $ ExitFailure 33
 
-checkProperty :: Property -> IO PropertyCheckResults
-checkProperty (Property name checker _) = checker
-
-  -- do
-  -- result <- checker
-  -- undefined
-  -- error "checkProperties is yet undefined"
+checkProperty :: Property -> IO (Text, PropertyCheckResults)
+checkProperty (Property name checker _) =
+  checker <&> (name,)
