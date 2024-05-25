@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# run a command on cloud workstation
+ssh joel@mcccracken.xyz "$@"
