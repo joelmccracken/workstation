@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-cd ~/Dropbox/EF
+cd ~/EF
 git add .
 git commit -m "$(date)"
 git fetch

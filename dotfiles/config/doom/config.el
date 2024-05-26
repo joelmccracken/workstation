@@ -105,8 +105,8 @@
 
 (load-theme 'tsdh-light)
 
-(setq twelf-root "~/vendor/twelf/")
-(load (concat twelf-root "emacs/twelf-init.el"))
+;; (setq twelf-root "~/vendor/twelf/")
+;; (load (concat twelf-root "emacs/twelf-init.el"))
 
 
 ;; (add-to-list 'load-path "~/Projects/shen-elisp/")
