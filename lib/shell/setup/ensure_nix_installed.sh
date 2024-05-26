@@ -2,8 +2,8 @@
 # Install Nix
 
 # [[file:../../../workstation.org::*Install Nix][Install Nix:1]]
-source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
-source ~/workstation/lib/shell/funcs.sh
+source ~/workstation2/lib/shell/setup/workstation_setup_versions.sh
+source ~/workstation2/lib/shell/funcs.sh
 
 if which nix > /dev/null; then
     info "nix exists in path, not installing"

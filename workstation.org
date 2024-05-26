@@ -108,7 +108,7 @@ tangle:
 Which requires a shell script:
 
 #+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./bin/tangle.sh
-source ~/workstation/lib/shell/foundation.sh
+source ~/workstation2/lib/shell/foundation.sh
 $WORKSTATION_EMACS_CONFIG_DIR/bin/doomscript lib/emacs/tangle-file.el
 #+end_src
 
@@ -324,15 +324,15 @@ fi
 #+begin_src shell :noweb yes
 
 info ensuring nix is installed
-~/workstation/lib/shell/setup/ensure_nix_installed.sh
+~/workstation2/lib/shell/setup/ensure_nix_installed.sh
 
 info finished ensuring nix is installed
 
 info setting up nix.conf
-~/workstation/lib/shell/setup/install_system_nix_conf.sh
+~/workstation2/lib/shell/setup/install_system_nix_conf.sh
 
 info restarting nix daemon
-~/workstation/lib/shell/setup/restart_nix_daemon.sh
+~/workstation2/lib/shell/setup/restart_nix_daemon.sh
 info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -346,7 +346,7 @@ set -u
 
 is_mac && {
     info installing darwin-nix
-    ~/workstation/lib/shell/setup/install_nix_darwin.sh
+    ~/workstation2/lib/shell/setup/install_nix_darwin.sh
     info finished installing darwin-nix
 }
 
@@ -354,9 +354,9 @@ is_mac && {
 *** install home manager
 #+begin_src shell :noweb yes
 
-~/workstation/lib/shell/setup/install_home_manager.sh
+~/workstation2/lib/shell/setup/install_home_manager.sh
 
-~/workstation/lib/shell/setup/home-manager-flake-switch.sh
+~/workstation2/lib/shell/setup/home-manager-flake-switch.sh
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
@@ -370,7 +370,7 @@ much to get into here), the project nix-doom-emacs doesn't work for my purposes,
 and so while emacs itself is installed via nix, doom does its own package
 management.
 #+begin_src shell :noweb yes
-~/workstation/lib/shell/setup/install_doom_emacs_no_nix.sh
+~/workstation2/lib/shell/setup/install_doom_emacs_no_nix.sh
 #+end_src
 *** link dotfiles into place
 Note: this must be before wshs is run otherwise when ~ws~ runs ~brew bundle~, it
@@ -378,28 +378,28 @@ will fail.
 
 #+begin_src shell :noweb yes
 info linking dotfiles that should be symlinked
-bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
+bash ~/workstation2/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
 #+end_src
 *** set up 'ws' workstation tool
 #+begin_src shell :noweb yes
 info "building the 'ws' script"
-~/workstation/lib/shell/setup/build_ws_tool.sh
+~/workstation2/lib/shell/setup/build_ws_tool.sh
 
 info "running the 'ws install' process"
-~/workstation/lib/shell/setup/ws_install.sh
+~/workstation2/lib/shell/setup/ws_install.sh
 info "'ws install' process completed"
 #+end_src
 *** link dotfiles into place
 #+begin_src shell :noweb yes
 
 info linking dotfiles that should be symlinked
-bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
+bash ~/workstation2/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
 #+end_src
 *** set up workstation secrets
 #+begin_src shell :noweb yes
-bash ~/workstation/lib/shell/setup/initial_bitwarden_sync.sh
+bash ~/workstation2/lib/shell/setup/initial_bitwarden_sync.sh
 #+end_src
 *** output final manual setup notes
 #+begin_src shell :noweb yes
@@ -571,7 +571,7 @@ emit_nix_conf_content | \
 Sometimes we need to restart the nix daemons, e.g. after editing the nix config
 file.
 #+begin_src sh :tangle ./lib/shell/setup/restart_nix_daemon.sh :shebang "#!/usr/bin/env bash" :noweb yes
-source ~/workstation/lib/shell/funcs.sh
+source ~/workstation2/lib/shell/funcs.sh
 function restart_nix_daemon_linux() {
     sudo systemctl restart nix-daemon.service;
 }
@@ -588,8 +588,8 @@ if is_linux; then restart_nix_daemon_linux; fi
 #+end_src
 *** Install Nix
 #+begin_src sh :tangle ./lib/shell/setup/ensure_nix_installed.sh :shebang "#!/usr/bin/env bash" :noweb yes
-source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
-source ~/workstation/lib/shell/funcs.sh
+source ~/workstation2/lib/shell/setup/workstation_setup_versions.sh
+source ~/workstation2/lib/shell/funcs.sh
 
 if which nix > /dev/null; then
     info "nix exists in path, not installing"
@@ -601,7 +601,7 @@ fi
 #+end_src
 *** Install doom emacs without nix
 #+begin_src sh :tangle ./lib/shell/setup/install_doom_emacs_no_nix.sh :shebang "#!/usr/bin/env bash" :noweb yes
-source ~/workstation/lib/shell/foundation.sh
+source ~/workstation2/lib/shell/foundation.sh
 
 {
     cd $WORKSTATION_EMACS_CONFIG_DIR
@@ -622,25 +622,25 @@ source ~/workstation/lib/shell/foundation.sh
 
 *** Build WS tool
 #+begin_src sh :tangle ./lib/shell/setup/build_ws_tool.sh :shebang "#!/usr/bin/env bash" :noweb yes
-cd  ~/workstation/wshs
+cd  ~/workstation2/wshs
 nix build --no-link -L .#"wshs:exe:bww" .#"wshs:exe:ws"
 #+end_src
 *** Run WS install
 #+begin_src sh :tangle ./lib/shell/setup/ws_install.sh :shebang "#!/usr/bin/env bash" :noweb yes
-cd  ~/workstation/wshs
+cd  ~/workstation2/wshs
 $(nix path-info .#"wshs:exe:ws")/bin/ws install -m "$WORKSTATION_NAME";
 #+end_src
 *** Install nix-darwin
 #+begin_src sh :tangle ./lib/shell/setup/install_nix_darwin.sh :shebang "#!/usr/bin/env bash" :noweb yes
 
-source ~/workstation/lib/shell/foundation.sh
-source ~/workstation/lib/shell/setup/workstation_setup_versions.sh
+source ~/workstation2/lib/shell/foundation.sh
+source ~/workstation2/lib/shell/setup/workstation_setup_versions.sh
 
 cd $WORKSTATION_DIR
 nix-build https://github.com/LnL7/nix-darwin/archive/${WORKSTATION_NIX_DARWIN_VERSION}.tar.gz -A installer
 ./result/bin/darwin-installer
 
-source ~/workstation/lib/shell/setup/nix-darwin-rebuild-flake.sh
+source ~/workstation2/lib/shell/setup/nix-darwin-rebuild-flake.sh
 
 #+end_src
 *** Install home manager
@@ -668,7 +668,7 @@ function initial_bitwarden_sync() {
         if [ ! -d ~/secrets ]; then
             mkdir ~/secrets;
         fi
-        cd  ~/workstation/wshs
+        cd  ~/workstation2/wshs
         # overwriting anything that was previously in the file
         echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
         bw login --apikey
@@ -683,7 +683,7 @@ function initial_bitwarden_sync() {
 #+end_src
 
 #+begin_src sh :tangle ./lib/shell/setup/initial_bitwarden_sync.sh :shebang "#!/usr/bin/env bash" :noweb yes
-source ~/workstation/lib/shell/funcs.sh
+source ~/workstation2/lib/shell/funcs.sh
 
 «initial_bitwarden_sync_function»
 initial_bitwarden_sync
@@ -691,7 +691,7 @@ initial_bitwarden_sync
 #+end_src
 *** Linking dotfiles
 #+begin_src sh :tangle ./lib/shell/setup/link-dotfiles.sh :shebang "#!/usr/bin/env bash" :noweb yes
-source ~/workstation/lib/shell/funcs.sh
+source ~/workstation2/lib/shell/funcs.sh
 
 export FORCE=false;
 export VERBOSE=false;
@@ -723,7 +723,7 @@ function check () {
 
 function ln_helper() {
     dest=~/$2$1
-    src=~/workstation/dotfiles/$1
+    src=~/workstation2/dotfiles/$1
     curr=$(readlink -f "$dest")
 
     if [ -L "$dest" ] && [ "$curr" = "$src" ]; then
@@ -748,7 +748,7 @@ function ln_norm() {
 }
 
 function ln_dotfile_n() {
-    src=~/workstation/dotfiles/$1
+    src=~/workstation2/dotfiles/$1
     dest=~/.$1
     destdir=$(dirname $dest)
 
@@ -811,9 +811,9 @@ machines have the same home manager configurations.
 #+begin_src sh :shebang "#!/usr/bin/env bash" :tangle ./lib/shell/setup/home-manager-flake-switch.sh :noweb yes
 set -u # error in case WORKSTATION_NAME is not set
 
-nix build --no-link ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
+nix build --no-link ~/workstation2/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
 
-"$(nix path-info ~/workstation/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
+"$(nix path-info ~/workstation2/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
 
 #+end_src
 ** Nix darwin
@@ -1017,9 +1017,9 @@ for work use and for personal use.
 
 There are many possible ways to handle this, but the one I use here is to have
 the configurations unique to each machine in specific subdirectories (i.e.
-~workstation/hosts/glamdring~, ~workstation/hosts/anduril~, etc), and then have
+~workstation/hosts/glamdring~, ~workstation/hosts/angrist~, etc), and then have
 the _current_ configuration specified by a symlink from
-~/workstation/hosts/current~ to one of the other directories. I can then put
+~/workstation2/hosts/current~ to one of the other directories. I can then put
 whatever is convenient in those directories (shell scripts, emacs lisp), and
 have other systems read from there.
 
@@ -1047,7 +1047,7 @@ glamdring: My primary computer/workstation
 #+end_src
 
 #+begin_src sh :tangle ./hosts/glamdring/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
-source ~/workstation/hosts/glamdring/settings.sh
+source ~/workstation2/hosts/glamdring/settings.sh
 #+end_src
 
 #+begin_src sh :tangle ./hosts/glamdring/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
@@ -1071,7 +1071,7 @@ export WORKSTATION_NAME=glamdring
 #+end_src
 
 #+begin_src sh :tangle ./hosts/aeglos/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
-source ~/workstation/hosts/aeglos/settings.sh
+source ~/workstation2/hosts/aeglos/settings.sh
 #+end_src
 
 #+begin_src sh :tangle ./hosts/aeglos/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
@@ -1162,7 +1162,7 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-source ~/workstation/lib/shell/foundation.sh
+source ~/workstation2/lib/shell/foundation.sh
 
 function find_emacs_init() {
   init_file="";
@@ -1317,7 +1317,7 @@ fi
 
 echo INSTALL PROCESS COMPLETE, TESTING
 
-bash ~/workstation/test/test.sh
+bash ~/workstation2/test/test.sh
 #+end_src
 * TODO tasks
 - cron thing

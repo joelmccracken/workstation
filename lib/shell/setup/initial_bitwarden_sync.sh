@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # [[file:../../../workstation.org::*Initial Bitwarden Sync][Initial Bitwarden Sync:2]]
-source ~/workstation/lib/shell/funcs.sh
+source ~/workstation2/lib/shell/funcs.sh
 
 
 # The initial BitWarden Sync process. Requires wshs/bww executable to
@@ -17,7 +17,7 @@ function initial_bitwarden_sync() {
         if [ ! -d ~/secrets ]; then
             mkdir ~/secrets;
         fi
-        cd  ~/workstation/wshs
+        cd  ~/workstation2/wshs
         # overwriting anything that was previously in the file
         echo "${WS_BW_MASTER_PASS}" > ~/secrets/bw_pass
         bw login --apikey
