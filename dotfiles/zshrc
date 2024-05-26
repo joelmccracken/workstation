@@ -18,9 +18,8 @@ export LANG=en_US.UTF-8
 
 export HISTCONTROL=erasedups
 export HISTSIZE=10000
-
-# TODO figure out how to make this work in zsh
-# shopt -s histappend
+export HISTCONTROL=ignoreboth
+export HISTFILESIZE=2000
 
 do_command_done_alert() {
     osascript -e 'display dialog "Command Done!"'

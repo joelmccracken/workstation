@@ -1026,24 +1026,30 @@ have other systems read from there.
 
 Kinda ugly, but it works.
 ** glamdring/
+#+begin_src emacs-lisp :tangle ./hosts/glamdring/README.md :noweb yes
+# About
+glamdring: My primary computer/workstation
+#+end_src
+
 #+begin_src emacs-lisp :tangle ./hosts/glamdring/config.el :noweb yes
 (after! org
-  (setq org-directory "~/Dropbox/EF/")
-  (setq org-roam-directory "~/Dropbox/EF/")
-  (setq org-roam-db-location "~/Dropbox/EF/org-roam.glamdring.db")
+  (setq org-directory "~/EF/")
+  (setq org-roam-directory "~/EF/")
+  (setq org-roam-db-location "~/EF/org-roam.glamdring.db")
 
+  ;; for now wont be able to org-mobile-push from glamdring
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-  (setq org-directory "~/Dropbox/EF")
-  (setq org-id-locations-file "~/Dropbox/EF/.orgids.el")
+  (setq org-directory "~/EF")
+  (setq org-id-locations-file "~/EF/.orgids.el")
 
-  (setq org-agenda-files '("~/Dropbox/EF"
-                           "~/Dropbox/EF/reference"
-                           "~/Dropbox/EF/projects"
+  (setq org-agenda-files '("~/EF"
+                           "~/EF/reference"
+                           "~/EF/projects"
                            ))
 
   (setq +org-capture-notes-file "inbox.org")
   (setq org-mobile-files (org-agenda-files))
-  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
+  (setq org-mobile-inbox-for-pull "~/EF/inbox-mobile.org"))
 #+end_src
 
 #+begin_src sh :tangle ./hosts/glamdring/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
@@ -1083,6 +1089,41 @@ source ~/workstation/hosts/aeglos/settings.sh
 export WORKSTATION_NAME=aeglos
 #+end_src
 ** ci/
+** belthronding
+#+begin_src emacs-lisp :tangle ./hosts/belthronding/README.md :noweb yes
+# About
+belthronding: my cloud ubuntu machine on DO
+#+end_src
+
+#+begin_src emacs-lisp :tangle ./hosts/belthronding/config.el :noweb yes
+(after! org
+  (setq org-directory "~/EF/")
+  (setq org-roam-directory "~/EF/")
+  (setq org-roam-db-location "~/EF/org-roam.belthronding.db")
+
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-directory "~/EF")
+  (setq org-id-locations-file "~/EF/.orgids.el")
+
+  (setq org-agenda-files '("~/EF"
+                           "~/EF/reference"
+                           "~/EF/projects"
+                           ))
+
+  (setq +org-capture-notes-file "inbox.org")
+  (setq org-mobile-files (org-agenda-files))
+  (setq org-mobile-inbox-for-pull "~/EF/inbox-mobile.org"))
+#+end_src
+
+#+begin_src sh :tangle ./hosts/belthronding/zshrc.sh :shebang "#!/usr/bin/env bash" :noweb yes
+source ~/workstation/hosts/belthronding/settings.sh
+#+end_src
+
+#+begin_src sh :tangle ./hosts/belthronding/settings.sh :shebang "#!/usr/bin/env bash" :noweb yes
+export WORKSTATION_NAME=belthronding
+#+end_src
+
+
 * Testing
 ** test.sh
 At this point in time, this test actually checks very little, but what it DOES check

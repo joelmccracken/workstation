@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-# [[file:../../workstation.org::*glamdring/][glamdring/:3]]
+# [[file:../../workstation.org::*glamdring/][glamdring/:4]]
 export WORKSTATION_NAME=glamdring
-# glamdring/:3 ends here
+# glamdring/:4 ends here

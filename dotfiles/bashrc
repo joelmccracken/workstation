@@ -1,2 +1,7 @@
 #!/usr/bin/env bash
-source ~/.bash_profile
+
+shopt -s checkwinsize
+shopt -s histappend
+
+# these can be shared for now
+source ~/.zshrc
