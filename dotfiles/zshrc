@@ -4,9 +4,9 @@ sourceIfExists () {
     fi
 }
 
-sourceIfExists ~/workstation/lib/shell/settings.sh
-sourceIfExists ~/workstation/lib/shell/paths.sh
-sourceIfExists ~/workstation/hosts/current/zshrc.sh
+sourceIfExists ~/workstation2/lib/shell/settings.sh
+sourceIfExists ~/workstation2/lib/shell/paths.sh
+sourceIfExists ~/workstation2/hosts/current/zshrc.sh
 
 export EDITOR=emacsclient
 export GIT_EDITOR=$EDITOR
@@ -40,3 +40,5 @@ sourceIfExists /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 sourceIfExists ~/.nix-profile/etc/profile.d/hm-session-vars.sh
 sourceIfExists ~/workstation/lib/shell/funcs.sh
 sourceIfExists ~/.ghcup/env
+
+sourceIfExists ~/workstation2/lib/shell/funcs.sh

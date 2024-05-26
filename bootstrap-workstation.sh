@@ -249,15 +249,15 @@ else
 fi
 
 info ensuring nix is installed
-~/workstation/lib/shell/setup/ensure_nix_installed.sh
+~/workstation2/lib/shell/setup/ensure_nix_installed.sh
 
 info finished ensuring nix is installed
 
 info setting up nix.conf
-~/workstation/lib/shell/setup/install_system_nix_conf.sh
+~/workstation2/lib/shell/setup/install_system_nix_conf.sh
 
 info restarting nix daemon
-~/workstation/lib/shell/setup/restart_nix_daemon.sh
+~/workstation2/lib/shell/setup/restart_nix_daemon.sh
 info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -268,35 +268,35 @@ set -u
 
 is_mac && {
     info installing darwin-nix
-    ~/workstation/lib/shell/setup/install_nix_darwin.sh
+    ~/workstation2/lib/shell/setup/install_nix_darwin.sh
     info finished installing darwin-nix
 }
 
 
-~/workstation/lib/shell/setup/install_home_manager.sh
+~/workstation2/lib/shell/setup/install_home_manager.sh
 
-~/workstation/lib/shell/setup/home-manager-flake-switch.sh
+~/workstation2/lib/shell/setup/home-manager-flake-switch.sh
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-~/workstation/lib/shell/setup/install_doom_emacs_no_nix.sh
+~/workstation2/lib/shell/setup/install_doom_emacs_no_nix.sh
 info linking dotfiles that should be symlinked
-bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
+bash ~/workstation2/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
 info "building the 'ws' script"
-~/workstation/lib/shell/setup/build_ws_tool.sh
+~/workstation2/lib/shell/setup/build_ws_tool.sh
 
 info "running the 'ws install' process"
-~/workstation/lib/shell/setup/ws_install.sh
+~/workstation2/lib/shell/setup/ws_install.sh
 info "'ws install' process completed"
 
 info linking dotfiles that should be symlinked
-bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
+bash ~/workstation2/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
-bash ~/workstation/lib/shell/setup/initial_bitwarden_sync.sh
+bash ~/workstation2/lib/shell/setup/initial_bitwarden_sync.sh
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
