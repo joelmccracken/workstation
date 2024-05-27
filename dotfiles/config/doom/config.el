@@ -85,12 +85,6 @@
 
   (setq +org-capture-notes-file "inbox.org")
 
-  (setq org-mobile-files
-        '( "~/Dropbox/EF/actions.org"
-           "~/Dropbox/EF/projects.org"))
-
-  (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org")
-
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
   (setq org-src-preserve-indentation t)
