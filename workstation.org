@@ -1295,6 +1295,9 @@ echo INSTALL PROCESS COMPLETE, TESTING
 bash ~/workstation/test/test.sh
 #+end_src
 * TODO tasks
+- cron thing
+  - document how to work with it
+  - and script cronfile installation
 - check if current username is different from expected username
 - use flake.nix to generate the different username/pw settings;
   - or... generate the targets of flake.nix from expected combos?
