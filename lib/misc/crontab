@@ -24,4 +24,11 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-* * * * * /home/joel/workstation/bin/cron-5.sh
+*/5 * * * * /home/joel/workstation/bin/cron-5.sh
+
+#* * * * * /home/joel/workstation/bin/cron-5.sh
+# uncomment ^^ for use during development
+
+
+# run to install:
+#   $ crontab ~/workstation/lib/misc/crontab
