@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# sample file for
-
-# a bunch of enivornment variables with machine settings
-# TODO fill this in.
-# TODO docuemnt process for acreating a "new" machine vs
-#    running setup stuff for a previous one
-export WORKSTATION_NAME=
