@@ -750,7 +750,7 @@ function ln_norm() {
 function ln_dotfile_n() {
     src=~/workstation/dotfiles/$1
     dest=~/.$1
-    destdir=$(dirname dest)
+    destdir=$(dirname $dest)
 
     if [ ! -d $destdir ]; then
         mkdir -p $destdir
