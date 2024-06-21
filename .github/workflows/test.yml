@@ -24,6 +24,7 @@ jobs:
     strategy:
       matrix:
         os:
+        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
         - macos-13 # x86
         - macos-latest # aarch
         - ubuntu-latest

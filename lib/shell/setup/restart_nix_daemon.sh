@@ -4,7 +4,7 @@
 # file.
 
 # [[file:../../../workstation.org::*restart nix daemons][restart nix daemons:1]]
-source ~/workstation2/lib/shell/funcs.sh
+source ${WORKSTATION_DIR}/lib/shell/funcs.sh
 function restart_nix_daemon_linux() {
     sudo systemctl restart nix-daemon.service;
 }

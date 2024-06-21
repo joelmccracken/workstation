@@ -35,7 +35,9 @@
 ;; change `org-directory'. It must be set before org loads!
 
 (setq workstation-config-path
-      (concat "~/workstation2/hosts/current/config.el"))
+      (concat (or (getenv "WORKSTATION_DIR")
+                  "~/workstation")
+              "/hosts/current/config.el"))
 
 (when (file-exists-p workstation-config-path)
   (load workstation-config-path))

@@ -11,7 +11,7 @@
 # [[file:../../../workstation.org::*flake-world equivalent to 'home-manager switch'][flake-world equivalent to 'home-manager switch':1]]
 set -u # error in case WORKSTATION_NAME is not set
 
-nix build --no-link ~/workstation2/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
+nix build --no-link ${WORKSTATION_DIR}/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage --show-trace
 
-"$(nix path-info ~/workstation2/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
+"$(nix path-info ${WORKSTATION_DIR}/#homeConfigurations.${WORKSTATION_NAME}.$(whoami).activationPackage)"/activate --show-trace
 # flake-world equivalent to 'home-manager switch':1 ends here
