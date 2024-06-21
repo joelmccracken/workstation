@@ -2,7 +2,7 @@
 # Install doom emacs without nix
 
 # [[file:../../../workstation.org::*Install doom emacs without nix][Install doom emacs without nix:1]]
-source ~/workstation/lib/shell/foundation.sh
+source ${WORKSTATION_DIR}/lib/shell/foundation.sh
 
 {
     cd $WORKSTATION_EMACS_CONFIG_DIR
