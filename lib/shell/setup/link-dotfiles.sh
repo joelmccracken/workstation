@@ -2,7 +2,7 @@
 # Linking dotfiles
 
 # [[file:../../../workstation.org::*Linking dotfiles][Linking dotfiles:1]]
-source ~/workstation2/lib/shell/funcs.sh
+source ${WORKSTATION_DIR}/lib/shell/funcs.sh
 
 export FORCE=false;
 export VERBOSE=false;
@@ -34,7 +34,7 @@ function check () {
 
 function ln_helper() {
     dest=~/$2$1
-    src=~/workstation2/dotfiles/$1
+    src=${WORKSTATION_DIR}/dotfiles/$1
     curr=$(readlink -f "$dest")
 
     if [ -L "$dest" ] && [ "$curr" = "$src" ]; then
@@ -59,9 +59,9 @@ function ln_norm() {
 }
 
 function ln_dotfile_n() {
-    src=~/workstation2/dotfiles/$1
+    src=${WORKSTATION_DIR}/dotfiles/$1
     dest=~/.$1
-    destdir=$(dirname $dest)
+    destdir=$(dirname "$dest")
 
     if [ ! -d $destdir ]; then
         mkdir -p $destdir

@@ -1,3 +1,3 @@
 #!/usr/bin/env zsh
 
-source ~/workstation2/hosts/angrist/settings.sh
+source ${WORKSTATION_DIR}/hosts/angrist/settings.sh

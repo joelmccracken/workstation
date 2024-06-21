@@ -33,5 +33,5 @@ fi
 
 echo INSTALL PROCESS COMPLETE, TESTING
 
-bash ~/workstation2/test/test.sh
+bash ${WORKSTATION_DIR}/test/test.sh
 # The environment setup script:1 ends here
