@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 # run a command on cloud workstation
-ssh joel@belthronding.wildkraken.monster "$@"
+ssh -t joel@belthronding.wildkraken.monster "$@"
