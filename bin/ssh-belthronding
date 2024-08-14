@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
+set -x
+
+ssh_with_resets() {
+  reset_command=$(cat <<-EOF
+	reset;
+	ssh -t joel@belthronding.wildkraken.monster "$@";
+	reset;
+	echo belthronding ssh exited and terminal reset, args "$@"
+	EOF
+  )
+  exec bash -c "$reset_command"
+}
 
 # run a command on cloud workstation
-ssh -t joel@belthronding.wildkraken.monster "$@"
+ssh_with_resets "$@"
