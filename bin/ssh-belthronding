@@ -4,7 +4,7 @@ set -x
 ssh_with_resets() {
   reset_command=$(cat <<-EOF
 	reset;
-	ssh -t joel@belthronding.wildkraken.monster "$@";
+	ssh -t -o ConnectTimeout=10  joel@belthronding.wildkraken.monster "$@";
 	reset;
 	echo belthronding ssh exited and terminal reset, args "$@"
 	EOF
