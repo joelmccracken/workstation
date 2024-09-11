@@ -42,6 +42,13 @@
 (when (file-exists-p workstation-config-path)
   (load workstation-config-path))
 
+(defun jnm/ef-ssh-belthronding ()
+  "open EF via ssh on belthronding"
+  (interactive)
+  (find-file "/ssh:joel@belthronding.wildkraken.monster:~/EF/"))
+
+(map! "C-c e" #'jnm/ef-ssh-belthronding)
+
 (after! +popup
   ;; added here to change the behavior of *info* buffers (set :quit to nil)
   (set-popup-rules!
