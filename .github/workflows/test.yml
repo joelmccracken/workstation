@@ -8,6 +8,9 @@
 # I am running up close to maximum execution time, so very likely I will need to
 # refactor/come up with some other way to do this.
 
+# - docs on different available runners can be found here
+#   - https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+
 # [[file:../../workstation.org::*Github Actions CI][Github Actions CI:1]]
 name: CI
 
@@ -21,7 +24,6 @@ jobs:
     strategy:
       matrix:
         os:
-# https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
         - macos-13 # x86
         - macos-latest # aarch
         - ubuntu-latest

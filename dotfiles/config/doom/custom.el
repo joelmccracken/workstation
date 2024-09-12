@@ -1,0 +1,14 @@
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
+ '(org-agenda-files
+   '("/Users/joelmccracken/EF/reference/reference.org" "/Users/joelmccracken/EF/README.org" "/Users/joelmccracken/EF/actions.org" "/Users/joelmccracken/EF/archive.org" "/Users/joelmccracken/EF/daily.org" "/Users/joelmccracken/EF/decisions-journal.org" "/Users/joelmccracken/EF/inbox-mobile.org" "/Users/joelmccracken/EF/inbox.org" "/Users/joelmccracken/EF/issues.org" "/Users/joelmccracken/EF/notes.org" "/Users/joelmccracken/EF/notes2.org" "/Users/joelmccracken/EF/personal-planning.org" "/Users/joelmccracken/EF/projects-stalled.org" "/Users/joelmccracken/EF/projects.org" "/Users/joelmccracken/EF/recovery.org" "/Users/joelmccracken/EF/reflections.org" "/Users/joelmccracken/EF/someday-maybe.org" "/Users/joelmccracken/EF/systems.org" "/Users/joelmccracken/EF/waiting-and-agendas.org" "/Users/joelmccracken/EF/reference/apple-timescapsule.org" "/Users/joelmccracken/EF/reference/dad-death.org" "/Users/joelmccracken/EF/reference/exercise-logs.org" "/Users/joelmccracken/EF/reference/finances.org" "/Users/joelmccracken/EF/reference/kinesis-advantage.org" "/Users/joelmccracken/EF/reference/people.org" "/Users/joelmccracken/EF/reference/tech-infra.org" "/Users/joelmccracken/EF/projects/budget.org" "/Users/joelmccracken/EF/projects/bushcraft-prep.org" "/Users/joelmccracken/EF/projects/cloud-haskell.org" "/Users/joelmccracken/EF/projects/fixing-sleep-project-notes.org" "/Users/joelmccracken/EF/projects/fixup-personal-organization-system.org" "/Users/joelmccracken/EF/projects/gobags.org" "/Users/joelmccracken/EF/projects/how-to-prove-it.org" "/Users/joelmccracken/EF/projects/learn-postgres.org" "/Users/joelmccracken/EF/projects/lsp-haskell.org" "/Users/joelmccracken/EF/projects/make-spiritually-motivating-for-work-doc.org" "/Users/joelmccracken/EF/projects/note-taking-environment.org" "/Users/joelmccracken/EF/projects/personal-development-plan.org" "/Users/joelmccracken/EF/projects/personal-improvement.org" "/Users/joelmccracken/EF/projects/personal-tech-infrastructure-workstation.org" "/Users/joelmccracken/EF/projects/personal-website-writing-blog.org" "/Users/joelmccracken/EF/projects/reddup.org" "/Users/joelmccracken/EF/projects/reset-spiritual-life.org" "/Users/joelmccracken/EF/projects/server-workstation.org" "/Users/joelmccracken/EF/projects/set-up-study.org" "/Users/joelmccracken/EF/projects/workstation.org")))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
