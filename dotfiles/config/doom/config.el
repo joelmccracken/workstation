@@ -48,6 +48,10 @@
   (find-file "/ssh:joel@belthronding.wildkraken.monster:~/EF/"))
 
 (map! "C-c e" #'jnm/ef-ssh-belthronding)
+(map! "C-c d" #'org-timestamp-inactive)
+
+;; (map! :leader "SPC"
+;;       :n "SPC SPC e" #'jnm/ef-ssh-belthronding)
 
 (after! +popup
   ;; added here to change the behavior of *info* buffers (set :quit to nil)
