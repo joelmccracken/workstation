@@ -11,7 +11,6 @@
   (setq org-id-locations-file "~/Dropbox/EF/.orgids.el")
 
   (setq org-agenda-files '("~/Dropbox/EF"
-                           "~/Dropbox/EF/reference"
                            "~/Dropbox/EF/projects"
                            ))
 
