@@ -1040,12 +1040,7 @@ glamdring: My primary computer/workstation
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-directory "~/EF")
   (setq org-id-locations-file "~/EF/.orgids.el")
-
-  (setq org-agenda-files '("~/EF"
-                           "~/EF/reference"
-                           "~/EF/projects"
-                           ))
-
+  (setq org-agenda-files '("~/EF/actions.org" "~/EF/projects.org"))
   (setq +org-capture-notes-file "inbox.org")
   (setq org-mobile-files (org-agenda-files))
   (setq org-mobile-inbox-for-pull "~/EF/inbox-mobile.org"))
@@ -1069,12 +1064,7 @@ export WORKSTATION_NAME=glamdring
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-directory "~/Dropbox/EF")
   (setq org-id-locations-file "~/Dropbox/EF/.orgids.el")
-
-  (setq org-agenda-files '("~/Dropbox/EF"
-                           "~/Dropbox/EF/reference"
-                           "~/Dropbox/EF/projects"
-                           ))
-
+  (setq org-agenda-files '("~/EF/actions.org" "~/EF/projects.org"))
   (setq +org-capture-notes-file "inbox.org")
   (setq org-mobile-files (org-agenda-files))
   (setq org-mobile-inbox-for-pull "~/Dropbox/EF/inbox-mobile.org"))
@@ -1103,12 +1093,7 @@ belthronding: my cloud ubuntu machine on DO
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-directory "~/EF")
   (setq org-id-locations-file "~/EF/.orgids.el")
-
-  (setq org-agenda-files '("~/EF"
-                           "~/EF/reference"
-                           "~/EF/projects"
-                           ))
-
+  (setq org-agenda-files '("~/EF/actions.org" "~/EF/projects.org"))
   (setq +org-capture-notes-file "inbox.org")
   (setq org-mobile-files (org-agenda-files))
   (setq org-mobile-inbox-for-pull "~/EF/inbox-mobile.org"))
