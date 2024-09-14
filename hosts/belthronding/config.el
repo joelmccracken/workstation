@@ -8,10 +8,7 @@
   (setq org-directory "~/EF")
   (setq org-id-locations-file "~/EF/.orgids.el")
 
-  (setq org-agenda-files '("~/EF"
-                           "~/EF/reference"
-                           "~/EF/projects"
-                           ))
+  (setq org-agenda-files '("~/EF/actions.org" "~/EF/projects.org"))
 
   (setq +org-capture-notes-file "inbox.org")
   (setq org-mobile-files (org-agenda-files))

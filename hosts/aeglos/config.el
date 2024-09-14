@@ -10,9 +10,7 @@
   (setq org-directory "~/Dropbox/EF")
   (setq org-id-locations-file "~/Dropbox/EF/.orgids.el")
 
-  (setq org-agenda-files '("~/Dropbox/EF"
-                           "~/Dropbox/EF/projects"
-                           ))
+  (setq org-agenda-files '("~/EF/actions.org" "~/EF/projects.org"))
 
   (setq +org-capture-notes-file "inbox.org")
   (setq org-mobile-files (org-agenda-files))
