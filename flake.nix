@@ -58,7 +58,7 @@
                   pkgs.jl
                   pkgs.fd
                   pkgs.ispell
-                  pkgs.bitwarden-cli
+                  newer-pkgs.bitwarden-cli
                   pkgs.direnv
                   pkgs.mr  # myrepos https://myrepos.branchable.com/install/
                   pkgs.graphviz
