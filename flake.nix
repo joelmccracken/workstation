@@ -151,6 +151,10 @@
         })
 
         (linuxConfig {
+          user = "joel"; hostname = "belthronding"; system = "x86_64-linux"; home = "/home/joel";
+        })
+
+        (linuxConfig {
           user = "runner"; hostname = "ci-ubuntu"; system = "x86_64-linux"; home = "/home/runner";
         })
       ];
