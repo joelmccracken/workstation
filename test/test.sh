@@ -15,7 +15,7 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-source ~/workstation/lib/shell/foundation.sh
+source ${WORKSTATION_DIR}/lib/shell/foundation.sh
 
 function find_emacs_init() {
   init_file="";
