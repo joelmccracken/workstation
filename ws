@@ -21,6 +21,8 @@ export WORKSTATION_GIT_ORIGIN='git@github.com:joelmccracken/workstation.git'
 export WORKSTATION_GIT_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
 
+WS_SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 function info() {
     echo "INFO ========= $(date) $@"
 }
@@ -53,8 +55,6 @@ print_workstation_names() {
     echo "  - belthronding  (cloud VM)"
     echo "  - aeglos        (work computer)"
 }
-
-
 
 process_cli_args() {
   for i in "$@"; do
@@ -128,12 +128,52 @@ boostrap_command() {
   echo BOOTSTRAP HERE:
 }
 
+load_external_plugins() {
+  local $PLUGINS_DIR="$1"
+  # plugins as a concept
+  # standard way of naming things
+  # keep known plugins in array
+  # note builtin vs external plugins
+  #
+  # bootstrap plugin knows how to set vairous needed things from startup
+  # and find additional plugins, do overall setup.
+  #
+  # doctor plugin can iterate over other plugins, find anything it needs to check
+  #
+  #
+  #
+  # secrets.wsplugin.sh
+  # __ws_plugin_secrets_subcmd_version documents the ws tool version it should work for
+  #      ws may refuse to load plugins for wrong versions?
+  #
+  # __ws_plugin_secrets_subcmd_proc process arguments
+  #      any additional behavior the same way
+  #      - save note about where its loaded from, use in case there is another
+  #        plugin
+  #
+  # __ws_plugin_secrets_subcmd_help provides help text
+  #      maybe output info in specific format so that ws parses it, but or maybe not
+  #
+  # __ws_plugin_secrets_proc execute various secrets, etc
+}
 
 
+load_external_plugins "~/workstation2/plugins"
 
 
-
-
+load_config() {
+  echo "some config example "
+  # thinking about configs
+  # set workstation dir?
+  # what kind of config would be needed?
+  # workstaiton dir could be
+  # ~/.config/ws/config.sh
+  # or ~/workstation
+  # or ~/.workstation
+  # or even ~/.ws
+  # perhaps?
+  # have various config directives (just commands) that set flags etc. Defaults? idk
+}
 
 process_cli_args "$@"
 
