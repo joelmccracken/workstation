@@ -15,7 +15,7 @@ set +u
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-source ~/workstation/lib/shell/foundation.sh
+source ${WORKSTATION_DIR}/lib/shell/foundation.sh
 
 function find_emacs_init() {
   init_file="";
@@ -35,12 +35,11 @@ function find_emacs_init() {
 
 emacs_init="$(find_emacs_init)"
 
-
 function assert_input() {
   local label=$1
   local expected=$2
   local actual
-  read actual
+  read -r actual
 
   if [[ "$expected" == "$actual" ]]; then
     echo "$label is correct"
@@ -52,7 +51,7 @@ function assert_input() {
 
 echo "RUNNING TESTS"
 
-EMACS_PATH=~/.nix-profile/bin/emacs
+EMACS_PATH=$HOME/.nix-profile/bin/emacs
 # emacs
 if [ -x "$EMACS_PATH" ]; then
     echo found emacs
@@ -62,7 +61,7 @@ else
 fi
 
 $EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
-  read actual
+  read -r actual
   if [[ "$actual" == "27.1" || "$actual" == "27.2" || "$actual" == "28.1" || "$actual" == "28.2" ]]; then
     echo "emacs version is correct"
   else
@@ -72,7 +71,7 @@ $EMACS_PATH -Q --batch --eval '(progn (princ emacs-version) (terpri))' | {
 }
 
 $EMACS_PATH -l "$emacs_init" --batch --eval '(progn (princ doom-version) (terpri))' | {
-  read actual;
+  read -r actual;
   if [[ "$actual" == "21.12.0-alpha" || "$actual" == "3.0.0-dev" || "$actual" == "3.0.0-pre" ]]; then
     echo "doom version is correct"
   else
@@ -88,9 +87,9 @@ else
   exit 1
 fi
 
-if [ -f ~/secrets/test_secret ]; then
+if [ -f $HOME/secrets/test_secret ]; then
     echo "test secret file sucessfully synced"
-    cat ~/secrets/test_secret
+    cat $HOME/secrets/test_secret
 else
     echo "error: test secret file was missing"
 fi

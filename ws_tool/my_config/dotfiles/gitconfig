@@ -1,0 +1,22 @@
+# This is Git's per-user configuration file.
+[core]
+	user = Joel
+	email = mccracken.joel@gmail.com
+	editor = "emacsclient -c "
+[user]
+	name = Joel McCracken
+	email = mccracken.joel@gmail.com
+[push]
+	default = simple
+[merge]
+	conflictstyle = diff3
+[diff]
+	algorithm = patience
+[filesystem "N/A|15.0.1|/dev/disk1s1"]
+	timestampResolution = 10000 nanoseconds
+	minRacyThreshold = 0 nanoseconds
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process

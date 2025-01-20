@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+current_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+. "${current_dir}/../lib/lib.bash"
+safe_overwrite "$1" "$2"

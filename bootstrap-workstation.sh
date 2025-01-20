@@ -26,7 +26,7 @@ fi
 # When the CI process starts, we start out with a check out of the code for this
 # commit in a directory on the CI machine. However, this is not how workstation runs:
 # - part of the job of workstation is getting its own code from the server
-# - workstation expects the code to be in a specific directory, that is, ~/workstation
+# - workstation expects the code to be in a specific directory, that is, $HOME/workstation
 # Because of this (and possibly other reasons that escape me now), even though the
 # source code of the current commit is checked out on the CI machine already,
 # the CI process re-downloads the code (via this script). The specific SHA to get
@@ -42,8 +42,8 @@ else
 fi
 # [[file:../../workstation.org::workstation_foundation][workstation_foundation]]
 
-export WORKSTATION_DIR="$HOME/workstation"
-export WORKSTATION_EMACS_CONFIG_DIR=~/.config/emacs
+export WORKSTATION_DIR="${WORKSTATION_DIR:-$HOME/workstation}"
+export WORKSTATION_EMACS_CONFIG_DIR=$HOME/.config/emacs
 export WORKSTATION_GIT_ORIGIN='git@github.com:joelmccracken/workstation.git'
 export WORKSTATION_GIT_ORIGIN_PUB='https://github.com/joelmccracken/workstation.git'
 export WORKSTATION_HOST_CURRENT_SETTINGS_DIR=$WORKSTATION_DIR/hosts/current
@@ -216,48 +216,28 @@ is_git_repo_cloned_at $WORKSTATION_DIR $WORKSTATION_GIT_ORIGIN || {
 }
 # at this point, this is hardly necessary; however, the gitignore file is handy
 # i may explore getting rid of this repo entirely and just having a fresh
-# repo without any origin in ~
+# repo without any origin in $HOME
 info ensuring dotfiles repo is checked out
 
 DOTFILES_ORIGIN='git@github.com:joelmccracken/dotfiles.git'
 
-is_git_repo_cloned_at ~ "$DOTFILES_ORIGIN" ||
-    polite-git-checkout ~ 'https://github.com/joelmccracken/dotfiles.git' \
+is_git_repo_cloned_at $HOME "$DOTFILES_ORIGIN" ||
+    polite-git-checkout $HOME 'https://github.com/joelmccracken/dotfiles.git' \
         "$DOTFILES_ORIGIN"
 
 info finished ensuring dotfiles repo is checked out
-# each workstaion host I use has different settings needs.
-# For example, my remote cloud hosted server has a different setup than
-# my mac laptop, which has a different set up from my work computer.
-# the way I have these settings specified is by having a directory in my home
-# directory which has all of the needed files I would need for such differences.
-# there are different directories for each host I maintain, but on a given host,
-# one of those directories are symlinked into 'current' host, which other things
-# can then refer to
-
-export WORKSTATION_HOST_SETTINGS_SRC_DIR=$WORKSTATION_DIR/hosts/$WORKSTATION_NAME
-
-info setting current host settings directory...
-info workstation host settings directory: $WORKSTATION_HOST_SETTINGS_SRC_DIR
-
-if [ -d $WORKSTATION_HOST_SETTINGS_SRC_DIR ]; then
-    info setting current host directory to $WORKSTATION_HOST_SETTINGS_SRC_DIR;
-    ln -s $WORKSTATION_HOST_SETTINGS_SRC_DIR $WORKSTATION_HOST_CURRENT_SETTINGS_DIR;
-else
-    echo ERROR $WORKSTATION_HOST_SETTINGS_SRC_DIR does not exist, must exit
-    exit 5
-fi
+${WORKSTATION_DIR}/lib/shell/setup/link-host-dir.sh "$WORKSTATION_NAME"
 
 info ensuring nix is installed
-~/workstation/lib/shell/setup/ensure_nix_installed.sh
+${WORKSTATION_DIR}/lib/shell/setup/ensure_nix_installed.sh
 
 info finished ensuring nix is installed
 
 info setting up nix.conf
-~/workstation/lib/shell/setup/install_system_nix_conf.sh
+${WORKSTATION_DIR}/lib/shell/setup/install_system_nix_conf.sh
 
 info restarting nix daemon
-~/workstation/lib/shell/setup/restart_nix_daemon.sh
+${WORKSTATION_DIR}/lib/shell/setup/restart_nix_daemon.sh
 info nix daemon restarted
 
 NIX_DAEMON_PATH='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
@@ -266,37 +246,36 @@ source "$NIX_DAEMON_PATH";
 set -u
 
 
-is_mac && {
-    info installing darwin-nix
-    ~/workstation/lib/shell/setup/install_nix_darwin.sh
-    info finished installing darwin-nix
-}
+# is_mac && {
+#     info installing darwin-nix
+#     ${WORKSTATION_DIR}/lib/shell/setup/install_nix_darwin.sh
+#     info finished installing darwin-nix
+# }
 
 
-~/workstation/lib/shell/setup/install_home_manager.sh
+${WORKSTATION_DIR}/lib/shell/setup/install_home_manager.sh
 
-~/workstation/lib/shell/setup/home-manager-flake-switch.sh
+${WORKSTATION_DIR}/lib/shell/setup/home-manager-flake-switch.sh
 
 set +u
 # evaluating this with set -u will cause an unbound variable error
 source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 set -u
 
-~/workstation/lib/shell/setup/install_doom_emacs_no_nix.sh
+${WORKSTATION_DIR}/lib/shell/setup/install_doom_emacs_no_nix.sh
 info linking dotfiles that should be symlinked
-bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
+bash ${WORKSTATION_DIR}/lib/shell/setup/link-dotfiles.sh -f -c
 info finished linking dotfiles
 info "building the 'ws' script"
-~/workstation/lib/shell/setup/build_ws_tool.sh
+${WORKSTATION_DIR}/lib/shell/setup/build_ws_tool.sh
 
 info "running the 'ws install' process"
-~/workstation/lib/shell/setup/ws_install.sh
+${WORKSTATION_DIR}/lib/shell/setup/ws_install.sh
 info "'ws install' process completed"
 
-info linking dotfiles that should be symlinked
-bash ~/workstation/lib/shell/setup/link-dotfiles.sh -f -c
-info finished linking dotfiles
-bash ~/workstation/lib/shell/setup/initial_bitwarden_sync.sh
+echo "initial bitwarden sync"
+bash ${WORKSTATION_DIR}/lib/shell/setup/initial_bitwarden_sync.sh
+echo "initial bitwarden sync done"
 
 cat <<-EOF
 Success! However, there are some remaining manual set up steps required.
@@ -309,7 +288,7 @@ manually:
 - icloud
 - slack
 - spotify
-- install haskell language server in ~/bin (or somwewhere else?) for hls
+- install haskell language server in $HOME/bin (or somwewhere else?) for hls
 
 These are the settings I use for slack:
 - accessibility then at bottom changbe up arrow to move focus to last message

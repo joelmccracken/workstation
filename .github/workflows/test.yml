@@ -14,8 +14,14 @@
 # [[file:../../workstation.org::*Github Actions CI][Github Actions CI:1]]
 name: CI
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
+  pull_request:
   push:
+    branches: main
   schedule:
   - cron: '0 0 * * *'  # every day at midnight
 
@@ -24,17 +30,20 @@ jobs:
     strategy:
       matrix:
         os:
+        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
         - macos-13 # x86
         - macos-latest # aarch
         - ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Run a one-line script
-      env:
-        BW_CLIENTID: ${{ secrets.BW_CLIENTID }}
-        BW_CLIENTSECRET: ${{ secrets.BW_CLIENTSECRET }}
-        WS_BW_MASTER_PASS: ${{ secrets.WS_BW_MASTER_PASS }}
-      run: ./test/ci.sh
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          # ref: ${{ github.sha }}
+      - run: ./test/ci.sh
+        env:
+          WORKSTATION_VERSION: ${{ github.event.pull_request.head.sha }}
+          BW_CLIENTID: ${{ secrets.BW_CLIENTID }}
+          BW_CLIENTSECRET: ${{ secrets.BW_CLIENTSECRET }}
+          WS_BW_MASTER_PASS: ${{ secrets.WS_BW_MASTER_PASS }}
 # Github Actions CI:1 ends here

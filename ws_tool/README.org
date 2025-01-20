@@ -1,0 +1,25 @@
+#+title: Readme
+
+
+setting up
+- download ws_install.sh and run, optionally setting env vars to customize
+  - sets up repo
+  - makes various default files etc, esp settings.sh
+  - maybe use a different dir as source?
+- customize ws_profile/settings.sh (where should this go?)
+   can run gen
+
+
+
+e.g. download ws_install and run
+download personal workstation configuration, or put in place in some other way
+run e.g. workstation bootstrap
+
+
+setup steps
+configure any env vars if want installed elsewhere
+curl ws_install, run it w bash
+execute ws bootstrap ()
+- at this point, where should configurations be?
+implement a -i or -q for interactive/quiet? (-i default?)
+where should the settings and config file be located?

@@ -10,12 +10,12 @@ set -xeuo pipefail
 
 # env # are there environment variables where I can get the commit sha?
 
-cd ~
+cd $HOME
 
-if [ "$GITHUB_SHA" == "" ]; then
+if [ "$WORKSTATION_VERSION" == "" ]; then
     WORKSTATION_BOOTSTRAP_COMMIT=master
 else
-    WORKSTATION_BOOTSTRAP_COMMIT="$GITHUB_SHA"
+    WORKSTATION_BOOTSTRAP_COMMIT="$WORKSTATION_VERSION"
 fi
 
 curl https://raw.githubusercontent.com/joelmccracken/workstation/$WORKSTATION_BOOTSTRAP_COMMIT/bootstrap-workstation.sh > bootstrap-workstation.sh
@@ -33,5 +33,18 @@ fi
 
 echo INSTALL PROCESS COMPLETE, TESTING
 
-bash ~/workstation/test/test.sh
+
+pwd
+sleep 10
+ls -lah
+sleep 10
+ls -lah $HOME
+sleep 10
+env
+sleep 10
+ls -lah $HOME/workstation/
+sleep 10
+export WORKSTATION_DIR=$HOME/workstation
+bash $HOME/workstation/test/test.sh
+
 # The environment setup script:1 ends here

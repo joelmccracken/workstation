@@ -1,0 +1,1 @@
+WORKSTATION_NAME=ci_macos

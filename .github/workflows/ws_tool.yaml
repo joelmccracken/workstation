@@ -1,0 +1,59 @@
+name: WS Tool
+
+on:
+  pull_request:
+  push:
+    branches: main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os:
+        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+        - macos-13 # x86
+        - macos-latest # aarch
+        - ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          ref: ${{ github.event.pull_request.head.ref }}
+      - run: ws_tool/test/bats/bin/bats ws_tool/test
+        env:
+          WORKSTATION_VERSION: ${{ github.event.pull_request.head.sha }}
+          BW_CLIENTID: ${{ secrets.BW_CLIENTID }}
+          BW_CLIENTSECRET: ${{ secrets.BW_CLIENTSECRET }}
+          WS_BW_MASTER_PASS: ${{ secrets.WS_BW_MASTER_PASS }}
+
+  full-setup:
+    strategy:
+      matrix:
+        os:
+        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+        - macos-13 # x86
+        - macos-latest # aarch
+        - ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: bash ws_tool/test/ci_full_setup.bash
+        env:
+          WORKSTATION_VERSION: ${{ github.event.pull_request.head.sha }}
+          BW_CLIENTID: ${{ secrets.BW_CLIENTID }}
+          BW_CLIENTSECRET: ${{ secrets.BW_CLIENTSECRET }}
+          WS_BW_MASTER_PASS: ${{ secrets.WS_BW_MASTER_PASS }}

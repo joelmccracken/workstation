@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# Passwordless sudo
+# Occasionally, sudo is extremely annoying. Having to type "sudo" in the middle of a nix-darwin rebuild really interrupts the flow. So here are a couple of scripts
+# to toggle passwordless sudo.
+
+# [[file:../workstation.org::*Passwordless sudo][Passwordless sudo:1]]
+set -euo pipefail
+
+sudo_file=/etc/sudoers.d/sudo-file
+
+usage() {
+  echo 'usage: sudopw <--pw|--no-pw> ';
+  echo '         - enable/disable passwordless sudo';
+  echo '       must be run with sudo.';
+  exit 1
+}
+
+mk_sudoer_file(){
+  local modifier="$1" file
+  file="$(mktemp -d "${TMPDIR:-/tmp}/sudoerd-file.XXXXXXXXX")/file"
+
+  cat > $file <<-EOF
+	$SUDO_USER  ALL=(ALL) ${modifier}ALL
+EOF
+  visudo -c "$file" > /dev/null
+  echo "$file";
+}
+
+no_pw() {
+  put_sudo_file 'NOPASSWD: '
+}
+
+yes_pw() {
+  put_sudo_file ''
+}
+
+put_sudo_file() {
+  local param="$1"
+  local tmpfile
+  tmpfile="$(mk_sudoer_file "$param")"
+
+  mv "$tmpfile" "$sudo_file"
+}
+
+
+if (( $# != 1 )) || [[ -z "${SUDO_USER:-}" ]]; then
+  usage
+fi
+
+case "$1" in
+  (--pw) yes_pw;;
+  (--no-pw) no_pw;;
+  (*) usage;;
+esac

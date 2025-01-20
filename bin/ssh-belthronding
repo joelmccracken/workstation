@@ -1,4 +1,20 @@
 #!/usr/bin/env bash
+set -x
+# BELTHRONDING=137.184.110.5
+BELTHRONDING=belthronding.wildkraken.monster
+
+reset_command(){
+  cat <<-EOF
+    reset;
+    ssh -t -o ConnectTimeout=10 joel@"$BELTHRONDING" "$@";
+    reset;
+    echo belthronding ssh exited and terminal reset, args "$@"
+EOF
+}
+
+ssh_with_resets() {
+  exec bash -c "$(reset_command)"
+}
 
 # run a command on cloud workstation
-ssh joel@belthronding.wildkraken.monster "$@"
+ssh_with_resets "$@"

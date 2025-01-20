@@ -35,10 +35,23 @@
 ;; change `org-directory'. It must be set before org loads!
 
 (setq workstation-config-path
-      (concat "~/workstation/hosts/current/config.el"))
+      (concat (or (getenv "WORKSTATION_DIR")
+                  "~/workstation")
+              "/hosts/current/config.el"))
 
 (when (file-exists-p workstation-config-path)
   (load workstation-config-path))
+
+(defun jnm/ef-ssh-belthronding ()
+  "open EF via ssh on belthronding"
+  (interactive)
+  (find-file "/ssh:joel@belthronding.wildkraken.monster:~/EF/"))
+
+(map! "C-c e" #'jnm/ef-ssh-belthronding)
+(map! "C-c d" #'org-timestamp-inactive)
+
+;; (map! :leader "SPC"
+;;       :n "SPC SPC e" #'jnm/ef-ssh-belthronding)
 
 (after! +popup
   ;; added here to change the behavior of *info* buffers (set :quit to nil)
