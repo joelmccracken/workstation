@@ -55,7 +55,7 @@
                   pkgs.git
                   pkgs.ripgrep
                   pkgs.jq
-                  pkgs.jl
+                  # pkgs.jl
                   pkgs.fd
                   pkgs.ispell
                   newer-pkgs.bitwarden-cli
